@@ -90,6 +90,7 @@ REGEX="\(^##"$'\t'"\|## "$'\t\t\t'"\|^"$'\t\t'"*##\)"
 RESULT=$(grep -R -n "$REGEX" --include="*.gd" project/src \
   | grep -v "army\.gd.*## Total goblins" \
   | grep -v "army\.gd.*## Average goblin" \
+  | grep -v "army\.gd.*## Gold for each" \
   | grep -v "army\.gd.*## Type of all" \
   | grep -v "army\.gd.*## Max hp for" \
   | grep -v "army\.gd.*## Hp missing" \
@@ -249,6 +250,7 @@ fi
 
 # redundant 'range(0, x)' call
 RESULT=$(grep -R -nP '[^_a-z]range\(0,\s*[^,)]*\)' --include="*.gd" project/src \
+  | grep -v "dungeon\.gd:.*, 2):" \
   )
 if [ -n "$RESULT" ]; then
   echo ""

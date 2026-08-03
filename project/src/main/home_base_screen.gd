@@ -18,7 +18,7 @@ func _ready() -> void:
 func _refresh_summary() -> void:
 	%RichTextLabel.text = ""
 	%RichTextLabel.text += Goblins.army_bbcode(PlayerData.army) + "\n\n"
-	%RichTextLabel.text += "%s gold" % [PlayerData.gold]
+	%RichTextLabel.text += "💰%s" % [PlayerData.gold]
 
 
 func _refresh_recruits() -> void:
@@ -32,10 +32,10 @@ func _refresh_recruits() -> void:
 
 
 func _recruit(recruit_row: HomeBaseRecruitRow) -> void:
-	if PlayerData.gold < recruit_row.cost:
+	if PlayerData.gold < recruit_row.item.gold:
 		return
 	
-	PlayerData.gold -= recruit_row.cost
+	PlayerData.gold -= recruit_row.item.gold
 	PlayerData.army.add_item(recruit_row.item)
 	
 	%Recruits.remove_child(recruit_row)
