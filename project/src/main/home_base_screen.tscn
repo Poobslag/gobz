@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/screen_panel.tscn" id="1_dm42n"]
 [ext_resource type="Script" uid="uid://caqw2l8itjc7j" path="res://src/main/home_base_screen.gd" id="1_q6unp"]
+[ext_resource type="PackedScene" uid="uid://bo7p3nknmvwls" path="res://src/main/home_base_recruit_row.tscn" id="3_45odm"]
 
 [node name="HomeBase" type="Control" unique_id=1368189123]
 layout_mode = 3
@@ -20,8 +21,10 @@ color = Color(0.27058825, 0.5411765, 0.38039216, 1)
 layout_mode = 2
 
 [node name="RichTextLabel" type="RichTextLabel" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=1099782014]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+bbcode_enabled = true
 text = "You have 50 goblins:
 
 10 fire goblins
@@ -30,10 +33,23 @@ text = "You have 50 goblins:
 10 angel goblins
 10 devil goblins"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=1696886812]
+[node name="Recruits" type="VBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=1381450448]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="FightButton" type="Button" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2119873059]
+[node name="HBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer/Recruits" unique_id=616338784 instance=ExtResource("3_45odm")]
+layout_mode = 2
+
+[node name="HBoxContainer2" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer/Recruits" unique_id=961380687 instance=ExtResource("3_45odm")]
+layout_mode = 2
+
+[node name="HBoxContainer3" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer/Recruits" unique_id=1206501521 instance=ExtResource("3_45odm")]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=288008880]
+layout_mode = 2
+
+[node name="FightButton" type="Button" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=682209607]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
