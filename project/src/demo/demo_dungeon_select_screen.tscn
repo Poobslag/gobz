@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://bxlag37aqlhjr"]
+
+[ext_resource type="PackedScene" uid="uid://bvcry38kh66ds" path="res://src/main/dungeon_select_screen.tscn" id="1_furq3"]
+[ext_resource type="Script" uid="uid://bhkj1lt0c5p1t" path="res://src/demo/demo_dungeon_select_screen.gd" id="1_rxoap"]
+
+[node name="Demo" type="Control" unique_id=1924681475]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rxoap")
+
+[node name="DungeonSelect" parent="." unique_id=1192315041 instance=ExtResource("1_furq3")]
+unique_name_in_owner = true
+layout_mode = 1

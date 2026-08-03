@@ -15,6 +15,20 @@ func get_total_goblins() -> int:
 	return total
 
 
+func get_total_attack() -> int:
+	var total: int = 0
+	for item: ArmyItem in items:
+		total += item.attack * item.count
+	return total
+
+
+func get_total_gold() -> int:
+	var total: int = 0
+	for item: ArmyItem in items:
+		total += item.gold * item.count
+	return total
+
+
 func add_item(item: ArmyItem) -> void:
 	items.append(item)
 
@@ -34,54 +48,63 @@ func should_level_up(item: ArmyItem) -> bool:
 	return item.experience > exp_factor * item.level
 
 
-func generate_random_recruit() -> Dictionary[String, Variant]:
+func generate_random_recruit(data: Dictionary[String, Variant] = {}) -> ArmyItem:
 	var item: ArmyItem = ArmyItem.new()
 	item.name = GoblinNames.random_name()
-	var cost: int = 0
 	var total_goblins: int = get_total_goblins()
-	var types: Array[Goblins.GoblinType] = [Goblins.FIRE, Goblins.WATER, Goblins.GRASS, Goblins.ANGEL, Goblins.DEVIL]
-	var weights: PackedFloat32Array
-	if total_goblins < 20:
-		weights = [1.0, 1.0, 1.0, 0.0, 0.0]
-	elif total_goblins < 200:
-		weights = [1.0, 1.0, 1.0, 0.4, 0.4]
+	
+	# calculate type
+	if data.has("type"):
+		item.type = data["type"]
 	else:
-		weights = [1.0, 1.0, 1.0, 1.0, 1.0]
-	item.type = types[rng.rand_weighted(weights)]
+		var types: Array[Goblins.GoblinType] = \
+				[Goblins.FIRE, Goblins.WATER, Goblins.GRASS, Goblins.ANGEL, Goblins.DEVIL]
+		var weights: PackedFloat32Array
+		if total_goblins < 20:
+			weights = [1.0, 1.0, 1.0, 0.0, 0.0]
+		elif total_goblins < 200:
+			weights = [1.0, 1.0, 1.0, 0.4, 0.4]
+		else:
+			weights = [1.0, 1.0, 1.0, 1.0, 1.0]
+		item.type = types[rng.rand_weighted(weights)]
 	
 	var type_cost: int = [3, 4, 5, 5, 5, 6, 7].pick_random()
 	if item.type == Goblins.DEVIL:
 		type_cost *= 2
-	cost += type_cost
+	item.gold += type_cost
 	
-	var max_level_up_count: int
-	if total_goblins < 10:
-		max_level_up_count = 4
-	elif total_goblins < 100:
-		max_level_up_count = 6
+	# calculate level
+	var target_level: int
+	if data.has("level"):
+		target_level = data["level"]
 	else:
-		max_level_up_count = 8
-	var level_up_count: int = randi_range(0, max_level_up_count)
-	for _i in level_up_count:
+		var max_level: int
+		if total_goblins < 10:
+			max_level = 4
+		elif total_goblins < 100:
+			max_level = 6
+		else:
+			max_level = 8
+		target_level = randi_range(1, max_level)
+	while item.level < target_level:
 		level_up(item)
 		var level_cost: int = [3, 4, 5, 5, 5, 6, 7].pick_random()
 		if item.type == Goblins.DEVIL:
-			cost += level_cost * 2
+			level_cost *= 2
+		item.gold += level_cost
 	
+	# adjust price
 	if randf() < 0.2:
-		cost = ceili(float(cost) * 1.5)
+		item.gold = ceili(float(item.gold) * 1.5)
 		if randf() < 0.2:
-			cost = ceili(float(cost) * 1.5)
+			item.gold = ceili(float(item.gold) * 1.5)
 	elif randf() < 0.2:
-		cost = floori(float(cost) / 1.5)
+		item.gold = floori(float(item.gold) / 1.5)
 		if randf() < 0.2:
-			cost = floori(float(cost) / 1.5)
-	cost = maxi(cost, 1)
+			item.gold = floori(float(item.gold) / 1.5)
+	item.gold = maxi(item.gold, 1)
 	
-	return {
-		"item": item,
-		"cost": cost,
-	} as Dictionary[String, Variant]
+	return item
 
 
 class ArmyItem:
@@ -89,6 +112,9 @@ class ArmyItem:
 	
 	## Total goblins
 	var count: int = 1
+	
+	## Gold for each goblin
+	var gold: int = 0
 	
 	## Average goblin level
 	var level: int = 1
@@ -107,3 +133,16 @@ class ArmyItem:
 	
 	## Attack for each goblin
 	var attack: int = 2
+	
+	func duplicate() -> ArmyItem:
+		var copy: ArmyItem = ArmyItem.new()
+		copy.name = name
+		copy.count = count
+		copy.gold = gold
+		copy.level = level
+		copy.type = type
+		copy.hp_max = hp_max
+		copy.hp = hp
+		copy.experience = experience
+		copy.attack = attack
+		return copy

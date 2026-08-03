@@ -4,4 +4,5 @@ $$$ = MUST be attributed in the game's credits (license requires it)
 
 Other:
 --------------------------------------------------------------------------------
- $$ project/src/main/data/goblin_names.gd https://www.fantasynamegenerators.com/goblin-names.php (cannot be copied, sold or redistributed)
+!!! project/src/main/data/goblin_names.gd https://www.fantasynamegenerators.com/goblin-names.php (cannot be copied, sold or redistributed)
+!!! project/src/main/data/dungeon_names.gd https://www.fantasynamegenerators.com/dungeon-names.php (cannot be copied, sold or redistributed)

@@ -5,14 +5,11 @@ signal recruit_pressed
 signal skip_pressed
 
 var item: Army.ArmyItem
-var cost: int
 
 func _ready() -> void:
-	var recruit: Dictionary[String, Variant] = PlayerData.army.generate_random_recruit()
-	item = recruit["item"]
-	cost = recruit["cost"]
+	item = PlayerData.army.generate_random_recruit()
 	
-	%RecruitButton.text = "💰%s" % [StringUtils.comma_sep(cost)]
+	%RecruitButton.text = "-💰%s" % [StringUtils.comma_sep(item.gold)]
 	%Description.text = "%s %s,  %s⚔" % [
 			Goblins.EMOJIS_BY_GOBLIN_TYPE[item.type], item.name, StringUtils.comma_sep(item.attack)]
 	
@@ -23,4 +20,4 @@ func _ready() -> void:
 
 
 func refresh() -> void:
-	%RecruitButton.disabled = (cost >= PlayerData.gold)
+	%RecruitButton.disabled = (item.gold >= PlayerData.gold)

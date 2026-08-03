@@ -11,12 +11,7 @@ signal pressed
 			return
 		_refresh()
 
-@export var index: int:
-	set(value):
-		index = value
-		if not is_node_ready():
-			return
-		_refresh()
+@export var button_text: String
 
 func _ready() -> void:
 	_refresh()
@@ -24,5 +19,5 @@ func _ready() -> void:
 
 
 func _refresh() -> void:
-	%Button.text = "Dungeon %s" % [index + 1]
+	%Button.text = button_text
 	%Desc.text = desc

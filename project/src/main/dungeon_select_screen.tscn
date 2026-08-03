@@ -36,21 +36,26 @@ text = "Which dungeon will you enter?
 😈: 11 goblins, 🗡️22
 "
 
-[node name="DungeonSelectRow1" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=971645189 instance=ExtResource("2_dx72l")]
+[node name="Dungeons" type="VBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=1522674444]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="DungeonSelectRow1" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer/Dungeons" unique_id=971645189 instance=ExtResource("2_dx72l")]
 unique_name_in_owner = true
 layout_mode = 2
 desc = "5 strength. Lots of fire goblins."
+button_text = null
 
-[node name="DungeonSelectRow2" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=1930900674 instance=ExtResource("2_dx72l")]
+[node name="DungeonSelectRow2" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer/Dungeons" unique_id=1930900674 instance=ExtResource("2_dx72l")]
 unique_name_in_owner = true
 layout_mode = 2
 desc = "20 strength. Lots of water goblins."
-index = 1
+button_text = null
 
-[node name="DungeonSelectRow3" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=616925943 instance=ExtResource("2_dx72l")]
+[node name="DungeonSelectRow3" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer/Dungeons" unique_id=616925943 instance=ExtResource("2_dx72l")]
 unique_name_in_owner = true
 layout_mode = 2
 desc = "50 strength. Lots of grass goblins."
-index = 2
+button_text = null
 
 [editable path="ScreenPanel"]
