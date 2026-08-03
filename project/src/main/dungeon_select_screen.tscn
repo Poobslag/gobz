@@ -21,17 +21,20 @@ color = Color(0.34509805, 0.7019608, 0.7490196, 1)
 layout_mode = 2
 
 [node name="RichTextLabel" type="RichTextLabel" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=1373638889]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+bbcode_enabled = true
 text = "Which dungeon will you enter?
 
-You have 50 goblins:
+[b]Total: 🗡️125 (50 goblins)[/b]
 
-10 fire goblins
-10 grass goblins
-10 water goblins
-10 angel goblins
-10 devil goblins"
+🔥: 10 goblins, 🗡️15
+💧: 11 goblins, 🗡️22
+🌿:  11 goblins, 🗡️22
+🕊️: 22 goblins, 🗡️22
+😈: 11 goblins, 🗡️22
+"
 
 [node name="DungeonSelectRow1" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=971645189 instance=ExtResource("2_dx72l")]
 unique_name_in_owner = true

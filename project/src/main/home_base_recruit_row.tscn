@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://bo7p3nknmvwls"]
+
+[ext_resource type="Script" uid="uid://bm0mtxujpufxu" path="res://src/main/home_base_recruit_row.gd" id="1_qcwso"]
+
+[node name="RecruitRow" type="HBoxContainer" unique_id=616338784]
+script = ExtResource("1_qcwso")
+
+[node name="RecruitButton" type="Button" parent="." unique_id=1082212655]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "💰15"
+
+[node name="SkipButton" type="Button" parent="." unique_id=778247918]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "No"
+
+[node name="Description" type="Label" parent="." unique_id=836808848]
+unique_name_in_owner = true
+layout_mode = 2
+text = "🔥 Kleex,  2⚔"

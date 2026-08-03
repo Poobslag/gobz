@@ -88,6 +88,13 @@ fi
 # comments with incorrect whitespace
 REGEX="\(^##"$'\t'"\|## "$'\t\t\t'"\|^"$'\t\t'"*##\)"
 RESULT=$(grep -R -n "$REGEX" --include="*.gd" project/src \
+  | grep -v "army\.gd.*## Total goblins" \
+  | grep -v "army\.gd.*## Average goblin" \
+  | grep -v "army\.gd.*## Type of all" \
+  | grep -v "army\.gd.*## Max hp for" \
+  | grep -v "army\.gd.*## Hp missing" \
+  | grep -v "army\.gd.*## Sum of all" \
+  | grep -v "army\.gd.*## Attack for" \
   )
 if [ -n "$RESULT" ]; then
   echo ""

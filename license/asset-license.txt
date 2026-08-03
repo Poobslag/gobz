@@ -1,3 +1,7 @@
 $$$ = MUST be attributed in the game's credits (license requires it)
  $$ = SHOULD be attributed in the game's credits (substantial use, license doesn't require it)
   $ = MAY be attributed in the game's credits (minor use, license doesn't require it)
+
+Other:
+--------------------------------------------------------------------------------
+ $$ project/src/main/data/goblin_names.gd https://www.fantasynamegenerators.com/goblin-names.php (cannot be copied, sold or redistributed)
