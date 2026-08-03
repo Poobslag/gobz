@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://cqtn41iceqg40"]
+
+[ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/screen_panel.tscn" id="1_kq665"]
+[ext_resource type="Script" uid="uid://gwyhffa4qow7" path="res://src/main/main_menu_screen.gd" id="1_r85qb"]
+
+[node name="MainMenuScreen" type="Control" unique_id=282256494]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_r85qb")
+
+[node name="ScreenPanel" parent="." unique_id=806142582 instance=ExtResource("1_kq665")]
+layout_mode = 1
+color = Color(0.41960785, 0.1882353, 0.29411766, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer" parent_id_path=PackedInt32Array(806142582, 1781904422) index="0" unique_id=1953554136]
+layout_mode = 2
+alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=2093600542]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Let's play goblin game"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=1839505629]
+layout_mode = 2
+
+[node name="PlayButton" type="Button" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=762378106]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Play"
+
+[editable path="ScreenPanel"]

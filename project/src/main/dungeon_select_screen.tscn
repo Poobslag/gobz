@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://bvcry38kh66ds"]
+
+[ext_resource type="Script" uid="uid://x0e81wy3egvr" path="res://src/main/dungeon_select_screen.gd" id="1_atl5w"]
+[ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/screen_panel.tscn" id="1_qmtpw"]
+[ext_resource type="PackedScene" uid="uid://jratby1g2yr6" path="res://src/main/dungeon_select_row.tscn" id="2_dx72l"]
+
+[node name="DungeonSelect" type="Control" unique_id=1192315041]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_atl5w")
+
+[node name="ScreenPanel" parent="." unique_id=806142582 instance=ExtResource("1_qmtpw")]
+layout_mode = 1
+color = Color(0.34509805, 0.7019608, 0.7490196, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer" parent_id_path=PackedInt32Array(806142582, 1781904422) index="0" unique_id=1968968407]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=1373638889]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Which dungeon will you enter?
+
+You have 50 goblins:
+
+10 fire goblins
+10 grass goblins
+10 water goblins
+10 angel goblins
+10 devil goblins"
+
+[node name="DungeonSelectRow1" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=971645189 instance=ExtResource("2_dx72l")]
+unique_name_in_owner = true
+layout_mode = 2
+desc = "5 strength. Lots of fire goblins."
+
+[node name="DungeonSelectRow2" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=1930900674 instance=ExtResource("2_dx72l")]
+unique_name_in_owner = true
+layout_mode = 2
+desc = "20 strength. Lots of water goblins."
+index = 1
+
+[node name="DungeonSelectRow3" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=616925943 instance=ExtResource("2_dx72l")]
+unique_name_in_owner = true
+layout_mode = 2
+desc = "50 strength. Lots of grass goblins."
+index = 2
+
+[editable path="ScreenPanel"]

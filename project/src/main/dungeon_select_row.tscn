@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://jratby1g2yr6"]
+
+[ext_resource type="Script" uid="uid://c3tmi6b1g8gwo" path="res://src/main/dungeon_select_row.gd" id="1_ymirb"]
+
+[node name="HBoxContainer" type="HBoxContainer" unique_id=971645189]
+script = ExtResource("1_ymirb")
+
+[node name="Button" type="Button" parent="." unique_id=1365035860]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Dungeon 1"
+
+[node name="Desc" type="Label" parent="." unique_id=867946619]
+unique_name_in_owner = true
+layout_mode = 2

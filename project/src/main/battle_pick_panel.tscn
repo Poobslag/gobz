@@ -1,0 +1,103 @@
+[gd_scene format=3 uid="uid://bbyuo5i46dqoy"]
+
+[ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/screen_panel.tscn" id="1_w75nw"]
+[ext_resource type="Script" uid="uid://xudosipb6eq3" path="res://src/main/battle_pick_panel.gd" id="2_r0v21"]
+
+[node name="PickPanel" unique_id=806142582 instance=ExtResource("1_w75nw")]
+color = Color(0.23921569, 0.28235295, 0.4392157, 1)
+script = ExtResource("2_r0v21")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Panel/MarginContainer" parent_id_path=PackedInt32Array(1781904422) index="0" unique_id=1668064572]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Panel/MarginContainer/VBoxContainer" index="0" unique_id=748806990]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="YourGoblins" type="RichTextLabel" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer" index="0" unique_id=1826206306]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Your goblins:
+
+10 fire goblins
+10 grass goblins
+10 water goblins
+10 angel goblins
+10 devil goblins"
+
+[node name="EnemyGoblins" type="RichTextLabel" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer" index="1" unique_id=237052985]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Enemy:
+
+10 fire goblins
+10 grass goblins
+10 water goblins
+10 angel goblins
+10 devil goblins"
+
+[node name="Label" type="Label" parent="MarginContainer/Panel/MarginContainer/VBoxContainer" index="1" unique_id=1629889783]
+layout_mode = 2
+text = "Who should attack next? (Current orders: None)"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/Panel/MarginContainer/VBoxContainer" index="2" unique_id=2098128849]
+layout_mode = 2
+
+[node name="Fire" type="Button" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer2" index="0" unique_id=1830798279]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Fire"
+
+[node name="Water" type="Button" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer2" index="1" unique_id=714306141]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Water"
+
+[node name="Grass" type="Button" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer2" index="2" unique_id=967784615]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Grass"
+
+[node name="Angel" type="Button" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer2" index="3" unique_id=1106967063]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Angel"
+
+[node name="Devil" type="Button" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer2" index="4" unique_id=105630662]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Devil"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/Panel/MarginContainer/VBoxContainer" index="3" unique_id=503109273]
+layout_mode = 2
+
+[node name="Back" type="Button" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="0" unique_id=767552492]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Back"
+
+[node name="Spacer1" type="Control" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="1" unique_id=1949349974]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Spacer2" type="Control" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="2" unique_id=1962595106]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Spacer3" type="Control" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="3" unique_id=1535210729]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Done" type="Button" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="4" unique_id=1004920508]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Done"

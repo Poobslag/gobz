@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://mptfydptrejo"]
+
+[ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/screen_panel.tscn" id="1_dm42n"]
+[ext_resource type="Script" uid="uid://caqw2l8itjc7j" path="res://src/main/home_base_screen.gd" id="1_q6unp"]
+
+[node name="HomeBase" type="Control" unique_id=1368189123]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_q6unp")
+
+[node name="ScreenPanel" parent="." unique_id=806142582 instance=ExtResource("1_dm42n")]
+layout_mode = 1
+color = Color(0.27058825, 0.5411765, 0.38039216, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer" parent_id_path=PackedInt32Array(806142582, 1781904422) index="0" unique_id=228279447]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=1099782014]
+layout_mode = 2
+size_flags_vertical = 3
+text = "You have 50 goblins:
+
+10 fire goblins
+10 grass goblins
+10 water goblins
+10 angel goblins
+10 devil goblins"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=1696886812]
+layout_mode = 2
+
+[node name="FightButton" type="Button" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2119873059]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Go fight"
+
+[editable path="ScreenPanel"]
