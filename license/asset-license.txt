@@ -1,0 +1,3 @@
+$$$ = MUST be attributed in the game's credits (license requires it)
+ $$ = SHOULD be attributed in the game's credits (substantial use, license doesn't require it)
+  $ = MAY be attributed in the game's credits (minor use, license doesn't require it)
