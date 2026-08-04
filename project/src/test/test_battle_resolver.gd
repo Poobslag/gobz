@@ -87,6 +87,19 @@ func test_plan_attacks_dont_double_team() -> void:
 	assert_eq(attacks[4].target.level, 9)
 
 
+func test_plan_attacks_cant_hit_cowards() -> void:
+	var from: Army = Army.new()
+	from.add_item(army_item("🔥 2"))
+	
+	var to: Army = Army.new()
+	to.add_item(army_item("💧 1"))
+	to.add_item(army_item("🌳 1"))
+	
+	var attacks: Array[BattleResolver.Attack] = \
+			BattleResolver.plan_attacks(from, to, Goblins.FIRE, [Goblins.GoblinType.WATER])
+	assert_eq(attacks[0].target.type, Goblins.GoblinType.WATER)
+
+
 func test_resolve_attacks() -> void:
 	var from: Army = Army.new()
 	from.add_item(army_item("🔥 3"))

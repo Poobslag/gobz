@@ -87,7 +87,7 @@ func _play_next() -> void:
 					break
 				player_type = _player_orders[_player_order_index]
 			player_attacks = BattleResolver.plan_attacks( \
-					player_army, enemy_army, player_type)
+					player_army, enemy_army, player_type, _enemy_orders)
 		if _enemy_order_index < _enemy_orders.size():
 			enemy_type = _enemy_orders[_enemy_order_index]
 			while enemy_army_summary.goblins_by_type[enemy_type] == 0:
@@ -96,7 +96,7 @@ func _play_next() -> void:
 					break
 				enemy_type = _enemy_orders[_enemy_order_index]
 			enemy_attacks = BattleResolver.plan_attacks( \
-					enemy_army, player_army, enemy_type)
+					enemy_army, player_army, enemy_type, _player_orders)
 		var player_kills: Array[BattleResolver.Kill] \
 				= BattleResolver.resolve_attacks(player_army, enemy_army, player_attacks)
 		var enemy_kills: Array[BattleResolver.Kill] \
