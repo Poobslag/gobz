@@ -19,28 +19,23 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 bbcode_enabled = true
-text = "Your goblins:
-
-10 fire goblins
-10 grass goblins
-10 water goblins
-10 angel goblins
-10 devil goblins"
+text = "You:
+[b]3 goblins, 🗡️15[/b]
+🔥: 1 goblins, 🗡️5
+🌳: 2 goblins, 🗡️10"
 
 [node name="EnemyGoblins" type="RichTextLabel" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer" index="1" unique_id=237052985]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 bbcode_enabled = true
-text = "Enemy:
+text = "Bad guys:
+[b]3 goblins, 🗡️15[/b]
+🔥: 1 goblins, 🗡️5
+🌳: 2 goblins, 🗡️10"
 
-10 fire goblins
-10 grass goblins
-10 water goblins
-10 angel goblins
-10 devil goblins"
-
-[node name="Label" type="Label" parent="MarginContainer/Panel/MarginContainer/VBoxContainer" index="1" unique_id=1629889783]
+[node name="QueryLabel" type="Label" parent="MarginContainer/Panel/MarginContainer/VBoxContainer" index="1" unique_id=1629889783]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Who should attack next? (Current orders: None)"
 
@@ -51,40 +46,40 @@ layout_mode = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "Fire"
+text = "🔥"
 
 [node name="Water" type="Button" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer2" index="1" unique_id=714306141]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "Water"
+text = "💧"
 
 [node name="Grass" type="Button" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer2" index="2" unique_id=967784615]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "Grass"
+text = "🌳"
 
 [node name="Angel" type="Button" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer2" index="3" unique_id=1106967063]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "Angel"
+text = "🕊️"
 
 [node name="Devil" type="Button" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer2" index="4" unique_id=105630662]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "Devil"
+text = "😈"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/Panel/MarginContainer/VBoxContainer" index="3" unique_id=503109273]
 layout_mode = 2
 
-[node name="Back" type="Button" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="0" unique_id=767552492]
+[node name="Undo" type="Button" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="0" unique_id=767552492]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "Back"
+text = "Undo"
 
 [node name="Spacer1" type="Control" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="1" unique_id=1949349974]
 custom_minimum_size = Vector2(100, 0)
@@ -102,4 +97,4 @@ layout_mode = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "Done"
+text = "Fight!"

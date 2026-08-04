@@ -18,36 +18,56 @@ size_flags_vertical = 3
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Your goblins:
-
-10 fire goblins
-10 grass goblins
-10 water goblins
-10 angel goblins
-10 devil goblins"
+bbcode_enabled = true
+text = "You:
+[b]3 goblins, 🗡️15[/b]
+🔥: 1 goblins, 🗡️5
+🌳: 2 goblins, 🗡️10"
 
 [node name="EnemyGoblins" type="RichTextLabel" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer" index="1" unique_id=626274456]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Enemy:
+bbcode_enabled = true
+text = "Bad guys:
+[b]3 goblins, 🗡️15[/b]
+🔥: 1 goblins, 🗡️5
+🌳: 2 goblins, 🗡️10"
 
-10 fire goblins
-10 grass goblins
-10 water goblins
-10 angel goblins
-10 devil goblins"
+[node name="WaveLabel" type="Label" parent="MarginContainer/Panel/MarginContainer/VBoxContainer" index="1" unique_id=1687645004]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Wave 1 of 3:"
 
-[node name="Label" type="Label" parent="MarginContainer/Panel/MarginContainer/VBoxContainer" index="1" unique_id=367141613]
-custom_maximum_size = Vector2(952, -1)
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/Panel/MarginContainer/VBoxContainer" index="2" unique_id=1595574149]
 layout_mode = 2
 size_flags_vertical = 3
-text = "Your fire goblins attack, killing 10 grass goblins and 2 angel goblins, and wounding 1 angel goblin.
 
-The enemy devil goblins attack, killing 10 fire goblins and 2 grass goblins."
+[node name="YourAttack" type="RichTextLabel" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="0" unique_id=582133447]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(474, 0)
+layout_mode = 2
+focus_mode = 0
+mouse_filter = 2
+bbcode_enabled = true
+text = "🔥 Your 3 goblins attack:
+10×🌳 killed. Very effective!
+2×🕊 killed, 1x🕊 wounded. Very effective!"
 autowrap_mode = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/Panel/MarginContainer/VBoxContainer" index="2" unique_id=1285139860]
+[node name="EnemyAttack" type="RichTextLabel" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="1" unique_id=594737998]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(474, 0)
+layout_mode = 2
+focus_mode = 0
+mouse_filter = 2
+bbcode_enabled = true
+text = "😈 9 enemy goblins attack:
+10×🔥 killed. Very effective!
+2×🕊 killed. Very effective!"
+autowrap_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/Panel/MarginContainer/VBoxContainer" index="3" unique_id=1285139860]
 layout_mode = 2
 
 [node name="NextButton" type="Button" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer2" index="0" unique_id=489817519]
@@ -55,9 +75,3 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "Next"
-
-[node name="DoneButton" type="Button" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer2" index="1" unique_id=961625418]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-text = "Done"

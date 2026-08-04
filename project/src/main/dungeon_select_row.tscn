@@ -9,7 +9,6 @@ script = ExtResource("1_ymirb")
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "Enter"
 
 [node name="Desc" type="Label" parent="." unique_id=867946619]
 unique_name_in_owner = true

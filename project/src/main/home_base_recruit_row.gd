@@ -11,7 +11,7 @@ func _ready() -> void:
 	
 	%RecruitButton.text = "-💰%s" % [StringUtils.comma_sep(item.gold)]
 	%Description.text = "%s %s,  %s⚔" % [
-			Goblins.EMOJIS_BY_GOBLIN_TYPE[item.type], item.name, StringUtils.comma_sep(item.attack)]
+			Goblins.emoji_from_type(item.type), item.name, StringUtils.comma_sep(item.attack)]
 	
 	%RecruitButton.pressed.connect(recruit_pressed.emit)
 	%SkipButton.pressed.connect(skip_pressed.emit)
@@ -20,4 +20,4 @@ func _ready() -> void:
 
 
 func refresh() -> void:
-	%RecruitButton.disabled = (item.gold >= PlayerData.gold)
+	%RecruitButton.disabled = (item.gold > PlayerData.gold)
