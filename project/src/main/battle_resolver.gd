@@ -9,20 +9,27 @@ const MATCHUPS: Array[Array] = [
 	[ 3.000, 3.000, 3.000, 0.333, 1.000], # Devil
 ]
 
-static func plan_attacks(from: Army, to: Army, type: Goblins.GoblinType) -> Array[Attack]:
+static func plan_attacks(from: Army, to: Army, type: Goblins.GoblinType, target_orders: Array[Goblins.GoblinType] = []) -> Array[Attack]:
+	var attacks: Array[Attack] = []
 	if from.items.is_empty() or to.items.is_empty():
 		return []
 	
-	var virtual_targets: Dictionary[Army.ArmyItem, Army.ArmyItem] = {}
-	for target: Army.ArmyItem in to.items:
-		virtual_targets[target] = target.duplicate()
-	
-	var attacks: Array[Attack] = []
 	var from_sorted: Array[Army.ArmyItem] = from.items.duplicate()
 	from_sorted.sort_custom(func(a: Army.ArmyItem, b: Army.ArmyItem) -> bool:
 		return a.attack > b.attack)
-	var to_shuffled: Array[Army.ArmyItem] = to.items.duplicate()
-	to_shuffled.shuffle()
+	var targets: Array[Army.ArmyItem] = []
+	for target: Army.ArmyItem in to.items:
+		if target_orders.is_empty() or target_orders.has(target.type):
+			targets.append(target)
+	targets.shuffle()
+	
+	if targets == null:
+		return []
+	
+	var virtual_targets: Dictionary[Army.ArmyItem, Army.ArmyItem] = {}
+	for target: Army.ArmyItem in targets:
+		virtual_targets[target] = target.duplicate()
+	
 	for source: Army.ArmyItem in from_sorted:
 		var best_score: int = 0
 		var best_damage: int = 0
@@ -30,7 +37,7 @@ static func plan_attacks(from: Army, to: Army, type: Goblins.GoblinType) -> Arra
 		var best_damage_result: Dictionary[String, Variant] = {}
 		if source.type != type:
 			continue
-		for target: Army.ArmyItem in to_shuffled:
+		for target: Army.ArmyItem in targets:
 			var virtual: Army.ArmyItem = virtual_targets[target]
 			if virtual.count <= 0:
 				continue # already claimed by an earlier attacker
@@ -48,7 +55,7 @@ static func plan_attacks(from: Army, to: Army, type: Goblins.GoblinType) -> Arra
 		
 		# sometimes there's no logical target to attack, because all targets should be dead
 		if best_target == null:
-			best_target = to_shuffled.pick_random()
+			best_target = targets.pick_random()
 			best_damage = base_damage(source, best_target)
 			best_damage_result = apply_damage(virtual_targets[best_target], best_damage)
 		
@@ -61,6 +68,7 @@ static func plan_attacks(from: Army, to: Army, type: Goblins.GoblinType) -> Arra
 		
 		virtual_targets[attack.target].hp = best_damage_result["new_hp"]
 		virtual_targets[attack.target].count = best_damage_result["new_count"]
+	
 	return attacks
 
 
