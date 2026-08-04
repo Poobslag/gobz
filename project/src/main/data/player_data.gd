@@ -38,15 +38,9 @@ func initialize_starting_army() -> void:
 		army.add_item(item)
 	
 	gold = 25
-	
-	_add_dungeon(5)
-	_add_dungeon(20)
-	_add_dungeon(50)
-	_add_dungeon(120)
-	_add_dungeon(200)
 
 
-func _add_dungeon(target_attack: int) -> void:
+func add_dungeon(target_attack: int) -> void:
 	var dungeon: Dungeon = Dungeon.new()
 	dungeon.army = Army.new()
 	dungeon.name = DungeonNames.random_name()

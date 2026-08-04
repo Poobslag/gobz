@@ -3,7 +3,22 @@ extends Control
 const DUNGEON_ROW_SCENE: PackedScene = preload("res://src/main/dungeon_select_row.tscn")
 
 func _ready() -> void:
+	_cycle_dungeons()
+	
 	refresh()
+
+
+func _cycle_dungeons() -> void:
+	for dungeon: Dungeon in PlayerData.dungeons:
+		if dungeon.is_empty():
+			PlayerData.dungeons.erase(dungeon)
+			PlayerData.add_dungeon(int(PlayerData.army.get_total_attack() * randf_range(0.4, 1.4)))
+	
+	if not PlayerData.dungeons.is_empty():
+		PlayerData.dungeons.remove_at(0)
+	
+	while PlayerData.dungeons.size() < 5:
+		PlayerData.add_dungeon(int(PlayerData.army.get_total_attack() * randf_range(0.4, 1.4)))
 
 
 func refresh() -> void:
