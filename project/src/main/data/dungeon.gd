@@ -12,3 +12,7 @@ func get_vague_army() -> Army:
 			vague_item.count *= 2
 		vague_army.add_item(vague_item)
 	return vague_army
+
+
+func is_empty() -> bool:
+	return army.is_empty()
