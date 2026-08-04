@@ -1,11 +1,18 @@
 class_name Army
-extends Node
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var items: Array[ArmyItem] = []
+var gold: int
 
 func reset() -> void:
 	items.clear()
+
+
+func duplicate() -> Army:
+	var army: Army = Army.new()
+	for item: ArmyItem in items:
+		army.items.append(item.duplicate())
+	return army
 
 
 func get_total_goblins() -> int:
@@ -33,19 +40,12 @@ func add_item(item: ArmyItem) -> void:
 	items.append(item)
 
 
-func level_up(item: ArmyItem) -> void:
-	item.hp_max += [1, 2, 2, 3].pick_random()
-	item.attack += [1, 2, 2, 3].pick_random()
-	if item.type == Goblins.DEVIL:
-		item.hp_max += [1, 2, 2, 3].pick_random()
-		item.attack += [1, 2, 2, 3].pick_random()
-	item.level += 1
-	item.experience = 0
+func remove_item(item: ArmyItem) -> void:
+	items.erase(item)
 
 
-func should_level_up(item: ArmyItem) -> bool:
-	var exp_factor: int = 4 if item.type == Goblins.DEVIL else 2
-	return item.experience > exp_factor * item.level
+func is_empty() -> bool:
+	return items.is_empty()
 
 
 func generate_random_recruit(data: Dictionary[String, Variant] = {}) -> ArmyItem:
@@ -87,11 +87,18 @@ func generate_random_recruit(data: Dictionary[String, Variant] = {}) -> ArmyItem
 			max_level = 8
 		target_level = randi_range(1, max_level)
 	while item.level < target_level:
-		level_up(item)
+		item.level_up()
 		var level_cost: int = [3, 4, 5, 5, 5, 6, 7].pick_random()
 		if item.type == Goblins.DEVIL:
 			level_cost *= 2
 		item.gold += level_cost
+	
+	item.experience = randi_range(0, item.get_exp_threshold())
+	var fractional_level_cost: int = [3, 4, 5, 5, 5, 6, 7].pick_random()
+	if item.type == Goblins.DEVIL:
+		fractional_level_cost *= 2
+	fractional_level_cost = roundi(fractional_level_cost * float(item.experience) / item.get_exp_threshold())
+	item.gold += fractional_level_cost
 	
 	# adjust price
 	if randf() < 0.2:
@@ -105,6 +112,22 @@ func generate_random_recruit(data: Dictionary[String, Variant] = {}) -> ArmyItem
 	item.gold = maxi(item.gold, 1)
 	
 	return item
+
+
+func get_summary() -> ArmySummary:
+	var result: ArmySummary = ArmySummary.new()
+	
+	for goblin_type: Goblins.GoblinType in Goblins.GoblinType.values():
+		result.goblins_by_type[goblin_type] = 0
+		result.attack_by_type[goblin_type] = 0
+	
+	for army_item: Army.ArmyItem in items:
+		result.goblins_by_type[army_item.type] += army_item.count
+		result.total_goblins += army_item.count
+		result.attack_by_type[army_item.type] += army_item.attack * army_item.count
+		result.total_attack += army_item.attack * army_item.count
+	
+	return result
 
 
 class ArmyItem:
@@ -146,3 +169,41 @@ class ArmyItem:
 		copy.experience = experience
 		copy.attack = attack
 		return copy
+	
+	
+	func level_up() -> void:
+		experience = maxi(0, experience - get_exp_threshold())
+		var hp_gain: int = 0
+		hp_gain += [1, 2, 2, 3].pick_random()
+		attack += [1, 2, 2, 3].pick_random()
+		if type == Goblins.DEVIL:
+			hp_gain += [1, 2, 2, 3].pick_random()
+			attack += [1, 2, 2, 3].pick_random()
+		hp_max += hp_gain
+		hp += hp_gain
+		level += 1
+	
+	
+	func get_exp_threshold() -> int:
+		var exp_factor: int = 4 if type == Goblins.DEVIL else 2
+		if level % 10 == 0:
+			exp_factor *= 10
+		if level % 100 == 0:
+			exp_factor *= 10
+		return maxi(1, (level + 1) * exp_factor * count)
+	
+	
+	func can_level_up() -> bool:
+		return experience > get_exp_threshold()
+	
+	
+	## Experience points for killing each goblin
+	func get_kill_exp() -> int:
+		return level + 1
+
+
+class ArmySummary:
+	var total_goblins: int
+	var total_attack: int
+	var goblins_by_type: Dictionary[Goblins.GoblinType, int] = {}
+	var attack_by_type: Dictionary[Goblins.GoblinType, int] = {}

@@ -1,0 +1,136 @@
+extends GutTest
+
+func army_item(s: String) -> Army.ArmyItem:
+	var s_split: PackedStringArray = s.split(" ")
+	var type: Goblins.GoblinType = Goblins.GOBLIN_TYPES_BY_EMOJI[s_split[0]]
+	var level: int = int(s_split[1])
+	
+	var item: Army.ArmyItem = Army.ArmyItem.new()
+	item.name = GoblinNames.random_name()
+	item.type = type
+	var type_cost: int = 5
+	if item.type == Goblins.DEVIL:
+		type_cost *= 2
+	item.gold += type_cost
+	item.level = level
+	var strength_factor: int = 4 if item.type == Goblins.DEVIL else 2
+	item.hp_max += strength_factor * (item.level - 1)
+	item.attack += strength_factor * (item.level - 1)
+	item.hp = item.hp_max
+	item.gold += 5 * strength_factor * (item.level - 1)
+	return item
+
+
+func attack(source: Army, target: Army, \
+		source_index: int, target_index: int) -> BattleResolver.Attack:
+	var new_attack: BattleResolver.Attack = BattleResolver.Attack.new()
+	new_attack.source = source.items[source_index]
+	new_attack.target = target.items[target_index]
+	new_attack.damage = BattleResolver.base_damage(new_attack.source, new_attack.target)
+	return new_attack
+
+
+func test_plan_attacks_prefer_effective_target() -> void:
+	var from: Army = Army.new()
+	from.add_item(army_item("🔥 3"))
+	
+	var to: Army = Army.new()
+	to.add_item(army_item("🔥 3"))
+	to.add_item(army_item("💧 3"))
+	to.add_item(army_item("🌳 3"))
+	
+	var attacks: Array[BattleResolver.Attack] = BattleResolver.plan_attacks(from, to, Goblins.FIRE)
+	assert_eq(attacks[0].target.type, Goblins.GRASS)
+
+
+func test_plan_attacks_prefer_kill() -> void:
+	var from: Army = Army.new()
+	from.add_item(army_item("🔥 2"))
+	
+	var to: Army = Army.new()
+	to.add_item(army_item("🔥 1"))
+	to.add_item(army_item("🔥 9"))
+	
+	var attacks: Array[BattleResolver.Attack] = BattleResolver.plan_attacks(from, to, Goblins.FIRE)
+	assert_eq(attacks[0].target.level, 1)
+
+
+func test_plan_attacks_avoid_overkill() -> void:
+	var from: Army = Army.new()
+	from.add_item(army_item("🔥 8"))
+	
+	var to: Army = Army.new()
+	to.add_item(army_item("🔥 1"))
+	to.add_item(army_item("🔥 9"))
+	
+	var attacks: Array[BattleResolver.Attack] = BattleResolver.plan_attacks(from, to, Goblins.FIRE)
+	assert_eq(attacks[0].target.level, 9)
+
+
+func test_plan_attacks_dont_double_team() -> void:
+	var from: Army = Army.new()
+	from.add_item(army_item("🔥 2"))
+	from.add_item(army_item("🔥 2"))
+	from.add_item(army_item("🔥 2"))
+	from.add_item(army_item("🔥 2"))
+	from.add_item(army_item("🔥 2"))
+	
+	var to: Army = Army.new()
+	to.add_item(army_item("🔥 1"))
+	to.add_item(army_item("🔥 9"))
+	
+	var attacks: Array[BattleResolver.Attack] = BattleResolver.plan_attacks(from, to, Goblins.FIRE)
+	assert_eq(attacks[0].target.level, 1)
+	assert_eq(attacks[1].target.level, 9)
+	assert_eq(attacks[2].target.level, 9)
+	assert_eq(attacks[3].target.level, 9)
+	assert_eq(attacks[4].target.level, 9)
+
+
+func test_resolve_attacks() -> void:
+	var from: Army = Army.new()
+	from.add_item(army_item("🔥 3"))
+	
+	var to: Army = Army.new()
+	to.add_item(army_item("🔥 3"))
+	to.add_item(army_item("💧 3"))
+	to.add_item(army_item("🌳 3"))
+	
+	var attacks: Array[BattleResolver.Attack] = [
+		attack(from, to, 0, 2),
+	]
+	BattleResolver.resolve_attacks(from, to, attacks)
+	
+	assert_eq(to.items.size(), 2)
+	assert_eq(attacks[0].source.experience, 4)
+	assert_eq(attacks[0].target.count, 0)
+
+
+func test_resolve_attacks_kill_wounded_guy() -> void:
+	var from: Army = Army.new()
+	from.add_item(army_item("🔥 3"))
+	
+	var to: Army = Army.new()
+	to.add_item(army_item("🔥 3"))
+	
+	var attacks: Array[BattleResolver.Attack] = [
+		attack(from, to, 0, 0),
+	]
+	to.items[0].hp = 1
+	attacks[0].damage = 3
+	BattleResolver.resolve_attacks(from, to, attacks)
+	
+	assert_eq(to.items.size(), 0)
+	assert_eq(attacks[0].source.experience, 4)
+	assert_eq(attacks[0].target.count, 0)
+
+
+func test_resolve_level_ups() -> void:
+	var from: Army = Army.new()
+	from.add_item(army_item("🔥 3"))
+	from.items[0].experience = 11
+	
+	BattleResolver.resolve_level_ups(from)
+	
+	assert_eq(from.items[0].level, 4)
+	assert_eq(from.items[0].experience, 3)

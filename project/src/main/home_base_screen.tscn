@@ -25,13 +25,12 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 bbcode_enabled = true
-text = "You have 50 goblins:
+text = "Your army:
+[b]3 goblins, 🗡️15[/b]
+🔥: 1 goblins, 🗡️5
+🌳: 2 goblins, 🗡️10
 
-10 fire goblins
-10 grass goblins
-10 water goblins
-10 angel goblins
-10 devil goblins"
+💰25"
 
 [node name="Recruits" type="VBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=1381450448]
 unique_name_in_owner = true

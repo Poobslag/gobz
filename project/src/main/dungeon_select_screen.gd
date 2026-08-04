@@ -30,7 +30,7 @@ func _add_dungeon_row(dungeon: Dungeon) -> void:
 	var type_summaries: Array[Dictionary] = []
 	for type: Goblins.GoblinType in Goblins.GoblinType.values():
 		type_summaries.append({
-			"emoji": Goblins.EMOJIS_BY_GOBLIN_TYPE[type],
+			"emoji": Goblins.emoji_from_type(type),
 			"attack": attack_by_type[type],
 		} as Dictionary[String, Variant])
 	type_summaries.sort_custom(func(a: Dictionary[String, Variant], b: Dictionary[String, Variant]) -> bool:
@@ -57,7 +57,7 @@ func _add_dungeon_row(dungeon: Dungeon) -> void:
 		emoji_string, dungeon.name, vague_army.get_total_attack()
 	]
 	dungeon_row.pressed.connect(func() -> void:
-		PlayerData.current_dungeon = PlayerData.dungeons.find(dungeon)
+		PlayerData.dungeon_index = PlayerData.dungeons.find(dungeon)
 		get_tree().change_scene_to_file("res://src/main/battle_screen.tscn"))
 	%Dungeons.add_child(dungeon_row)
 
@@ -65,5 +65,5 @@ func _add_dungeon_row(dungeon: Dungeon) -> void:
 func _refresh_label() -> void:
 	%RichTextLabel.text = ""
 	%RichTextLabel.text += "Which dungeon will you enter?\n\n"
-	%RichTextLabel.text += "Your forces:\n\n"
+	%RichTextLabel.text += "Your army:\n"
 	%RichTextLabel.text += Goblins.army_bbcode(PlayerData.army)

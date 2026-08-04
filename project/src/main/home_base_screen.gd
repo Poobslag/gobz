@@ -17,6 +17,7 @@ func _ready() -> void:
 
 func _refresh_summary() -> void:
 	%RichTextLabel.text = ""
+	%RichTextLabel.text = "Your army:\n"
 	%RichTextLabel.text += Goblins.army_bbcode(PlayerData.army) + "\n\n"
 	%RichTextLabel.text += "💰%s" % [PlayerData.gold]
 
