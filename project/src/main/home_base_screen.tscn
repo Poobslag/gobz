@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/screen_panel.tscn" id="1_dm42n"]
 [ext_resource type="Script" uid="uid://caqw2l8itjc7j" path="res://src/main/home_base_screen.gd" id="1_q6unp"]
 [ext_resource type="PackedScene" uid="uid://bo7p3nknmvwls" path="res://src/main/home_base_recruit_row.tscn" id="3_45odm"]
+[ext_resource type="PackedScene" uid="uid://h73338s4fipn" path="res://src/main/ui/command_palette.tscn" id="4_5sywx"]
 
 [node name="HomeBase" type="Control" unique_id=1368189123]
 layout_mode = 3
@@ -53,5 +54,8 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "Go fight"
+
+[node name="CommandPalette" parent="." unique_id=1368678133 instance=ExtResource("4_5sywx")]
+unique_name_in_owner = true
 
 [editable path="ScreenPanel"]

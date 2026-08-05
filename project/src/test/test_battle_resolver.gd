@@ -1,24 +1,7 @@
 extends GutTest
 
 func army_item(s: String) -> Army.ArmyItem:
-	var s_split: PackedStringArray = s.split(" ")
-	var type: Goblins.GoblinType = Goblins.GOBLIN_TYPES_BY_EMOJI[s_split[0]]
-	var level: int = int(s_split[1])
-	
-	var item: Army.ArmyItem = Army.ArmyItem.new()
-	item.name = GoblinNames.random_name()
-	item.type = type
-	var type_cost: int = 5
-	if item.type == Goblins.DEVIL:
-		type_cost *= 2
-	item.gold += type_cost
-	item.level = level
-	var strength_factor: int = 4 if item.type == Goblins.DEVIL else 2
-	item.hp_max += strength_factor * (item.level - 1)
-	item.attack += strength_factor * (item.level - 1)
-	item.hp = item.hp_max
-	item.gold += 5 * strength_factor * (item.level - 1)
-	return item
+	return ArmyTestUtils.army_item(s)
 
 
 func attack(source: Army, target: Army, \
