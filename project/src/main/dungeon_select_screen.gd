@@ -12,13 +12,15 @@ func _cycle_dungeons() -> void:
 	for dungeon: Dungeon in PlayerData.dungeons:
 		if dungeon.is_empty():
 			PlayerData.dungeons.erase(dungeon)
-			PlayerData.add_dungeon(int(PlayerData.army.get_total_attack() * randf_range(0.4, 1.4)))
+			@warning_ignore("narrowing_conversion")
+			PlayerData.add_dungeon(clampi(PlayerData.army.get_total_attack() * randf_range(0.4, 1.4), 1, 999_999_999_999_999_999))
 	
 	if not PlayerData.dungeons.is_empty():
 		PlayerData.dungeons.remove_at(0)
 	
 	while PlayerData.dungeons.size() < 5:
-		PlayerData.add_dungeon(int(PlayerData.army.get_total_attack() * randf_range(0.4, 1.4)))
+		@warning_ignore("narrowing_conversion")
+		PlayerData.add_dungeon(clampi(PlayerData.army.get_total_attack() * randf_range(0.4, 1.4), 1, 999_999_999_999_999_999))
 
 
 func refresh() -> void:
@@ -35,7 +37,7 @@ func refresh() -> void:
 func _add_dungeon_row(dungeon: Dungeon) -> void:
 	var vague_army: Army = dungeon.get_vague_army()
 	var dungeon_row: DungeonSelectRow = DUNGEON_ROW_SCENE.instantiate()
-	dungeon_row.button_text = "+💰%s" % [StringUtils.comma_sep(vague_army.get_total_gold())]
+	dungeon_row.button_text = "+💰%s" % [Utils.abbr_num(vague_army.get_total_gold())]
 	
 	var attack_by_type: Dictionary[Goblins.GoblinType, int]
 	for type: Goblins.GoblinType in Goblins.GoblinType.values():
@@ -69,7 +71,7 @@ func _add_dungeon_row(dungeon: Dungeon) -> void:
 			emoji_string = type_summaries[0]["emoji"] + emoji_string
 	
 	dungeon_row.desc = "%s %s, %s⚔" % [
-		emoji_string, dungeon.name, vague_army.get_total_attack()
+		emoji_string, dungeon.name, Utils.abbr_num(vague_army.get_total_attack())
 	]
 	dungeon_row.pressed.connect(func() -> void:
 		PlayerData.dungeon_index = PlayerData.dungeons.find(dungeon)

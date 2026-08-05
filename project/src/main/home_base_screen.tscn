@@ -46,6 +46,22 @@ layout_mode = 2
 [node name="HBoxContainer3" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer/Recruits" unique_id=1206501521 instance=ExtResource("3_45odm")]
 layout_mode = 2
 
+[node name="HBoxContainer" type="HBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=1327478529]
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+
+[node name="MultiplyButton" type="Button" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1433921640]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "×10"
+
+[node name="DivideButton" type="Button" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=269882561]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "÷10"
+
 [node name="HBoxContainer2" type="HBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=288008880]
 layout_mode = 2
 
