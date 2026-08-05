@@ -13,6 +13,18 @@ func _ready() -> void:
 	
 	%FightButton.pressed.connect(func() -> void:
 		get_tree().change_scene_to_file("res://src/main/dungeon_select_screen.tscn"))
+	
+	%CommandPalette.command_entered.connect(_on_command_palette_command_entered)
+
+
+func _input(event: InputEvent) -> void:
+	if %CommandPalette.has_focus():
+		return
+	
+	match Utils.key_press(event):
+		KEY_SLASH:
+			%CommandPalette.open()
+			get_viewport().set_input_as_handled()
 
 
 func _refresh_summary() -> void:
@@ -49,3 +61,23 @@ func _skip(recruit_row: HomeBaseRecruitRow) -> void:
 	%Recruits.remove_child(recruit_row)
 	recruit_row.queue_free()
 	_refresh_recruits()
+
+
+func _on_command_palette_command_entered(command: String) -> void:
+	match command.substr(0, 1):
+		"g":
+			if not command.substr(1).is_valid_int():
+				push_warning("Invalid parameter: %s" % [command.substr(1)])
+				return
+			var factor: float = float(command.substr(1))
+			PlayerData.scale_army_units(factor)
+			_refresh_recruits()
+			_refresh_summary()
+		"h":
+			if not command.substr(1).is_valid_int():
+				push_warning("Invalid parameter: %s" % [command.substr(1)])
+				return
+			var factor: float = 1.0 / float(command.substr(1))
+			PlayerData.scale_army_units(factor)
+			_refresh_recruits()
+			_refresh_summary()

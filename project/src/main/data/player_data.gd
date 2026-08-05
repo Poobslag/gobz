@@ -47,3 +47,14 @@ func add_dungeon(target_attack: int) -> void:
 	while dungeon.army.get_total_attack() < target_attack:
 		dungeon.army.add_item(dungeon.army.generate_random_recruit())
 	dungeons.append(dungeon)
+
+
+func scale_army_units(factor: float) -> void:
+	for item: Army.ArmyItem in PlayerData.army.items:
+		item.count = min(item.count * float(factor), 999_999_999_999_999_999)
+		item.experience = min(item.experience * float(factor), 999_999_999_999_999_999)
+	for dungeon: Dungeon in PlayerData.dungeons:
+		for item: Army.ArmyItem in dungeon.army.items:
+			item.count = min(item.count * float(factor), 999_999_999_999_999_999)
+			item.experience = min(item.experience * float(factor), 999_999_999_999_999_999)
+	gold = min(gold * float(factor), 999_999_999_999_999_999)
