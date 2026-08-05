@@ -113,17 +113,17 @@ func _play_next() -> void:
 			if player_army_summary.goblins_by_type.get(player_type) != 0:
 				%YourAttack.text += "%s Your %s goblins attack:\n" % \
 						[Goblins.emoji_from_type(player_type),
-							player_army_summary.goblins_by_type.get(player_type)]
+							Utils.abbr_num(player_army_summary.goblins_by_type.get(player_type))]
 			
 			var kill_report: Array[Dictionary] = get_kill_report(player_type, player_kills)
 			for kill_report_item: Dictionary in kill_report:
 				var kill_strings: Array[String] = []
 				if kill_report_item["kill_count"] > 0:
 					kill_strings.append("%s×%s killed" %
-							[kill_report_item["kill_count"], Goblins.emoji_from_type(kill_report_item["type"])])
+							[Utils.abbr_num(kill_report_item["kill_count"]), Goblins.emoji_from_type(kill_report_item["type"])])
 				if kill_report_item["wounded_count"] > 0:
 					kill_strings.append("%s×%s wounded" %
-							[kill_report_item["wounded_count"], Goblins.emoji_from_type(kill_report_item["type"])])
+							[Utils.abbr_num(kill_report_item["wounded_count"]), Goblins.emoji_from_type(kill_report_item["type"])])
 				var effectiveness_string: String = ""
 				if kill_report_item["effectiveness"] > 1.0:
 					effectiveness_string = "Very effective!"
@@ -140,17 +140,17 @@ func _play_next() -> void:
 			if enemy_army_summary.goblins_by_type.get(enemy_type) != 0:
 				%EnemyAttack.text += "%s %s enemy goblins attack:\n" \
 						% [Goblins.emoji_from_type(enemy_type),
-							enemy_army_summary.goblins_by_type.get(enemy_type)]
+							Utils.abbr_num(enemy_army_summary.goblins_by_type.get(enemy_type))]
 			
 			var kill_report: Array[Dictionary] = get_kill_report(enemy_type, enemy_kills)
 			for kill_report_item: Dictionary in kill_report:
 				var kill_strings: Array[String] = []
 				if kill_report_item["kill_count"] > 0:
 					kill_strings.append("%s×%s killed" %
-							[kill_report_item["kill_count"], Goblins.emoji_from_type(kill_report_item["type"])])
+							[Utils.abbr_num(kill_report_item["kill_count"]), Goblins.emoji_from_type(kill_report_item["type"])])
 				if kill_report_item["wounded_count"] > 0:
 					kill_strings.append("%s×%s wounded" %
-							[kill_report_item["wounded_count"], Goblins.emoji_from_type(kill_report_item["type"])])
+							[Utils.abbr_num(kill_report_item["wounded_count"]), Goblins.emoji_from_type(kill_report_item["type"])])
 				var effectiveness_string: String = ""
 				if kill_report_item["effectiveness"] > 1.0:
 					effectiveness_string = "A terrible blow!"

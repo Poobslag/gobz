@@ -3,6 +3,8 @@ extends Control
 const RECRUIT_COUNT: int = 3
 const RECRUIT_ROW_SCENE: PackedScene = preload("res://src/main/home_base_recruit_row.tscn")
 
+const MAX_MULTIPLIER: int = 1_000_000_000_000_000
+
 func _ready() -> void:
 	for child: Node in %Recruits.get_children():
 		%Recruits.remove_child(child)
@@ -15,6 +17,9 @@ func _ready() -> void:
 		get_tree().change_scene_to_file("res://src/main/dungeon_select_screen.tscn"))
 	
 	%CommandPalette.command_entered.connect(_on_command_palette_command_entered)
+	
+	%MultiplyButton.pressed.connect(_adjust_multiplier.bind(10.0))
+	%DivideButton.pressed.connect(_adjust_multiplier.bind(1/10.0))
 
 
 func _input(event: InputEvent) -> void:
@@ -31,7 +36,7 @@ func _refresh_summary() -> void:
 	%RichTextLabel.text = ""
 	%RichTextLabel.text = "Your army:\n"
 	%RichTextLabel.text += Goblins.army_bbcode(PlayerData.army) + "\n\n"
-	%RichTextLabel.text += "💰%s" % [PlayerData.gold]
+	%RichTextLabel.text += "💰%s" % [Utils.abbr_num(PlayerData.gold)]
 
 
 func _refresh_recruits() -> void:
@@ -45,10 +50,10 @@ func _refresh_recruits() -> void:
 
 
 func _recruit(recruit_row: HomeBaseRecruitRow) -> void:
-	if PlayerData.gold < recruit_row.item.gold:
+	if PlayerData.gold < recruit_row.get_cost():
 		return
 	
-	PlayerData.gold -= recruit_row.item.gold
+	PlayerData.gold -= recruit_row.get_cost()
 	PlayerData.army.add_item(recruit_row.item)
 	
 	%Recruits.remove_child(recruit_row)
@@ -61,6 +66,15 @@ func _skip(recruit_row: HomeBaseRecruitRow) -> void:
 	%Recruits.remove_child(recruit_row)
 	recruit_row.queue_free()
 	_refresh_recruits()
+
+
+func _adjust_multiplier(factor: float) -> void:
+	@warning_ignore("narrowing_conversion")
+	PlayerData.home_base_multiplier = clampi(PlayerData.home_base_multiplier * factor, 1, MAX_MULTIPLIER)
+	for recruit_row: HomeBaseRecruitRow in %Recruits.get_children():
+		%Recruits.remove_child(recruit_row)
+		recruit_row.queue_free()
+		_refresh_recruits()
 
 
 func _on_command_palette_command_entered(command: String) -> void:

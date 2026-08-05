@@ -26,7 +26,7 @@ func victory() -> void:
 	color = Color("458a61")
 	%Message.text = ""
 	%Message.text += "Victory!\n\n"
-	%Message.text += "You loot 💰%s from your fallen allies and enemies." % [StringUtils.comma_sep(looted_gold)]
+	%Message.text += "You loot 💰%s from your fallen allies and enemies." % [Utils.abbr_num(looted_gold)]
 
 
 func defeat() -> void:
@@ -46,4 +46,4 @@ func retreat() -> void:
 	color = Color("8d8381")
 	%Message.text = ""
 	%Message.text += "Retreat!\n\n"
-	%Message.text += "You scurry home with 💰%s in your pockets." % [StringUtils.comma_sep(looted_gold)]
+	%Message.text += "You scurry home with 💰%s in your pockets." % [Utils.abbr_num(looted_gold)]

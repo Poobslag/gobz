@@ -25,14 +25,14 @@ func get_total_goblins() -> int:
 func get_total_attack() -> int:
 	var total: int = 0
 	for item: ArmyItem in items:
-		total += item.attack * item.count
+		total = Utils.big_add(total, Utils.big_mult(item.attack, item.count))
 	return total
 
 
 func get_total_gold() -> int:
 	var total: int = 0
 	for item: ArmyItem in items:
-		total += item.gold * item.count
+		total = Utils.big_add(total, Utils.big_mult(item.gold, item.count))
 	return total
 
 
@@ -93,7 +93,7 @@ func generate_random_recruit(data: Dictionary[String, Variant] = {}) -> ArmyItem
 			level_cost *= 2
 		item.gold += level_cost
 	
-	item.experience = randi_range(0, item.get_exp_threshold())
+	item.experience = int(randf_range(0, item.get_exp_threshold()))
 	var fractional_level_cost: int = [3, 4, 5, 5, 5, 6, 7].pick_random()
 	if item.type == Goblins.DEVIL:
 		fractional_level_cost *= 2
@@ -111,6 +111,10 @@ func generate_random_recruit(data: Dictionary[String, Variant] = {}) -> ArmyItem
 			item.gold = floori(float(item.gold) / 1.5)
 	item.gold = maxi(item.gold, 1)
 	
+	if data.has("count"):
+		item.count *= data["count"]
+		item.experience *= data["count"]
+	
 	return item
 
 
@@ -122,10 +126,16 @@ func get_summary() -> ArmySummary:
 		result.attack_by_type[goblin_type] = 0
 	
 	for army_item: Army.ArmyItem in items:
-		result.goblins_by_type[army_item.type] += army_item.count
-		result.total_goblins += army_item.count
-		result.attack_by_type[army_item.type] += army_item.attack * army_item.count
-		result.total_attack += army_item.attack * army_item.count
+		result.goblins_by_type[army_item.type] = \
+				Utils.big_add(result.goblins_by_type[army_item.type], army_item.count)
+		result.total_goblins = \
+				Utils.big_add(result.total_goblins, army_item.count)
+		result.attack_by_type[army_item.type] = \
+				Utils.big_add(result.attack_by_type[army_item.type],
+				Utils.big_mult(army_item.attack, army_item.count))
+		result.total_attack = \
+				Utils.big_add(result.total_attack, \
+				Utils.big_mult(army_item.attack, army_item.count))
 	
 	return result
 
@@ -179,6 +189,10 @@ class ArmyItem:
 		if type == Goblins.DEVIL:
 			hp_gain += [1, 2, 2, 3].pick_random()
 			attack += [1, 2, 2, 3].pick_random()
+		var level_cost: int = [3, 4, 5, 5, 5, 6, 7].pick_random()
+		if type == Goblins.DEVIL:
+			level_cost *= 2
+		gold += level_cost
 		hp_max += hp_gain
 		hp += hp_gain
 		level += 1
