@@ -9,7 +9,9 @@ const MATCHUPS: Array[Array] = [
 	[ 3.000, 3.000, 3.000, 0.333, 1.000], # Devil
 ]
 
-static func plan_attacks(from: Army, to: Army, type: Goblins.GoblinType, target_orders: Array[Goblins.GoblinType] = []) -> Array[Attack]:
+static func plan_attacks(
+		from: Army, to: Army, type: Goblins.GoblinType,
+		target_orders: Array[Goblins.GoblinType] = []) -> Array[Attack]:
 	var attacks: Array[Attack] = []
 	if from.items.is_empty() or to.items.is_empty():
 		return []

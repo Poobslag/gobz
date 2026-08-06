@@ -37,7 +37,8 @@ static func emoji_from_type(type: GoblinType) -> String:
 static func army_bbcode(army: Army) -> String:
 	var summary: Army.ArmySummary = army.get_summary()
 	var result: String = ""
-	result += "[b]%s goblins, 🗡️%s[/b]\n" % [Utils.abbr_num(summary.total_goblins), Utils.abbr_num(summary.total_attack)]
+	result += "[b]%s goblins, 🗡️%s[/b]\n" % \
+			[Utils.abbr_num(summary.total_goblins), Utils.abbr_num(summary.total_attack)]
 	for goblin_type: GoblinType in GoblinType.values():
 		if summary.goblins_by_type[goblin_type] >= 1:
 			result += "%s: %s goblins, 🗡️%s\n" % [
