@@ -18,6 +18,10 @@ func _ready() -> void:
 	
 	%CommandPalette.command_entered.connect(_on_command_palette_command_entered)
 	
+	if PlayerData.home_base_multiplier == 1 and PlayerData.gold < 80:
+		%MultiplyButton.visible = false
+		%DivideButton.visible = false
+	
 	%MultiplyButton.pressed.connect(_adjust_multiplier.bind(10.0))
 	%DivideButton.pressed.connect(_adjust_multiplier.bind(1/10.0))
 
@@ -47,6 +51,9 @@ func _refresh_recruits() -> void:
 		%Recruits.add_child(recruit_row)
 	for recruit_row: HomeBaseRecruitRow in %Recruits.get_children():
 		recruit_row.refresh()
+	%MultiplyButton.disabled = (PlayerData.gold < Utils.big_mult(80, PlayerData.home_base_multiplier \
+			or PlayerData.home_base_multiplier >= MAX_MULTIPLIER))
+	%DivideButton.disabled = (PlayerData.home_base_multiplier <= 1)
 
 
 func _recruit(recruit_row: HomeBaseRecruitRow) -> void:
