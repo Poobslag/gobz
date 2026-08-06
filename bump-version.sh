@@ -19,7 +19,7 @@ then
 else
 # Calculate version string
   seconds=$(date +%s)
-  version=$((seconds / 864000 - 2048))
+  version=$((seconds / 864000 - 2066))
   version=$(printf 0.%02d $version)-dev
 fi
 

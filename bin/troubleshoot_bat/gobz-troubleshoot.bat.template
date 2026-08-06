@@ -1,7 +1,7 @@
 @echo off
 echo Launching Gobz in troubleshoot mode...
 
-set LOG_FILE=%AppData%\Godot\app_userdata\Monster Connect\logs\godot.log
+set LOG_FILE=%AppData%\Godot\app_userdata\Gobz\logs\godot.log
 
 :: Run the game, suppressing all output
 ##WIN_EXE_FILENAME## --verbose -- > nul 2>&1

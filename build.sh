@@ -35,8 +35,8 @@ done
 
 win_export_path="project/export/windows"
 win_zip_filename="$win_export_path/gobz-win-v$version.zip"
-win_bat_filename="$win_export_path/goblins-game-win-troubleshoot-v$version.bat"
-win_bat_template="bin/troubleshoot_bat/goblins-game-troubleshoot.bat.template"
+win_bat_filename="$win_export_path/gobz-win-troubleshoot-v$version.bat"
+win_bat_template="bin/troubleshoot_bat/gobz-troubleshoot.bat.template"
 
 # Create and embed the windows bat file
 echo "Packaging $win_zip_filename"
