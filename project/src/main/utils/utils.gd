@@ -19,22 +19,35 @@ static func abbr_num(score_int: int) -> String:
 	
 	var suffix := ""
 	var divisor := 1
+	var decimal_places: int = 0
 	
-	if score_int > 999_999_999_999_999:
+	if score_int > 9_999_999_999_999_999:
+		suffix = "q"
+		divisor = 1_000_000_000_000_000
+		decimal_places = 0 if score_int > 99_999_999_999_999_999 else 1
+	elif score_int > 9_999_999_999_999:
 		suffix = "t"
 		divisor = 1_000_000_000_000
-	elif score_int > 999_999_999_999:
+		decimal_places = 0 if score_int > 99_999_999_999_999 else 1
+	elif score_int > 9_999_999_999:
 		suffix = "b"
 		divisor = 1_000_000_000
-	elif score_int > 999_999_999:
+		decimal_places = 0 if score_int > 99_999_999_999 else 1
+	elif score_int > 9_999_999:
 		suffix = "m"
 		divisor = 1_000_000
-	elif score_int > 999_999:
+		decimal_places = 0 if score_int > 99_999_999 else 1
+	elif score_int > 9_999:
 		suffix = "k"
 		divisor = 1_000
+		decimal_places = 0 if score_int > 99_999 else 1
 	
-	@warning_ignore("integer_division")
-	return "%s%s" % [StringUtils.comma_sep(score_int / divisor), suffix]
+	if decimal_places == 0:
+		@warning_ignore("integer_division")
+		return "%s%s" % [StringUtils.comma_sep(score_int / divisor), suffix]
+	else:
+		@warning_ignore("integer_division")
+		return "%s.%s%s" % [StringUtils.comma_sep(score_int / divisor), (score_int % divisor) / (divisor / 10), suffix]
 
 
 static func big_add(a: int, b: int) -> int:
