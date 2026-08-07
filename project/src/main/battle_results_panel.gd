@@ -32,9 +32,18 @@ func victory() -> void:
 func defeat() -> void:
 	refresh()
 	color = Color("8d8381")
+	
 	PlayerData.army.gold = 0
+	PlayerData.gold += int(PlayerData.get_dungeon_army().gold * 0.1)
+	PlayerData.initialize_starting_army()
 	%Message.text = ""
 	%Message.text += "Defeat...\n\n"
+	
+	var goblin: Army.ArmyItem = PlayerData.army.items.back()
+	%Message.text += "%s %s is inspired by the bravery of the fallen goblins!\n" % [
+		Goblins.emoji_from_type(goblin.type), goblin.name
+	]
+	%Message.text += "They give what money they have and prepare for battle."
 
 
 func retreat() -> void:
