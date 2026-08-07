@@ -94,6 +94,10 @@ func _on_command_palette_command_entered(command: String) -> void:
 			PlayerData.scale_army_units(factor)
 			_refresh_recruits()
 			_refresh_summary()
+			
+			if PlayerData.gold >= 80:
+				%MultiplyButton.visible = true
+				%DivideButton.visible = true
 		"h":
 			if not command.substr(1).is_valid_int():
 				push_warning("Invalid parameter: %s" % [command.substr(1)])

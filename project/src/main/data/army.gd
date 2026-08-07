@@ -221,3 +221,11 @@ class ArmySummary:
 	var total_attack: int
 	var goblins_by_type: Dictionary[Goblins.GoblinType, int] = {}
 	var attack_by_type: Dictionary[Goblins.GoblinType, int] = {}
+	
+	func _to_string() -> String:
+		return str({
+			"total_goblins": total_goblins,
+			"total_attack": total_attack,
+			"goblins_by_type": goblins_by_type,
+			"attack_by_type": attack_by_type,
+		})
