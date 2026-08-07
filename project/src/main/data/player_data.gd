@@ -38,6 +38,23 @@ func _ready() -> void:
 	tips.shuffle()
 
 
+func cycle_dungeons() -> void:
+	for dungeon: Dungeon in PlayerData.dungeons:
+		if dungeon.is_empty():
+			PlayerData.dungeons.erase(dungeon)
+			@warning_ignore("narrowing_conversion")
+			PlayerData.add_dungeon(clampi(PlayerData.army.get_total_attack() * randf_range(0.4, 1.4),
+					1, 999_999_999_999_999_999))
+	
+	if not PlayerData.dungeons.is_empty():
+		PlayerData.dungeons.remove_at(0)
+	
+	while PlayerData.dungeons.size() < 5:
+		@warning_ignore("narrowing_conversion")
+		PlayerData.add_dungeon(clampi(PlayerData.army.get_total_attack() * randf_range(0.4, 1.4),
+				1, 999_999_999_999_999_999))
+
+
 func get_next_tip() -> String:
 	var result: String = tips[_tip_index]
 	_tip_index = (_tip_index + 1) % tips.size()

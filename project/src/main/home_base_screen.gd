@@ -2,6 +2,7 @@ extends Control
 
 const RECRUIT_COUNT: int = 3
 const RECRUIT_ROW_SCENE: PackedScene = preload("res://src/main/home_base_recruit_row.tscn")
+const DUNGEON_ROW_SCENE: PackedScene = preload("res://src/main/dungeon_preview_row.tscn")
 
 const MAX_MULTIPLIER: int = 1_000_000_000_000_000
 
@@ -12,6 +13,8 @@ func _ready() -> void:
 	
 	_refresh_recruits()
 	_refresh_summary()
+	PlayerData.cycle_dungeons()
+	_refresh_dungeons()
 	
 	%FightButton.pressed.connect(func() -> void:
 		get_tree().change_scene_to_file("res://src/main/dungeon_select_screen.tscn"))
@@ -26,6 +29,24 @@ func _ready() -> void:
 	%DivideButton.pressed.connect(_adjust_multiplier.bind(1/10.0))
 
 
+func _refresh_dungeons() -> void:
+	for child: Node in %Dungeons.get_children():
+		%Dungeons.remove_child(child)
+		child.queue_free()
+	
+	for dungeon: Dungeon in PlayerData.dungeons:
+		dungeon.perform_recon()
+	
+	for dungeon: Dungeon in PlayerData.dungeons:
+		var dungeon_select_info: Dictionary[String, String] = Dungeons.get_dungeon_select_info(dungeon)
+		var dungeon_row: Label = DUNGEON_ROW_SCENE.instantiate()
+		dungeon_row.text = "%s %s, %s" % [
+				dungeon_select_info["emoji_string"],
+				dungeon_select_info["name"], dungeon_select_info["attack_string"]
+		]
+		%Dungeons.add_child(dungeon_row)
+
+
 func _input(event: InputEvent) -> void:
 	if %CommandPalette.has_focus():
 		return
@@ -37,10 +58,10 @@ func _input(event: InputEvent) -> void:
 
 
 func _refresh_summary() -> void:
-	%RichTextLabel.text = ""
-	%RichTextLabel.text = "Your army:\n"
-	%RichTextLabel.text += Goblins.army_bbcode(PlayerData.army) + "\n\n"
-	%RichTextLabel.text += "💰%s" % [Utils.abbr_num(PlayerData.gold)]
+	%ArmyLabel.text = ""
+	%ArmyLabel.text = "Your army:\n"
+	%ArmyLabel.text += Goblins.army_bbcode(PlayerData.army) + "\n\n"
+	%ArmyLabel.text += "💰%s" % [Utils.abbr_num(PlayerData.gold)]
 
 
 func _refresh_recruits() -> void:
