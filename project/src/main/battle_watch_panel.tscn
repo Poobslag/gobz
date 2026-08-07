@@ -37,7 +37,7 @@ text = "Bad guys:
 [node name="WaveLabel" type="Label" parent="MarginContainer/Panel/MarginContainer/VBoxContainer" index="1" unique_id=1687645004]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Wave 1 of 3:"
+text = "💧→🔥→🌳"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/Panel/MarginContainer/VBoxContainer" index="2" unique_id=1595574149]
 layout_mode = 2
