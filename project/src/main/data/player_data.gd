@@ -24,7 +24,8 @@ func get_dungeon_army() -> Army:
 
 
 func initialize_starting_army() -> void:
-	for i in range(3):
+	var goblin_count: int = PlayerData.army.get_summary().total_goblins
+	while goblin_count < 3:
 		var item: Army.ArmyItem = Army.ArmyItem.new()
 		
 		item.name = GoblinNames.random_name()
@@ -37,8 +38,9 @@ func initialize_starting_army() -> void:
 				item.level_up()
 		
 		army.add_item(item)
+		goblin_count += 1
 	
-	gold = 25
+	gold = maxi(gold, 25)
 
 
 func add_dungeon(target_attack: int) -> void:
