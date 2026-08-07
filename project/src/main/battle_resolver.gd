@@ -56,10 +56,14 @@ static func plan_attacks(
 				best_damage_result = damage_result
 		
 		# sometimes there's no logical target to attack, because all targets should be dead
-		if best_target == null:
+		if best_target == null and targets != null:
 			best_target = targets.pick_random()
 			best_damage = base_damage(source, best_target)
 			best_damage_result = apply_damage(virtual_targets[best_target], best_damage)
+		
+		# sometimes there's no logical target to attack, because all targets already died
+		if best_target == null:
+			continue
 		
 		var attack: Attack = Attack.new()
 		attack.source = source

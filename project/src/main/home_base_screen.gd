@@ -115,6 +115,8 @@ func _on_command_palette_command_entered(command: String) -> void:
 			PlayerData.scale_army_units(factor)
 			_refresh_recruits()
 			_refresh_summary()
+			for dungeon: Dungeon in PlayerData.dungeons:
+				dungeon.perform_recon()
 			
 			if PlayerData.gold >= 80:
 				%MultiplyButton.visible = true
@@ -127,3 +129,5 @@ func _on_command_palette_command_entered(command: String) -> void:
 			PlayerData.scale_army_units(factor)
 			_refresh_recruits()
 			_refresh_summary()
+			for dungeon: Dungeon in PlayerData.dungeons:
+				dungeon.perform_recon()
