@@ -1,12 +1,17 @@
 extends GutTest
 
+func before_each() -> void:
+	PlayerData.reset()
+
+
 func army_item(s: String) -> Army.ArmyItem:
 	return ArmyTestUtils.army_item(s)
+
 
 func test_scale_up() -> void:
 	PlayerData.army.add_item(army_item("🔥 3"))
 	PlayerData.scale_army_units(10)
-	assert_eq(10, PlayerData.army.items[0].count)
+	assert_eq(PlayerData.army.items[0].count, 10)
 
 
 func test_scale_up_avoid_overflow() -> void:

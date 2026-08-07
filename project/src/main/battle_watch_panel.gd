@@ -2,6 +2,7 @@ extends ColorRect
 
 signal finished
 
+var _initial_player_orders: Array[Goblins.GoblinType] = []
 var _player_orders: Array[Goblins.GoblinType] = []
 var _enemy_orders: Array[Goblins.GoblinType] = []
 
@@ -11,6 +12,7 @@ func _ready() -> void:
 
 
 func play(new_player_orders: Array[Goblins.GoblinType], new_enemy_orders: Array[Goblins.GoblinType]) -> void:
+	_initial_player_orders = new_player_orders.duplicate()
 	_player_orders = new_player_orders
 	_enemy_orders = new_enemy_orders
 	
@@ -96,7 +98,7 @@ func _play_next() -> void:
 		if not _enemy_orders.is_empty():
 			enemy_type = _enemy_orders.pop_front()
 			enemy_attacks = BattleResolver.plan_attacks( \
-					enemy_army, player_army, enemy_type, _player_orders)
+					enemy_army, player_army, enemy_type, _initial_player_orders)
 		var player_kills: Array[BattleResolver.Kill] \
 				= BattleResolver.resolve_attacks(player_army, enemy_army, player_attacks)
 		var enemy_kills: Array[BattleResolver.Kill] \
@@ -129,9 +131,7 @@ func _play_next() -> void:
 				%YourAttack.text += "%s. %s\n" % [", ".join(kill_strings), effectiveness_string]
 		
 		if not player_level_ups.is_empty():
-			for level_up: BattleResolver.LevelUp in player_level_ups:
-				%YourAttack.text += "%s %s grew to level %s!\n" % \
-						[Goblins.emoji_from_type(level_up.item.type), level_up.item.name, level_up.item.level]
+			_append_level_up_announcements(%YourAttack, player_level_ups)
 		
 		if not enemy_attacks.is_empty():
 			if enemy_army_summary.goblins_by_type.get(enemy_type) != 0:
@@ -158,9 +158,7 @@ func _play_next() -> void:
 				%EnemyAttack.text += "%s. %s\n" % [", ".join(kill_strings), effectiveness_string]
 			
 		if not enemy_level_ups.is_empty():
-			for level_up: BattleResolver.LevelUp in enemy_level_ups:
-				%EnemyAttack.text += "%s %s grew to level %s.\n" % \
-						[Goblins.emoji_from_type(level_up.item.type), level_up.item.name, level_up.item.level]
+			_append_level_up_announcements(%EnemyAttack, enemy_level_ups)
 	
 	%YourAttack.text = %YourAttack.text.strip_edges()
 	%EnemyAttack.text = %EnemyAttack.text.strip_edges()
@@ -169,6 +167,34 @@ func _play_next() -> void:
 	_erase_invalid_orders(_enemy_orders, PlayerData.get_dungeon_army())
 	
 	refresh()
+
+
+func _append_level_up_announcements(text_area: RichTextLabel, level_ups: Array[BattleResolver.LevelUp]) -> void:
+	var announcement_count: int = 0
+	var other_goblin_count: int = 0
+	for level_up: BattleResolver.LevelUp in level_ups:
+		if announcement_count < 2:
+			if level_up.item.count == 1:
+				text_area.text += "%s %s grew to level %s!\n" % \
+						[Goblins.emoji_from_type(level_up.item.type), level_up.item.name, \
+						level_up.item.level]
+			elif level_up.item.count == 2:
+				text_area.text += "%s %s + 1 other grew to level %s!\n" % \
+						[Goblins.emoji_from_type(level_up.item.type), level_up.item.name, \
+						level_up.item.level]
+			else:
+				text_area.text += "%s %s + %s others grew to level %s!\n" % \
+						[Goblins.emoji_from_type(level_up.item.type), level_up.item.name, \
+						level_up.item.count - 1, level_up.item.level]
+			announcement_count += 1
+		else:
+			other_goblin_count += level_up.item.count
+	if other_goblin_count >= 1:
+		if other_goblin_count == 1:
+			text_area.text += "1 other goblin leveled up!\n"
+		else:
+			text_area.text += "%s other goblins leveled up!\n" % \
+					[other_goblin_count]
 
 
 func _erase_invalid_orders(orders: Array[Goblins.GoblinType], army: Army) -> void:
