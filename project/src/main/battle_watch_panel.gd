@@ -4,10 +4,6 @@ signal finished
 
 var _player_orders: Array[Goblins.GoblinType] = []
 var _enemy_orders: Array[Goblins.GoblinType] = []
-var _player_order_index: int = 0
-var _enemy_order_index: int = 0
-var current_wave: int = 0
-var wave_count: int = 0
 
 func _ready() -> void:
 	%NextButton.pressed.connect(_on_next_button_pressed)
@@ -17,10 +13,10 @@ func _ready() -> void:
 func play(new_player_orders: Array[Goblins.GoblinType], new_enemy_orders: Array[Goblins.GoblinType]) -> void:
 	_player_orders = new_player_orders
 	_enemy_orders = new_enemy_orders
-	_player_order_index = 0
-	_enemy_order_index = 0
-	current_wave = 0
-	wave_count = maxi(new_player_orders.size(), new_enemy_orders.size())
+	
+	_erase_invalid_orders(_player_orders, PlayerData.army)
+	_erase_invalid_orders(_enemy_orders, PlayerData.get_dungeon_army())
+	
 	_play_next()
 
 
@@ -35,7 +31,9 @@ func refresh() -> void:
 		%EnemyGoblins.text += Goblins.army_bbcode(PlayerData.get_dungeon_army())
 	
 	var next_button_text: String = "Next"
-	if PlayerData.army.is_empty() or PlayerData.get_dungeon_army().is_empty() or current_wave >= wave_count - 1:
+	if PlayerData.army.is_empty() \
+			or PlayerData.get_dungeon_army().is_empty() \
+			or (_player_orders.is_empty() and _enemy_orders.is_empty()):
 		next_button_text = "Done"
 	%NextButton.text = next_button_text
 
@@ -66,10 +64,22 @@ func get_kill_report(source_type: Goblins.GoblinType, kills: Array[BattleResolve
 	return result
 
 
+func _get_wave_count() -> int:
+	return maxi(_player_orders.size(), _enemy_orders.size())
+
+
 func _play_next() -> void:
 	%YourAttack.text = ""
 	%EnemyAttack.text = ""
-	%WaveLabel.text = "Wave %s of %s" % [current_wave + 1, wave_count]
+	
+	var player_order_emojis: Array[String] = []
+	for order: Goblins.GoblinType in _player_orders:
+		player_order_emojis.append(Goblins.emoji_from_type(order))
+	if player_order_emojis:
+		%WaveLabel.text = "Orders: %s" % ["→".join(player_order_emojis)]
+	else:
+		%WaveLabel.text = ""
+	
 	if PlayerData.has_current_dungeon():
 		var player_army: Army = PlayerData.army
 		var player_army_summary: Army.ArmySummary = player_army.get_summary()
@@ -79,22 +89,12 @@ func _play_next() -> void:
 		var enemy_type: Goblins.GoblinType
 		var player_attacks: Array[BattleResolver.Attack] = []
 		var enemy_attacks: Array[BattleResolver.Attack] = []
-		if _player_order_index < _player_orders.size():
-			player_type = _player_orders[_player_order_index]
-			while player_army_summary.goblins_by_type[player_type] == 0:
-				_player_order_index += 1
-				if _player_order_index >= _player_orders.size():
-					break
-				player_type = _player_orders[_player_order_index]
+		if not _player_orders.is_empty():
+			player_type = _player_orders.pop_front()
 			player_attacks = BattleResolver.plan_attacks( \
 					player_army, enemy_army, player_type, _enemy_orders)
-		if _enemy_order_index < _enemy_orders.size():
-			enemy_type = _enemy_orders[_enemy_order_index]
-			while enemy_army_summary.goblins_by_type[enemy_type] == 0:
-				_enemy_order_index += 1
-				if _enemy_order_index >= _enemy_orders.size():
-					break
-				enemy_type = _enemy_orders[_enemy_order_index]
+		if not _enemy_orders.is_empty():
+			enemy_type = _enemy_orders.pop_front()
 			enemy_attacks = BattleResolver.plan_attacks( \
 					enemy_army, player_army, enemy_type, _player_orders)
 		var player_kills: Array[BattleResolver.Kill] \
@@ -103,11 +103,6 @@ func _play_next() -> void:
 				= BattleResolver.resolve_attacks(enemy_army, player_army, enemy_attacks)
 		var player_level_ups: Array[BattleResolver.LevelUp] = BattleResolver.resolve_level_ups(player_army)
 		var enemy_level_ups: Array[BattleResolver.LevelUp] = BattleResolver.resolve_level_ups(enemy_army)
-		
-		if player_attacks.is_empty() and enemy_attacks.is_empty():
-			%YourAttack.text += "No goblins are left!"
-			%EnemyAttack.text += "No goblins are left!"
-			current_wave = wave_count - 1
 		
 		if not player_attacks.is_empty():
 			if player_army_summary.goblins_by_type.get(player_type) != 0:
@@ -170,14 +165,24 @@ func _play_next() -> void:
 	%YourAttack.text = %YourAttack.text.strip_edges()
 	%EnemyAttack.text = %EnemyAttack.text.strip_edges()
 	
+	_erase_invalid_orders(_player_orders, PlayerData.army)
+	_erase_invalid_orders(_enemy_orders, PlayerData.get_dungeon_army())
+	
 	refresh()
 
 
+func _erase_invalid_orders(orders: Array[Goblins.GoblinType], army: Army) -> void:
+	var summary: Army.ArmySummary = army.get_summary()
+	
+	for order_index: int in range(orders.size() - 1, -1, -1):
+		if summary.goblins_by_type[orders[order_index]] == 0:
+			orders.remove_at(order_index)
+
+
 func _on_next_button_pressed() -> void:
-	if PlayerData.army.is_empty() or PlayerData.get_dungeon_army().is_empty() or current_wave >= wave_count - 1:
+	if PlayerData.army.is_empty() \
+			or PlayerData.get_dungeon_army().is_empty() \
+			or (_player_orders.is_empty() and _enemy_orders.is_empty()):
 		finished.emit()
 	else:
-		current_wave += 1
-		_player_order_index += 1
-		_enemy_order_index += 1
 		_play_next()
