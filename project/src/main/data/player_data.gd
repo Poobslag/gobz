@@ -42,26 +42,7 @@ func initialize_starting_army() -> void:
 
 
 func add_dungeon(target_attack: int) -> void:
-	var min_count: int = 1
-	var max_count: int = 1
-	if target_attack > 500:
-		min_count = roundi(target_attack * 0.01)
-		max_count = roundi(target_attack * 0.03)
-	
-	var dungeon: Dungeon = Dungeon.new()
-	dungeon.army = Army.new()
-	dungeon.name = DungeonNames.random_name()
-	var mercy: int = 0
-	var total_attack: int = 0
-	while total_attack < target_attack and mercy < 1000:
-		var count: int = int(randf_range(min_count, max_count))
-		var new_recruit: Army.ArmyItem = dungeon.army.generate_random_recruit({
-			"count": count
-		})
-		dungeon.army.add_item(new_recruit)
-		total_attack = Utils.big_add(total_attack, Utils.big_mult(new_recruit.attack, new_recruit.count))
-		mercy += 1
-	dungeons.append(dungeon)
+	dungeons.append(DungeonGenerator.generate_random_dungeon(target_attack))
 
 
 func scale_army_units(factor: float) -> void:
