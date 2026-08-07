@@ -7,6 +7,43 @@ var dungeons: Array[Dungeon] = []
 var dungeon_index: int
 var home_base_multiplier: int = 1
 
+var tips: Array[String] = [
+	"🌳 goblins are strong against 💧, but struggle with 🔥.",
+	"💧 goblins are strong against 🔥, but struggle with 🌳.",
+	"🔥 goblins are strong against 🌳, but struggle with 💧.",
+	"😈 goblins are strong against everything, except for 🕊.",
+	"🕊 goblins are strong against 😈, but struggle against everything else.",
+	"If you have lots of 🌳 goblins, avoid dungeons with too much 🔥 or 😈.",
+	"If you have lots of 💧 goblins, try dungeons with lots of 🔥 or 🕊.",
+	"For dungeons with lots of 🔥 goblins, focus on recruiting 💧 and 😈.",
+	"For dungeons with lots of 😈 goblins, focus on recruiting 🕊.",
+	"If you have lots of 🕊 goblins, avoid dungeons with too much 🌳, 💧 or 🔥.",
+	
+	"Goblins you don't send to fight can't be killed! Bench your weaker units.",
+	"Send your vulnerable goblins in early, before the enemy kills them!",
+	"Send your strongest forces in early, to deal the enemy a brutal blow!",
+	"Retreat is better than defeat! You still earn 💰 from the units you killed.",
+	"Dungeon information is based on the goblins spotted nearby, but it's not perfect.",
+	"Sometimes, enemy dungeons are a little stronger or weaker than you were told.",
+	"Sometimes, enemy dungeons have extra types you weren't told about.",
+	"A type hint like \"🌳🌳🔥\" means there are a lot of 🌳, and a few 🔥.",
+	"A type hint like \"🔥💧🌳\" means there are several 🔥, some 💧, and a few 🌳.",
+	"Recruit your goblins carefully! Some goblins ask for too much money.",
+	"Recruit your goblins carefully! Some types are more useful than others.",
+]
+
+var _tip_index: int = 0
+
+func _ready() -> void:
+	tips.shuffle()
+
+
+func get_next_tip() -> String:
+	var result: String = tips[_tip_index]
+	_tip_index = (_tip_index + 1) % tips.size()
+	return result
+
+
 func reset() -> void:
 	army.reset()
 

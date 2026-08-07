@@ -6,6 +6,7 @@ func _ready() -> void:
 	_cycle_dungeons()
 	
 	refresh()
+	%TipLabel.text = "Tip: %s" % [PlayerData.get_next_tip()]
 
 
 func _cycle_dungeons() -> void:
