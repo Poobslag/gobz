@@ -3,27 +3,8 @@ extends Control
 const DUNGEON_ROW_SCENE: PackedScene = preload("res://src/main/dungeon_select_row.tscn")
 
 func _ready() -> void:
-	_cycle_dungeons()
-	
 	refresh()
 	%TipLabel.text = "Tip: %s" % [PlayerData.get_next_tip()]
-
-
-func _cycle_dungeons() -> void:
-	for dungeon: Dungeon in PlayerData.dungeons:
-		if dungeon.is_empty():
-			PlayerData.dungeons.erase(dungeon)
-			@warning_ignore("narrowing_conversion")
-			PlayerData.add_dungeon(clampi(PlayerData.army.get_total_attack() * randf_range(0.4, 1.4),
-					1, 999_999_999_999_999_999))
-	
-	if not PlayerData.dungeons.is_empty():
-		PlayerData.dungeons.remove_at(0)
-	
-	while PlayerData.dungeons.size() < 5:
-		@warning_ignore("narrowing_conversion")
-		PlayerData.add_dungeon(clampi(PlayerData.army.get_total_attack() * randf_range(0.4, 1.4),
-				1, 999_999_999_999_999_999))
 
 
 func refresh() -> void:
@@ -38,43 +19,13 @@ func refresh() -> void:
 
 
 func _add_dungeon_row(dungeon: Dungeon) -> void:
-	var vague_army: Army = dungeon.get_vague_army()
+	var dungeon_select_info: Dictionary[String, String] = Dungeons.get_dungeon_select_info(dungeon)
+	
 	var dungeon_row: DungeonSelectRow = DUNGEON_ROW_SCENE.instantiate()
-	dungeon_row.button_text = "+💰%s" % [Utils.abbr_num(vague_army.get_total_gold())]
+	dungeon_row.button_text = dungeon_select_info["reward_text"]
 	
-	var attack_by_type: Dictionary[Goblins.GoblinType, int]
-	for type: Goblins.GoblinType in Goblins.GoblinType.values():
-		attack_by_type[type] = 0
-	for item: Army.ArmyItem in vague_army.items:
-		attack_by_type[item.type] += item.attack * item.count
-	var type_summaries: Array[Dictionary] = []
-	for type: Goblins.GoblinType in Goblins.GoblinType.values():
-		type_summaries.append({
-			"emoji": Goblins.emoji_from_type(type),
-			"attack": attack_by_type[type],
-		} as Dictionary[String, Variant])
-	type_summaries.sort_custom(func(a: Dictionary[String, Variant], b: Dictionary[String, Variant]) -> bool:
-		return a["attack"] > b["attack"]
-		)
-	
-	var emoji_string: String = ""
-	if type_summaries.size() == 0:
-		emoji_string = "-"
-	if type_summaries.size() >= 1:
-		emoji_string = type_summaries[0]["emoji"]
-	if type_summaries.size() >= 2:
-		if type_summaries[1]["attack"] > type_summaries[0]["attack"] * 0.2:
-			emoji_string += type_summaries[1]["emoji"]
-		else:
-			emoji_string = type_summaries[0]["emoji"] + emoji_string
-	if type_summaries.size() >= 3:
-		if type_summaries[2]["attack"] > type_summaries[0]["attack"] * 0.2:
-			emoji_string +=  type_summaries[2]["emoji"]
-		else:
-			emoji_string = type_summaries[0]["emoji"] + emoji_string
-	
-	dungeon_row.desc = "%s %s, %s⚔" % [
-		emoji_string, dungeon.name, Utils.abbr_num(vague_army.get_total_attack())
+	dungeon_row.desc = "%s %s, %s" % [
+		dungeon_select_info["emoji_string"], dungeon_select_info["name"], dungeon_select_info["attack_string"]
 	]
 	dungeon_row.pressed.connect(func() -> void:
 		PlayerData.dungeon_index = PlayerData.dungeons.find(dungeon)

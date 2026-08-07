@@ -3,20 +3,20 @@ class_name Dungeon
 var name: String
 var army: Army
 
-func get_vague_army() -> Army:
-	var vague_army: Army = Army.new()
-	var vague_count: int = mini(ceili(army.items.size() / 2.0), 15)
-	var vague_scalar: float = army.items.size() / float(vague_count)
-	for i in vague_count:
+var recon_army: Army
+
+func perform_recon() -> void:
+	recon_army = Army.new()
+	var recon_count: int = mini(ceili(army.items.size() / 2.0), 15)
+	var recon_scalar: float = army.items.size() / float(recon_count)
+	for i in recon_count:
 		var item: Army.ArmyItem = army.items[i]
-		var vague_item: Army.ArmyItem = item.duplicate()
-		var scalar: int = int(vague_scalar)
-		if randf() < (vague_scalar - int(vague_scalar)):
+		var recon_item: Army.ArmyItem = item.duplicate()
+		var scalar: int = int(recon_scalar)
+		if randf() < (recon_scalar - int(recon_scalar)):
 			scalar += 1
-		vague_item.count = Utils.big_mult(vague_item.count, scalar)
-		vague_army.add_item(vague_item)
-	
-	return vague_army
+		recon_item.count = Utils.big_mult(recon_item.count, scalar)
+		recon_army.add_item(recon_item)
 
 
 func is_empty() -> bool:
