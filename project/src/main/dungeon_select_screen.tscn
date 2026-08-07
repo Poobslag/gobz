@@ -56,4 +56,14 @@ layout_mode = 2
 desc = "💧🔥🌳 The Fire Point, 36⚔"
 button_text = "+💰50"
 
+[node name="TipLabel" type="RichTextLabel" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=59109215]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.5019608)
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 2
+bbcode_enabled = true
+text = "Tip: 💧 goblins are good against 🌳, but struggle with 🔥."
+horizontal_alignment = 1
+vertical_alignment = 2
+
 [editable path="ScreenPanel"]
