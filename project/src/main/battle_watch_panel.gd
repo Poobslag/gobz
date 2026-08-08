@@ -12,6 +12,17 @@ func _ready() -> void:
 
 
 func play(new_player_orders: Array[Goblins.GoblinType], new_enemy_orders: Array[Goblins.GoblinType]) -> void:
+	if Global.verbose_stdout_mode and PlayerData.has_current_dungeon():
+		print('----------')
+		var datetime: Dictionary = Time.get_datetime_dict_from_system(true)
+		var datetime_str: String = "%04d-%02d-%02d %02d:%02d:%02d" % [
+				datetime["year"], datetime["month"], datetime["day"],
+				datetime["hour"], datetime["minute"], datetime["second"]]
+		print('%s - Start battle, %s vs %s' % [
+				datetime_str,
+				PlayerData.army.get_total_goblins(),
+				PlayerData.get_dungeon_army().get_total_goblins()])
+	
 	_initial_player_orders = new_player_orders.duplicate()
 	_player_orders = new_player_orders
 	_enemy_orders = new_enemy_orders
@@ -81,6 +92,13 @@ func _play_next() -> void:
 		%WaveLabel.text = "Orders: %s" % ["→".join(player_order_emojis)]
 	else:
 		%WaveLabel.text = ""
+	
+	if PlayerData.has_current_dungeon() and Global.verbose_stdout_mode:
+		print('')
+		print('player_orders = %s' % [_verbose_order_string(_player_orders)])
+		print('player_army.from_glob(%s)' % [_verbose_army_string(PlayerData.army)])
+		print('enemy_orders = %s' % [_verbose_order_string(_enemy_orders)])
+		print('enemy_army.from_glob(%s)' % [_verbose_army_string(PlayerData.get_dungeon_army())])
 	
 	if PlayerData.has_current_dungeon():
 		var player_army: Army = PlayerData.army
@@ -212,3 +230,18 @@ func _on_next_button_pressed() -> void:
 		finished.emit()
 	else:
 		_play_next()
+
+
+static func _verbose_army_string(army: Army) -> String:
+	var glob: String = army.to_glob()
+	var glob_split: Array[String] = []
+	for i in range(0, glob.length(), 80):
+		glob_split.append(glob.substr(i, 80))
+	return '"%s"' % ['"\n\t\t+ "'.join(glob_split)]
+
+
+static func _verbose_order_string(orders: Array[Goblins.GoblinType]) -> String:
+	var order_strings: Array[String] = []
+	for order: Goblins.GoblinType in orders:
+		order_strings.append("Goblins.%s" % [Utils.enum_to_snake_case(Goblins.GoblinType, order).to_upper()])
+	return "[%s]" % [", ".join(order_strings)]

@@ -4,7 +4,7 @@ echo Launching Gobz in troubleshoot mode...
 set LOG_FILE=%AppData%\Godot\app_userdata\Gobz\logs\godot.log
 
 :: Run the game, suppressing all output
-##WIN_EXE_FILENAME## --verbose -- > nul 2>&1
+##WIN_EXE_FILENAME## --verbose -- --gobz-verbose > nul 2>&1
 set exitCode=%ERRORLEVEL%
 
 :: Check if the log directory exists
