@@ -6,6 +6,7 @@ var gold: int
 
 func reset() -> void:
 	items.clear()
+	gold = 0
 
 
 func duplicate() -> Army:
@@ -140,14 +141,53 @@ func get_summary() -> ArmySummary:
 	return result
 
 
+func from_json_dict(json: Dictionary[String, Variant]) -> void:
+	gold = json.get("gold", 0)
+	items.clear()
+	for item_json: Dictionary in json.get("items", []):
+		var typed_item_json: Dictionary[String, Variant] = {}
+		typed_item_json.assign(item_json)
+		var item: ArmyItem = ArmyItem.new()
+		item.from_json_dict(typed_item_json)
+		items.append(item)
+
+
+func to_json_dict() -> Dictionary[String, Variant]:
+	var result: Dictionary[String, Variant] = {
+	}
+	result["items"] = []
+	for item: ArmyItem in items:
+		result["items"].append(item.to_json_dict())
+	result["gold"] = gold
+	return result
+
+
+func to_glob() -> String:
+	var json_str: String = JSON.stringify(to_json_dict())
+	var json_bytes: PackedByteArray = json_str.to_utf8_buffer()
+	var compressed_bytes: PackedByteArray = json_bytes.compress(FileAccess.COMPRESSION_GZIP)
+	return Marshalls.raw_to_base64(compressed_bytes)
+
+
+func from_glob(glob: String) -> void:
+	var compressed_bytes: PackedByteArray = Marshalls.base64_to_raw(glob)
+	var json_bytes: PackedByteArray = compressed_bytes.decompress_dynamic(-1, FileAccess.COMPRESSION_GZIP)
+	var json_str: String = json_bytes.get_string_from_utf8()
+	var test_json_conv := JSON.new()
+	var result: int = test_json_conv.parse(json_str)
+	if result != OK:
+		push_error("Error in glob: (%s) %s" % [test_json_conv.get_error_line(), test_json_conv.data])
+	if test_json_conv.data is Dictionary:
+		var json: Dictionary[String, Variant] = {}
+		json.assign(test_json_conv.data)
+		from_json_dict(json)
+
+
 class ArmyItem:
 	var name: String = ""
 	
 	## Total goblins
 	var count: int = 1
-	
-	## Gold for each goblin
-	var gold: int = 0
 	
 	## Average goblin level
 	var level: int = 1
@@ -161,11 +201,14 @@ class ArmyItem:
 	## Hp missing from one goblin, if a goblin is wounded
 	var hp: int = 4
 	
-	## Sum of all experience points toward the next level
-	var experience: int = 0
-	
 	## Attack for each goblin
 	var attack: int = 2
+	
+	## Gold for each goblin
+	var gold: int = 0
+	
+	## Sum of all experience points toward the next level
+	var experience: int = 0
 	
 	func duplicate() -> ArmyItem:
 		var copy: ArmyItem = ArmyItem.new()
@@ -214,6 +257,34 @@ class ArmyItem:
 	## Experience points for killing each goblin
 	func get_kill_exp() -> int:
 		return level + 1
+	
+	
+	func from_json_dict(json: Dictionary[String, Variant]) -> void:
+		name = json.get("name", "")
+		count = json.get("count", 1)
+		level = json.get("level", 1)
+		type = Goblins.GoblinType.get(json.get("type", "fire").to_upper())
+		
+		var hp_split: PackedStringArray = json.get("hp", "4/4").split("/")
+		hp = int(hp_split[0])
+		hp_max = int(hp_split[1])
+		
+		attack = json.get("attack", 2)
+		gold = json.get("gold", 0)
+		experience = json.get("exp", 0)
+	
+	
+	func to_json_dict() -> Dictionary[String, Variant]:
+		return {
+			"name": name,
+			"count": count,
+			"level": level,
+			"type": Utils.enum_to_snake_case(Goblins.GoblinType, type),
+			"hp": "%s/%s" % [hp, hp_max],
+			"attack": attack,
+			"gold": gold,
+			"exp": experience,
+		}
 
 
 class ArmySummary:

@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+Global="*uid://b665exkm50ujh"
 PlayerData="*uid://e7a2mbx7jndi"
 
 [debug]

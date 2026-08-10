@@ -209,6 +209,8 @@ RESULT=
 RESULT=${RESULT}"Ê"$(grep "emulate_touch_from_mouse=true" project/project.godot)
 RESULT=${RESULT}"Ê"$(grep "^window/size/test_width=" project/project.godot)
 RESULT=${RESULT}"Ê"$(grep "^window/size/test_height=" project/project.godot)
+RESULT=${RESULT}"Ê"$(grep "^verbose_stdout_mode = true" project/src/main/utils/global.tscn)
+
 RESULT=$(echo "${RESULT}" |
   sed 's/ÊÊÊ*/Ê/g' | # remove consecutive newline placeholders
   sed 's/^Ê\(.*\)$/\1/g' | # remove trailing newline placeholders
@@ -223,6 +225,7 @@ if [ -n "$RESULT" ]; then
     sed -i "/emulate_touch_from_mouse=true/d" project/project.godot
     sed -i "/^window\/size\/test_width=/d" project/project.godot
     sed -i "/^window\/size\/test_height=/d" project/project.godot
+    sed -i "/^verbose_stdout_mode = /d" project/src/main/utils/global.tscn
     echo "...Temporary settings reverted."
   fi
 fi
@@ -244,6 +247,7 @@ fi
 # redundant 'range(0, x)' call
 RESULT=$(grep -R -nP '[^_a-z]range\(0,\s*[^,)]*\)' --include="*.gd" project/src \
   | grep -v "dungeon\.gd:.*, 2):" \
+  | grep -v "battle_watch_panel\.gd:.*, 80):" \
   )
 if [ -n "$RESULT" ]; then
   echo ""
@@ -262,7 +266,7 @@ fi
 # arrays missing type hint
 RESULT=$(grep -R -n "\(^[^#]*Array[^\[]\|:= \[\]\)" --include="*.gd" project/src \
   | grep -v "\(Array\]\|\[Array\)" \
-  | grep -v "PackedFloat32Array\|PackedVector2Array\|PackedStringArray\|PackedInt32Array" \
+  | grep -v "PackedByteArray\|PackedFloat32Array\|PackedVector2Array\|PackedStringArray\|PackedInt32Array" \
   )
 if [ -n "$RESULT" ]; then
   echo ""

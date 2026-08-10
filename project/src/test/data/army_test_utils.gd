@@ -7,7 +7,7 @@ static func army_item(s: String) -> Army.ArmyItem:
 	var level: int = int(s_split[1])
 	
 	var item: Army.ArmyItem = Army.ArmyItem.new()
-	item.name = GoblinNames.random_name()
+	item.name = "%s%s" % [Utils.enum_to_snake_case(Goblins.GoblinType, item.type, "none"), level]
 	item.type = type
 	var type_cost: int = 5
 	if item.type == Goblins.DEVIL:
@@ -15,8 +15,8 @@ static func army_item(s: String) -> Army.ArmyItem:
 	item.gold += type_cost
 	item.level = level
 	var strength_factor: int = 4 if item.type == Goblins.DEVIL else 2
-	item.hp_max += strength_factor * (item.level - 1)
-	item.attack += strength_factor * (item.level - 1)
+	item.hp_max += strength_factor * (item.level + 1)
+	item.attack += strength_factor * (item.level + 1)
 	item.hp = item.hp_max
-	item.gold += 5 * strength_factor * (item.level - 1)
+	item.gold += 5 * strength_factor * (item.level + 1)
 	return item
