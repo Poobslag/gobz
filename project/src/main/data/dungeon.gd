@@ -15,7 +15,7 @@ func perform_recon() -> void:
 		var scalar: int = int(recon_scalar)
 		if randf() < (recon_scalar - int(recon_scalar)):
 			scalar += 1
-		recon_item.count = Utils.big_mult(recon_item.count, scalar)
+		recon_item.count = Big.mul(recon_item.count, scalar)
 		recon_army.add_item(recon_item)
 
 

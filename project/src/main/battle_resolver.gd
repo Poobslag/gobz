@@ -33,24 +33,24 @@ static func plan_attacks(
 		virtual_targets[target] = target.duplicate()
 	
 	for source: Army.ArmyItem in from_sorted:
-		var best_score: int = 0
-		var best_damage: int = 0
+		var best_score: Big = Big.ZERO
+		var best_damage: Big = Big.ZERO
 		var best_target: Army.ArmyItem
 		var best_damage_result: Dictionary[String, Variant] = {}
 		if source.type != type:
 			continue
 		for target: Army.ArmyItem in targets:
 			var virtual: Army.ArmyItem = virtual_targets[target]
-			if virtual.count <= 0:
+			if virtual.count.is_lte(0):
 				continue # already claimed by an earlier attacker
-			var damage: int = base_damage(source, target)
-			var hp_loss: int = _effective_hp(virtual) - _effective_hp(virtual, damage)
+			var damage: Big = base_damage(source, target)
+			var hp_loss: Big = Big.sub(_effective_hp(virtual), _effective_hp(virtual, damage))
 			var damage_result: Dictionary[String, Variant] = apply_damage(virtual, damage)
-			var damage_prevention: int = damage_result["kill_count"] * virtual.attack
-			var score: int = hp_loss + damage_prevention
+			var damage_prevention: Big = Big.mul(damage_result["kill_count"], virtual.attack)
+			var score: Big = Big.add(hp_loss, damage_prevention)
 			
-			if score > best_score:
-				best_score = hp_loss + damage_prevention
+			if score.is_gt(best_score):
+				best_score = Big.add(hp_loss, damage_prevention)
 				best_damage = damage
 				best_target = target
 				best_damage_result = damage_result
@@ -69,7 +69,7 @@ static func plan_attacks(
 		attack.source = source
 		attack.target = best_target
 		attack.damage = best_damage
-		attack.damage = floori(attack.damage * randf_range(1.0, 1.1))
+		attack.damage = Big.floor(Big.mul(attack.damage, randf_range(1.0, 1.1)))
 		attacks.append(attack)
 		
 		virtual_targets[attack.target].hp = best_damage_result["new_hp"]
@@ -78,20 +78,20 @@ static func plan_attacks(
 	return attacks
 
 
-static func apply_damage(target: Army.ArmyItem, damage: int) -> Dictionary[String, Variant]:
-	var effective_hp: int = _effective_hp(target, damage)
-	var new_hp: int = (effective_hp - 1) % target.hp_max + 1
-	var new_count: int = ceili(effective_hp / float(target.hp_max))
+static func apply_damage(target: Army.ArmyItem, damage: Big) -> Dictionary[String, Variant]:
+	var effective_hp: Big = _effective_hp(target, damage)
+	var new_hp: int = Big.mod(Big.sub(effective_hp, 1), target.hp_max + 1).to_int()
+	var new_count: Big = Big.ceil(Big.div(effective_hp, target.hp_max))
 	return {
-		"kill_count": target.count - new_count,
-		"wounded_count": 1 if new_count > 0 and new_hp != target.hp else 0,
+		"kill_count": Big.sub(target.count, new_count),
+		"wounded_count": Big.ONE if new_count.is_gt(0) and new_hp != target.hp else Big.ZERO,
 		"new_hp": new_hp,
 		"new_count": new_count,
 	}
 
 
-static func base_damage(from: Army.ArmyItem, to: Army.ArmyItem) -> int:
-	return maxi(1, roundi(from.attack * from.count * effectiveness(from.type, to.type)))
+static func base_damage(from: Army.ArmyItem, to: Army.ArmyItem) -> Big:
+	return Big.max(1, Big.round(Big.mul(Big.mul(from.count, from.attack), effectiveness(from.type, to.type))))
 
 
 static func effectiveness(from: Goblins.GoblinType, to: Goblins.GoblinType) -> float:
@@ -104,11 +104,12 @@ static func resolve_attacks(from: Army, to: Army, attacks: Array[Attack]) -> Arr
 		var damage_result: Dictionary[String, Variant] = apply_damage(attack.target, attack.damage)
 		attack.target.hp = damage_result["new_hp"]
 		attack.target.count = damage_result["new_count"]
-		var kill_count: int = damage_result["kill_count"]
-		var wounded_count: int = damage_result["wounded_count"]
-		from.gold += kill_count * attack.target.gold
-		attack.source.experience += kill_count * attack.target.get_kill_exp()
-		if attack.target.count <= 0:
+		var kill_count: Big = damage_result["kill_count"]
+		var wounded_count: Big = damage_result["wounded_count"]
+		from.gold = Big.add(from.gold, Big.mul(kill_count, attack.target.gold))
+		attack.source.experience = Big.add(attack.source.experience, \
+				Big.mul(kill_count, attack.target.get_kill_exp()))
+		if attack.target.count.is_lte(0):
 			to.remove_item(attack.target)
 		
 		var kill: Kill = Kill.new()
@@ -136,21 +137,25 @@ static func resolve_level_ups(army: Army) -> Array[LevelUp]:
 	return level_ups
 
 
-static func _effective_hp(item: Army.ArmyItem, damage: int = 0) -> int:
-	return maxi(0, item.hp_max * (item.count - 1) + item.hp - damage)
+static func _effective_hp(item: Army.ArmyItem, damage: Big = Big.ZERO) -> Big:
+	var a: Big = Big.sub(item.count, 1)
+	a = Big.mul(a, item.hp_max)
+	a = Big.add(a, item.hp)
+	a = Big.sub(a, damage)
+	return Big.max(a, 0)
 
 
 class Attack:
 	var source: Army.ArmyItem
 	var target: Army.ArmyItem
-	var damage: int
+	var damage: Big
 
 
 class Kill:
 	var source: Army.ArmyItem
 	var target: Army.ArmyItem
-	var kill_count: int
-	var wounded_count: int
+	var kill_count: Big
+	var wounded_count: Big
 
 
 class LevelUp:

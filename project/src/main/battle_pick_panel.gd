@@ -41,7 +41,7 @@ func refresh() -> void:
 	var player_army_summary: Army.ArmySummary = PlayerData.army.get_summary()
 	for type: Goblins.GoblinType in Goblins.GoblinType.values():
 		var button: Button = button_by_type[type]
-		button.disabled = (player_army_summary.goblins_by_type[type] == 0 or orders.has(type))
+		button.disabled = player_army_summary.goblins_by_type[type].is_eq(0) or orders.has(type)
 		if not button.disabled:
 			all_orders_given = false
 	%Undo.disabled = orders.is_empty()

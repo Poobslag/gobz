@@ -38,12 +38,12 @@ static func army_bbcode(army: Army) -> String:
 	var summary: Army.ArmySummary = army.get_summary()
 	var result: String = ""
 	result += "[b]%s goblins, 🗡️%s[/b]\n" % \
-			[Utils.abbr_num(summary.total_goblins), Utils.abbr_num(summary.total_attack)]
+			[summary.total_goblins.to_aa(), summary.total_attack.to_aa()]
 	for goblin_type: GoblinType in GoblinType.values():
-		if summary.goblins_by_type[goblin_type] >= 1:
+		if summary.goblins_by_type[goblin_type].is_gte(1):
 			result += "%s: %s goblins, 🗡️%s\n" % [
 					EMOJIS_BY_GOBLIN_TYPE[goblin_type],
-					Utils.abbr_num(summary.goblins_by_type[goblin_type]),
-					Utils.abbr_num(summary.attack_by_type[goblin_type])]
+					summary.goblins_by_type[goblin_type].to_aa(),
+					summary.attack_by_type[goblin_type].to_aa()]
 	
 	return result.strip_edges()

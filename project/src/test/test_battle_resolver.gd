@@ -98,8 +98,8 @@ func test_resolve_attacks() -> void:
 	BattleResolver.resolve_attacks(player_army, enemy_army, attacks)
 	
 	assert_eq(enemy_army.items.size(), 2)
-	assert_eq(attacks[0].source.experience, 4)
-	assert_eq(attacks[0].target.count, 0)
+	assert_eq(attacks[0].source.experience.to_int(), 4)
+	assert_eq(attacks[0].target.count.to_int(), 0)
 
 
 func test_resolve_attacks_kill_wounded_guy() -> void:
@@ -111,20 +111,19 @@ func test_resolve_attacks_kill_wounded_guy() -> void:
 		attack(player_army, enemy_army, 0, 0),
 	]
 	enemy_army.items[0].hp = 1
-	attacks[0].damage = 3
+	attacks[0].damage = Big.new(3)
 	BattleResolver.resolve_attacks(player_army, enemy_army, attacks)
 	
 	assert_eq(enemy_army.items.size(), 0)
-	assert_eq(attacks[0].source.experience, 4)
-	assert_eq(attacks[0].target.count, 0)
+	assert_eq(attacks[0].source.experience.to_int(), 4)
+	assert_eq(attacks[0].target.count.to_int(), 0)
 
 
 func test_resolve_level_ups() -> void:
-	var player_army: Army = Army.new()
 	player_army.add_item(army_item("🔥 3"))
-	player_army.items[0].experience = 11
+	player_army.items[0].experience = Big.new(11)
 	
 	BattleResolver.resolve_level_ups(player_army)
 	
 	assert_eq(player_army.items[0].level, 4)
-	assert_eq(player_army.items[0].experience, 3)
+	assert_eq(player_army.items[0].experience.to_int(), 3)

@@ -2,10 +2,10 @@ extends Node
 ## Stores the player's army.
 
 var army: Army = Army.new()
-var gold: int = 0
+var gold: Big = Big.ZERO
 var dungeons: Array[Dungeon] = []
 var dungeon_index: int
-var home_base_multiplier: int = 1
+var home_base_multiplier: Big = Big.ONE
 
 var tips: Array[String] = [
 	"🌳 goblins are strong against 💧, but struggle with 🔥.",
@@ -43,16 +43,14 @@ func cycle_dungeons() -> void:
 		if dungeon.is_empty():
 			PlayerData.dungeons.erase(dungeon)
 			@warning_ignore("narrowing_conversion")
-			PlayerData.add_dungeon(clampi(PlayerData.army.get_total_attack() * randf_range(0.4, 1.4),
-					1, 999_999_999_999_999_999))
+			PlayerData.add_dungeon(Big.mul(PlayerData.army.get_total_attack(), randf_range(0.4, 1.4)))
 	
 	if not PlayerData.dungeons.is_empty():
 		PlayerData.dungeons.remove_at(0)
 	
 	while PlayerData.dungeons.size() < 5:
 		@warning_ignore("narrowing_conversion")
-		PlayerData.add_dungeon(clampi(PlayerData.army.get_total_attack() * randf_range(0.4, 1.4),
-				1, 999_999_999_999_999_999))
+		PlayerData.add_dungeon(Big.mul(PlayerData.army.get_total_attack(), randf_range(0.4, 1.4)))
 
 
 func get_next_tip() -> String:
@@ -78,8 +76,8 @@ func get_dungeon_army() -> Army:
 
 
 func initialize_starting_army() -> void:
-	var goblin_count: int = PlayerData.army.get_summary().total_goblins
-	while goblin_count < 3:
+	var goblin_count: Big = PlayerData.army.get_summary().total_goblins
+	while goblin_count.is_lt(3):
 		var item: Army.ArmyItem = Army.ArmyItem.new()
 		
 		item.name = GoblinNames.random_name()
@@ -92,21 +90,21 @@ func initialize_starting_army() -> void:
 				item.level_up()
 		
 		army.add_item(item)
-		goblin_count += 1
+		goblin_count = Big.add(goblin_count, 1)
 	
-	gold = maxi(gold, 25)
+	gold = Big.max(gold, 25)
 
 
-func add_dungeon(target_attack: int) -> void:
+func add_dungeon(target_attack: Big) -> void:
 	dungeons.append(DungeonGenerator.generate_random_dungeon(target_attack))
 
 
 func scale_army_units(factor: float) -> void:
 	for item: Army.ArmyItem in PlayerData.army.items:
-		item.count = min(item.count * float(factor), 999_999_999_999_999_999)
-		item.experience = min(item.experience * float(factor), 999_999_999_999_999_999)
+		item.count = Big.mul(item.count, factor)
+		item.experience = Big.mul(item.experience, factor)
 	for dungeon: Dungeon in PlayerData.dungeons:
 		for item: Army.ArmyItem in dungeon.army.items:
-			item.count = min(item.count * float(factor), 999_999_999_999_999_999)
-			item.experience = min(item.experience * float(factor), 999_999_999_999_999_999)
-	gold = min(gold * float(factor), 999_999_999_999_999_999)
+			item.count = Big.mul(item.count, factor)
+			item.experience = Big.mul(item.experience, factor)
+	gold = Big.mul(gold, factor)
