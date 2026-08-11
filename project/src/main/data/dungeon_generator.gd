@@ -95,34 +95,34 @@ static func _generate_random_composition(allow_advanced_types: bool = true) -> D
 	return archetype.roll_composition(allow_advanced_types)
 
 
-static func _generate_dungeon_for_archetype(target_attack: int, composition: Dictionary[String, Variant]) -> Dungeon:
-	var min_count: int = 1
-	var max_count: int = 1
-	if target_attack > 500:
-		min_count = roundi(target_attack * 0.01)
-		max_count = roundi(target_attack * 0.03)
+static func _generate_dungeon_for_archetype(target_attack: Big, composition: Dictionary[String, Variant]) -> Dungeon:
+	var min_count: Big = Big.ONE
+	var max_count: Big = Big.ONE
+	if target_attack.is_gte(500):
+		min_count = Big.round(Big.mul(target_attack, 0.01))
+		max_count = Big.round(Big.mul(target_attack, 0.03))
 	
 	var dungeon: Dungeon = Dungeon.new()
 	dungeon.army = Army.new()
 	dungeon.name = DungeonNames.random_name()
 	var mercy: int = 0
-	var total_attack: int = 0
-	while total_attack < target_attack and mercy < 1000:
-		var count: int = int(_rng.randf_range(min_count, max_count))
+	var total_attack: Big = Big.ZERO
+	while total_attack.is_lt(target_attack) and mercy < 1000:
+		var count: Big = Big.new(_rng.randf_range(min_count.to_float(), max_count.to_float()))
 		var type: Goblins.GoblinType = composition["types"][_rng.rand_weighted(composition["weights"])]
 		var new_recruit: Army.ArmyItem = dungeon.army.generate_random_recruit({
 			"count": count,
 			"type": type,
 		})
 		dungeon.army.add_item(new_recruit)
-		total_attack = Utils.big_add(total_attack, Utils.big_mult(new_recruit.attack, new_recruit.count))
+		total_attack = Big.add(total_attack, Big.mul(new_recruit.attack, new_recruit.count))
 		mercy += 1
 	
 	return dungeon
 
 
-static func generate_random_dungeon(target_attack: int) -> Dungeon:
-	var allow_advanced_types: bool = (target_attack > 200)
+static func generate_random_dungeon(target_attack: Big) -> Dungeon:
+	var allow_advanced_types: bool = target_attack.is_gte(200)
 	var composition: Dictionary[String, Variant] = _generate_random_composition(allow_advanced_types)
 	return _generate_dungeon_for_archetype(target_attack, composition)
 

@@ -20,8 +20,8 @@ func play(new_player_orders: Array[Goblins.GoblinType], new_enemy_orders: Array[
 				datetime["hour"], datetime["minute"], datetime["second"]]
 		print('%s - Start battle, %s vs %s' % [
 				datetime_str,
-				PlayerData.army.get_total_goblins(),
-				PlayerData.get_dungeon_army().get_total_goblins()])
+				PlayerData.army.get_total_goblins().to_aa(),
+				PlayerData.get_dungeon_army().get_total_goblins().to_aa()])
 	
 	_initial_player_orders = new_player_orders.duplicate()
 	_player_orders = new_player_orders
@@ -52,16 +52,16 @@ func refresh() -> void:
 
 
 func get_kill_report(source_type: Goblins.GoblinType, kills: Array[BattleResolver.Kill]) -> Array[Dictionary]:
-	var kills_by_type: Dictionary[Goblins.GoblinType, int] = {}
+	var kills_by_type: Dictionary[Goblins.GoblinType, Big] = {}
 	var wounded_set: Dictionary[Army.ArmyItem, bool] = {}
-	var wounded_by_type: Dictionary[Goblins.GoblinType, int] = {}
+	var wounded_by_type: Dictionary[Goblins.GoblinType, Big] = {}
 	for kill: BattleResolver.Kill in kills:
 		if not kills_by_type.has(kill.target.type):
-			kills_by_type[kill.target.type] = 0
-			wounded_by_type[kill.target.type] = 0
-		kills_by_type[kill.target.type] += kill.kill_count
+			kills_by_type[kill.target.type] = Big.ZERO
+			wounded_by_type[kill.target.type] = Big.ZERO
+		kills_by_type[kill.target.type] = Big.add(kills_by_type[kill.target.type], kill.kill_count)
 		if not wounded_set.has(kill.target):
-			wounded_by_type[kill.target.type] += kill.wounded_count
+			wounded_by_type[kill.target.type] = Big.add(wounded_by_type[kill.target.type], kill.wounded_count)
 			wounded_set[kill.target] = true
 	
 	var result: Array[Dictionary] = []
@@ -73,7 +73,7 @@ func get_kill_report(source_type: Goblins.GoblinType, kills: Array[BattleResolve
 			"effectiveness": BattleResolver.effectiveness(source_type, type),
 		})
 	result.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
-		return a["kill_count"] > b["kill_count"])
+		return a["kill_count"].is_gt(b["kill_count"]))
 	return result
 
 
@@ -125,21 +125,21 @@ func _play_next() -> void:
 		var enemy_level_ups: Array[BattleResolver.LevelUp] = BattleResolver.resolve_level_ups(enemy_army)
 		
 		if not player_attacks.is_empty():
-			if player_army_summary.goblins_by_type.get(player_type) != 0:
+			if player_army_summary.goblins_by_type.get(player_type).is_gt(0):
 				%YourAttack.text += "%s Your %s goblins attack:\n" % \
 						[Goblins.emoji_from_type(player_type),
-							Utils.abbr_num(player_army_summary.goblins_by_type.get(player_type))]
+							player_army_summary.goblins_by_type.get(player_type).to_aa()]
 			
 			var kill_report: Array[Dictionary] = get_kill_report(player_type, player_kills)
 			for kill_report_item: Dictionary in kill_report:
 				var kill_strings: Array[String] = []
-				if kill_report_item["kill_count"] > 0:
+				if kill_report_item["kill_count"].is_gt(0):
 					kill_strings.append("%s×%s killed" %
-							[Utils.abbr_num(kill_report_item["kill_count"]),
+							[kill_report_item["kill_count"].to_aa(),
 									Goblins.emoji_from_type(kill_report_item["type"])])
-				if kill_report_item["wounded_count"] > 0:
+				if kill_report_item["wounded_count"].is_gt(0):
 					kill_strings.append("%s×%s wounded" %
-							[Utils.abbr_num(kill_report_item["wounded_count"]),
+							[kill_report_item["wounded_count"].to_aa(),
 									Goblins.emoji_from_type(kill_report_item["type"])])
 				var effectiveness_string: String = ""
 				if kill_report_item["effectiveness"] > 1.0:
@@ -152,21 +152,21 @@ func _play_next() -> void:
 			_append_level_up_announcements(%YourAttack, player_level_ups)
 		
 		if not enemy_attacks.is_empty():
-			if enemy_army_summary.goblins_by_type.get(enemy_type) != 0:
+			if enemy_army_summary.goblins_by_type.get(enemy_type).is_gt(0):
 				%EnemyAttack.text += "%s %s enemy goblins attack:\n" \
 						% [Goblins.emoji_from_type(enemy_type),
-							Utils.abbr_num(enemy_army_summary.goblins_by_type.get(enemy_type))]
+							enemy_army_summary.goblins_by_type.get(enemy_type).to_aa()]
 			
 			var kill_report: Array[Dictionary] = get_kill_report(enemy_type, enemy_kills)
 			for kill_report_item: Dictionary in kill_report:
 				var kill_strings: Array[String] = []
-				if kill_report_item["kill_count"] > 0:
+				if kill_report_item["kill_count"].is_gt(0):
 					kill_strings.append("%s×%s killed" %
-							[Utils.abbr_num(kill_report_item["kill_count"]),
+							[kill_report_item["kill_count"].to_aa(),
 									Goblins.emoji_from_type(kill_report_item["type"])])
-				if kill_report_item["wounded_count"] > 0:
+				if kill_report_item["wounded_count"].is_gt(0):
 					kill_strings.append("%s×%s wounded" %
-							[Utils.abbr_num(kill_report_item["wounded_count"]),
+							[kill_report_item["wounded_count"].to_aa(),
 									Goblins.emoji_from_type(kill_report_item["type"])])
 				var effectiveness_string: String = ""
 				if kill_report_item["effectiveness"] > 1.0:
@@ -189,37 +189,37 @@ func _play_next() -> void:
 
 func _append_level_up_announcements(text_area: RichTextLabel, level_ups: Array[BattleResolver.LevelUp]) -> void:
 	var announcement_count: int = 0
-	var other_goblin_count: int = 0
+	var other_goblin_count: Big = Big.ZERO
 	for level_up: BattleResolver.LevelUp in level_ups:
 		if announcement_count < 2:
-			if level_up.item.count == 1:
+			if level_up.item.count.is_eq(1):
 				text_area.text += "%s %s grew to level %s!\n" % \
 						[Goblins.emoji_from_type(level_up.item.type), level_up.item.name, \
 						level_up.item.level]
-			elif level_up.item.count == 2:
+			elif level_up.item.count.is_eq(2):
 				text_area.text += "%s %s + 1 other grew to level %s!\n" % \
 						[Goblins.emoji_from_type(level_up.item.type), level_up.item.name, \
 						level_up.item.level]
 			else:
 				text_area.text += "%s %s + %s others grew to level %s!\n" % \
 						[Goblins.emoji_from_type(level_up.item.type), level_up.item.name, \
-						level_up.item.count - 1, level_up.item.level]
+						Big.sub(level_up.item.count, 1).to_aa(), level_up.item.level]
 			announcement_count += 1
 		else:
-			other_goblin_count += level_up.item.count
-	if other_goblin_count >= 1:
-		if other_goblin_count == 1:
+			other_goblin_count = Big.add(other_goblin_count, level_up.item.count)
+	if other_goblin_count.is_gte(1):
+		if other_goblin_count.is_eq(1):
 			text_area.text += "1 other goblin leveled up!\n"
 		else:
 			text_area.text += "%s other goblins leveled up!\n" % \
-					[other_goblin_count]
+					[other_goblin_count.to_aa()]
 
 
 func _erase_invalid_orders(orders: Array[Goblins.GoblinType], army: Army) -> void:
 	var summary: Army.ArmySummary = army.get_summary()
 	
 	for order_index: int in range(orders.size() - 1, -1, -1):
-		if summary.goblins_by_type[orders[order_index]] == 0:
+		if summary.goblins_by_type[orders[order_index]].is_eq(0):
 			orders.remove_at(order_index)
 
 

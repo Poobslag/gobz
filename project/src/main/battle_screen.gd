@@ -30,7 +30,7 @@ func _on_pick_panel_finished() -> void:
 		enemy_orders = []
 		var army_summary: Army.ArmySummary = PlayerData.get_dungeon_army().get_summary()
 		for type: Goblins.GoblinType in Goblins.GoblinType.values():
-			if army_summary.goblins_by_type[type] > 0:
+			if army_summary.goblins_by_type[type].is_gt(0):
 				enemy_orders.append(type)
 		enemy_orders.shuffle()
 	

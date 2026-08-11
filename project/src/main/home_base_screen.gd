@@ -4,7 +4,7 @@ const RECRUIT_COUNT: int = 3
 const RECRUIT_ROW_SCENE: PackedScene = preload("res://src/main/home_base_recruit_row.tscn")
 const DUNGEON_ROW_SCENE: PackedScene = preload("res://src/main/dungeon_preview_row.tscn")
 
-const MAX_MULTIPLIER: int = 1_000_000_000_000_000
+const MAX_MULTIPLIER: float = 1e300
 
 func _ready() -> void:
 	for child: Node in %Recruits.get_children():
@@ -21,7 +21,7 @@ func _ready() -> void:
 	
 	%CommandPalette.command_entered.connect(_on_command_palette_command_entered)
 	
-	if PlayerData.home_base_multiplier == 1 and PlayerData.gold < 80:
+	if PlayerData.home_base_multiplier.is_eq(1) and PlayerData.gold.is_lt(80):
 		%MultiplyButton.visible = false
 		%DivideButton.visible = false
 	
@@ -61,7 +61,7 @@ func _refresh_summary() -> void:
 	%ArmyLabel.text = ""
 	%ArmyLabel.text = "Your army:\n"
 	%ArmyLabel.text += Goblins.army_bbcode(PlayerData.army) + "\n\n"
-	%ArmyLabel.text += "💰%s" % [Utils.abbr_num(PlayerData.gold)]
+	%ArmyLabel.text += "💰%s" % [PlayerData.gold.to_aa()]
 
 
 func _refresh_recruits() -> void:
@@ -72,16 +72,16 @@ func _refresh_recruits() -> void:
 		%Recruits.add_child(recruit_row)
 	for recruit_row: HomeBaseRecruitRow in %Recruits.get_children():
 		recruit_row.refresh()
-	%MultiplyButton.disabled = (PlayerData.gold < Utils.big_mult(80, PlayerData.home_base_multiplier \
-			or PlayerData.home_base_multiplier >= MAX_MULTIPLIER))
-	%DivideButton.disabled = (PlayerData.home_base_multiplier <= 1)
+	%MultiplyButton.disabled = PlayerData.gold.is_lt(Big.mul(PlayerData.home_base_multiplier, 80)) \
+			or PlayerData.home_base_multiplier.is_gt(MAX_MULTIPLIER)
+	%DivideButton.disabled = PlayerData.home_base_multiplier.is_lte(1)
 
 
 func _recruit(recruit_row: HomeBaseRecruitRow) -> void:
-	if PlayerData.gold < recruit_row.get_cost():
+	if PlayerData.gold.is_lt(recruit_row.get_cost()):
 		return
 	
-	PlayerData.gold -= recruit_row.get_cost()
+	PlayerData.gold = Big.sub(PlayerData.gold, recruit_row.get_cost())
 	PlayerData.army.add_item(recruit_row.item)
 	
 	%Recruits.remove_child(recruit_row)
@@ -98,7 +98,7 @@ func _skip(recruit_row: HomeBaseRecruitRow) -> void:
 
 func _adjust_multiplier(factor: float) -> void:
 	@warning_ignore("narrowing_conversion")
-	PlayerData.home_base_multiplier = clampi(PlayerData.home_base_multiplier * factor, 1, MAX_MULTIPLIER)
+	PlayerData.home_base_multiplier = Big.clamp(Big.mul(PlayerData.home_base_multiplier, factor), 1, MAX_MULTIPLIER)
 	for recruit_row: HomeBaseRecruitRow in %Recruits.get_children():
 		%Recruits.remove_child(recruit_row)
 		recruit_row.queue_free()
@@ -118,7 +118,7 @@ func _on_command_palette_command_entered(command: String) -> void:
 			for dungeon: Dungeon in PlayerData.dungeons:
 				dungeon.perform_recon()
 			
-			if PlayerData.gold >= 80:
+			if PlayerData.gold.is_gte(80):
 				%MultiplyButton.visible = true
 				%DivideButton.visible = true
 		"h":

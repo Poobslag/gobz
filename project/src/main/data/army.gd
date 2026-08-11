@@ -2,11 +2,11 @@ class_name Army
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var items: Array[ArmyItem] = []
-var gold: int
+var gold: Big = Big.ZERO
 
 func reset() -> void:
 	items.clear()
-	gold = 0
+	gold = Big.ZERO
 
 
 func duplicate() -> Army:
@@ -16,24 +16,24 @@ func duplicate() -> Army:
 	return army
 
 
-func get_total_goblins() -> int:
-	var total: int = 0
+func get_total_goblins() -> Big:
+	var total: Big = Big.ZERO
 	for item: ArmyItem in items:
-		total += item.count
+		total = Big.add(total, item.count)
 	return total
 
 
-func get_total_attack() -> int:
-	var total: int = 0
+func get_total_attack() -> Big:
+	var total: Big = Big.ZERO
 	for item: ArmyItem in items:
-		total = Utils.big_add(total, Utils.big_mult(item.attack, item.count))
+		total = Big.add(total, Big.mul(item.attack, item.count))
 	return total
 
 
-func get_total_gold() -> int:
-	var total: int = 0
+func get_total_gold() -> Big:
+	var total: Big = Big.ZERO
 	for item: ArmyItem in items:
-		total = Utils.big_add(total, Utils.big_mult(item.gold, item.count))
+		total = Big.add(total, Big.mul(item.gold, item.count))
 	return total
 
 
@@ -52,7 +52,7 @@ func is_empty() -> bool:
 func generate_random_recruit(data: Dictionary[String, Variant] = {}) -> ArmyItem:
 	var item: ArmyItem = ArmyItem.new()
 	item.name = GoblinNames.random_name()
-	var total_goblins: int = get_total_goblins()
+	var total_goblins: Big = get_total_goblins()
 	
 	# calculate type
 	if data.has("type"):
@@ -61,9 +61,9 @@ func generate_random_recruit(data: Dictionary[String, Variant] = {}) -> ArmyItem
 		var types: Array[Goblins.GoblinType] = \
 				[Goblins.FIRE, Goblins.WATER, Goblins.GRASS, Goblins.ANGEL, Goblins.DEVIL]
 		var weights: PackedFloat32Array
-		if total_goblins < 20:
+		if total_goblins.is_lt(20):
 			weights = [1.0, 1.0, 1.0, 0.0, 0.0]
-		elif total_goblins < 200:
+		elif total_goblins.is_lt(200):
 			weights = [1.0, 1.0, 1.0, 0.4, 0.4]
 		else:
 			weights = [1.0, 1.0, 1.0, 1.0, 1.0]
@@ -80,9 +80,9 @@ func generate_random_recruit(data: Dictionary[String, Variant] = {}) -> ArmyItem
 		target_level = data["level"]
 	else:
 		var max_level: int
-		if total_goblins < 10:
+		if total_goblins.is_lt(10):
 			max_level = 4
-		elif total_goblins < 100:
+		elif total_goblins.is_lt(100):
 			max_level = 6
 		else:
 			max_level = 8
@@ -94,11 +94,12 @@ func generate_random_recruit(data: Dictionary[String, Variant] = {}) -> ArmyItem
 			level_cost *= 2
 		item.gold += level_cost
 	
-	item.experience = int(randf_range(0, item.get_exp_threshold()))
+	item.experience = Big.new(int(randf_range(0, item.get_exp_threshold().to_float())))
 	var fractional_level_cost: int = [3, 4, 5, 5, 5, 6, 7].pick_random()
 	if item.type == Goblins.DEVIL:
 		fractional_level_cost *= 2
-	fractional_level_cost = roundi(fractional_level_cost * float(item.experience) / item.get_exp_threshold())
+	fractional_level_cost = roundi(fractional_level_cost * \
+			Big.div(item.experience, item.get_exp_threshold()).to_float())
 	item.gold += fractional_level_cost
 	
 	# adjust price
@@ -113,8 +114,8 @@ func generate_random_recruit(data: Dictionary[String, Variant] = {}) -> ArmyItem
 	item.gold = maxi(item.gold, 1)
 	
 	if data.has("count"):
-		item.count *= data["count"]
-		item.experience *= data["count"]
+		item.count = Big.mul(item.count, data["count"])
+		item.experience = Big.mul(item.experience, data["count"])
 	
 	return item
 
@@ -123,26 +124,26 @@ func get_summary() -> ArmySummary:
 	var result: ArmySummary = ArmySummary.new()
 	
 	for goblin_type: Goblins.GoblinType in Goblins.GoblinType.values():
-		result.goblins_by_type[goblin_type] = 0
-		result.attack_by_type[goblin_type] = 0
+		result.goblins_by_type[goblin_type] = Big.ZERO
+		result.attack_by_type[goblin_type] = Big.ZERO
 	
 	for army_item: Army.ArmyItem in items:
 		result.goblins_by_type[army_item.type] = \
-				Utils.big_add(result.goblins_by_type[army_item.type], army_item.count)
+				Big.add(result.goblins_by_type[army_item.type], army_item.count)
 		result.total_goblins = \
-				Utils.big_add(result.total_goblins, army_item.count)
+				Big.add(result.total_goblins, army_item.count)
 		result.attack_by_type[army_item.type] = \
-				Utils.big_add(result.attack_by_type[army_item.type],
-				Utils.big_mult(army_item.attack, army_item.count))
+				Big.add(result.attack_by_type[army_item.type],
+				Big.mul(army_item.attack, army_item.count))
 		result.total_attack = \
-				Utils.big_add(result.total_attack, \
-				Utils.big_mult(army_item.attack, army_item.count))
+				Big.add(result.total_attack, \
+				Big.mul(army_item.attack, army_item.count))
 	
 	return result
 
 
 func from_json_dict(json: Dictionary[String, Variant]) -> void:
-	gold = json.get("gold", 0)
+	gold = Big.new(json.get("gold", 0))
 	items.clear()
 	for item_json: Dictionary in json.get("items", []):
 		var typed_item_json: Dictionary[String, Variant] = {}
@@ -158,7 +159,7 @@ func to_json_dict() -> Dictionary[String, Variant]:
 	result["items"] = []
 	for item: ArmyItem in items:
 		result["items"].append(item.to_json_dict())
-	result["gold"] = gold
+	result["gold"] = gold.to_float()
 	return result
 
 
@@ -187,7 +188,7 @@ class ArmyItem:
 	var name: String = ""
 	
 	## Total goblins
-	var count: int = 1
+	var count: Big = Big.ONE
 	
 	## Average goblin level
 	var level: int = 1
@@ -208,7 +209,7 @@ class ArmyItem:
 	var gold: int = 0
 	
 	## Sum of all experience points toward the next level
-	var experience: int = 0
+	var experience: Big = Big.ZERO
 	
 	func duplicate() -> ArmyItem:
 		var copy: ArmyItem = ArmyItem.new()
@@ -225,7 +226,7 @@ class ArmyItem:
 	
 	
 	func level_up() -> void:
-		experience = maxi(0, experience - get_exp_threshold())
+		experience = Big.max(0, Big.sub(experience, get_exp_threshold()))
 		var hp_gain: int = 0
 		hp_gain += [1, 2, 2, 3].pick_random()
 		attack += [1, 2, 2, 3].pick_random()
@@ -241,17 +242,17 @@ class ArmyItem:
 		level += 1
 	
 	
-	func get_exp_threshold() -> int:
+	func get_exp_threshold() -> Big:
 		var exp_factor: int = 4 if type == Goblins.DEVIL else 2
 		if level % 10 == 0:
 			exp_factor *= 10
 		if level % 100 == 0:
 			exp_factor *= 10
-		return maxi(1, (level + 1) * exp_factor * count)
+		return Big.max(1, Big.mul(count, (level + 1) * exp_factor))
 	
 	
 	func can_level_up() -> bool:
-		return experience > get_exp_threshold()
+		return experience.is_gte(get_exp_threshold())
 	
 	
 	## Experience points for killing each goblin
@@ -261,7 +262,7 @@ class ArmyItem:
 	
 	func from_json_dict(json: Dictionary[String, Variant]) -> void:
 		name = json.get("name", "")
-		count = json.get("count", 1)
+		count = Big.new(json.get("count", 1))
 		level = json.get("level", 1)
 		type = Goblins.GoblinType.get(json.get("type", "fire").to_upper())
 		
@@ -271,27 +272,27 @@ class ArmyItem:
 		
 		attack = json.get("attack", 2)
 		gold = json.get("gold", 0)
-		experience = json.get("exp", 0)
+		experience = Big.new(json.get("exp", 0))
 	
 	
 	func to_json_dict() -> Dictionary[String, Variant]:
 		return {
 			"name": name,
-			"count": count,
+			"count": count.to_float(),
 			"level": level,
 			"type": Utils.enum_to_snake_case(Goblins.GoblinType, type),
 			"hp": "%s/%s" % [hp, hp_max],
 			"attack": attack,
 			"gold": gold,
-			"exp": experience,
+			"exp": experience.to_float(),
 		}
 
 
 class ArmySummary:
-	var total_goblins: int
-	var total_attack: int
-	var goblins_by_type: Dictionary[Goblins.GoblinType, int] = {}
-	var attack_by_type: Dictionary[Goblins.GoblinType, int] = {}
+	var total_goblins: Big = Big.ZERO
+	var total_attack: Big = Big.ZERO
+	var goblins_by_type: Dictionary[Goblins.GoblinType, Big] = {}
+	var attack_by_type: Dictionary[Goblins.GoblinType, Big] = {}
 	
 	func _to_string() -> String:
 		return str({

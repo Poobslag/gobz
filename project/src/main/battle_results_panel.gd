@@ -19,22 +19,22 @@ func refresh() -> void:
 
 func victory() -> void:
 	refresh()
-	var looted_gold: int = PlayerData.army.gold + PlayerData.get_dungeon_army().gold
-	PlayerData.gold += looted_gold
-	PlayerData.army.gold = 0
-	PlayerData.get_dungeon_army().gold = 0
+	var looted_gold: Big = Big.add(PlayerData.army.gold, PlayerData.get_dungeon_army().gold)
+	PlayerData.gold = Big.add(PlayerData.gold, looted_gold)
+	PlayerData.army.gold = Big.ZERO
+	PlayerData.get_dungeon_army().gold = Big.ZERO
 	color = Color("458a61")
 	%Message.text = ""
 	%Message.text += "Victory!\n\n"
-	%Message.text += "You loot 💰%s from your fallen allies and enemies." % [Utils.abbr_num(looted_gold)]
+	%Message.text += "You loot 💰%s from your fallen allies and enemies." % [looted_gold.to_aa()]
 
 
 func defeat() -> void:
 	refresh()
 	color = Color("8d8381")
 	
-	PlayerData.army.gold = 0
-	PlayerData.gold += int(PlayerData.get_dungeon_army().gold * 0.1)
+	PlayerData.army.gold = Big.ZERO
+	PlayerData.gold = Big.add(PlayerData.gold, Big.mul(PlayerData.get_dungeon_army().gold, 0.1))
 	PlayerData.initialize_starting_army()
 	%Message.text = ""
 	%Message.text += "Defeat...\n\n"
@@ -48,11 +48,11 @@ func defeat() -> void:
 
 func retreat() -> void:
 	refresh()
-	var looted_gold: int = PlayerData.army.gold
-	PlayerData.gold += looted_gold
-	PlayerData.army.gold = 0
-	PlayerData.get_dungeon_army().gold = 0
+	var looted_gold: Big = PlayerData.army.gold
+	PlayerData.gold = Big.add(PlayerData.gold, looted_gold)
+	PlayerData.army.gold = Big.ZERO
+	PlayerData.get_dungeon_army().gold = Big.ZERO
 	color = Color("8d8381")
 	%Message.text = ""
 	%Message.text += "Retreat!\n\n"
-	%Message.text += "You scurry home with 💰%s in your pockets." % [Utils.abbr_num(looted_gold)]
+	%Message.text += "You scurry home with 💰%s in your pockets." % [looted_gold.to_aa()]
