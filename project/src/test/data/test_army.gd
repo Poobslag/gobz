@@ -42,7 +42,7 @@ func test_to_json_dict() -> void:
 	assert_eq(json, {
 			"items": [
 				{"name": "fire4", "count": 1.0, "level": 4, "type": "fire",
-					"hp": "14/14", "attack": 12, "gold": 55, "exp": 0.0},
+					"hp": "14/14", "attack": 12, "gold": 55, "xp": 0},
 			],
 			"gold": 0.0,
 		})
@@ -52,7 +52,7 @@ func test_from_json_dict() -> void:
 	PlayerData.army.from_json_dict({
 			"items": [
 				{"name": "fire4", "count": 2, "level": 4, "type": "fire",
-					"hp": "14/14", "attack": 12, "gold": 55, "exp": 3},
+					"hp": "14/14", "attack": 12, "gold": 55, "xp": 3},
 			],
 			"gold": 123,
 		})
@@ -65,7 +65,7 @@ func test_from_json_dict() -> void:
 	assert_eq(14, PlayerData.army.items[0].hp_max)
 	assert_eq(12, PlayerData.army.items[0].attack)
 	assert_eq(55, PlayerData.army.items[0].gold)
-	assert_eq(3, PlayerData.army.items[0].experience.to_int())
+	assert_eq(3, PlayerData.army.items[0].xp)
 	
 	assert_eq(123, PlayerData.army.gold.to_int())
 
@@ -74,11 +74,11 @@ func test_to_glob() -> void:
 	PlayerData.army.from_json_dict({
 			"items": [
 				{"name": "fire4", "count": 2, "level": 4, "type": "fire",
-					"hp": "14/14", "attack": 12, "gold": 55, "exp": 3},
+					"hp": "14/14", "attack": 12, "gold": 55, "xp": 3},
 				{"name": "fire5", "count": 3, "level": 5, "type": "fire",
-					"hp": "16/16", "attack": 14, "gold": 65, "exp": 4},
+					"hp": "16/16", "attack": 14, "gold": 65, "xp": 4},
 				{"name": "water6", "count": 4, "level": 6, "type": "water",
-					"hp": "18/18", "attack": 15, "gold": 75, "exp": 5},
+					"hp": "18/18", "attack": 15, "gold": 75, "xp": 5},
 			],
 			"gold": 123,
 		})

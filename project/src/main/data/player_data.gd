@@ -102,9 +102,7 @@ func add_dungeon(target_attack: Big) -> void:
 func scale_army_units(factor: float) -> void:
 	for item: Army.ArmyItem in PlayerData.army.items:
 		item.count = Big.mul(item.count, factor)
-		item.experience = Big.mul(item.experience, factor)
 	for dungeon: Dungeon in PlayerData.dungeons:
 		for item: Army.ArmyItem in dungeon.army.items:
 			item.count = Big.mul(item.count, factor)
-			item.experience = Big.mul(item.experience, factor)
 	gold = Big.mul(gold, factor)

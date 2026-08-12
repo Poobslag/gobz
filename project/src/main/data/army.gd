@@ -94,12 +94,12 @@ func generate_random_recruit(data: Dictionary[String, Variant] = {}) -> ArmyItem
 			level_cost *= 2
 		item.gold += level_cost
 	
-	item.experience = Big.new(int(randf_range(0, item.get_exp_threshold().to_float())))
+	item.xp = randi_range(0, item.get_exp_threshold() - 1)
 	var fractional_level_cost: int = [3, 4, 5, 5, 5, 6, 7].pick_random()
 	if item.type == Goblins.DEVIL:
 		fractional_level_cost *= 2
 	fractional_level_cost = roundi(fractional_level_cost * \
-			Big.div(item.experience, item.get_exp_threshold()).to_float())
+			item.xp / float(item.get_exp_threshold()))
 	item.gold += fractional_level_cost
 	
 	# adjust price
@@ -115,7 +115,6 @@ func generate_random_recruit(data: Dictionary[String, Variant] = {}) -> ArmyItem
 	
 	if data.has("count"):
 		item.count = Big.mul(item.count, data["count"])
-		item.experience = Big.mul(item.experience, data["count"])
 	
 	return item
 
@@ -190,7 +189,7 @@ class ArmyItem:
 	## Total goblins
 	var count: Big = Big.ONE
 	
-	## Average goblin level
+	## Level for each goblin
 	var level: int = 1
 	
 	## Type of all goblins
@@ -208,8 +207,8 @@ class ArmyItem:
 	## Gold for each goblin
 	var gold: int = 0
 	
-	## Sum of all experience points toward the next level
-	var experience: Big = Big.ZERO
+	## Experience for each goblin
+	var xp: int = 0
 	
 	func duplicate() -> ArmyItem:
 		var copy: ArmyItem = ArmyItem.new()
@@ -220,13 +219,13 @@ class ArmyItem:
 		copy.type = type
 		copy.hp_max = hp_max
 		copy.hp = hp
-		copy.experience = experience
+		copy.xp = xp
 		copy.attack = attack
 		return copy
 	
 	
 	func level_up() -> void:
-		experience = Big.max(0, Big.sub(experience, get_exp_threshold()))
+		xp = max(0, xp - get_exp_threshold())
 		var hp_gain: int = 0
 		hp_gain += [1, 2, 2, 3].pick_random()
 		attack += [1, 2, 2, 3].pick_random()
@@ -242,17 +241,17 @@ class ArmyItem:
 		level += 1
 	
 	
-	func get_exp_threshold() -> Big:
+	func get_exp_threshold() -> int:
 		var exp_factor: int = 4 if type == Goblins.DEVIL else 2
-		if level % 10 == 0:
+		var level_tmp: int = level
+		while level_tmp > 0 and level_tmp % 10 == 0:
+			level_tmp /= 10
 			exp_factor *= 10
-		if level % 100 == 0:
-			exp_factor *= 10
-		return Big.max(1, Big.mul(count, (level + 1) * exp_factor))
+		return maxi(1, (level + 1) * exp_factor)
 	
 	
 	func can_level_up() -> bool:
-		return experience.is_gte(get_exp_threshold())
+		return xp >= get_exp_threshold()
 	
 	
 	## Experience points for killing each goblin
@@ -272,7 +271,7 @@ class ArmyItem:
 		
 		attack = json.get("attack", 2)
 		gold = json.get("gold", 0)
-		experience = Big.new(json.get("exp", 0))
+		xp = json.get("xp", 0)
 	
 	
 	func to_json_dict() -> Dictionary[String, Variant]:
@@ -284,7 +283,7 @@ class ArmyItem:
 			"hp": "%s/%s" % [hp, hp_max],
 			"attack": attack,
 			"gold": gold,
-			"exp": experience.to_float(),
+			"xp": xp,
 		}
 
 

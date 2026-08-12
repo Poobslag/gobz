@@ -106,9 +106,12 @@ static func resolve_attacks(from: Army, to: Army, attacks: Array[Attack]) -> Arr
 		attack.target.count = damage_result["new_count"]
 		var kill_count: Big = damage_result["kill_count"]
 		var wounded_count: Big = damage_result["wounded_count"]
-		from.gold = Big.add(from.gold, Big.mul(kill_count, attack.target.gold))
-		attack.source.experience = Big.add(attack.source.experience, \
-				Big.mul(kill_count, attack.target.get_kill_exp()))
+		if kill_count.is_gt(0):
+			# award gold/xp for kills
+			from.gold = Big.add(from.gold, Big.mul(kill_count, attack.target.gold))
+			var total_xp_gain: Big = Big.mul(kill_count, attack.target.get_kill_exp())
+			var per_gob_xp_gain: int = roundi(Big.div(total_xp_gain, attack.source.count).to_int())
+			attack.source.xp += per_gob_xp_gain
 		if attack.target.count.is_lte(0):
 			to.remove_item(attack.target)
 		
