@@ -17,6 +17,7 @@ const RIPOFF_CURVE: Array[Array] = [
 ]
 
 
+var day: int = 1
 var army: Army = Army.new()
 var gold: Big = Big.ZERO:
 	set(value):

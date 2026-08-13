@@ -49,7 +49,9 @@ func _on_watch_panel_finished() -> void:
 			or not PlayerData.has_current_dungeon() \
 			or PlayerData.get_dungeon_army().is_empty():
 		show_results_panel()
-		if PlayerData.army.is_empty():
+		if PlayerData.army.is_empty() and PlayerData.get_dungeon_army().is_empty():
+			%ResultsPanel.mutual_defeat()
+		elif PlayerData.army.is_empty():
 			%ResultsPanel.defeat()
 		else:
 			%ResultsPanel.victory()
