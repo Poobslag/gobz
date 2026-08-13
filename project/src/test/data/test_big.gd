@@ -74,12 +74,12 @@ func test_negative_boundaries() -> void:
 
 
 func test_to_aa_billions_and_up_boundaries() -> void:
-	assert_eq(Big.new(9.999_999_999e21).to_aa(), "9.9ac")
-	assert_eq(Big.new(1.000_000_000e22).to_aa(), "10.0ac")
-	assert_eq(Big.new(9.999_999_999e22).to_aa(), "99.9ac")
-	assert_eq(Big.new(1.000_000_000e23).to_aa(), "100ac")
-	assert_eq(Big.new(9.999_999_999e23).to_aa(), "999ac")
-	assert_eq(Big.new(1.000_000_000e24).to_aa(), "1.0ad")
+	assert_eq(Big.new(9.999_999_999e21).to_aa(), "9.9bk")
+	assert_eq(Big.new(1.000_000_000e22).to_aa(), "10.0bk")
+	assert_eq(Big.new(9.999_999_999e22).to_aa(), "99.9bk")
+	assert_eq(Big.new(1.000_000_000e23).to_aa(), "100bk")
+	assert_eq(Big.new(9.999_999_999e23).to_aa(), "999bk")
+	assert_eq(Big.new(1.000_000_000e24).to_aa(), "1.0bl")
 
 
 func test_to_aa_negative() -> void:
@@ -100,12 +100,12 @@ func test_to_aa_billions_and_up() -> void:
 	assert_eq(Big.new(32.57e6).to_aa(), "32.5m")
 	assert_eq(Big.new(32.57e9).to_aa(), "32.5b")
 	assert_eq(Big.new(32.57e12).to_aa(), "32.5t")
-	assert_eq(Big.new(32.57e15).to_aa(), "32.5aa")
-	assert_eq(Big.new(32.57e18).to_aa(), "32.5ab")
-	assert_eq(Big.new(32.57e21).to_aa(), "32.5ac")
-	assert_eq(Big.new(32.57e24).to_aa(), "32.5ad")
-	assert_eq(Big.new(32.57e102).to_aa(), "32.5bd")
-	assert_eq(Big.new(32.57e180).to_aa(), "32.5cd")
+	assert_eq(Big.new(32.57e15).to_aa(), "32.5q")
+	assert_eq(Big.new(32.57e18).to_aa(), "32.5bj")
+	assert_eq(Big.new(32.57e21).to_aa(), "32.5bk")
+	assert_eq(Big.new(32.57e24).to_aa(), "32.5bl")
+	assert_eq(Big.new(32.57e102).to_aa(), "32.5cl")
+	assert_eq(Big.new(32.57e180).to_aa(), "32.5dl")
 
 
 func test_sum() -> void:

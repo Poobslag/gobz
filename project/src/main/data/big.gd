@@ -10,10 +10,12 @@ static var ONE: Big = Big.new(1)
 
 static var _suffixes_aa: Dictionary[int, String] = {
 	0: "",
-	1: "k",
-	2: "m",
-	3: "b",
-	4: "t",
+	1: "k", # thousand (kilo)
+	2: "m", # million
+	3: "b", # billion
+	4: "t", # trillion
+	5: "q", # quadrillion
+	6: "bj", # a bajillion
 }
 
 var _value: float
@@ -57,9 +59,9 @@ func to_aa() -> String:
 		result = ",%03d%s" % [fmod(ipart, 1000), result]
 		ipart = floor(ipart / 1000)
 	if not _suffixes_aa.has(suffix_key):
-		var offset: int = (suffix_key + 21) % 26
+		var offset: int = (suffix_key + 29) % 26
 		@warning_ignore("integer_division")
-		var base: int = (suffix_key / 26)
+		var base: int = ((suffix_key + 29) / 26)
 		_suffixes_aa[suffix_key] = "%s%s" % [ALPHABET[base], ALPHABET[offset]]
 	var suffix: String = _suffixes_aa[suffix_key]
 	result = "%d%s%s" % [ipart, result, suffix]
