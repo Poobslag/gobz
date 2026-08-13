@@ -20,8 +20,10 @@ var _value: float
 
 func _init(m: Variant) -> void:
 	match typeof(m):
-		TYPE_FLOAT, TYPE_INT:
-			_value = m
+		TYPE_FLOAT:
+			_value = floor(abs(m)) * sign(m)
+		TYPE_INT:
+			_value = float(m)
 		_:
 			push_warning("Unrecognized type: %s" % [typeof(m)])
 
@@ -96,6 +98,10 @@ func is_lte(n: Variant) -> bool:
 	return _value < n._value or is_equal_approx(_value, n._value)
 
 
+func _to_string() -> String:
+	return str(_value)
+
+
 static func add(x: Variant, y: Variant) -> Big:
 	x = _type_check(x)
 	y = _type_check(y)
@@ -136,21 +142,6 @@ static func min(x: Variant, y: Variant) -> Big:
 	x = _type_check(x)
 	y = _type_check(y)
 	return x if x._value < y._value else y
-
-
-static func floor(n: Variant) -> Big:
-	n = _type_check(n)
-	return new(floor(n._value))
-
-
-static func round(n: Variant) -> Big:
-	n = _type_check(n)
-	return new(round(n._value))
-
-
-static func ceil(n: Variant) -> Big:
-	n = _type_check(n)
-	return new(ceil(n._value))
 
 
 @warning_ignore("shadowed_global_identifier")

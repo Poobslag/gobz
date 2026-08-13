@@ -117,3 +117,15 @@ func test_clamp() -> void:
 	assert_eq(Big.clamp(3, 1, 5).to_int(), 3)
 	assert_eq(Big.clamp(-1, 1, 5).to_int(), 1)
 	assert_eq(Big.clamp(9, 1, 5).to_int(), 5)
+
+
+func test_div() -> void:
+	assert_eq(Big.div(9, 8).to_float(), 1.0)
+	assert_eq(Big.div(25, 4).to_float(), 6.0)
+	assert_eq(Big.div(-25, 4).to_float(), -6.0)
+	assert_eq(Big.div(-25, -4).to_float(), 6.0)
+
+
+func test_mul() -> void:
+	assert_eq(Big.mul(9, 8).to_float(), 72.0)
+	assert_eq(Big.mul(10, 0.9).to_float(), 0.0) # 0.9 is rounded to 0.

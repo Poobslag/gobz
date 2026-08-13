@@ -98,7 +98,7 @@ func _skip(recruit_row: HomeBaseRecruitRow) -> void:
 
 func _adjust_multiplier(factor: float) -> void:
 	@warning_ignore("narrowing_conversion")
-	PlayerData.home_base_multiplier = Big.clamp(Big.mul(PlayerData.home_base_multiplier, factor), 1, MAX_MULTIPLIER)
+	PlayerData.home_base_multiplier = Big.clamp(PlayerData.home_base_multiplier.to_float() * factor, 1, MAX_MULTIPLIER)
 	for recruit_row: HomeBaseRecruitRow in %Recruits.get_children():
 		%Recruits.remove_child(recruit_row)
 		recruit_row.queue_free()
