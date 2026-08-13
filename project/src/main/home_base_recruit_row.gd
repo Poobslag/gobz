@@ -12,7 +12,7 @@ func _ready() -> void:
 	%RecruitButton.text = "-💰%s" % [get_cost().to_aa()]
 	var goblin_name: String = item.name
 	if item.count.is_gt(1):
-		goblin_name += " + %s others" % [item.count.to_aa()]
+		goblin_name += " + %s others" % [Big.sub(item.count, 1).to_aa()]
 	%Description.text = "%s %s,  %s⚔" % [
 			Goblins.emoji_from_type(item.type), goblin_name, Big.mul(item.attack, item.count).to_aa()]
 	

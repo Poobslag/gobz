@@ -14,9 +14,9 @@ static func army_item(s: String) -> Army.ArmyItem:
 		type_cost *= 2
 	item.gold += type_cost
 	item.level = level
-	var strength_factor: int = 4 if item.type == Goblins.DEVIL else 2
-	item.hp_max += strength_factor * (item.level + 1)
-	item.attack += strength_factor * (item.level + 1)
+	var strength_factor: int = 2 if item.type == Goblins.DEVIL else 1
+	item.hp_max += 4 * strength_factor * item.level
+	item.attack += 2 * strength_factor * item.level
 	item.hp = item.hp_max
-	item.gold += 5 * strength_factor * (item.level + 1)
+	item.gold += 5 * strength_factor * item.level
 	return item
