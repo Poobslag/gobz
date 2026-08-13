@@ -80,9 +80,9 @@ static var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 static func _generate_random_composition(allow_advanced_types: bool = true) -> Dictionary[String, Variant]:
 	var slot_count: int
 	if allow_advanced_types:
-		slot_count = [1, 2, 3, 4, 5][_rng.rand_weighted([2, 4, 4, 4, 4])]
+		slot_count = [1, 2, 3, 4, 5][_rng.rand_weighted([1, 2, 4, 4, 4])]
 	else:
-		slot_count = [1, 2, 3][_rng.rand_weighted([2, 4, 4])]
+		slot_count = [1, 2, 3][_rng.rand_weighted([1, 2, 4])]
 	
 	var weights: Array[float] = []
 	var archetypes: Array[DungeonArchetype] = _archetypes_by_slot_count[slot_count]
@@ -99,8 +99,8 @@ static func _generate_dungeon_for_archetype(target_attack: Big, composition: Dic
 	var min_count: Big = Big.ONE
 	var max_count: Big = Big.ONE
 	if target_attack.is_gte(500):
-		min_count = Big.round(Big.mul(target_attack, 0.01))
-		max_count = Big.round(Big.mul(target_attack, 0.03))
+		min_count = Big.new(maxf(1, round(target_attack.to_float() * 0.0003)))
+		max_count = Big.new(maxf(1, round(target_attack.to_float() * 0.0008)))
 	
 	var dungeon: Dungeon = Dungeon.new()
 	dungeon.army = Army.new()
@@ -108,7 +108,7 @@ static func _generate_dungeon_for_archetype(target_attack: Big, composition: Dic
 	var mercy: int = 0
 	var total_attack: Big = Big.ZERO
 	while total_attack.is_lt(target_attack) and mercy < 1000:
-		var count: Big = Big.new(_rng.randf_range(min_count.to_float(), max_count.to_float()))
+		var count: Big = Big.new(round(_rng.randf_range(min_count.to_float(), max_count.to_float())))
 		var type: Goblins.GoblinType = composition["types"][_rng.rand_weighted(composition["weights"])]
 		var new_recruit: Army.ArmyItem = dungeon.army.generate_random_recruit({
 			"count": count,
