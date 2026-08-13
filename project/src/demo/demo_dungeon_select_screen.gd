@@ -2,6 +2,5 @@ extends Control
 
 
 func _ready() -> void:
-	PlayerData.reset()
-	PlayerData.initialize_starting_army()
+	PlayerData.start_new_game()
 	%DungeonSelect.refresh()

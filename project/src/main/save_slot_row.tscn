@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://sn8q4ho5fq8x"]
+
+[ext_resource type="Script" uid="uid://chc3lj0x7jc7y" path="res://src/main/save_slot_row.gd" id="1_52y65"]
+
+[node name="SaveSlotRow" type="HBoxContainer" unique_id=733917493]
+script = ExtResource("1_52y65")
+state = null
+
+[node name="PlayButton" type="Button" parent="." unique_id=1960800436]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Continue"
+
+[node name="DeleteButton" type="Button" parent="." unique_id=1390250348]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Delete"
+
+[node name="Desc" type="Label" parent="." unique_id=378896520]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="WarningTimer" type="Timer" parent="." unique_id=1207012891]
+unique_name_in_owner = true
+wait_time = 0.8
+one_shot = true

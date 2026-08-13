@@ -2,6 +2,8 @@ class_name Army
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var hordes: Array[Horde] = []
+
+## Gold accrued during a battle by killing enemies.
 var gold: Big = Big.ZERO
 
 func reset() -> void:

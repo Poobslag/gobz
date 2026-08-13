@@ -18,9 +18,6 @@ func refresh() -> void:
 
 
 func victory() -> void:
-	PlayerData.day += 1
-	
-	refresh()
 	var looted_gold: Big = Big.add(PlayerData.army.gold, PlayerData.get_dungeon_army().gold)
 	PlayerData.gold = Big.add(PlayerData.gold, looted_gold)
 	PlayerData.army.gold = Big.ZERO
@@ -29,14 +26,12 @@ func victory() -> void:
 	%Message.text = ""
 	%Message.text += "Victory!\n\n"
 	%Message.text += "You loot 💰%s from your fallen allies and enemies." % [looted_gold.to_aa()]
+	
+	_end_battle()
 
 
 func defeat() -> void:
-	PlayerData.day += 1
-
-	refresh()
 	color = Color("8d8381")
-	
 	PlayerData.army.gold = Big.ZERO
 	PlayerData.gold = Big.add(PlayerData.gold, Big.new(PlayerData.get_dungeon_army().gold.to_float() * 0.1))
 	PlayerData.initialize_starting_army()
@@ -48,14 +43,12 @@ func defeat() -> void:
 		Goblins.emoji_from_type(goblin.type), goblin.name
 	]
 	%Message.text += "They give what money they have and prepare for battle."
+	
+	_end_battle()
 
 
 func mutual_defeat() -> void:
-	PlayerData.day += 1
-
-	refresh()
 	color = Color("8d8381")
-	
 	var looted_gold: Big = Big.new(
 			Big.add(PlayerData.army.gold, PlayerData.get_dungeon_army().gold).to_float() * 0.5)
 	PlayerData.gold = Big.add(PlayerData.gold, looted_gold)
@@ -71,12 +64,11 @@ func mutual_defeat() -> void:
 		Goblins.emoji_from_type(goblin.type), goblin.name
 	]
 	%Message.text += "They loot 💰%s from the battlefield and prepare for battle."
+	
+	_end_battle()
 
 
 func retreat() -> void:
-	PlayerData.day += 1
-
-	refresh()
 	var looted_gold: Big = PlayerData.army.gold
 	PlayerData.gold = Big.add(PlayerData.gold, looted_gold)
 	PlayerData.army.gold = Big.ZERO
@@ -85,3 +77,11 @@ func retreat() -> void:
 	%Message.text = ""
 	%Message.text += "Retreat!\n\n"
 	%Message.text += "You scurry home with 💰%s in your pockets." % [looted_gold.to_aa()]
+	
+	_end_battle()
+
+
+func _end_battle() -> void:
+	PlayerData.day += 1
+	PlayerData.cycle_dungeons()
+	refresh()

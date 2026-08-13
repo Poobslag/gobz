@@ -15,10 +15,10 @@ func _ready() -> void:
 	
 	_refresh_recruits()
 	_refresh_summary()
-	PlayerData.cycle_dungeons()
 	_refresh_dungeons()
 	
 	%FightButton.pressed.connect(func() -> void:
+		PlayerSave.save_data()
 		get_tree().change_scene_to_file("res://src/main/dungeon_select_screen.tscn"))
 	
 	%CommandPalette.command_entered.connect(_on_command_palette_command_entered)

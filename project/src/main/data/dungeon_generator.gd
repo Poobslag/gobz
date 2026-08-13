@@ -103,7 +103,6 @@ static func _generate_dungeon_for_archetype(target_attack: Big, composition: Dic
 		max_count = Big.new(maxf(1, round(target_attack.to_float() * 0.0008)))
 	
 	var dungeon: Dungeon = Dungeon.new()
-	dungeon.army = Army.new()
 	dungeon.name = DungeonNames.random_name()
 	var mercy: int = 0
 	var total_attack: Big = Big.ZERO

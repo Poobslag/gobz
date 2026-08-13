@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/screen_panel.tscn" id="1_kq665"]
 [ext_resource type="Script" uid="uid://gwyhffa4qow7" path="res://src/main/main_menu_screen.gd" id="1_r85qb"]
+[ext_resource type="PackedScene" uid="uid://sn8q4ho5fq8x" path="res://src/main/save_slot_row.tscn" id="3_5wv06"]
 
 [node name="MainMenuScreen" type="Control" unique_id=282256494]
 layout_mode = 3
@@ -25,13 +26,25 @@ layout_mode = 2
 size_flags_vertical = 3
 text = "Let's play goblin game"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=1839505629]
+[node name="SaveSlots" type="VBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=589476153]
 layout_mode = 2
 
-[node name="PlayButton" type="Button" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=762378106]
+[node name="SaveSlotRow0" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer/SaveSlots" unique_id=733917493 instance=ExtResource("3_5wv06")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "Play"
+desc = "Day 3: 3.7t goblins, 4.1t⚔"
+state = 0
+
+[node name="SaveSlotRow1" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer/SaveSlots" unique_id=1321771847 instance=ExtResource("3_5wv06")]
+unique_name_in_owner = true
+layout_mode = 2
+desc = "Day 3: 3.7t goblins, 4.1t⚔"
+state = 0
+
+[node name="SaveSlotRow2" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer/SaveSlots" unique_id=32275297 instance=ExtResource("3_5wv06")]
+unique_name_in_owner = true
+layout_mode = 2
+desc = "Day 3: 3.7t goblins, 4.1t⚔"
+state = 0
 
 [editable path="ScreenPanel"]

@@ -1,12 +1,10 @@
 class_name Dungeon
 
 var name: String
-var army: Army
-
-var recon_army: Army
+var army: Army = Army.new()
+var recon_army: Army = Army.new()
 
 func perform_recon() -> void:
-	recon_army = Army.new()
 	var recon_count: int = mini(ceili(army.hordes.size() / 2.0), 15)
 	var recon_scalar: float = army.hordes.size() / float(recon_count)
 	for i in recon_count:
@@ -21,3 +19,19 @@ func perform_recon() -> void:
 
 func is_empty() -> bool:
 	return army.is_empty()
+
+
+func to_json_dict() -> Dictionary[String, Variant]:
+	var result: Dictionary[String, Variant] = {}
+	result["name"] = name
+	result["army"] = army.to_glob()
+	result["recon_army"] = recon_army.to_glob()
+	return result
+
+
+func from_json_dict(json: Dictionary[String, Variant]) -> void:
+	name = json.get("name", "")
+	if json.has("army"):
+		army.from_glob(json["army"])
+	if json.has("recon_army"):
+		recon_army.from_glob(json["recon_army"])

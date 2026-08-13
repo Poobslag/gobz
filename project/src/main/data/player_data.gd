@@ -25,6 +25,7 @@ var gold: Big = Big.ZERO:
 		mark_ripoff_factor_dirty()
 var dungeons: Array[Dungeon] = []
 var dungeon_index: int
+
 var home_base_multiplier: Big = Big.ONE
 var ripoff_factor: float:
 	get():
@@ -88,7 +89,19 @@ func get_next_tip() -> String:
 
 
 func reset() -> void:
+	day = 1
 	army.reset()
+	gold = Big.ZERO
+	dungeons = []
+	dungeon_index = 0
+	home_base_multiplier = Big.ONE
+	_ripoff_factor_dirty = true
+
+
+func start_new_game() -> void:
+	reset()
+	initialize_starting_army()
+	cycle_dungeons()
 
 
 func has_current_dungeon() -> bool:
@@ -145,6 +158,34 @@ func get_ripoff_factor() -> float:
 		_ripoff_factor_dirty = false
 		_ripoff_factor_cache = _calculate_ripoff_factor()
 	return _ripoff_factor_cache
+
+
+func to_json_dict() -> Dictionary[String, Variant]:
+	var result: Dictionary[String, Variant] = {}
+	result["day"] = day
+	result["army"] = army.to_glob()
+	result["gold"] = gold.to_float()
+	var dungeons_json: Array[Dictionary] = []
+	for dungeon: Dungeon in dungeons:
+		dungeons_json.append(dungeon.to_json_dict())
+	result["dungeons"] = dungeons_json
+	result["home_base_multiplier"] = home_base_multiplier.to_float()
+	return result
+
+
+func from_json_dict(json: Dictionary[String, Variant]) -> void:
+	reset()
+	day = json.get("day", 1)
+	if json.has("army"):
+		army.from_glob(json["army"])
+	gold = Big.new(json.get("gold", 0.0))
+	for dungeon_json: Dictionary in json.get("dungeons", []):
+		var dungeon: Dungeon = Dungeon.new()
+		var typed_dungeon_json: Dictionary[String, Variant] = {}
+		typed_dungeon_json.assign(dungeon_json)
+		dungeon.from_json_dict(typed_dungeon_json)
+		dungeons.append(dungeon)
+	home_base_multiplier = Big.new(json.get("home_base_multiplier", 1.0))
 
 
 func _calculate_ripoff_factor() -> float:

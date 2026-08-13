@@ -34,3 +34,19 @@ func test_calc_ripoff_factor() -> void:
 	assert_eq(PlayerData.get_ripoff_factor(), 0.3)
 	PlayerData.gold = Big.new(5e50)
 	assert_eq(PlayerData.get_ripoff_factor(), 0.01)
+
+
+func test_convert_to_json_and_back() -> void:
+	PlayerData.day = 5
+	PlayerData.army.add_horde(horde("🔥 3"))
+	PlayerData.gold = Big.new(6700)
+	PlayerData.dungeons.append(Dungeon.new())
+	PlayerData.dungeons[0].army.add_horde(horde("💧 2"))
+	PlayerData.dungeons[0].recon_army.add_horde(horde("💧 3"))
+	PlayerData.home_base_multiplier = Big.new(100)
+	var result: Dictionary[String, Variant] = PlayerData.to_json_dict()
+	PlayerData.reset()
+	PlayerData.from_json_dict(result)
+	assert_eq(PlayerData.day, 5)
+	assert_eq(PlayerData.army.get_total_goblins().to_int(), 1)
+	assert_eq(PlayerData.dungeons.size(), 1)
