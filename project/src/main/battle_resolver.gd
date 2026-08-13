@@ -42,7 +42,7 @@ static func resolve_attacks(from: Army, to: Army, attacks: Array[Attack],
 	var defender_pool: DefenderPool = DefenderPool.new(to, vulnerable_types)
 	
 	var kills: Array[Kill] = []
-	# mapping from the source unit to the kill which may claim its wound
+	# mapping from the source horde to the kill which may claim its wound
 	var pending_wounds: Dictionary[Horde, Kill]
 	
 	while not attacker_pool.is_empty() and not defender_pool.is_empty():

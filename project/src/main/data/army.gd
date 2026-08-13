@@ -149,6 +149,9 @@ func get_summary() -> ArmySummary:
 		result.total_attack = \
 				Big.add(result.total_attack, \
 				Big.mul(horde.attack, horde.count))
+		result.total_gold = \
+				Big.add(result.total_gold, \
+				Big.mul(horde.gold, horde.count))
 	
 	return result
 
@@ -200,6 +203,7 @@ class ArmySummary:
 	var total_attack: Big = Big.ZERO
 	var goblins_by_type: Dictionary[Goblins.GoblinType, Big] = {}
 	var attack_by_type: Dictionary[Goblins.GoblinType, Big] = {}
+	var total_gold: Big = Big.ZERO
 	
 	func _to_string() -> String:
 		return str({
@@ -207,4 +211,5 @@ class ArmySummary:
 			"total_attack": total_attack,
 			"goblins_by_type": goblins_by_type,
 			"attack_by_type": attack_by_type,
+			"total_gold": total_gold,
 		})

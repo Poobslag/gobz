@@ -96,7 +96,7 @@ func _play_next() -> void:
 		%WaveLabel.text = ""
 	
 	if PlayerData.has_current_dungeon() and Global.verbose_stdout_mode:
-		print('')
+		print('----------')
 		print('player_orders = %s' % [_verbose_order_string(_player_orders)])
 		print('player_army.from_glob(%s)' % [_verbose_army_string(PlayerData.army)])
 		print('enemy_orders = %s' % [_verbose_order_string(_enemy_orders)])

@@ -80,7 +80,7 @@ func test_3v3_wound_wounded() -> void:
 	enemy_army.hordes[0].hp = 10
 	plan_and_resolve_attacks()
 	
-	# our single unit doesn't deal enough damage to kill the wounded enemy
+	# our single horde doesn't deal enough damage to kill the wounded enemy
 	assert_kills(["🔥 3 -> 🔥 3, 0/1"])
 
 

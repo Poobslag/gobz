@@ -125,7 +125,20 @@ static func _generate_dungeon_for_archetype(target_attack: Big, composition: Dic
 static func generate_random_dungeon(target_attack: Big) -> Dungeon:
 	var allow_advanced_types: bool = target_attack.is_gte(200)
 	var composition: Dictionary[String, Variant] = _generate_random_composition(allow_advanced_types)
-	return _generate_dungeon_for_archetype(target_attack, composition)
+	var dungeon: Dungeon = _generate_dungeon_for_archetype(target_attack, composition)
+	
+	if Global.verbose_stdout_mode:
+		print("----------")
+		print("Generated new dungeon: %s" % [dungeon.name])
+		var composition_json_dict: Dictionary[String, Variant] = {}
+		for i: int in composition["types"].size():
+			var type: Goblins.GoblinType = composition["types"][i]
+			var weight: float = composition["weights"][i]
+			composition_json_dict[Utils.enum_to_snake_case(Goblins.GoblinType, type)] = weight
+		print("Composition: %s" % [composition_json_dict])
+		print("Army (%s hordes): %s" % [dungeon.army.hordes.size(), dungeon.army.get_summary()])
+	
+	return dungeon
 
 
 class DungeonArchetype:
