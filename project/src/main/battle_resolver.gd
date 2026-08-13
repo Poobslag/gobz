@@ -1,93 +1,31 @@
 class_name BattleResolver
 
+const NORMAL: float = 1.0
+const STRONG: float = 3.0
+const WEAK: float = 0.333
+
 const MATCHUPS: Array[Array] = [
-	# Fire   Water  Grass  Angel  Devil
-	[ 1.000, 0.333, 3.000, 3.000, 0.333], # Fire
-	[ 3.000, 1.000, 0.333, 3.000, 0.333], # Water
-	[ 0.333, 3.000, 1.000, 3.000, 0.333], # Grass
-	[ 0.333, 0.333, 0.333, 1.000, 3.000], # Angel
-	[ 3.000, 3.000, 3.000, 0.333, 1.000], # Devil
+	# Fire    Water   Grass   Angel   Devil
+	[ NORMAL, WEAK,   STRONG, STRONG, WEAK   ], # Fire (strong against grass, weak against water)
+	[ STRONG, NORMAL, WEAK,   STRONG, WEAK   ], # Water (strong against fire, weak to grass)
+	[ WEAK,   STRONG, NORMAL, STRONG, WEAK   ], # Grass (strong against water, weak to fire)
+	[ WEAK,   WEAK,   WEAK,   NORMAL, STRONG ], # Angel (strong against devil, weak to everything)
+	[ STRONG, STRONG, STRONG, WEAK,   NORMAL ], # Devil (strong against everything, weak to angel)
 ]
 
-static func plan_attacks(
-		from: Army, to: Army, type: Goblins.GoblinType,
-		target_orders: Array[Goblins.GoblinType] = []) -> Array[Attack]:
+static func plan_attacks(from: Army, type: Goblins.GoblinType) -> Array[Attack]:
 	var attacks: Array[Attack] = []
-	if from.items.is_empty() or to.items.is_empty():
-		return []
 	
-	var from_sorted: Array[Army.ArmyItem] = from.items.duplicate()
-	from_sorted.sort_custom(func(a: Army.ArmyItem, b: Army.ArmyItem) -> bool:
-		return a.attack > b.attack)
-	var targets: Array[Army.ArmyItem] = []
-	for target: Army.ArmyItem in to.items:
-		if target_orders.is_empty() or target_orders.has(target.type):
-			targets.append(target)
-	targets.shuffle()
-	
-	if targets == null:
-		return []
-	
-	var virtual_targets: Dictionary[Army.ArmyItem, Army.ArmyItem] = {}
-	for target: Army.ArmyItem in targets:
-		virtual_targets[target] = target.duplicate()
-	
-	for source: Army.ArmyItem in from_sorted:
-		var best_score: Big = Big.ZERO
-		var best_damage: Big = Big.ZERO
-		var best_target: Army.ArmyItem
-		var best_damage_result: Dictionary[String, Variant] = {}
-		if source.type != type:
-			continue
-		for target: Army.ArmyItem in targets:
-			var virtual: Army.ArmyItem = virtual_targets[target]
-			if virtual.count.is_lte(0):
-				continue # already claimed by an earlier attacker
-			var damage: Big = base_damage(source, target)
-			var hp_loss: Big = Big.sub(_effective_hp(virtual), _effective_hp(virtual, damage))
-			var damage_result: Dictionary[String, Variant] = apply_damage(virtual, damage)
-			var damage_prevention: Big = Big.mul(damage_result["kill_count"], virtual.attack)
-			var score: Big = Big.add(hp_loss, damage_prevention)
-			
-			if score.is_gt(best_score):
-				best_score = Big.add(hp_loss, damage_prevention)
-				best_damage = damage
-				best_target = target
-				best_damage_result = damage_result
-		
-		# sometimes there's no logical target to attack, because all targets should be dead
-		if best_target == null and targets != null:
-			best_target = targets.pick_random()
-			best_damage = base_damage(source, best_target)
-			best_damage_result = apply_damage(virtual_targets[best_target], best_damage)
-		
-		# sometimes there's no logical target to attack, because all targets already died
-		if best_target == null:
+	for army_item: Army.ArmyItem in from.items:
+		if army_item.type != type:
 			continue
 		
 		var attack: Attack = Attack.new()
-		attack.source = source
-		attack.target = best_target
-		attack.damage = best_damage
-		attack.damage = Big.new(attack.damage.to_float() * randf_range(1.0, 1.1))
+		attack.source = army_item
+		attack.count = army_item.count
 		attacks.append(attack)
-		
-		virtual_targets[attack.target].hp = best_damage_result["new_hp"]
-		virtual_targets[attack.target].count = best_damage_result["new_count"]
 	
 	return attacks
-
-
-static func apply_damage(target: Army.ArmyItem, damage: Big) -> Dictionary[String, Variant]:
-	var effective_hp: Big = _effective_hp(target, damage)
-	var new_hp: int = Big.mod(Big.sub(effective_hp, 1), target.hp_max + 1).to_int()
-	var new_count: Big = Big.new(ceil(effective_hp.to_float() / target.hp_max))
-	return {
-		"kill_count": Big.sub(target.count, new_count),
-		"wounded_count": Big.ONE if new_count.is_gt(0) and new_hp != target.hp else Big.ZERO,
-		"new_hp": new_hp,
-		"new_count": new_count,
-	}
 
 
 static func base_damage(from: Army.ArmyItem, to: Army.ArmyItem) -> Big:
@@ -98,30 +36,91 @@ static func effectiveness(from: Goblins.GoblinType, to: Goblins.GoblinType) -> f
 	return MATCHUPS[from][to]
 
 
-static func resolve_attacks(from: Army, to: Army, attacks: Array[Attack]) -> Array[Kill]:
+static func resolve_attacks(from: Army, to: Army, attacks: Array[Attack],
+		vulnerable_types: Array[Goblins.GoblinType]) -> Array[Kill]:
+	var attacker_pool: AttackerPool = AttackerPool.new(attacks)
+	var defender_pool: DefenderPool = DefenderPool.new(to, vulnerable_types)
+	
 	var kills: Array[Kill] = []
-	for attack: Attack in attacks:
-		var damage_result: Dictionary[String, Variant] = apply_damage(attack.target, attack.damage)
-		attack.target.hp = damage_result["new_hp"]
-		attack.target.count = damage_result["new_count"]
-		var kill_count: Big = damage_result["kill_count"]
-		var wounded_count: Big = damage_result["wounded_count"]
+	# mapping from the source unit to the kill which may claim its wound
+	var pending_wounds: Dictionary[Army.ArmyItem, Kill]
+	
+	while not attacker_pool.is_empty() and not defender_pool.is_empty():
+		var attack: Attack = attacker_pool.current()
+		var target_index: int = find_target_index_for_attack(attacker_pool, defender_pool)
+		var target: Army.ArmyItem = defender_pool.get_item_at(target_index)
+		
+		var damage_per_hit: int = maxi(1, \
+				roundi(attack.source.attack * effectiveness(attack.source.type, target.type)))
+		var hits_per_kill: int = ceili(target.hp_max / float(damage_per_hit))
+		var hits_to_kill_wounded: int = ceili(target.hp / float(damage_per_hit))
+		var max_hits_taken: Big = Big.mul(Big.sub(target.count, 1), hits_per_kill)
+		max_hits_taken = Big.add(max_hits_taken, ceili(target.hp / float(damage_per_hit)))
+		var hits_taken: Big = attacker_pool.take(max_hits_taken)
+		
+		var kill_count: Big
+		var new_hp: int
+		var wounded: bool = false
+		if hits_taken.is_gte(hits_to_kill_wounded):
+			var hits_left: Big = Big.sub(hits_taken, hits_to_kill_wounded)
+			kill_count = Big.add(1, Big.div(hits_left, hits_per_kill))
+			hits_left = Big.mod(hits_left, hits_per_kill)
+			new_hp = target.hp_max - hits_left.to_int() * damage_per_hit
+			wounded = hits_left.is_gt(0)
+		else:
+			kill_count = Big.ZERO
+			new_hp = target.hp - hits_taken.to_int() * damage_per_hit
+			wounded = hits_taken.is_gt(0)
+		
+		target.hp = new_hp
+		target.count = Big.sub(target.count, kill_count)
+		
 		if kill_count.is_gt(0):
 			# award gold/xp for kills
-			from.gold = Big.add(from.gold, Big.mul(kill_count, attack.target.gold))
-			var total_xp_gain: Big = Big.mul(kill_count, attack.target.get_kill_exp())
+			from.gold = Big.add(from.gold, Big.mul(kill_count, target.gold))
+			var total_xp_gain: Big = Big.mul(kill_count, target.get_kill_exp())
 			var per_gob_xp_gain: int = roundi(total_xp_gain.to_float() / attack.source.count.to_float())
 			attack.source.xp += per_gob_xp_gain
-		if attack.target.count.is_lte(0):
-			to.remove_item(attack.target)
+		if target.count.is_lte(0):
+			to.remove_item(target)
+			defender_pool.remove_at(target_index)
 		
 		var kill: Kill = Kill.new()
 		kill.source = attack.source
-		kill.target = attack.target
+		kill.target = target
 		kill.kill_count = kill_count
-		kill.wounded_count = wounded_count
 		kills.append(kill)
+		
+		if wounded:
+			pending_wounds[target] = kill
+	
+	# give credit for wounding targets
+	for target: Army.ArmyItem in pending_wounds:
+		if target.count.is_gte(1):
+			pending_wounds[target].wounded_count = Big.ONE
+	# remove any 'kills' which didn't actually wound or kill any units
+	for kill_index: int in range(kills.size() - 1, -1, -1):
+		var kill: Kill = kills[kill_index]
+		if kill.wounded_count.is_eq(Big.ZERO) and kill.kill_count.is_eq(Big.ZERO):
+			kills.remove_at(kill_index)
+	
 	return kills
+
+
+static func find_target_index_for_attack(attacker_pool: AttackerPool, defender_pool: DefenderPool) -> int:
+	var attack: Attack = attacker_pool.current()
+	var best_target_index: int = 0
+	var best_effectiveness: float = 0.0
+	for target_offset: int in defender_pool.size():
+		var target_index: int = (attacker_pool.index + target_offset) % defender_pool.size()
+		var target_item: Army.ArmyItem = defender_pool.get_item_at(target_index)
+		var target_effectiveness: float = effectiveness(attack.source.type, target_item.type)
+		if target_effectiveness > best_effectiveness:
+			best_effectiveness = target_effectiveness
+			best_target_index = target_index
+			if target_effectiveness == STRONG:
+				break
+	return best_target_index
 
 
 static func resolve_level_ups(army: Army) -> Array[LevelUp]:
@@ -140,27 +139,74 @@ static func resolve_level_ups(army: Army) -> Array[LevelUp]:
 	return level_ups
 
 
-static func _effective_hp(item: Army.ArmyItem, damage: Big = Big.ZERO) -> Big:
-	var a: Big = Big.sub(item.count, 1)
-	a = Big.mul(a, item.hp_max)
-	a = Big.add(a, item.hp)
-	a = Big.sub(a, damage)
-	return Big.max(a, 0)
-
-
 class Attack:
 	var source: Army.ArmyItem
-	var target: Army.ArmyItem
-	var damage: Big
+	var count: Big = Big.ZERO
 
 
 class Kill:
 	var source: Army.ArmyItem
 	var target: Army.ArmyItem
-	var kill_count: Big
-	var wounded_count: Big
+	var kill_count: Big = Big.ZERO
+	var wounded_count: Big = Big.ZERO
 
 
 class LevelUp:
 	var item: Army.ArmyItem
 	var count: int = 0
+
+
+class AttackerPool:
+	var attacks: Array[Attack]
+	var index: int = 0
+	var remaining: Big = Big.ZERO
+	
+	func _init(init_attacks: Array[Attack]) -> void:
+		attacks = init_attacks
+		_refill()
+	
+	
+	func is_empty() -> bool:
+		return index >= attacks.size()
+	
+	
+	func current() -> Attack:
+		return attacks[index]
+	
+	
+	func take(amount: Big) -> Big:
+		var hits_taken: Big = Big.min(amount, remaining)
+		remaining = Big.sub(remaining, hits_taken)
+		if remaining.is_lte(0):
+			index += 1
+			_refill()
+		return hits_taken
+	
+	
+	func _refill() -> void:
+		remaining = attacks[index].count if index < attacks.size() else Big.ZERO
+
+
+class DefenderPool:
+	var vulnerable_items: Array[Army.ArmyItem] = []
+	
+	func _init(army: Army, vulnerable_types: Array[Goblins.GoblinType]) -> void:
+		for army_item: Army.ArmyItem in army.items:
+			if army_item.type in vulnerable_types:
+				vulnerable_items.append(army_item)
+	
+	
+	func is_empty() -> bool:
+		return vulnerable_items.is_empty()
+	
+	
+	func get_item_at(index: int) -> Army.ArmyItem:
+		return vulnerable_items[index]
+	
+	
+	func remove_at(index: int) -> void:
+		vulnerable_items.remove_at(index)
+	
+	
+	func size() -> int:
+		return vulnerable_items.size()

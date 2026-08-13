@@ -2,6 +2,7 @@ extends ColorRect
 
 signal finished
 
+var _initial_enemy_orders: Array[Goblins.GoblinType] = []
 var _initial_player_orders: Array[Goblins.GoblinType] = []
 var _player_orders: Array[Goblins.GoblinType] = []
 var _enemy_orders: Array[Goblins.GoblinType] = []
@@ -23,6 +24,7 @@ func play(new_player_orders: Array[Goblins.GoblinType], new_enemy_orders: Array[
 				PlayerData.army.get_total_goblins().to_aa(),
 				PlayerData.get_dungeon_army().get_total_goblins().to_aa()])
 	
+	_initial_enemy_orders = new_enemy_orders.duplicate()
 	_initial_player_orders = new_player_orders.duplicate()
 	_player_orders = new_player_orders
 	_enemy_orders = new_enemy_orders
@@ -111,16 +113,14 @@ func _play_next() -> void:
 		var enemy_attacks: Array[BattleResolver.Attack] = []
 		if not _player_orders.is_empty():
 			player_type = _player_orders.pop_front()
-			player_attacks = BattleResolver.plan_attacks( \
-					player_army, enemy_army, player_type, _enemy_orders)
+			player_attacks = BattleResolver.plan_attacks(player_army, player_type)
 		if not _enemy_orders.is_empty():
 			enemy_type = _enemy_orders.pop_front()
-			enemy_attacks = BattleResolver.plan_attacks( \
-					enemy_army, player_army, enemy_type, _initial_player_orders)
+			enemy_attacks = BattleResolver.plan_attacks(enemy_army, enemy_type)
 		var player_kills: Array[BattleResolver.Kill] \
-				= BattleResolver.resolve_attacks(player_army, enemy_army, player_attacks)
+				= BattleResolver.resolve_attacks(player_army, enemy_army, player_attacks, _initial_enemy_orders)
 		var enemy_kills: Array[BattleResolver.Kill] \
-				= BattleResolver.resolve_attacks(enemy_army, player_army, enemy_attacks)
+				= BattleResolver.resolve_attacks(enemy_army, player_army, enemy_attacks, _initial_player_orders)
 		var player_level_ups: Array[BattleResolver.LevelUp] = BattleResolver.resolve_level_ups(player_army)
 		var enemy_level_ups: Array[BattleResolver.LevelUp] = BattleResolver.resolve_level_ups(enemy_army)
 		

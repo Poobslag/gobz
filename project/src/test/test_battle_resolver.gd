@@ -1,9 +1,18 @@
 extends GutTest
 
+const FIRE: Goblins.GoblinType = Goblins.GoblinType.FIRE
+const WATER: Goblins.GoblinType = Goblins.GoblinType.WATER
+const GRASS: Goblins.GoblinType = Goblins.GoblinType.GRASS
+const ANGEL: Goblins.GoblinType = Goblins.GoblinType.ANGEL
+const DEVIL: Goblins.GoblinType = Goblins.GoblinType.DEVIL
+
 var player_army: Army = Army.new()
 var enemy_army: Army = Army.new()
 var player_orders: Array[Goblins.GoblinType] = []
 var enemy_orders: Array[Goblins.GoblinType] = []
+var attack_type: Goblins.GoblinType = FIRE
+var vulnerable_types: Array[Goblins.GoblinType] = [FIRE, WATER, GRASS, ANGEL, DEVIL]
+var battle_result: Dictionary[String, Variant] = {}
 
 func before_each() -> void:
 	player_army = Army.new()
@@ -25,98 +34,100 @@ func attack(source: Army, target: Army, \
 	return new_attack
 
 
-func test_plan_attacks_prefer_effective_target() -> void:
+func plan_and_resolve_attacks() -> void:
+	battle_result["attacks"] = BattleResolver.plan_attacks(player_army, attack_type)
+	battle_result["kills"] = BattleResolver.resolve_attacks(
+			player_army, enemy_army, battle_result["attacks"], vulnerable_types)
+
+
+func assert_kills(expected_kill_strings: Array[String]) -> void:
+	var got_kill_strings: Array[String] = []
+	for kill: BattleResolver.Kill in battle_result["kills"]:
+		var source_string: String = "%s %s" % [Goblins.emoji_from_type(kill.source.type), kill.source.level]
+		var target_string: String = "%s %s" % [Goblins.emoji_from_type(kill.target.type), kill.target.level]
+		var kw_string: String = "%s/%s" % [kill.kill_count.to_aa(), kill.wounded_count.to_aa()]
+		got_kill_strings.append("%s -> %s, %s" % [source_string, target_string, kw_string])
+	assert_eq(got_kill_strings, expected_kill_strings)
+
+
+func test_3v3() -> void:
 	player_army.add_item(army_item("🔥 3"))
+	player_army.items[0].count = Big.new(3)
+	enemy_army.add_item(army_item("🔥 3"))
+	enemy_army.items[0].count = Big.new(3)
+	plan_and_resolve_attacks()
 	
+	# our units kill an enemy and wound another
+	assert_kills(["🔥 3 -> 🔥 3, 1/1"])
+
+
+func test_3v3_kill_wounded() -> void:
+	player_army.add_item(army_item("🔥 3"))
+	player_army.items[0].count = Big.new(3)
+	enemy_army.add_item(army_item("🔥 3"))
+	enemy_army.items[0].count = Big.new(3)
+	enemy_army.items[0].hp = 1
+	plan_and_resolve_attacks()
+	
+	# our units kill the wounded enemy and one more
+	assert_kills(["🔥 3 -> 🔥 3, 2/0"])
+
+
+func test_3v3_wound_wounded() -> void:
+	player_army.add_item(army_item("🔥 3"))
+	enemy_army.add_item(army_item("🔥 3"))
+	enemy_army.items[0].count = Big.new(3)
+	enemy_army.items[0].hp = 10
+	plan_and_resolve_attacks()
+	
+	# our single unit doesn't deal enough damage to kill the wounded enemy
+	assert_kills(["🔥 3 -> 🔥 3, 0/1"])
+
+
+func test_10_trillion_v_10_trillion() -> void:
+	player_army.add_item(army_item("🔥 3"))
+	player_army.items[0].count = Big.new(10_000_000_000_000)
+	enemy_army.add_item(army_item("🔥 3"))
+	enemy_army.items[0].count = Big.new(10_000_000_000_000)
+	plan_and_resolve_attacks()
+	
+	assert_kills(["🔥 3 -> 🔥 3, 5.0t/0"])
+
+
+func test_prefer_effective_target() -> void:
+	player_army.add_item(army_item("🔥 3"))
 	enemy_army.add_item(army_item("🔥 3"))
 	enemy_army.add_item(army_item("💧 3"))
 	enemy_army.add_item(army_item("🌳 3"))
+	plan_and_resolve_attacks()
 	
-	var attacks: Array[BattleResolver.Attack] = BattleResolver.plan_attacks(player_army, enemy_army, Goblins.FIRE)
-	assert_eq(attacks[0].target.type, Goblins.GRASS)
+	assert_kills(["🔥 3 -> 🌳 3, 1/0"])
 
 
-func test_plan_attacks_prefer_kill() -> void:
-	player_army.add_item(army_item("🔥 2"))
+func test_overkill_two_units() -> void:
+	player_army.add_item(army_item("🔥 3"))
+	player_army.items[0].count = Big.new(2)
+	enemy_army.add_item(army_item("🔥 2"))
+	enemy_army.add_item(army_item("💧 2"))
+	enemy_army.add_item(army_item("🌳 2"))
+	plan_and_resolve_attacks()
 	
+	# kills the vulnerable target, and splashes onto the second target
+	assert_kills([
+		"🔥 3 -> 🌳 2, 1/0",
+		"🔥 3 -> 🔥 2, 0/1"])
+
+
+func test_overkill_one_unit() -> void:
+	player_army.add_item(army_item("🔥 9"))
 	enemy_army.add_item(army_item("🔥 1"))
-	enemy_army.add_item(army_item("🔥 9"))
-	
-	var attacks: Array[BattleResolver.Attack] = BattleResolver.plan_attacks(player_army, enemy_army, Goblins.FIRE)
-	assert_eq(attacks[0].target.level, 1)
-
-
-func test_plan_attacks_avoid_overkill() -> void:
-	player_army.add_item(army_item("🔥 8"))
-	
-	enemy_army.add_item(army_item("🔥 1"))
-	enemy_army.add_item(army_item("🔥 9"))
-	
-	var attacks: Array[BattleResolver.Attack] = BattleResolver.plan_attacks(player_army, enemy_army, Goblins.FIRE)
-	assert_eq(attacks[0].target.level, 9)
-
-
-func test_plan_attacks_dont_double_team() -> void:
-	player_army.add_item(army_item("🔥 2"))
-	player_army.add_item(army_item("🔥 2"))
-	player_army.add_item(army_item("🔥 2"))
-	player_army.add_item(army_item("🔥 2"))
-	player_army.add_item(army_item("🔥 2"))
-	
-	enemy_army.add_item(army_item("🔥 1"))
-	enemy_army.add_item(army_item("🔥 9"))
-	
-	var attacks: Array[BattleResolver.Attack] = BattleResolver.plan_attacks(player_army, enemy_army, Goblins.FIRE)
-	assert_eq(attacks[0].target.level, 1)
-	assert_eq(attacks[1].target.level, 9)
-	assert_eq(attacks[2].target.level, 9)
-	assert_eq(attacks[3].target.level, 9)
-	assert_eq(attacks[4].target.level, 9)
-
-
-func test_plan_attacks_cant_hit_cowards() -> void:
-	player_army.add_item(army_item("🔥 2"))
-	
 	enemy_army.add_item(army_item("💧 1"))
 	enemy_army.add_item(army_item("🌳 1"))
+	plan_and_resolve_attacks()
 	
-	var attacks: Array[BattleResolver.Attack] = \
-			BattleResolver.plan_attacks(player_army, enemy_army, Goblins.FIRE, [Goblins.GoblinType.WATER])
-	assert_eq(attacks[0].target.type, Goblins.GoblinType.WATER)
-
-
-func test_resolve_attacks() -> void:
-	player_army.add_item(army_item("🔥 3"))
-	
-	enemy_army.add_item(army_item("🔥 3"))
-	enemy_army.add_item(army_item("💧 3"))
-	enemy_army.add_item(army_item("🌳 3"))
-	
-	var attacks: Array[BattleResolver.Attack] = [
-		attack(player_army, enemy_army, 0, 2),
-	]
-	BattleResolver.resolve_attacks(player_army, enemy_army, attacks)
-	
-	assert_eq(enemy_army.items.size(), 2)
-	assert_eq(attacks[0].source.xp, 4)
-	assert_eq(attacks[0].target.count.to_int(), 0)
-
-
-func test_resolve_attacks_kill_wounded_guy() -> void:
-	player_army.add_item(army_item("🔥 3"))
-	
-	enemy_army.add_item(army_item("🔥 3"))
-	
-	var attacks: Array[BattleResolver.Attack] = [
-		attack(player_army, enemy_army, 0, 0),
-	]
-	enemy_army.items[0].hp = 1
-	attacks[0].damage = Big.new(3)
-	BattleResolver.resolve_attacks(player_army, enemy_army, attacks)
-	
-	assert_eq(enemy_army.items.size(), 0)
-	assert_eq(attacks[0].source.xp, 4)
-	assert_eq(attacks[0].target.count.to_int(), 0)
+	# kills the vulnerable target, but does not splash
+	assert_kills([
+		"🔥 9 -> 🌳 1, 1/0"])
 
 
 func test_resolve_level_ups() -> void:
@@ -127,3 +138,14 @@ func test_resolve_level_ups() -> void:
 	
 	assert_eq(player_army.items[0].level, 4)
 	assert_eq(player_army.items[0].xp, 3)
+
+
+func test_wound_and_kill() -> void:
+	player_army.add_item(army_item("🔥 1"))
+	player_army.add_item(army_item("🔥 1"))
+	enemy_army.add_item(army_item("🔥 1"))
+	plan_and_resolve_attacks()
+	
+	# the target requires two attacks to die, but we don't report them as wounded
+	assert_kills([
+		"🔥 1 -> 🔥 1, 1/0"])
