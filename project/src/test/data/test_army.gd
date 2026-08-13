@@ -13,7 +13,7 @@ func test_get_total_attack_overflow() -> void:
 	PlayerData.army.add_item(army_item("🔥 5"))
 	PlayerData.army.items[0].count = Big.new(999_999_999_999_999_999)
 	PlayerData.army.items[1].count = Big.new(999_999_999_999_999_999)
-	assert_almost_eq(PlayerData.army.get_total_attack().to_float(), 2.6e19, 1.0e17)
+	assert_almost_eq(PlayerData.army.get_total_attack().to_float(), 2.2e19, 1.0e17)
 
 
 func test_get_total_gold_overflow() -> void:
@@ -21,7 +21,7 @@ func test_get_total_gold_overflow() -> void:
 	PlayerData.army.add_item(army_item("🔥 5"))
 	PlayerData.army.items[0].count = Big.new(999_999_999_999_999_999)
 	PlayerData.army.items[1].count = Big.new(999_999_999_999_999_999)
-	assert_almost_eq(PlayerData.army.get_total_gold().to_float(), 1.2e20, 1.0e18)
+	assert_almost_eq(PlayerData.army.get_total_gold().to_float(), 5.5e19, 1.0e18)
 
 
 func test_get_summary_overflow() -> void:
@@ -42,7 +42,7 @@ func test_to_json_dict() -> void:
 	assert_eq(json, {
 			"items": [
 				{"name": "fire4", "count": 1.0, "level": 4, "type": "fire",
-					"hp": "14/14", "attack": 12, "gold": 55, "xp": 0},
+					"hp": "20/20", "attack": 10, "gold": 25, "xp": 0},
 			],
 			"gold": 0.0,
 		})

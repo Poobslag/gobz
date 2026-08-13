@@ -69,9 +69,16 @@ func generate_random_recruit(data: Dictionary[String, Variant] = {}) -> ArmyItem
 			weights = [1.0, 1.0, 1.0, 1.0, 1.0]
 		item.type = types[rng.rand_weighted(weights)]
 	
+	# initialize attack/hp/cost
+	item.attack = [1, 2, 2, 3].pick_random()
+	item.hp_max = [3, 4, 4, 5].pick_random()
+	if item.type == Goblins.DEVIL:
+		item.attack += [1, 2, 2, 3].pick_random()
+		item.hp_max += [3, 4, 4, 5].pick_random()
+	item.hp = item.hp_max
 	var type_cost: int = [3, 4, 5, 5, 5, 6, 7].pick_random()
 	if item.type == Goblins.DEVIL:
-		type_cost *= 2
+		type_cost += [3, 4, 5, 5, 5, 6, 7].pick_random()
 	item.gold += type_cost
 	
 	# calculate level
@@ -187,7 +194,11 @@ class ArmyItem:
 	var name: String = ""
 	
 	## Total goblins
-	var count: Big = Big.ONE
+	var count: Big = Big.ONE:
+		set(value):
+			if value.to_float() - floor(value.to_float()) != 0.0:
+				push_error("Error: count was set to a non integer value")
+			count = value
 	
 	## Level for each goblin
 	var level: int = 1
@@ -227,10 +238,10 @@ class ArmyItem:
 	func level_up() -> void:
 		xp = max(0, xp - get_exp_threshold())
 		var hp_gain: int = 0
-		hp_gain += [1, 2, 2, 3].pick_random()
+		hp_gain += [2, 4, 4, 6].pick_random()
 		attack += [1, 2, 2, 3].pick_random()
 		if type == Goblins.DEVIL:
-			hp_gain += [1, 2, 2, 3].pick_random()
+			hp_gain += [2, 4, 4, 6].pick_random()
 			attack += [1, 2, 2, 3].pick_random()
 		var level_cost: int = [3, 4, 5, 5, 5, 6, 7].pick_random()
 		if type == Goblins.DEVIL:
