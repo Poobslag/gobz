@@ -66,7 +66,7 @@ func _ready() -> void:
 
 
 func cycle_dungeons() -> void:
-	for dungeon: Dungeon in PlayerData.dungeons:
+	for dungeon: Dungeon in PlayerData.dungeons.duplicate():
 		if dungeon.is_empty():
 			PlayerData.dungeons.erase(dungeon)
 			@warning_ignore("narrowing_conversion")
