@@ -4,10 +4,11 @@ var name: String
 var army: Army = Army.new()
 var recon_army: Army = Army.new()
 
-func perform_recon() -> void:
-	if not recon_army.is_empty():
+func perform_recon(force: bool = false) -> void:
+	if not recon_army.is_empty() and not force:
 		return
 	
+	recon_army.reset()
 	var recon_count: int = mini(ceili(army.hordes.size() / 2.0), 15)
 	var recon_scalar: float = army.hordes.size() / float(recon_count)
 	for i in recon_count:
