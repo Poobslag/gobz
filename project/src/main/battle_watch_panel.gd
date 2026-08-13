@@ -185,6 +185,7 @@ func _play_next() -> void:
 	_erase_invalid_orders(_enemy_orders, PlayerData.get_dungeon_army())
 	
 	refresh()
+	PlayerData.mark_ripoff_factor_dirty()
 
 
 func _append_level_up_announcements(text_area: RichTextLabel, level_ups: Array[BattleResolver.LevelUp]) -> void:

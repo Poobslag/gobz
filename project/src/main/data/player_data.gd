@@ -1,11 +1,38 @@
 extends Node
 ## Stores the player's army.
 
+const RIPOFF_CURVE: Array[Array] = [
+	[0.0,   1.00],
+	[50.0,  0.80],
+	[500.0, 0.60],
+	[5e3,   0.50],
+	[5e4,   0.40],
+	[5e5,   0.30],
+	[5e6,   0.20],
+	[5e9,   0.10],
+	[5e12,  0.05],
+	[5e15,  0.03],
+	[5e18,  0.02],
+	[5e21,  0.01],
+]
+
+
 var army: Army = Army.new()
-var gold: Big = Big.ZERO
+var gold: Big = Big.ZERO:
+	set(value):
+		gold = value
+		mark_ripoff_factor_dirty()
 var dungeons: Array[Dungeon] = []
 var dungeon_index: int
 var home_base_multiplier: Big = Big.ONE
+var ripoff_factor: float:
+	get():
+		return get_ripoff_factor()
+
+
+var _ripoff_factor_cache: float = 0.0
+var _ripoff_factor_dirty: bool = true
+
 
 var tips: Array[String] = [
 	"🌳 goblins are strong against 💧, but struggle with 🔥.",
@@ -106,3 +133,28 @@ func scale_army_units(factor: float) -> void:
 		for item: Army.ArmyItem in dungeon.army.items:
 			item.count = Big.new(item.count.to_float() * factor)
 	gold = Big.new(gold.to_float() * factor)
+
+
+func mark_ripoff_factor_dirty() -> void:
+	_ripoff_factor_dirty = true
+
+
+func get_ripoff_factor() -> float:
+	if _ripoff_factor_dirty:
+		_ripoff_factor_dirty = false
+		_ripoff_factor_cache = _calculate_ripoff_factor()
+	return _ripoff_factor_cache
+
+
+func _calculate_ripoff_factor() -> float:
+	var result: float = RIPOFF_CURVE.back()[1]
+	var total_gold: Big = Big.add(gold, army.get_total_gold())
+	for i in range(RIPOFF_CURVE.size() - 1):
+		var lo_gold: float = RIPOFF_CURVE[i][0]
+		var hi_gold: float = RIPOFF_CURVE[i + 1][0]
+		if total_gold.is_lte(hi_gold):
+			var lo_val: float = RIPOFF_CURVE[i][1]
+			var hi_val: float = RIPOFF_CURVE[i + 1][1]
+			result = remap(total_gold.to_float(), lo_gold, hi_gold, lo_val, hi_val)
+			break
+	return result

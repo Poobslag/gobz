@@ -113,6 +113,7 @@ static func _generate_dungeon_for_archetype(target_attack: Big, composition: Dic
 		var new_recruit: Army.ArmyItem = dungeon.army.generate_random_recruit({
 			"count": count,
 			"type": type,
+			"gold_factor": PlayerData.get_ripoff_factor(),
 		})
 		dungeon.army.add_item(new_recruit)
 		total_attack = Big.add(total_attack, Big.mul(new_recruit.attack, new_recruit.count))
