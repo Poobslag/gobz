@@ -18,6 +18,8 @@ func refresh() -> void:
 
 
 func victory() -> void:
+	refresh()
+	
 	var looted_gold: Big = Big.add(PlayerData.army.gold, PlayerData.get_dungeon_army().gold)
 	PlayerData.gold = Big.add(PlayerData.gold, looted_gold)
 	PlayerData.army.gold = Big.ZERO
@@ -31,6 +33,8 @@ func victory() -> void:
 
 
 func defeat() -> void:
+	refresh()
+	
 	color = Color("8d8381")
 	PlayerData.army.gold = Big.ZERO
 	PlayerData.gold = Big.add(PlayerData.gold, Big.new(PlayerData.get_dungeon_army().gold.to_float() * 0.1))
@@ -48,6 +52,8 @@ func defeat() -> void:
 
 
 func mutual_defeat() -> void:
+	refresh()
+	
 	color = Color("8d8381")
 	var looted_gold: Big = Big.new(
 			Big.add(PlayerData.army.gold, PlayerData.get_dungeon_army().gold).to_float() * 0.5)
@@ -69,6 +75,8 @@ func mutual_defeat() -> void:
 
 
 func retreat() -> void:
+	refresh()
+	
 	var looted_gold: Big = PlayerData.army.gold
 	PlayerData.gold = Big.add(PlayerData.gold, looted_gold)
 	PlayerData.army.gold = Big.ZERO
@@ -84,4 +92,3 @@ func retreat() -> void:
 func _end_battle() -> void:
 	PlayerData.day += 1
 	PlayerData.cycle_dungeons()
-	refresh()
