@@ -30,10 +30,11 @@ func test_get_summary_overflow() -> void:
 	PlayerData.army.hordes[0].count = Big.new(999_999_999_999_999_999)
 	PlayerData.army.hordes[1].count = Big.new(999_999_999_999_999_999)
 	var summary: Army.ArmySummary = PlayerData.army.get_summary()
-	assert_eq(999_999_999_999_999_999, summary.attack_by_type[Goblins.FIRE].to_int())
-	assert_eq(999_999_999_999_999_999, summary.goblins_by_type[Goblins.FIRE].to_int())
-	assert_eq(999_999_999_999_999_999, summary.total_attack.to_int())
-	assert_eq(999_999_999_999_999_999, summary.total_goblins.to_int())
+	assert_almost_eq(summary.attack_by_type[Goblins.FIRE].to_float(), 2.2e19, 1.0e17)
+	assert_almost_eq(summary.goblins_by_type[Goblins.FIRE].to_float(), 2.0e18, 1.0e16)
+	assert_almost_eq(summary.total_attack.to_float(), 2.2e19, 1.0e17)
+	assert_almost_eq(summary.total_goblins.to_float(), 2.0e18, 1.0e16)
+	assert_almost_eq(summary.total_gold.to_float(), 5.5e19, 1.0e17)
 
 
 func test_to_json_dict() -> void:
