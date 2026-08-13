@@ -105,18 +105,18 @@ func get_dungeon_army() -> Army:
 func initialize_starting_army() -> void:
 	var goblin_count: Big = PlayerData.army.get_summary().total_goblins
 	while goblin_count.is_lt(3):
-		var item: Army.ArmyItem = Army.ArmyItem.new()
+		var horde: Horde = Horde.new()
 		
-		item.name = GoblinNames.random_name()
-		item.type = [Goblins.FIRE, Goblins.WATER, Goblins.GRASS].pick_random()
-		item.hp_max = randi_range(2, 4)
-		item.hp = item.hp_max
+		horde.name = GoblinNames.random_name()
+		horde.type = [Goblins.FIRE, Goblins.WATER, Goblins.GRASS].pick_random()
+		horde.hp_max = randi_range(2, 4)
+		horde.hp = horde.hp_max
 		
 		for _i in range(2):
 			if randf() < 0.5:
-				item.level_up()
+				horde.level_up()
 		
-		army.add_item(item)
+		army.add_horde(horde)
 		goblin_count = Big.add(goblin_count, 1)
 	
 	gold = Big.max(gold, 25)
@@ -127,11 +127,11 @@ func add_dungeon(target_attack: Big) -> void:
 
 
 func scale_army_units(factor: float) -> void:
-	for item: Army.ArmyItem in PlayerData.army.items:
-		item.count = Big.new(item.count.to_float() * factor)
+	for horde: Horde in PlayerData.army.hordes:
+		horde.count = Big.new(horde.count.to_float() * factor)
 	for dungeon: Dungeon in PlayerData.dungeons:
-		for item: Army.ArmyItem in dungeon.army.items:
-			item.count = Big.new(item.count.to_float() * factor)
+		for horde: Horde in dungeon.army.hordes:
+			horde.count = Big.new(horde.count.to_float() * factor)
 	gold = Big.new(gold.to_float() * factor)
 
 

@@ -55,7 +55,7 @@ func refresh() -> void:
 
 func get_kill_report(source_type: Goblins.GoblinType, kills: Array[BattleResolver.Kill]) -> Array[Dictionary]:
 	var kills_by_type: Dictionary[Goblins.GoblinType, Big] = {}
-	var wounded_set: Dictionary[Army.ArmyItem, bool] = {}
+	var wounded_set: Dictionary[Horde, bool] = {}
 	var wounded_by_type: Dictionary[Goblins.GoblinType, Big] = {}
 	for kill: BattleResolver.Kill in kills:
 		if not kills_by_type.has(kill.target.type):
@@ -131,20 +131,20 @@ func _play_next() -> void:
 							player_army_summary.goblins_by_type.get(player_type).to_aa()]
 			
 			var kill_report: Array[Dictionary] = get_kill_report(player_type, player_kills)
-			for kill_report_item: Dictionary in kill_report:
+			for kill_report_horde: Dictionary in kill_report:
 				var kill_strings: Array[String] = []
-				if kill_report_item["kill_count"].is_gt(0):
+				if kill_report_horde["kill_count"].is_gt(0):
 					kill_strings.append("%s×%s killed" %
-							[kill_report_item["kill_count"].to_aa(),
-									Goblins.emoji_from_type(kill_report_item["type"])])
-				if kill_report_item["wounded_count"].is_gt(0):
+							[kill_report_horde["kill_count"].to_aa(),
+									Goblins.emoji_from_type(kill_report_horde["type"])])
+				if kill_report_horde["wounded_count"].is_gt(0):
 					kill_strings.append("%s×%s wounded" %
-							[kill_report_item["wounded_count"].to_aa(),
-									Goblins.emoji_from_type(kill_report_item["type"])])
+							[kill_report_horde["wounded_count"].to_aa(),
+									Goblins.emoji_from_type(kill_report_horde["type"])])
 				var effectiveness_string: String = ""
-				if kill_report_item["effectiveness"] > 1.0:
+				if kill_report_horde["effectiveness"] > 1.0:
 					effectiveness_string = "Very effective!"
-				elif kill_report_item["effectiveness"] < 1.0:
+				elif kill_report_horde["effectiveness"] < 1.0:
 					effectiveness_string = "Not very effective..."
 				%YourAttack.text += "%s. %s\n" % [", ".join(kill_strings), effectiveness_string]
 		
@@ -158,20 +158,20 @@ func _play_next() -> void:
 							enemy_army_summary.goblins_by_type.get(enemy_type).to_aa()]
 			
 			var kill_report: Array[Dictionary] = get_kill_report(enemy_type, enemy_kills)
-			for kill_report_item: Dictionary in kill_report:
+			for kill_report_horde: Dictionary in kill_report:
 				var kill_strings: Array[String] = []
-				if kill_report_item["kill_count"].is_gt(0):
+				if kill_report_horde["kill_count"].is_gt(0):
 					kill_strings.append("%s×%s killed" %
-							[kill_report_item["kill_count"].to_aa(),
-									Goblins.emoji_from_type(kill_report_item["type"])])
-				if kill_report_item["wounded_count"].is_gt(0):
+							[kill_report_horde["kill_count"].to_aa(),
+									Goblins.emoji_from_type(kill_report_horde["type"])])
+				if kill_report_horde["wounded_count"].is_gt(0):
 					kill_strings.append("%s×%s wounded" %
-							[kill_report_item["wounded_count"].to_aa(),
-									Goblins.emoji_from_type(kill_report_item["type"])])
+							[kill_report_horde["wounded_count"].to_aa(),
+									Goblins.emoji_from_type(kill_report_horde["type"])])
 				var effectiveness_string: String = ""
-				if kill_report_item["effectiveness"] > 1.0:
+				if kill_report_horde["effectiveness"] > 1.0:
 					effectiveness_string = "A terrible blow!"
-				elif kill_report_item["effectiveness"] < 1.0:
+				elif kill_report_horde["effectiveness"] < 1.0:
 					effectiveness_string = "Not very effective..."
 				%EnemyAttack.text += "%s. %s\n" % [", ".join(kill_strings), effectiveness_string]
 			
@@ -193,21 +193,21 @@ func _append_level_up_announcements(text_area: RichTextLabel, level_ups: Array[B
 	var other_goblin_count: Big = Big.ZERO
 	for level_up: BattleResolver.LevelUp in level_ups:
 		if announcement_count < 2:
-			if level_up.item.count.is_eq(1):
+			if level_up.horde.count.is_eq(1):
 				text_area.text += "%s %s grew to level %s!\n" % \
-						[Goblins.emoji_from_type(level_up.item.type), level_up.item.name, \
-						level_up.item.level]
-			elif level_up.item.count.is_eq(2):
+						[Goblins.emoji_from_type(level_up.horde.type), level_up.horde.name, \
+						level_up.horde.level]
+			elif level_up.horde.count.is_eq(2):
 				text_area.text += "%s %s + 1 other grew to level %s!\n" % \
-						[Goblins.emoji_from_type(level_up.item.type), level_up.item.name, \
-						level_up.item.level]
+						[Goblins.emoji_from_type(level_up.horde.type), level_up.horde.name, \
+						level_up.horde.level]
 			else:
 				text_area.text += "%s %s + %s others grew to level %s!\n" % \
-						[Goblins.emoji_from_type(level_up.item.type), level_up.item.name, \
-						Big.sub(level_up.item.count, 1).to_aa(), level_up.item.level]
+						[Goblins.emoji_from_type(level_up.horde.type), level_up.horde.name, \
+						Big.sub(level_up.horde.count, 1).to_aa(), level_up.horde.level]
 			announcement_count += 1
 		else:
-			other_goblin_count = Big.add(other_goblin_count, level_up.item.count)
+			other_goblin_count = Big.add(other_goblin_count, level_up.horde.count)
 	if other_goblin_count.is_gte(1):
 		if other_goblin_count.is_eq(1):
 			text_area.text += "1 other goblin leveled up!\n"

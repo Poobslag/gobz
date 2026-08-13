@@ -34,17 +34,17 @@ func test_generate_basic() -> void:
 	assert_false(composition["types"][2] in [Goblins.GoblinType.DEVIL, Goblins.GoblinType.ANGEL])
 
 
-func test_generate_random_dungeon_army_items_size() -> void:
+func test_generate_random_dungeon_hordes_size() -> void:
 	var dungeon: Dungeon
 	
 	dungeon = DungeonGenerator.generate_random_dungeon(Big.new(500))
-	assert_between(dungeon.army.items.size(), 20, 400)
+	assert_between(dungeon.army.hordes.size(), 20, 400)
 	
 	dungeon = DungeonGenerator.generate_random_dungeon(Big.new(5_000))
-	assert_between(dungeon.army.items.size(), 20, 400)
+	assert_between(dungeon.army.hordes.size(), 20, 400)
 	
 	dungeon = DungeonGenerator.generate_random_dungeon(Big.new(5_000_000))
-	assert_between(dungeon.army.items.size(), 20, 400)
+	assert_between(dungeon.army.hordes.size(), 20, 400)
 	
 	dungeon = DungeonGenerator.generate_random_dungeon(Big.new(5_000_000_000))
-	assert_between(dungeon.army.items.size(), 20, 400)
+	assert_between(dungeon.army.hordes.size(), 20, 400)

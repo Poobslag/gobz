@@ -110,12 +110,12 @@ static func _generate_dungeon_for_archetype(target_attack: Big, composition: Dic
 	while total_attack.is_lt(target_attack) and mercy < 1000:
 		var count: Big = Big.new(round(_rng.randf_range(min_count.to_float(), max_count.to_float())))
 		var type: Goblins.GoblinType = composition["types"][_rng.rand_weighted(composition["weights"])]
-		var new_recruit: Army.ArmyItem = dungeon.army.generate_random_recruit({
+		var new_recruit: Horde = dungeon.army.generate_random_recruit({
 			"count": count,
 			"type": type,
 			"gold_factor": PlayerData.get_ripoff_factor(),
 		})
-		dungeon.army.add_item(new_recruit)
+		dungeon.army.add_horde(new_recruit)
 		total_attack = Big.add(total_attack, Big.mul(new_recruit.attack, new_recruit.count))
 		mercy += 1
 	

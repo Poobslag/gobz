@@ -6,8 +6,8 @@ static func get_dungeon_select_info(dungeon: Dungeon) -> Dictionary[String, Stri
 	var attack_by_type: Dictionary[Goblins.GoblinType, Big]
 	for type: Goblins.GoblinType in Goblins.GoblinType.values():
 		attack_by_type[type] = Big.ZERO
-	for item: Army.ArmyItem in dungeon.recon_army.items:
-		attack_by_type[item.type] = Big.add(attack_by_type[item.type], Big.mul(item.attack, item.count))
+	for horde: Horde in dungeon.recon_army.hordes:
+		attack_by_type[horde.type] = Big.add(attack_by_type[horde.type], Big.mul(horde.attack, horde.count))
 	var type_summaries: Array[Dictionary] = []
 	for type: Goblins.GoblinType in Goblins.GoblinType.values():
 		type_summaries.append({
