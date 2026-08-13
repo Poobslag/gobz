@@ -11,6 +11,8 @@ func _ready() -> void:
 		%Recruits.remove_child(child)
 		child.queue_free()
 	
+	%DayLabel.text = "Day %s" % [StringUtils.comma_sep(PlayerData.day)]
+	
 	_refresh_recruits()
 	_refresh_summary()
 	PlayerData.cycle_dungeons()
@@ -82,7 +84,7 @@ func _recruit(recruit_row: HomeBaseRecruitRow) -> void:
 		return
 	
 	PlayerData.gold = Big.sub(PlayerData.gold, recruit_row.get_cost())
-	PlayerData.army.add_item(recruit_row.item)
+	PlayerData.army.add_horde(recruit_row.horde)
 	
 	%Recruits.remove_child(recruit_row)
 	recruit_row.queue_free()

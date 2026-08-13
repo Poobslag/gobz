@@ -18,6 +18,23 @@ script = ExtResource("1_q6unp")
 layout_mode = 1
 color = Color(0.27058825, 0.5411765, 0.38039216, 1)
 
+[node name="DayLabel" type="RichTextLabel" parent="ScreenPanel/MarginContainer/Panel" parent_id_path=PackedInt32Array(806142582, 2033304710) index="0" unique_id=232688582]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -476.0
+offset_right = 476.0
+offset_bottom = 46.0
+grow_horizontal = 2
+bbcode_enabled = true
+text = "Day 1"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="VBoxContainer" type="VBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer" parent_id_path=PackedInt32Array(806142582, 1781904422) index="0" unique_id=228279447]
 layout_mode = 2
 
