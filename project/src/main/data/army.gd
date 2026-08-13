@@ -119,6 +119,11 @@ func generate_random_recruit(data: Dictionary[String, Variant] = {}) -> ArmyItem
 		if randf() < 0.2:
 			item.gold = floori(float(item.gold) / 1.5)
 	item.gold = maxi(item.gold, 1)
+	if data.has("gold_factor"):
+		var gold_float: float = item.gold
+		item.gold = maxi(1, floor(item.gold * data["gold_factor"]))
+		if randf() < (gold_float - item.gold):
+			item.gold += 1
 	
 	if data.has("count"):
 		item.count = Big.mul(item.count, data["count"])
