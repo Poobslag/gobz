@@ -16,19 +16,19 @@ const MATCHUPS: Array[Array] = [
 static func plan_attacks(from: Army, type: Goblins.GoblinType) -> Array[Attack]:
 	var attacks: Array[Attack] = []
 	
-	for army_item: Army.ArmyItem in from.items:
-		if army_item.type != type:
+	for horde: Horde in from.hordes:
+		if horde.type != type:
 			continue
 		
 		var attack: Attack = Attack.new()
-		attack.source = army_item
-		attack.count = army_item.count
+		attack.source = horde
+		attack.count = horde.count
 		attacks.append(attack)
 	
 	return attacks
 
 
-static func base_damage(from: Army.ArmyItem, to: Army.ArmyItem) -> Big:
+static func base_damage(from: Horde, to: Horde) -> Big:
 	return Big.max(1, from.count.to_float() * from.attack * effectiveness(from.type, to.type))
 
 
@@ -43,12 +43,12 @@ static func resolve_attacks(from: Army, to: Army, attacks: Array[Attack],
 	
 	var kills: Array[Kill] = []
 	# mapping from the source unit to the kill which may claim its wound
-	var pending_wounds: Dictionary[Army.ArmyItem, Kill]
+	var pending_wounds: Dictionary[Horde, Kill]
 	
 	while not attacker_pool.is_empty() and not defender_pool.is_empty():
 		var attack: Attack = attacker_pool.current()
 		var target_index: int = find_target_index_for_attack(attacker_pool, defender_pool)
-		var target: Army.ArmyItem = defender_pool.get_item_at(target_index)
+		var target: Horde = defender_pool.get_horde_at(target_index)
 		
 		var damage_per_hit: int = maxi(1, \
 				roundi(attack.source.attack * effectiveness(attack.source.type, target.type)))
@@ -82,7 +82,7 @@ static func resolve_attacks(from: Army, to: Army, attacks: Array[Attack],
 			var per_gob_xp_gain: int = roundi(total_xp_gain.to_float() / attack.source.count.to_float())
 			attack.source.xp += per_gob_xp_gain
 		if target.count.is_lte(0):
-			to.remove_item(target)
+			to.remove_horde(target)
 			defender_pool.remove_at(target_index)
 		
 		var kill: Kill = Kill.new()
@@ -95,7 +95,7 @@ static func resolve_attacks(from: Army, to: Army, attacks: Array[Attack],
 			pending_wounds[target] = kill
 	
 	# give credit for wounding targets
-	for target: Army.ArmyItem in pending_wounds:
+	for target: Horde in pending_wounds:
 		if target.count.is_gte(1):
 			pending_wounds[target].wounded_count = Big.ONE
 	# remove any 'kills' which didn't actually wound or kill any units
@@ -113,8 +113,8 @@ static func find_target_index_for_attack(attacker_pool: AttackerPool, defender_p
 	var best_effectiveness: float = 0.0
 	for target_offset: int in defender_pool.size():
 		var target_index: int = (attacker_pool.index + target_offset) % defender_pool.size()
-		var target_item: Army.ArmyItem = defender_pool.get_item_at(target_index)
-		var target_effectiveness: float = effectiveness(attack.source.type, target_item.type)
+		var target_horde: Horde = defender_pool.get_horde_at(target_index)
+		var target_effectiveness: float = effectiveness(attack.source.type, target_horde.type)
 		if target_effectiveness > best_effectiveness:
 			best_effectiveness = target_effectiveness
 			best_target_index = target_index
@@ -125,34 +125,34 @@ static func find_target_index_for_attack(attacker_pool: AttackerPool, defender_p
 
 static func resolve_level_ups(army: Army) -> Array[LevelUp]:
 	var level_ups: Array[LevelUp] = []
-	for item: Army.ArmyItem in army.items:
+	for horde: Horde in army.hordes:
 		var level_up_count: int = 0
-		while item.can_level_up():
-			item.level_up()
+		while horde.can_level_up():
+			horde.level_up()
 			level_up_count += 1
 		
 		if level_up_count >= 1:
 			var level_up: LevelUp = LevelUp.new()
-			level_up.item = item
+			level_up.horde = horde
 			level_up.count = level_up_count
 			level_ups.append(level_up)
 	return level_ups
 
 
 class Attack:
-	var source: Army.ArmyItem
+	var source: Horde
 	var count: Big = Big.ZERO
 
 
 class Kill:
-	var source: Army.ArmyItem
-	var target: Army.ArmyItem
+	var source: Horde
+	var target: Horde
 	var kill_count: Big = Big.ZERO
 	var wounded_count: Big = Big.ZERO
 
 
 class LevelUp:
-	var item: Army.ArmyItem
+	var horde: Horde
 	var count: int = 0
 
 
@@ -188,25 +188,25 @@ class AttackerPool:
 
 
 class DefenderPool:
-	var vulnerable_items: Array[Army.ArmyItem] = []
+	var vulnerable_hordes: Array[Horde] = []
 	
 	func _init(army: Army, vulnerable_types: Array[Goblins.GoblinType]) -> void:
-		for army_item: Army.ArmyItem in army.items:
-			if army_item.type in vulnerable_types:
-				vulnerable_items.append(army_item)
+		for horde: Horde in army.hordes:
+			if horde.type in vulnerable_types:
+				vulnerable_hordes.append(horde)
 	
 	
 	func is_empty() -> bool:
-		return vulnerable_items.is_empty()
+		return vulnerable_hordes.is_empty()
 	
 	
-	func get_item_at(index: int) -> Army.ArmyItem:
-		return vulnerable_items[index]
+	func get_horde_at(index: int) -> Horde:
+		return vulnerable_hordes[index]
 	
 	
 	func remove_at(index: int) -> void:
-		vulnerable_items.remove_at(index)
+		vulnerable_hordes.remove_at(index)
 	
 	
 	func size() -> int:
-		return vulnerable_items.size()
+		return vulnerable_hordes.size()

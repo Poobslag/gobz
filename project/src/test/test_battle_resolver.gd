@@ -21,15 +21,15 @@ func before_each() -> void:
 	enemy_orders.clear()
 
 
-func army_item(s: String) -> Army.ArmyItem:
-	return ArmyTestUtils.army_item(s)
+func horde(s: String) -> Horde:
+	return ArmyTestUtils.horde(s)
 
 
 func attack(source: Army, target: Army, \
 		source_index: int, target_index: int) -> BattleResolver.Attack:
 	var new_attack: BattleResolver.Attack = BattleResolver.Attack.new()
-	new_attack.source = source.items[source_index]
-	new_attack.target = target.items[target_index]
+	new_attack.source = source.hordes[source_index]
+	new_attack.target = target.hordes[target_index]
 	new_attack.damage = BattleResolver.base_damage(new_attack.source, new_attack.target)
 	return new_attack
 
@@ -51,10 +51,10 @@ func assert_kills(expected_kill_strings: Array[String]) -> void:
 
 
 func test_3v3() -> void:
-	player_army.add_item(army_item("🔥 3"))
-	player_army.items[0].count = Big.new(3)
-	enemy_army.add_item(army_item("🔥 3"))
-	enemy_army.items[0].count = Big.new(3)
+	player_army.add_horde(horde("🔥 3"))
+	player_army.hordes[0].count = Big.new(3)
+	enemy_army.add_horde(horde("🔥 3"))
+	enemy_army.hordes[0].count = Big.new(3)
 	plan_and_resolve_attacks()
 	
 	# our units kill an enemy and wound another
@@ -62,11 +62,11 @@ func test_3v3() -> void:
 
 
 func test_3v3_kill_wounded() -> void:
-	player_army.add_item(army_item("🔥 3"))
-	player_army.items[0].count = Big.new(3)
-	enemy_army.add_item(army_item("🔥 3"))
-	enemy_army.items[0].count = Big.new(3)
-	enemy_army.items[0].hp = 1
+	player_army.add_horde(horde("🔥 3"))
+	player_army.hordes[0].count = Big.new(3)
+	enemy_army.add_horde(horde("🔥 3"))
+	enemy_army.hordes[0].count = Big.new(3)
+	enemy_army.hordes[0].hp = 1
 	plan_and_resolve_attacks()
 	
 	# our units kill the wounded enemy and one more
@@ -74,10 +74,10 @@ func test_3v3_kill_wounded() -> void:
 
 
 func test_3v3_wound_wounded() -> void:
-	player_army.add_item(army_item("🔥 3"))
-	enemy_army.add_item(army_item("🔥 3"))
-	enemy_army.items[0].count = Big.new(3)
-	enemy_army.items[0].hp = 10
+	player_army.add_horde(horde("🔥 3"))
+	enemy_army.add_horde(horde("🔥 3"))
+	enemy_army.hordes[0].count = Big.new(3)
+	enemy_army.hordes[0].hp = 10
 	plan_and_resolve_attacks()
 	
 	# our single unit doesn't deal enough damage to kill the wounded enemy
@@ -85,31 +85,31 @@ func test_3v3_wound_wounded() -> void:
 
 
 func test_10_trillion_v_10_trillion() -> void:
-	player_army.add_item(army_item("🔥 3"))
-	player_army.items[0].count = Big.new(10_000_000_000_000)
-	enemy_army.add_item(army_item("🔥 3"))
-	enemy_army.items[0].count = Big.new(10_000_000_000_000)
+	player_army.add_horde(horde("🔥 3"))
+	player_army.hordes[0].count = Big.new(10_000_000_000_000)
+	enemy_army.add_horde(horde("🔥 3"))
+	enemy_army.hordes[0].count = Big.new(10_000_000_000_000)
 	plan_and_resolve_attacks()
 	
 	assert_kills(["🔥 3 -> 🔥 3, 5.0t/0"])
 
 
 func test_prefer_effective_target() -> void:
-	player_army.add_item(army_item("🔥 3"))
-	enemy_army.add_item(army_item("🔥 3"))
-	enemy_army.add_item(army_item("💧 3"))
-	enemy_army.add_item(army_item("🌳 3"))
+	player_army.add_horde(horde("🔥 3"))
+	enemy_army.add_horde(horde("🔥 3"))
+	enemy_army.add_horde(horde("💧 3"))
+	enemy_army.add_horde(horde("🌳 3"))
 	plan_and_resolve_attacks()
 	
 	assert_kills(["🔥 3 -> 🌳 3, 1/0"])
 
 
 func test_overkill_two_units() -> void:
-	player_army.add_item(army_item("🔥 3"))
-	player_army.items[0].count = Big.new(2)
-	enemy_army.add_item(army_item("🔥 2"))
-	enemy_army.add_item(army_item("💧 2"))
-	enemy_army.add_item(army_item("🌳 2"))
+	player_army.add_horde(horde("🔥 3"))
+	player_army.hordes[0].count = Big.new(2)
+	enemy_army.add_horde(horde("🔥 2"))
+	enemy_army.add_horde(horde("💧 2"))
+	enemy_army.add_horde(horde("🌳 2"))
 	plan_and_resolve_attacks()
 	
 	# kills the vulnerable target, and splashes onto the second target
@@ -119,10 +119,10 @@ func test_overkill_two_units() -> void:
 
 
 func test_overkill_one_unit() -> void:
-	player_army.add_item(army_item("🔥 9"))
-	enemy_army.add_item(army_item("🔥 1"))
-	enemy_army.add_item(army_item("💧 1"))
-	enemy_army.add_item(army_item("🌳 1"))
+	player_army.add_horde(horde("🔥 9"))
+	enemy_army.add_horde(horde("🔥 1"))
+	enemy_army.add_horde(horde("💧 1"))
+	enemy_army.add_horde(horde("🌳 1"))
 	plan_and_resolve_attacks()
 	
 	# kills the vulnerable target, but does not splash
@@ -131,19 +131,19 @@ func test_overkill_one_unit() -> void:
 
 
 func test_resolve_level_ups() -> void:
-	player_army.add_item(army_item("🔥 3"))
-	player_army.items[0].xp = 11
+	player_army.add_horde(horde("🔥 3"))
+	player_army.hordes[0].xp = 11
 	
 	BattleResolver.resolve_level_ups(player_army)
 	
-	assert_eq(player_army.items[0].level, 4)
-	assert_eq(player_army.items[0].xp, 3)
+	assert_eq(player_army.hordes[0].level, 4)
+	assert_eq(player_army.hordes[0].xp, 3)
 
 
 func test_wound_and_kill() -> void:
-	player_army.add_item(army_item("🔥 1"))
-	player_army.add_item(army_item("🔥 1"))
-	enemy_army.add_item(army_item("🔥 1"))
+	player_army.add_horde(horde("🔥 1"))
+	player_army.add_horde(horde("🔥 1"))
+	enemy_army.add_horde(horde("🔥 1"))
 	plan_and_resolve_attacks()
 	
 	# the target requires two attacks to die, but we don't report them as wounded

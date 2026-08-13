@@ -39,7 +39,7 @@ func defeat() -> void:
 	%Message.text = ""
 	%Message.text += "Defeat...\n\n"
 	
-	var goblin: Army.ArmyItem = PlayerData.army.items.back()
+	var goblin: Horde = PlayerData.army.hordes.back()
 	%Message.text += "%s %s is inspired by the bravery of the fallen goblins!\n" % [
 		Goblins.emoji_from_type(goblin.type), goblin.name
 	]
