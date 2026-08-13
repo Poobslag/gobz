@@ -69,7 +69,7 @@ static func plan_attacks(
 		attack.source = source
 		attack.target = best_target
 		attack.damage = best_damage
-		attack.damage = Big.floor(Big.mul(attack.damage, randf_range(1.0, 1.1)))
+		attack.damage = Big.new(attack.damage.to_float() * randf_range(1.0, 1.1))
 		attacks.append(attack)
 		
 		virtual_targets[attack.target].hp = best_damage_result["new_hp"]
@@ -81,7 +81,7 @@ static func plan_attacks(
 static func apply_damage(target: Army.ArmyItem, damage: Big) -> Dictionary[String, Variant]:
 	var effective_hp: Big = _effective_hp(target, damage)
 	var new_hp: int = Big.mod(Big.sub(effective_hp, 1), target.hp_max + 1).to_int()
-	var new_count: Big = Big.ceil(Big.div(effective_hp, target.hp_max))
+	var new_count: Big = Big.new(ceil(effective_hp.to_float() / target.hp_max))
 	return {
 		"kill_count": Big.sub(target.count, new_count),
 		"wounded_count": Big.ONE if new_count.is_gt(0) and new_hp != target.hp else Big.ZERO,
@@ -91,7 +91,7 @@ static func apply_damage(target: Army.ArmyItem, damage: Big) -> Dictionary[Strin
 
 
 static func base_damage(from: Army.ArmyItem, to: Army.ArmyItem) -> Big:
-	return Big.max(1, Big.round(Big.mul(Big.mul(from.count, from.attack), effectiveness(from.type, to.type))))
+	return Big.max(1, from.count.to_float() * from.attack * effectiveness(from.type, to.type))
 
 
 static func effectiveness(from: Goblins.GoblinType, to: Goblins.GoblinType) -> float:
@@ -110,7 +110,7 @@ static func resolve_attacks(from: Army, to: Army, attacks: Array[Attack]) -> Arr
 			# award gold/xp for kills
 			from.gold = Big.add(from.gold, Big.mul(kill_count, attack.target.gold))
 			var total_xp_gain: Big = Big.mul(kill_count, attack.target.get_kill_exp())
-			var per_gob_xp_gain: int = roundi(Big.div(total_xp_gain, attack.source.count).to_int())
+			var per_gob_xp_gain: int = roundi(total_xp_gain.to_float() / attack.source.count.to_float())
 			attack.source.xp += per_gob_xp_gain
 		if attack.target.count.is_lte(0):
 			to.remove_item(attack.target)

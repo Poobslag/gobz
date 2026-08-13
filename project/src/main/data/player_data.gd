@@ -43,14 +43,14 @@ func cycle_dungeons() -> void:
 		if dungeon.is_empty():
 			PlayerData.dungeons.erase(dungeon)
 			@warning_ignore("narrowing_conversion")
-			PlayerData.add_dungeon(Big.mul(PlayerData.army.get_total_attack(), randf_range(0.4, 1.4)))
+			PlayerData.add_dungeon(Big.new(PlayerData.army.get_total_attack().to_float() * randf_range(0.4, 1.4)))
 	
 	if not PlayerData.dungeons.is_empty():
 		PlayerData.dungeons.remove_at(0)
 	
 	while PlayerData.dungeons.size() < 5:
 		@warning_ignore("narrowing_conversion")
-		PlayerData.add_dungeon(Big.mul(PlayerData.army.get_total_attack(), randf_range(0.4, 1.4)))
+		PlayerData.add_dungeon(Big.new(PlayerData.army.get_total_attack().to_float() * randf_range(0.4, 1.4)))
 
 
 func get_next_tip() -> String:
@@ -101,8 +101,8 @@ func add_dungeon(target_attack: Big) -> void:
 
 func scale_army_units(factor: float) -> void:
 	for item: Army.ArmyItem in PlayerData.army.items:
-		item.count = Big.mul(item.count, factor)
+		item.count = Big.new(item.count.to_float() * factor)
 	for dungeon: Dungeon in PlayerData.dungeons:
 		for item: Army.ArmyItem in dungeon.army.items:
-			item.count = Big.mul(item.count, factor)
-	gold = Big.mul(gold, factor)
+			item.count = Big.new(item.count.to_float() * factor)
+	gold = Big.new(gold.to_float() * factor)

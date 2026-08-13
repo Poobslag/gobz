@@ -34,7 +34,7 @@ func defeat() -> void:
 	color = Color("8d8381")
 	
 	PlayerData.army.gold = Big.ZERO
-	PlayerData.gold = Big.add(PlayerData.gold, Big.mul(PlayerData.get_dungeon_army().gold, 0.1))
+	PlayerData.gold = Big.add(PlayerData.gold, Big.new(PlayerData.get_dungeon_army().gold.to_float() * 0.1))
 	PlayerData.initialize_starting_army()
 	%Message.text = ""
 	%Message.text += "Defeat...\n\n"
