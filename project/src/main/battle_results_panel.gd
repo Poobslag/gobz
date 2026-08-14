@@ -2,6 +2,10 @@ extends ColorRect
 
 signal finished
 
+@onready var splash_showers: Array[Control] = [
+	%VictoryShower, %DefeatShower, %RetreatShower
+]
+
 func _ready() -> void:
 	%DoneButton.pressed.connect(finished.emit)
 
@@ -19,6 +23,7 @@ func refresh() -> void:
 
 func victory() -> void:
 	refresh()
+	_show_splash(%VictoryShower)
 	
 	var looted_gold: Big = Big.add(PlayerData.army.gold, PlayerData.get_dungeon_army().gold)
 	PlayerData.gold = Big.add(PlayerData.gold, looted_gold)
@@ -34,6 +39,7 @@ func victory() -> void:
 
 func defeat() -> void:
 	refresh()
+	_show_splash(%DefeatShower)
 	
 	color = Color("8d8381")
 	PlayerData.army.gold = Big.ZERO
@@ -53,6 +59,7 @@ func defeat() -> void:
 
 func mutual_defeat() -> void:
 	refresh()
+	_show_splash(%DefeatShower)
 	
 	color = Color("8d8381")
 	var looted_gold: Big = Big.new(
@@ -76,6 +83,7 @@ func mutual_defeat() -> void:
 
 func retreat() -> void:
 	refresh()
+	_show_splash(%RetreatShower)
 	
 	var looted_gold: Big = PlayerData.army.gold
 	PlayerData.gold = Big.add(PlayerData.gold, looted_gold)
@@ -84,7 +92,10 @@ func retreat() -> void:
 	color = Color("8d8381")
 	%Message.text = ""
 	%Message.text += "Retreat!\n\n"
-	%Message.text += "You scurry home with 💰%s in your pockets." % [looted_gold.to_aa()]
+	if looted_gold.is_gt(0):
+		%Message.text += "You scurry home with 💰%s in your pockets." % [looted_gold.to_aa()]
+	else:
+		%Message.text += "You scurry home empty-handed." % [looted_gold.to_aa()]
 	
 	_end_battle()
 
@@ -92,3 +103,9 @@ func retreat() -> void:
 func _end_battle() -> void:
 	PlayerData.day += 1
 	PlayerData.cycle_dungeons()
+
+
+func _show_splash(shower: Node) -> void:
+	for next_shower: Node in splash_showers:
+		next_shower.hide()
+	shower.visible = true

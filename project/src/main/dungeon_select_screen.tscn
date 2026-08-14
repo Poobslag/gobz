@@ -3,6 +3,9 @@
 [ext_resource type="Script" uid="uid://x0e81wy3egvr" path="res://src/main/dungeon_select_screen.gd" id="1_atl5w"]
 [ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/screen_panel.tscn" id="1_qmtpw"]
 [ext_resource type="PackedScene" uid="uid://jratby1g2yr6" path="res://src/main/dungeon_select_row.tscn" id="2_dx72l"]
+[ext_resource type="PackedScene" uid="uid://dqjjgkwxab0ht" path="res://src/main/splash_shower.tscn" id="3_r0u77"]
+[ext_resource type="PackedScene" uid="uid://dbm3uqjrgg63m" path="res://src/main/splash_art.tscn" id="4_vy7bb"]
+[ext_resource type="Texture2D" uid="uid://2ws83stx7ew3" path="res://assets/main/splash/dungeon_select.png" id="5_q8grs"]
 
 [node name="DungeonSelect" type="Control" unique_id=1192315041]
 layout_mode = 3
@@ -16,6 +19,57 @@ script = ExtResource("1_atl5w")
 [node name="ScreenPanel" parent="." unique_id=806142582 instance=ExtResource("1_qmtpw")]
 layout_mode = 1
 color = Color(0.34509805, 0.7019608, 0.7490196, 1)
+
+[node name="SplashShower" parent="ScreenPanel/MarginContainer/Panel" parent_id_path=PackedInt32Array(806142582, 2033304710) index="0" unique_id=731007175 instance=ExtResource("3_r0u77")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterRight" type="Control" parent="ScreenPanel/MarginContainer/Panel/SplashShower" unique_id=704968964]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="SplashArt3" parent="ScreenPanel/MarginContainer/Panel/SplashShower/CenterRight" unique_id=1268708424 instance=ExtResource("4_vy7bb")]
+visible = false
+modulate = Color(0.34509805, 0.7019608, 0.7490196, 1)
+position = Vector2(-234, 13)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5_q8grs")
+
+[node name="SplashArt1" parent="ScreenPanel/MarginContainer/Panel/SplashShower/CenterRight" unique_id=1108177714 instance=ExtResource("4_vy7bb")]
+visible = false
+modulate = Color(0.34509805, 0.7019608, 0.7490196, 0.5019608)
+position = Vector2(-348, 0)
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("5_q8grs")
+
+[node name="TopRight" type="Control" parent="ScreenPanel/MarginContainer/Panel/SplashShower" unique_id=234556807]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+
+[node name="SplashArt2" parent="ScreenPanel/MarginContainer/Panel/SplashShower/TopRight" unique_id=1575316682 instance=ExtResource("4_vy7bb")]
+modulate = Color(0.14117648, 0.19607843, 0.20392157, 1)
+position = Vector2(-266, 235)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("5_q8grs")
+flip_h = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer" parent_id_path=PackedInt32Array(806142582, 1781904422) index="0" unique_id=1968968407]
 layout_mode = 2

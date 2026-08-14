@@ -3,6 +3,12 @@
 [ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/screen_panel.tscn" id="1_kq665"]
 [ext_resource type="Script" uid="uid://gwyhffa4qow7" path="res://src/main/main_menu_screen.gd" id="1_r85qb"]
 [ext_resource type="PackedScene" uid="uid://sn8q4ho5fq8x" path="res://src/main/save_slot_row.tscn" id="3_5wv06"]
+[ext_resource type="PackedScene" uid="uid://dqjjgkwxab0ht" path="res://src/main/splash_shower.tscn" id="4_6fnkm"]
+[ext_resource type="PackedScene" uid="uid://dbm3uqjrgg63m" path="res://src/main/splash_art.tscn" id="5_15lh7"]
+[ext_resource type="Texture2D" uid="uid://qfgm6sdjbewp" path="res://assets/main/splash/battle_ready.png" id="5_k7ix4"]
+[ext_resource type="Texture2D" uid="uid://2ws83stx7ew3" path="res://assets/main/splash/dungeon_select.png" id="6_15lh7"]
+[ext_resource type="Texture2D" uid="uid://do5epr70eqwxc" path="res://assets/main/splash/victory.png" id="6_n8j7u"]
+[ext_resource type="Script" uid="uid://do7fvk3pg818c" path="res://src/main/version_label.gd" id="9_ya4fg"]
 
 [node name="MainMenuScreen" type="Control" unique_id=282256494]
 layout_mode = 3
@@ -16,6 +22,60 @@ script = ExtResource("1_r85qb")
 [node name="ScreenPanel" parent="." unique_id=806142582 instance=ExtResource("1_kq665")]
 layout_mode = 1
 color = Color(0.41960785, 0.1882353, 0.29411766, 1)
+
+[node name="SplashShower" parent="ScreenPanel/MarginContainer/Panel" parent_id_path=PackedInt32Array(806142582, 2033304710) index="0" unique_id=731007175 instance=ExtResource("4_6fnkm")]
+layout_mode = 0
+offset_right = 1052.0
+offset_bottom = 548.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterRight" type="Control" parent="ScreenPanel/MarginContainer/Panel/SplashShower" unique_id=1887226737]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="SplashArt1" parent="ScreenPanel/MarginContainer/Panel/SplashShower/CenterRight" unique_id=1575316682 instance=ExtResource("5_15lh7")]
+visible = false
+modulate = Color(0.41960785, 0.1882353, 0.29411766, 1)
+position = Vector2(-407, 0)
+scale = Vector2(1.4, 1.4)
+texture = ExtResource("5_k7ix4")
+
+[node name="SplashArt2" parent="ScreenPanel/MarginContainer/Panel/SplashShower/CenterRight" unique_id=370314325 instance=ExtResource("5_15lh7")]
+visible = false
+modulate = Color(0.15294118, 0.11372549, 0.12941177, 1)
+position = Vector2(-352, 16)
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("6_n8j7u")
+flip_h = true
+
+[node name="Center" type="Control" parent="ScreenPanel/MarginContainer/Panel/SplashShower" unique_id=1053786563]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SplashArt2" parent="ScreenPanel/MarginContainer/Panel/SplashShower/Center" unique_id=1272340677 instance=ExtResource("5_15lh7")]
+modulate = Color(0.41960785, 0.1882353, 0.29411766, 0.5019608)
+position = Vector2(38, 45)
+texture = ExtResource("6_15lh7")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer" parent_id_path=PackedInt32Array(806142582, 1781904422) index="0" unique_id=1953554136]
 layout_mode = 2
@@ -46,5 +106,24 @@ unique_name_in_owner = true
 layout_mode = 2
 desc = "Day 3: 3.7t goblins, 4.1t⚔"
 state = 0
+
+[node name="VersionLabel" type="Label" parent="." unique_id=588451230]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -510.0
+offset_top = -33.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.22745098, 0.13725491, 0.1764706, 1)
+text = "v0.01"
+horizontal_alignment = 2
+script = ExtResource("9_ya4fg")
 
 [editable path="ScreenPanel"]

@@ -16,7 +16,6 @@ script = ExtResource("1_1snqp")
 
 [node name="PickPanel" parent="." unique_id=806142582 instance=ExtResource("1_p08ga")]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 
 [node name="WatchPanel" parent="." unique_id=436844562 instance=ExtResource("2_1snqp")]
@@ -26,4 +25,5 @@ layout_mode = 1
 
 [node name="ResultsPanel" parent="." unique_id=146793951 instance=ExtResource("4_v7pbc")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1

@@ -84,6 +84,8 @@ func _get_wave_count() -> int:
 
 
 func _play_next() -> void:
+	%SplashArt.flip_h = not %SplashArt.flip_h
+	
 	%YourAttack.text = ""
 	%EnemyAttack.text = ""
 	

@@ -2,10 +2,156 @@
 
 [ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/screen_panel.tscn" id="1_ofqs2"]
 [ext_resource type="Script" uid="uid://bh8b4f45goivs" path="res://src/main/battle_results_panel.gd" id="2_4d5h7"]
+[ext_resource type="Texture2D" uid="uid://do5epr70eqwxc" path="res://assets/main/splash/victory.png" id="3_iwsqu"]
+[ext_resource type="PackedScene" uid="uid://dqjjgkwxab0ht" path="res://src/main/splash_shower.tscn" id="3_x4m72"]
+[ext_resource type="PackedScene" uid="uid://dbm3uqjrgg63m" path="res://src/main/splash_art.tscn" id="4_2n0uy"]
+[ext_resource type="Texture2D" uid="uid://catn7my5jmy1u" path="res://assets/main/splash/defeat.png" id="6_gr4cf"]
+[ext_resource type="Texture2D" uid="uid://d2u1tkbtjvvic" path="res://assets/main/splash/retreat.png" id="7_acq14"]
 
 [node name="ResultsPanel" unique_id=806142582 instance=ExtResource("1_ofqs2")]
 color = Color(0.27058825, 0.5411765, 0.38039216, 1)
 script = ExtResource("2_4d5h7")
+
+[node name="VictoryShower" parent="MarginContainer/Panel" parent_id_path=PackedInt32Array(2033304710) index="0" unique_id=731007175 instance=ExtResource("3_x4m72")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BottomRight" type="Control" parent="MarginContainer/Panel/VictoryShower" index="0" unique_id=1097265905]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="SplashArt3" parent="MarginContainer/Panel/VictoryShower/BottomRight" index="0" unique_id=1575316682 instance=ExtResource("4_2n0uy")]
+modulate = Color(0.27058825, 0.5411765, 0.38039216, 1)
+position = Vector2(-236, -173)
+texture = ExtResource("3_iwsqu")
+
+[node name="CenterRight" type="Control" parent="MarginContainer/Panel/VictoryShower" index="1" unique_id=1387125253]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="SplashArt4" parent="MarginContainer/Panel/VictoryShower/CenterRight" index="0" unique_id=169654656 instance=ExtResource("4_2n0uy")]
+visible = false
+modulate = Color(0.27058825, 0.5411765, 0.38039216, 0.5019608)
+position = Vector2(-321, 16)
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("3_iwsqu")
+flip_h = true
+
+[node name="CenterBottom" type="Control" parent="MarginContainer/Panel/VictoryShower" index="2" unique_id=210716829]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -40.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="SplashArt5" parent="MarginContainer/Panel/VictoryShower/CenterBottom" index="0" unique_id=932974813 instance=ExtResource("4_2n0uy")]
+visible = false
+modulate = Color(0.12941177, 0.17254902, 0.14509805, 1)
+position = Vector2(22, -146)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("3_iwsqu")
+
+[node name="DefeatShower" parent="MarginContainer/Panel" parent_id_path=PackedInt32Array(2033304710) index="1" unique_id=1121765229 instance=ExtResource("3_x4m72")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BottomRight" type="Control" parent="MarginContainer/Panel/DefeatShower" index="0" unique_id=1556505547]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="SplashArt1" parent="MarginContainer/Panel/DefeatShower/BottomRight" index="0" unique_id=1224886849 instance=ExtResource("4_2n0uy")]
+visible = false
+modulate = Color(0.17254902, 0.16862746, 0.16470589, 1)
+position = Vector2(-271, -165)
+texture = ExtResource("6_gr4cf")
+
+[node name="SplashArt2" parent="MarginContainer/Panel/DefeatShower/BottomRight" index="1" unique_id=1952920595 instance=ExtResource("4_2n0uy")]
+visible = false
+modulate = Color(0.5529412, 0.5137255, 0.5058824, 1)
+position = Vector2(-206, -80)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("6_gr4cf")
+flip_h = true
+
+[node name="SplashArt3" parent="MarginContainer/Panel/DefeatShower/BottomRight" index="2" unique_id=1790324091 instance=ExtResource("4_2n0uy")]
+visible = false
+modulate = Color(0.5529412, 0.5137255, 0.5058824, 0.5019608)
+position = Vector2(-286, -180)
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("6_gr4cf")
+
+[node name="RetreatShower" parent="MarginContainer/Panel" parent_id_path=PackedInt32Array(2033304710) index="2" unique_id=234193930 instance=ExtResource("3_x4m72")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SplashArt1" parent="MarginContainer/Panel/RetreatShower" index="0" unique_id=1541763287 instance=ExtResource("4_2n0uy")]
+visible = false
+modulate = Color(0.17254902, 0.16862746, 0.16470589, 1)
+position = Vector2(291, 354)
+texture = ExtResource("7_acq14")
+
+[node name="SplashArt2" parent="MarginContainer/Panel/RetreatShower" index="1" unique_id=1608998851 instance=ExtResource("4_2n0uy")]
+visible = false
+modulate = Color(0.17254902, 0.16862746, 0.16470589, 1)
+position = Vector2(778, 347)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("7_acq14")
+flip_h = true
+
+[node name="SplashArt3" parent="MarginContainer/Panel/RetreatShower" index="2" unique_id=168614048 instance=ExtResource("4_2n0uy")]
+modulate = Color(0.5529412, 0.5137255, 0.5058824, 0.5019608)
+position = Vector2(725, 372)
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("7_acq14")
+flip_h = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Panel/MarginContainer" parent_id_path=PackedInt32Array(1781904422) index="0" unique_id=2041024625]
 layout_mode = 2

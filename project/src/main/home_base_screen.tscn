@@ -4,6 +4,9 @@
 [ext_resource type="Script" uid="uid://caqw2l8itjc7j" path="res://src/main/home_base_screen.gd" id="1_q6unp"]
 [ext_resource type="PackedScene" uid="uid://bo7p3nknmvwls" path="res://src/main/home_base_recruit_row.tscn" id="3_45odm"]
 [ext_resource type="PackedScene" uid="uid://h73338s4fipn" path="res://src/main/ui/command_palette.tscn" id="4_5sywx"]
+[ext_resource type="Texture2D" uid="uid://bu4t5ousnvj2d" path="res://assets/main/splash/recruit.png" id="4_bxn6b"]
+[ext_resource type="PackedScene" uid="uid://dqjjgkwxab0ht" path="res://src/main/splash_shower.tscn" id="4_ds7ld"]
+[ext_resource type="PackedScene" uid="uid://dbm3uqjrgg63m" path="res://src/main/splash_art.tscn" id="4_emhyr"]
 
 [node name="HomeBase" type="Control" unique_id=1368189123]
 layout_mode = 3
@@ -18,7 +21,48 @@ script = ExtResource("1_q6unp")
 layout_mode = 1
 color = Color(0.27058825, 0.5411765, 0.38039216, 1)
 
-[node name="DayLabel" type="RichTextLabel" parent="ScreenPanel/MarginContainer/Panel" parent_id_path=PackedInt32Array(806142582, 2033304710) index="0" unique_id=232688582]
+[node name="SplashShower" parent="ScreenPanel/MarginContainer/Panel" parent_id_path=PackedInt32Array(806142582, 2033304710) index="0" unique_id=731007175 instance=ExtResource("4_ds7ld")]
+layout_mode = 0
+offset_right = 1052.0
+offset_bottom = 548.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BottomRight" type="Control" parent="ScreenPanel/MarginContainer/Panel/SplashShower" unique_id=427641823]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -11.0
+offset_top = -27.0
+offset_right = 29.0
+offset_bottom = 13.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="SplashArt1" parent="ScreenPanel/MarginContainer/Panel/SplashShower/BottomRight" unique_id=1575316682 instance=ExtResource("4_emhyr")]
+visible = false
+modulate = Color(0.12941177, 0.17254902, 0.14509805, 1)
+position = Vector2(-194, -162)
+scale = Vector2(0.66, 0.66)
+texture = ExtResource("4_bxn6b")
+
+[node name="SplashArt3" parent="ScreenPanel/MarginContainer/Panel/SplashShower/BottomRight" unique_id=1172502470 instance=ExtResource("4_emhyr")]
+visible = false
+modulate = Color(0.12941177, 0.17254902, 0.14509805, 1)
+position = Vector2(-153, -117)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_bxn6b")
+flip_h = true
+
+[node name="SplashArt2" parent="ScreenPanel/MarginContainer/Panel/SplashShower/BottomRight" unique_id=320577346 instance=ExtResource("4_emhyr")]
+modulate = Color(0.27058825, 0.5411765, 0.38039216, 0.5019608)
+position = Vector2(-220, -256)
+texture = ExtResource("4_bxn6b")
+
+[node name="DayLabel" type="RichTextLabel" parent="ScreenPanel/MarginContainer/Panel" parent_id_path=PackedInt32Array(806142582, 2033304710) index="1" unique_id=232688582]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 46)
 layout_mode = 1
