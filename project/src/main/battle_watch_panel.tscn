@@ -2,10 +2,28 @@
 
 [ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/screen_panel.tscn" id="1_4pg3q"]
 [ext_resource type="Script" uid="uid://dw7dtdydavwc2" path="res://src/main/battle_watch_panel.gd" id="2_q2wy1"]
+[ext_resource type="Texture2D" uid="uid://d1no6y4cfjva8" path="res://assets/main/splash/battle_hit.png" id="4_6nw7c"]
 
 [node name="WatchPanel" unique_id=806142582 instance=ExtResource("1_4pg3q")]
 color = Color(0.23921569, 0.28235295, 0.4392157, 1)
 script = ExtResource("2_q2wy1")
+
+[node name="SplashHolder" type="Control" parent="MarginContainer/Panel" parent_id_path=PackedInt32Array(2033304710) index="0" unique_id=175410795]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="SplashArt" type="Sprite2D" parent="MarginContainer/Panel/SplashHolder" index="0" unique_id=429137689]
+unique_name_in_owner = true
+modulate = Color(0.23921569, 0.28235295, 0.4392157, 0.5019608)
+position = Vector2(-7, -25)
+texture = ExtResource("4_6nw7c")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Panel/MarginContainer" parent_id_path=PackedInt32Array(1781904422) index="0" unique_id=1530521992]
 layout_mode = 2

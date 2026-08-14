@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://dqjjgkwxab0ht"]
+
+[ext_resource type="Script" uid="uid://bmmvdne14a1km" path="res://src/main/splash_shower.gd" id="1_0tdkr"]
+
+[node name="SplashShower" type="Control" unique_id=731007175]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("1_0tdkr")

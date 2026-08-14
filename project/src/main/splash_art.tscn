@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://dbm3uqjrgg63m"]
+
+[node name="SplashArt1" type="Sprite2D" unique_id=1575316682 groups=["splash_art"]]

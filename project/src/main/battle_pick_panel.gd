@@ -63,6 +63,10 @@ func refresh() -> void:
 	else:
 		query = "Who should attack next?"
 	%QueryLabel.text = "%s %s" % [query, order_string]
+	
+	var player_disadvantage: bool = PlayerData.has_current_dungeon() \
+			and PlayerData.get_dungeon_army().get_total_attack().is_gte(PlayerData.army.get_total_attack())
+	%SplashArt.flip_h = player_disadvantage
 
 
 func _append_order(type: Goblins.GoblinType) -> void:
