@@ -4,22 +4,22 @@ func before_each() -> void:
 	PlayerData.reset()
 
 
-func horde(s: String) -> Horde:
-	return ArmyTestUtils.horde(s)
+func gob(s: String) -> Gob:
+	return ArmyTestUtils.gob(s)
 
 
 func test_scale_up() -> void:
-	PlayerData.army.add_horde(horde("🔥 3"))
+	PlayerData.army.add_gob(gob("🔥 3"))
 	PlayerData.scale_army_units(10)
-	assert_eq(PlayerData.army.hordes[0].count.to_int(), 10,)
+	assert_eq(PlayerData.army.gobs[0].count.to_int(), 10,)
 
 
 func test_scale_up_avoid_overflow() -> void:
-	PlayerData.army.add_horde(horde("🔥 3"))
-	PlayerData.army.hordes[0].count = Big.new(123_456_789_123_456_789)
+	PlayerData.army.add_gob(gob("🔥 3"))
+	PlayerData.army.gobs[0].count = Big.new(123_456_789_123_456_789)
 	PlayerData.gold = Big.new(123_456_789_123_456_789)
 	PlayerData.scale_army_units(123_456_789_123_456_789)
-	assert_almost_eq(PlayerData.army.hordes[0].count.to_float(), 1.52e34, 1e32)
+	assert_almost_eq(PlayerData.army.gobs[0].count.to_float(), 1.52e34, 1e32)
 	assert_almost_eq(PlayerData.gold.to_float(), 1.52e34, 1e32)
 
 
@@ -38,11 +38,11 @@ func test_calc_ripoff_factor() -> void:
 
 func test_convert_to_json_and_back() -> void:
 	PlayerData.day = 5
-	PlayerData.army.add_horde(horde("🔥 3"))
+	PlayerData.army.add_gob(gob("🔥 3"))
 	PlayerData.gold = Big.new(6700)
 	PlayerData.dungeons.append(Dungeon.new())
-	PlayerData.dungeons[0].army.add_horde(horde("💧 2"))
-	PlayerData.dungeons[0].recon_army.add_horde(horde("💧 3"))
+	PlayerData.dungeons[0].army.add_gob(gob("💧 2"))
+	PlayerData.dungeons[0].recon_army.add_gob(gob("💧 3"))
 	PlayerData.home_base_multiplier = Big.new(100)
 	var result: Dictionary[String, Variant] = PlayerData.to_json_dict()
 	PlayerData.reset()

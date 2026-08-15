@@ -3,15 +3,15 @@ class_name Dungeons
 static func get_dungeon_select_info(dungeon: Dungeon) -> Dictionary[String, String]:
 	var reward_text: String = "+💰%s" % [dungeon.recon_army.get_total_gold().to_aa()]
 	
-	var attack_by_type: Dictionary[Goblins.GoblinType, Big]
-	for type: Goblins.GoblinType in Goblins.GoblinType.values():
+	var attack_by_type: Dictionary[Gobs.Type, Big]
+	for type: Gobs.Type in Gobs.Type.values():
 		attack_by_type[type] = Big.ZERO
-	for horde: Horde in dungeon.recon_army.hordes:
-		attack_by_type[horde.type] = Big.add(attack_by_type[horde.type], Big.mul(horde.attack, horde.count))
+	for gob: Gob in dungeon.recon_army.gobs:
+		attack_by_type[gob.type] = Big.add(attack_by_type[gob.type], Big.mul(gob.attack, gob.count))
 	var type_summaries: Array[Dictionary] = []
-	for type: Goblins.GoblinType in Goblins.GoblinType.values():
+	for type: Gobs.Type in Gobs.Type.values():
 		type_summaries.append({
-			"emoji": Goblins.emoji_from_type(type),
+			"emoji": Gobs.emoji_from_type(type),
 			"attack": attack_by_type[type],
 		} as Dictionary[String, Variant])
 	type_summaries.sort_custom(func(a: Dictionary[String, Variant], b: Dictionary[String, Variant]) -> bool:

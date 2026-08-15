@@ -1,0 +1,34 @@
+{
+  "army": "H4sIAAAAAAAACo2OzQ6CMBCE32XPjYXyo+nRiy+gJ+OhQoGGSkkpqBDe3ZIgvTTG487MfjMTlErmQINdgKBSOucd0OsEzBiW1UAJgkz1jQEaLok1bKMtUIhwBAgkH7i0PoKGPbiVL2boRWE4s6Z5t4tUatZ19nzZt2BGjh/7+MnKT3Hq+GTjnwSTo6odvRCa++A/xxNMfOPPlVZC33tt/lh/8BXE34YwwWHiOuKt4ygFHx3+yQzXK34/3+YP0NIG8ZQBAAA=",
+  "day": 5,
+  "dungeons": [
+    {
+      "army": "H4sIAAAAAAAACiWLSw5AMBRF93LHjV8YeEuwBTFoeFSUCiWksXdPDM+55wYMznagJEoUjNs63kF1gPZetxMoV2jdsXhQ+hV/nBbSriCUcQkFyydbUKaw6JlFV7wb1rL4e/24HzcWuuSSP83zAu3qvQx0AAAA",
+      "name": "Chambers of the Barbaric Bat",
+      "recon_army": "H4sIAAAAAAAACiWLSw5AMBRF93LHjV8YeEuwBTFoeFSUCiWksXdPDM+55wYMznagJEoUjNs63kF1gPZetxMoV2jdsXhQ+hV/nBbSriCUcQkFyydbUKaw6JlFV7wb1rL4e/24HzcWuuSSP83zAu3qvQx0AAAA"
+    },
+    {
+      "army": "H4sIAAAAAAAACm3MQQ6CMBCF4bu8dSO2BJN27xlcGBcNTMBQKWmLQUnv7hCNbFjOzD/fgta7BkZWh6NA50NDEea6wKZk6x6mFKj9NCRO1uJba05HGOhCQ8DRkxyMEhjsg3h9tt29n/mSXuM6t8HGyOPMPyqLDa/2cCV/ulSFVJtf/v1L8G+iff+Ub/kD+u8LAtUAAAA=",
+      "name": "The Adamantite Labyrinth",
+      "recon_army": "H4sIAAAAAAAACm3MQQ6CMBAF0Lv8dSO0pJvuPYML46KBCTVUStpKUNK7O0QjG3bzZ/68FX3wHUx9qgVciB0lmOsKm7NtBxgl0IbnmHnaGt8yL90EA11pCHiaycNIgdE+iNdn6+7Dwpf8mrbcR5sSx4V/miJ2XB/i8qdLVUm1+83fv8TwJjr2VbmVD/IwOn7UAAAA"
+    },
+    {
+      "army": "H4sIAAAAAAAACoWNQQ6CMBRE7zLrRtpCWPwLuPQAxkWBphorJbQYgfTufqLRjYnLmbx5s8IF34HkTgqcw9jZCDquMCmZ9goqBdow9QmkNuIFq4rZAYS6qCHg7d16kBbozc1yfVgWrtM8bMGNJkaODx5UWfxRa/1WK1ko+ZWXH/neOH9p4u8DlU/5CUIYoSbTAAAA",
+      "name": "The Smoldering Delves",
+      "recon_army": "H4sIAAAAAAAACiXLSwqAIBSF4b2csZQ9aHA30QKigaQUZBppUUZ770bD//CdG6O3GiQzKTD5TZsA6m6oGNUwgyqBwe8ugspP/Lio2a4gNHkDAWsOYxkIOLUYntuUeI7X+sW4qRA4Tz7UT/+8NAnRenIAAAA="
+    },
+    {
+      "army": "H4sIAAAAAAAACiWLQQqDQBAE/9LnxexqIDAf8BEhh0EHDa6uMZOoiH93xFt3V/WGJsUa5DPv0Kapli/ouYFVuepAweYq/Qa1eCqXnT9MHkEIxS0UcIjylwi6Owzci4EyvT9sQNfxrDOrTFYXO/n9tR+dRnfAdwAAAA==",
+      "name": "The Orc Grotto",
+      "recon_army": "H4sIAAAAAAAACiWLQQqDQBAE/9LnxexqIDAf8BEhh0EHDa6uMZOoiH93xFt3V/WGJsUa5DPv0Kapli/ouYFVuepAweYq/Qa1eCqXnT9MHkEIxS0UcIjylwi6Owzci4EyvT9sQNfxrDOrTFYXO/n9tR+dRnfAdwAAAA=="
+    },
+    {
+      "army": "H4sIAAAAAAAACoXQsQ6CMBCA4Xe5mdheUSFsvoGTi3FooEpDsQSqQgjvblEUhjNud5c/33A9XKzJIOErHkBu60w1kBx7kM7JtIAEA0jt7er8NBbvGMe2ggRCFkIARt2VeaVXWSp/PnStP7uuGpezrpXfWt+HQzDLa0oW20mOWTzLYpa1bEu90B/SqXri+ZIXJB9PfMQiit8rmRe6oHmx5DcU/9ERGSLp19qmDc3j3+fg1+cMOeXvpPnxm3A4DU+HDYVJ7AEAAA==",
+      "name": "The Phoenix Quarters",
+      "recon_army": "H4sIAAAAAAAACqtWSs/PSVGyMtAz0FHKyC9KSS1WsoqOrQUAMQQw1xgAAAA="
+    }
+  ],
+  "gold": 46.0,
+  "home_base_multiplier": 1.0,
+  "version": "012A"
+}

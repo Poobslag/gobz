@@ -2,19 +2,19 @@ extends ColorRect
 
 signal finished
 
-var orders: Array[Goblins.GoblinType] = []
+var orders: Array[Gobs.Type] = []
 var consecutive_retreat_presses: int = 0
 
-@onready var button_by_type: Dictionary[Goblins.GoblinType, Button] = {
-		Goblins.FIRE: %Fire,
-		Goblins.WATER: %Water,
-		Goblins.GRASS: %Grass,
-		Goblins.ANGEL: %Angel,
-		Goblins.DEVIL: %Devil,
+@onready var button_by_type: Dictionary[Gobs.Type, Button] = {
+		Gobs.FIRE: %Fire,
+		Gobs.WATER: %Water,
+		Gobs.GRASS: %Grass,
+		Gobs.ANGEL: %Angel,
+		Gobs.DEVIL: %Devil,
 }
 
 func _ready() -> void:
-	for type: Goblins.GoblinType in Goblins.GoblinType.values():
+	for type: Gobs.Type in Gobs.Type.values():
 		var button: Button = button_by_type[type]
 		button.pressed.connect(_append_order.bind(type))
 	%Undo.pressed.connect(_undo_pressed)
@@ -30,16 +30,16 @@ func clear_orders() -> void:
 func refresh() -> void:
 	%YourGoblins.text = ""
 	%YourGoblins.text += "You:\n"
-	%YourGoblins.text += Goblins.army_bbcode(PlayerData.army)
+	%YourGoblins.text += Gobs.army_bbcode(PlayerData.army)
 	
 	%EnemyGoblins.text = ""
 	if PlayerData.has_current_dungeon():
 		%EnemyGoblins.text += "Bad guys:\n"
-		%EnemyGoblins.text += Goblins.army_bbcode(PlayerData.get_dungeon().army)
+		%EnemyGoblins.text += Gobs.army_bbcode(PlayerData.get_dungeon().army)
 	
 	var all_orders_given: bool = true
 	var player_army_summary: Army.ArmySummary = PlayerData.army.get_summary()
-	for type: Goblins.GoblinType in Goblins.GoblinType.values():
+	for type: Gobs.Type in Gobs.Type.values():
 		var button: Button = button_by_type[type]
 		button.disabled = player_army_summary.goblins_by_type[type].is_eq(0) or orders.has(type)
 		if not button.disabled:
@@ -50,8 +50,8 @@ func refresh() -> void:
 	var order_string: String = ""
 	if not orders.is_empty():
 		var order_emojis: Array[String] = []
-		for order: Goblins.GoblinType in orders:
-			order_emojis.append(Goblins.EMOJIS_BY_GOBLIN_TYPE[order])
+		for order: Gobs.Type in orders:
+			order_emojis.append(Gobs.EMOJIS_BY_GOBLIN_TYPE[order])
 		order_string = "(Current orders: %s)" % [", ".join(order_emojis)]
 	var query: String = ""
 	if consecutive_retreat_presses >= 1:
@@ -69,7 +69,7 @@ func refresh() -> void:
 	%SplashArt.flip_h = player_disadvantage
 
 
-func _append_order(type: Goblins.GoblinType) -> void:
+func _append_order(type: Gobs.Type) -> void:
 	consecutive_retreat_presses = 0
 	if not orders.has(type):
 		orders.push_back(type)

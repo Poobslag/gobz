@@ -1,6 +1,6 @@
-class_name Goblins
+class_name Gobs
 
-enum GoblinType {
+enum Type {
 	FIRE,
 	WATER,
 	GRASS,
@@ -8,13 +8,13 @@ enum GoblinType {
 	DEVIL,
 }
 
-const FIRE: GoblinType = GoblinType.FIRE
-const WATER: GoblinType = GoblinType.WATER
-const GRASS: GoblinType = GoblinType.GRASS
-const ANGEL: GoblinType = GoblinType.ANGEL
-const DEVIL: GoblinType = GoblinType.DEVIL
+const FIRE: Type = Type.FIRE
+const WATER: Type = Type.WATER
+const GRASS: Type = Type.GRASS
+const ANGEL: Type = Type.ANGEL
+const DEVIL: Type = Type.DEVIL
 
-const EMOJIS_BY_GOBLIN_TYPE: Dictionary[GoblinType, String] = {
+const EMOJIS_BY_GOBLIN_TYPE: Dictionary[Type, String] = {
 	FIRE: "🔥",
 	WATER: "💧",
 	GRASS: "🌳",
@@ -22,7 +22,7 @@ const EMOJIS_BY_GOBLIN_TYPE: Dictionary[GoblinType, String] = {
 	DEVIL: "😈",
 }
 
-const GOBLIN_TYPES_BY_EMOJI: Dictionary[String, GoblinType] = {
+const GOBLIN_TYPES_BY_EMOJI: Dictionary[String, Type] = {
 	"🔥": FIRE,
 	"💧": WATER,
 	"🌳": GRASS,
@@ -30,7 +30,7 @@ const GOBLIN_TYPES_BY_EMOJI: Dictionary[String, GoblinType] = {
 	"😈": DEVIL,
 }
 
-static func emoji_from_type(type: GoblinType) -> String:
+static func emoji_from_type(type: Type) -> String:
 	return EMOJIS_BY_GOBLIN_TYPE[type]
 
 
@@ -39,7 +39,7 @@ static func army_bbcode(army: Army) -> String:
 	var result: String = ""
 	result += "[b]%s goblins, ⚔️%s[/b]\n" % \
 			[summary.total_goblins.to_aa(), summary.total_attack.to_aa()]
-	for goblin_type: GoblinType in GoblinType.values():
+	for goblin_type: Type in Type.values():
 		if summary.goblins_by_type[goblin_type].is_gte(1):
 			result += "%s: %s goblins, ⚔️%s\n" % [
 					EMOJIS_BY_GOBLIN_TYPE[goblin_type],

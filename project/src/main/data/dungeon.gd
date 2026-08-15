@@ -9,16 +9,16 @@ func perform_recon(force: bool = false) -> void:
 		return
 	
 	recon_army.reset()
-	var recon_count: int = mini(ceili(army.hordes.size() / 2.0), 15)
-	var recon_scalar: float = army.hordes.size() / float(recon_count)
+	var recon_count: int = mini(ceili(army.gobs.size() / 2.0), 15)
+	var recon_scalar: float = army.gobs.size() / float(recon_count)
 	for i in recon_count:
-		var horde: Horde = army.hordes[i]
-		var recon_horde: Horde = horde.duplicate()
+		var gob: Gob = army.gobs[i]
+		var recon_gob: Gob = gob.duplicate()
 		var scalar: int = int(recon_scalar)
 		if randf() < (recon_scalar - int(recon_scalar)):
 			scalar += 1
-		recon_horde.count = Big.mul(recon_horde.count, scalar)
-		recon_army.add_horde(recon_horde)
+		recon_gob.count = Big.mul(recon_gob.count, scalar)
+		recon_army.add_gob(recon_gob)
 
 
 func is_empty() -> bool:
