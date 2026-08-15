@@ -37,4 +37,4 @@ func _refresh_label() -> void:
 	%RichTextLabel.text = ""
 	%RichTextLabel.text += "Which dungeon will you enter?\n\n"
 	%RichTextLabel.text += "Your army:\n"
-	%RichTextLabel.text += Goblins.army_bbcode(PlayerData.army)
+	%RichTextLabel.text += Gobs.army_bbcode(PlayerData.army)

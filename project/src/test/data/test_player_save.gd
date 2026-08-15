@@ -22,8 +22,8 @@ func test_save_and_load_data() -> void:
 
 func test_summarize() -> void:
 	PlayerData.day = 67
-	PlayerData.army.add_horde(ArmyTestUtils.horde("🔥 3"))
-	PlayerData.army.add_horde(ArmyTestUtils.horde("🔥 3"))
+	PlayerData.army.add_gob(ArmyTestUtils.gob("🔥 3"))
+	PlayerData.army.add_gob(ArmyTestUtils.gob("🔥 3"))
 	PlayerSave.save_slot = 0
 	PlayerSave.save_data()
 	PlayerData.reset()

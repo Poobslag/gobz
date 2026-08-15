@@ -13,12 +13,12 @@ func _ready() -> void:
 func refresh() -> void:
 	%YourGoblins.text = ""
 	%YourGoblins.text += "You:\n"
-	%YourGoblins.text += Goblins.army_bbcode(PlayerData.army)
+	%YourGoblins.text += Gobs.army_bbcode(PlayerData.army)
 	
 	%EnemyGoblins.text = ""
 	if PlayerData.has_current_dungeon():
 		%EnemyGoblins.text += "Bad guys:\n"
-		%EnemyGoblins.text += Goblins.army_bbcode(PlayerData.get_dungeon_army())
+		%EnemyGoblins.text += Gobs.army_bbcode(PlayerData.get_dungeon_army())
 
 
 func victory() -> void:
@@ -48,9 +48,9 @@ func defeat() -> void:
 	%Message.text = ""
 	%Message.text += "Defeat...\n\n"
 	
-	var goblin: Horde = PlayerData.army.hordes.back()
+	var goblin: Gob = PlayerData.army.gobs.back()
 	%Message.text += "%s %s is inspired by the bravery of the fallen goblins!\n" % [
-		Goblins.emoji_from_type(goblin.type), goblin.name
+		Gobs.emoji_from_type(goblin.type), goblin.name
 	]
 	%Message.text += "They give what money they have and prepare for battle."
 	
@@ -72,9 +72,9 @@ func mutual_defeat() -> void:
 	%Message.text = ""
 	%Message.text += "Mutual defeat...\n\n"
 	
-	var goblin: Horde = PlayerData.army.hordes.back()
+	var goblin: Gob = PlayerData.army.gobs.back()
 	%Message.text += "%s %s is inspired by the bravery of the fallen goblins!\n" % [
-		Goblins.emoji_from_type(goblin.type), goblin.name
+		Gobs.emoji_from_type(goblin.type), goblin.name
 	]
 	%Message.text += "They loot 💰%s from the battlefield and prepare for battle."
 	

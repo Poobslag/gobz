@@ -18,9 +18,9 @@ func test_generate() -> void:
 	
 	archetype = DungeonGenerator.DungeonArchetype.new(1.0, ["3 devil", "2 angel", "1"])
 	var composition: Dictionary[String, Variant] = archetype.roll_composition()
-	assert_eq(composition["types"][0], Goblins.GoblinType.DEVIL)
-	assert_eq(composition["types"][1], Goblins.GoblinType.ANGEL)
-	assert_false(composition["types"][2] in [Goblins.GoblinType.DEVIL, Goblins.GoblinType.ANGEL])
+	assert_eq(composition["types"][0], Gobs.Type.DEVIL)
+	assert_eq(composition["types"][1], Gobs.Type.ANGEL)
+	assert_false(composition["types"][2] in [Gobs.Type.DEVIL, Gobs.Type.ANGEL])
 	assert_eq(composition["weights"], [3.0, 2.0, 1.0])
 
 
@@ -29,22 +29,22 @@ func test_generate_basic() -> void:
 	
 	archetype = DungeonGenerator.DungeonArchetype.new(1.0, ["3", "2", "1"])
 	var composition: Dictionary[String, Variant] = archetype.roll_composition(false)
-	assert_false(composition["types"][0] in [Goblins.GoblinType.DEVIL, Goblins.GoblinType.ANGEL])
-	assert_false(composition["types"][1] in [Goblins.GoblinType.DEVIL, Goblins.GoblinType.ANGEL])
-	assert_false(composition["types"][2] in [Goblins.GoblinType.DEVIL, Goblins.GoblinType.ANGEL])
+	assert_false(composition["types"][0] in [Gobs.Type.DEVIL, Gobs.Type.ANGEL])
+	assert_false(composition["types"][1] in [Gobs.Type.DEVIL, Gobs.Type.ANGEL])
+	assert_false(composition["types"][2] in [Gobs.Type.DEVIL, Gobs.Type.ANGEL])
 
 
-func test_generate_random_dungeon_hordes_size() -> void:
+func test_generate_random_dungeon_gobs_size() -> void:
 	var dungeon: Dungeon
 	
 	dungeon = DungeonGenerator.generate_random_dungeon(Big.new(500))
-	assert_between(dungeon.army.hordes.size(), 20, 400)
+	assert_between(dungeon.army.gobs.size(), 20, 400)
 	
 	dungeon = DungeonGenerator.generate_random_dungeon(Big.new(5_000))
-	assert_between(dungeon.army.hordes.size(), 20, 400)
+	assert_between(dungeon.army.gobs.size(), 20, 400)
 	
 	dungeon = DungeonGenerator.generate_random_dungeon(Big.new(5_000_000))
-	assert_between(dungeon.army.hordes.size(), 20, 400)
+	assert_between(dungeon.army.gobs.size(), 20, 400)
 	
 	dungeon = DungeonGenerator.generate_random_dungeon(Big.new(5_000_000_000))
-	assert_between(dungeon.army.hordes.size(), 20, 400)
+	assert_between(dungeon.army.gobs.size(), 20, 400)

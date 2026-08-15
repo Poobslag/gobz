@@ -23,13 +23,13 @@ func show_results_panel() -> void:
 
 
 func _on_pick_panel_finished() -> void:
-	var player_orders: Array[Goblins.GoblinType] = %PickPanel.orders
+	var player_orders: Array[Gobs.Type] = %PickPanel.orders
 	# calculate enemy orders
-	var enemy_orders: Array[Goblins.GoblinType] = []
+	var enemy_orders: Array[Gobs.Type] = []
 	if PlayerData.has_current_dungeon():
 		enemy_orders = []
 		var army_summary: Army.ArmySummary = PlayerData.get_dungeon_army().get_summary()
-		for type: Goblins.GoblinType in Goblins.GoblinType.values():
+		for type: Gobs.Type in Gobs.Type.values():
 			if army_summary.goblins_by_type[type].is_gt(0):
 				enemy_orders.append(type)
 		enemy_orders.shuffle()

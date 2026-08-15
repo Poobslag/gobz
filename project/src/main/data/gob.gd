@@ -1,4 +1,5 @@
-class_name Horde
+class_name Gob
+## A group of goblins is a gob.
 
 var name: String = ""
 
@@ -13,7 +14,7 @@ var count: Big = Big.ONE:
 var level: int = 1
 
 ## Type of all goblins
-var type: Goblins.GoblinType = Goblins.GoblinType.FIRE
+var type: Gobs.Type = Gobs.Type.FIRE
 
 ## Max hp for each goblin
 var hp_max: int = 4
@@ -30,8 +31,8 @@ var gold: int = 0
 ## Experience for each goblin
 var xp: int = 0
 
-func duplicate() -> Horde:
-	var copy: Horde = Horde.new()
+func duplicate() -> Gob:
+	var copy: Gob = Gob.new()
 	copy.name = name
 	copy.count = count
 	copy.gold = gold
@@ -49,11 +50,11 @@ func level_up() -> void:
 	var hp_gain: int = 0
 	hp_gain += [2, 4, 4, 6].pick_random()
 	attack += [1, 2, 2, 3].pick_random()
-	if type == Goblins.DEVIL:
+	if type == Gobs.DEVIL:
 		hp_gain += [2, 4, 4, 6].pick_random()
 		attack += [1, 2, 2, 3].pick_random()
 	var level_cost: int = [3, 4, 5, 5, 5, 6, 7].pick_random()
-	if type == Goblins.DEVIL:
+	if type == Gobs.DEVIL:
 		level_cost *= 2
 	gold += level_cost
 	hp_max += hp_gain
@@ -62,7 +63,7 @@ func level_up() -> void:
 
 
 func get_exp_threshold() -> int:
-	var exp_factor: int = 4 if type == Goblins.DEVIL else 2
+	var exp_factor: int = 4 if type == Gobs.DEVIL else 2
 	var level_tmp: int = level
 	while level_tmp > 0 and level_tmp % 10 == 0:
 		level_tmp /= 10
@@ -83,7 +84,7 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 	name = json.get("name", "")
 	count = Big.new(json.get("count", 1))
 	level = json.get("level", 1)
-	type = Goblins.GoblinType.get(json.get("type", "fire").to_upper())
+	type = Gobs.Type.get(json.get("type", "fire").to_upper())
 	
 	var hp_split: PackedStringArray = json.get("hp", "4/4").split("/")
 	hp = int(hp_split[0])
@@ -99,7 +100,7 @@ func to_json_dict() -> Dictionary[String, Variant]:
 		"name": name,
 		"count": count.to_float(),
 		"level": level,
-		"type": Utils.enum_to_snake_case(Goblins.GoblinType, type),
+		"type": Utils.enum_to_snake_case(Gobs.Type, type),
 		"hp": "%s/%s" % [hp, hp_max],
 		"attack": attack,
 		"gold": gold,

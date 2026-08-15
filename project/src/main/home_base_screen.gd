@@ -62,7 +62,7 @@ func _input(event: InputEvent) -> void:
 func _refresh_summary() -> void:
 	%ArmyLabel.text = ""
 	%ArmyLabel.text = "Your army:\n"
-	%ArmyLabel.text += Goblins.army_bbcode(PlayerData.army) + "\n\n"
+	%ArmyLabel.text += Gobs.army_bbcode(PlayerData.army) + "\n\n"
 	%ArmyLabel.text += "💰%s" % [PlayerData.gold.to_aa()]
 
 
@@ -84,7 +84,7 @@ func _recruit(recruit_row: HomeBaseRecruitRow) -> void:
 		return
 	
 	PlayerData.gold = Big.sub(PlayerData.gold, recruit_row.get_cost())
-	PlayerData.army.add_horde(recruit_row.horde)
+	PlayerData.army.add_gob(recruit_row.gob)
 	
 	%Recruits.remove_child(recruit_row)
 	recruit_row.queue_free()
