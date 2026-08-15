@@ -34,3 +34,13 @@ static func enum_to_snake_case(
 		# 'from' is an invalid enum and no defaults are available, return an empty string
 		result = ""
 	return result
+
+
+## Workaround for Godot https://github.com/godotengine/godot-proposals/issues/11598: Add a DirAccess method to remove a
+## non-empty directory.
+static func remove_dir_recursive(dir: String) -> void:
+	for dir_name: String in DirAccess.get_directories_at(dir):
+		remove_dir_recursive(dir.path_join(dir_name))
+	for file_name: String in DirAccess.get_files_at(dir):
+		DirAccess.remove_absolute(dir.path_join(file_name))
+	DirAccess.remove_absolute(dir)
