@@ -8,7 +8,7 @@ func before_each() -> void:
 
 
 func after_each() -> void:
-	DirAccess.remove_absolute(TEMP_SAVE_FOLDER)
+	Utils.remove_dir_recursive(TEMP_SAVE_FOLDER)
 
 
 func test_save_and_load_data() -> void:

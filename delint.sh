@@ -89,6 +89,7 @@ fi
 REGEX="\(^##"$'\t'"\|## "$'\t\t\t'"\|^"$'\t\t'"*##\)"
 RESULT=$(grep -R -n "$REGEX" --include="*.gd" project/src \
   | grep -v "army\.gd.*##" \
+  | grep -v "save_data_upgrader\.gd.*##" \
   )
 if [ -n "$RESULT" ]; then
   echo ""

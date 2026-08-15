@@ -1,13 +1,16 @@
 extends Node
 
-## In LibreOffice Calc: =DEC2HEX(INT((NOW()-DATE(2026,8,1))*24), 4)
-const PLAYER_DATA_VERSION: String = "012A"
+## In LibreOffice Calc: =LOWER(DEC2HEX(INT((NOW()-DATE(2026,8,1))*24),4))
+const PLAYER_DATA_VERSION: String = "0157"
 
 var save_folder: String = "user://"
 
 var save_slot: int = 0
 
 var player_data_scene: GDScript = PlayerData.get_script()
+
+## Provides backwards compatibility with old settings files.
+var _upgrader := PlayerSaveUpgrader.new()
 
 func peek_save_summary(other_save_slot: int) -> Dictionary[String, Variant]:
 	var player_data: PlayerData = player_data_scene.new()
@@ -56,9 +59,14 @@ func _load_player_data_internal(player_data: PlayerData, loaded_save_slot: int) 
 		push_error("Error in %s: (%s) %s" %
 				[filename, test_json_conv.get_error_line(), test_json_conv.get_error_message()])
 		return ERR_FILE_CORRUPT
+	var save_json: Dictionary[String, Variant] = {}
+	save_json.assign(test_json_conv.data)
+	
+	if _upgrader.needs_upgrade(save_json):
+		_upgrader.upgrade(save_json)
 	
 	var typed_data_dict: Dictionary[String, Variant] = {}
-	typed_data_dict.assign(test_json_conv.data)
+	typed_data_dict.assign(save_json)
 	player_data.from_json_dict(typed_data_dict)
 	return OK
 
