@@ -8,6 +8,9 @@ enum Type {
 	DEVIL,
 }
 
+const WOUNDED_ATTACK_FACTOR: float = 0.5
+const WOUNDED_HP_THRESHOLD: float = 0.5
+
 const FIRE: Type = Type.FIRE
 const WATER: Type = Type.WATER
 const GRASS: Type = Type.GRASS
@@ -27,6 +30,7 @@ const GOBLIN_TYPES_BY_EMOJI: Dictionary[String, Type] = {
 	"💧": WATER,
 	"🌳": GRASS,
 	"🕊️": ANGEL,
+	"🕊": ANGEL, # without variation selector-16
 	"😈": DEVIL,
 }
 

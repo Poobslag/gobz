@@ -195,21 +195,21 @@ func _append_level_up_announcements(text_area: RichTextLabel, level_ups: Array[B
 	var other_goblin_count: Big = Big.ZERO
 	for level_up: BattleResolver.LevelUp in level_ups:
 		if announcement_count < 2:
-			if level_up.gob.count.is_eq(1):
+			if level_up.gob.get_count().is_eq(1):
 				text_area.text += "%s %s grew to level %s!\n" % \
 						[Gobs.emoji_from_type(level_up.gob.type), level_up.gob.name, \
 						level_up.gob.level]
-			elif level_up.gob.count.is_eq(2):
+			elif level_up.gob.get_count().is_eq(2):
 				text_area.text += "%s %s + 1 other grew to level %s!\n" % \
 						[Gobs.emoji_from_type(level_up.gob.type), level_up.gob.name, \
 						level_up.gob.level]
 			else:
 				text_area.text += "%s %s + %s others grew to level %s!\n" % \
 						[Gobs.emoji_from_type(level_up.gob.type), level_up.gob.name, \
-						Big.sub(level_up.gob.count, 1).to_aa(), level_up.gob.level]
+						Big.sub(level_up.gob.get_count(), 1).to_aa(), level_up.gob.level]
 			announcement_count += 1
 		else:
-			other_goblin_count = Big.add(other_goblin_count, level_up.gob.count)
+			other_goblin_count = Big.add(other_goblin_count, level_up.gob.get_count())
 	if other_goblin_count.is_gte(1):
 		if other_goblin_count.is_eq(1):
 			text_area.text += "1 other goblin leveled up!\n"

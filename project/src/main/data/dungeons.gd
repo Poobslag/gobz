@@ -7,7 +7,7 @@ static func get_dungeon_select_info(dungeon: Dungeon) -> Dictionary[String, Stri
 	for type: Gobs.Type in Gobs.Type.values():
 		attack_by_type[type] = Big.ZERO
 	for gob: Gob in dungeon.recon_army.gobs:
-		attack_by_type[gob.type] = Big.add(attack_by_type[gob.type], Big.mul(gob.attack, gob.count))
+		attack_by_type[gob.type] = Big.add(attack_by_type[gob.type], gob.get_total_attack())
 	var type_summaries: Array[Dictionary] = []
 	for type: Gobs.Type in Gobs.Type.values():
 		type_summaries.append({

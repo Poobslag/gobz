@@ -11,15 +11,15 @@ func gob(s: String) -> Gob:
 func test_scale_up() -> void:
 	PlayerData.army.add_gob(gob("🔥 3"))
 	PlayerData.scale_army_units(10)
-	assert_eq(PlayerData.army.gobs[0].count.to_int(), 10,)
+	assert_eq(PlayerData.army.gobs[0].get_count().to_int(), 10)
 
 
 func test_scale_up_avoid_overflow() -> void:
 	PlayerData.army.add_gob(gob("🔥 3"))
-	PlayerData.army.gobs[0].count = Big.new(123_456_789_123_456_789)
+	PlayerData.army.gobs[0].back_count = Big.new(123_456_789_123_456_789)
 	PlayerData.gold = Big.new(123_456_789_123_456_789)
 	PlayerData.scale_army_units(123_456_789_123_456_789)
-	assert_almost_eq(PlayerData.army.gobs[0].count.to_float(), 1.52e34, 1e32)
+	assert_almost_eq(PlayerData.army.gobs[0].get_count().to_float(), 1.52e34, 1e32)
 	assert_almost_eq(PlayerData.gold.to_float(), 1.52e34, 1e32)
 
 

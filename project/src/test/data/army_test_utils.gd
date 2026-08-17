@@ -17,6 +17,6 @@ static func gob(s: String) -> Gob:
 	var strength_factor: int = 2 if result.type == Gobs.DEVIL else 1
 	result.hp_max += 4 * strength_factor * result.level
 	result.attack += 2 * strength_factor * result.level
-	result.hp = result.hp_max
+	result.front_hp = result.hp_max
 	result.gold += 5 * strength_factor * result.level
 	return result
