@@ -44,3 +44,8 @@ static func remove_dir_recursive(dir: String) -> void:
 	for file_name: String in DirAccess.get_files_at(dir):
 		DirAccess.remove_absolute(dir.path_join(file_name))
 	DirAccess.remove_absolute(dir)
+
+
+## Truncates a number to an integer by removing the fractional part of the number.
+static func trunc(f: float) -> float:
+	return floor(abs(f)) * sign(f)

@@ -23,7 +23,7 @@ var _value: float
 func _init(m: Variant) -> void:
 	match typeof(m):
 		TYPE_FLOAT:
-			_value = floor(abs(m)) * sign(m)
+			_value = Utils.trunc(m)
 		TYPE_INT:
 			_value = float(m)
 		_:

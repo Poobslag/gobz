@@ -115,7 +115,7 @@ static func _generate_dungeon_for_archetype(target_attack: Big, composition: Dic
 			"gold_factor": PlayerData.get_ripoff_factor(),
 		})
 		dungeon.army.add_gob(new_recruit)
-		total_attack = Big.add(total_attack, Big.mul(new_recruit.attack, new_recruit.count))
+		total_attack = Big.add(total_attack, Big.mul(new_recruit.attack, new_recruit.get_count()))
 		mercy += 1
 	
 	return dungeon

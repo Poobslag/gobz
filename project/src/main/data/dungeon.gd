@@ -17,7 +17,7 @@ func perform_recon(force: bool = false) -> void:
 		var scalar: int = int(recon_scalar)
 		if randf() < (recon_scalar - int(recon_scalar)):
 			scalar += 1
-		recon_gob.count = Big.mul(recon_gob.count, scalar)
+		recon_gob.back_count = Big.new((recon_gob.back_count.to_float() + 1) * scalar - 1)
 		recon_army.add_gob(recon_gob)
 
 

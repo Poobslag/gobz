@@ -124,7 +124,7 @@ func initialize_starting_army() -> void:
 		gob.name = GoblinNames.random_name()
 		gob.type = [Gobs.FIRE, Gobs.WATER, Gobs.GRASS].pick_random()
 		gob.hp_max = randi_range(2, 4)
-		gob.hp = gob.hp_max
+		gob.front_hp = gob.hp_max
 		
 		for _i in range(2):
 			if randf() < 0.5:
@@ -142,10 +142,10 @@ func add_dungeon(target_attack: Big) -> void:
 
 func scale_army_units(factor: float) -> void:
 	for gob: Gob in PlayerData.army.gobs:
-		gob.count = Big.new(gob.count.to_float() * factor)
+		gob.back_count = Big.new((gob.back_count.to_float() + 1) * factor - 1)
 	for dungeon: Dungeon in PlayerData.dungeons:
 		for gob: Gob in dungeon.army.gobs:
-			gob.count = Big.new(gob.count.to_float() * factor)
+			gob.back_count = Big.new((gob.back_count.to_float() + 1) * factor - 1)
 	gold = Big.new(gold.to_float() * factor)
 
 

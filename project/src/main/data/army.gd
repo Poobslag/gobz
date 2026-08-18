@@ -21,21 +21,21 @@ func duplicate() -> Army:
 func get_total_goblins() -> Big:
 	var total: Big = Big.ZERO
 	for gob: Gob in gobs:
-		total = Big.add(total, gob.count)
+		total = Big.add(total, gob.get_count())
 	return total
 
 
 func get_total_attack() -> Big:
 	var total: Big = Big.ZERO
 	for gob: Gob in gobs:
-		total = Big.add(total, Big.mul(gob.attack, gob.count))
+		total = Big.add(total, gob.get_total_attack())
 	return total
 
 
 func get_total_gold() -> Big:
 	var total: Big = Big.ZERO
 	for gob: Gob in gobs:
-		total = Big.add(total, Big.mul(gob.gold, gob.count))
+		total = Big.add(total, Big.mul(gob.gold, gob.get_count()))
 	return total
 
 
@@ -77,7 +77,7 @@ func generate_random_recruit(data: Dictionary[String, Variant] = {}) -> Gob:
 	if gob.type == Gobs.DEVIL:
 		gob.attack += [1, 2, 2, 3].pick_random()
 		gob.hp_max += [3, 4, 4, 5].pick_random()
-	gob.hp = gob.hp_max
+	gob.front_hp = gob.hp_max
 	var type_cost: int = [3, 4, 5, 5, 5, 6, 7].pick_random()
 	if gob.type == Gobs.DEVIL:
 		type_cost += [3, 4, 5, 5, 5, 6, 7].pick_random()
@@ -128,7 +128,7 @@ func generate_random_recruit(data: Dictionary[String, Variant] = {}) -> Gob:
 			gob.gold += 1
 	
 	if data.has("count"):
-		gob.count = Big.mul(gob.count, data["count"])
+		gob.back_count = Big.new((gob.back_count.to_float() + 1) * data["count"].to_float() - 1)
 	
 	return gob
 
@@ -142,18 +142,16 @@ func get_summary() -> ArmySummary:
 	
 	for gob: Gob in gobs:
 		result.goblins_by_type[gob.type] = \
-				Big.add(result.goblins_by_type[gob.type], gob.count)
+				Big.add(result.goblins_by_type[gob.type], gob.get_count())
 		result.total_goblins = \
-				Big.add(result.total_goblins, gob.count)
+				Big.add(result.total_goblins, gob.get_count())
 		result.attack_by_type[gob.type] = \
-				Big.add(result.attack_by_type[gob.type],
-				Big.mul(gob.attack, gob.count))
+				Big.add(result.attack_by_type[gob.type], gob.get_total_attack())
 		result.total_attack = \
-				Big.add(result.total_attack, \
-				Big.mul(gob.attack, gob.count))
+				Big.add(result.total_attack, gob.get_total_attack())
 		result.total_gold = \
 				Big.add(result.total_gold, \
-				Big.mul(gob.gold, gob.count))
+				Big.mul(gob.gold, gob.get_count()))
 	
 	return result
 

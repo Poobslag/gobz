@@ -11,10 +11,10 @@ func _ready() -> void:
 	
 	%RecruitButton.text = "-💰%s" % [get_cost().to_aa()]
 	var goblin_name: String = gob.name
-	if gob.count.is_gt(1):
-		goblin_name += " + %s others" % [Big.sub(gob.count, 1).to_aa()]
+	if gob.get_count().is_gt(1):
+		goblin_name += " + %s others" % [Big.sub(gob.get_count(), 1).to_aa()]
 	%Description.text = "%s %s,  %s⚔" % [
-			Gobs.emoji_from_type(gob.type), goblin_name, Big.mul(gob.attack, gob.count).to_aa()]
+			Gobs.emoji_from_type(gob.type), goblin_name, gob.get_total_attack().to_aa()]
 	
 	%RecruitButton.pressed.connect(recruit_pressed.emit)
 	%SkipButton.pressed.connect(skip_pressed.emit)
@@ -27,4 +27,4 @@ func refresh() -> void:
 
 
 func get_cost() -> Big:
-	return Big.mul(gob.gold, gob.count)
+	return Big.mul(gob.gold, gob.get_count())

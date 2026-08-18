@@ -13,6 +13,15 @@ const MATCHUPS: Array[Array] = [
 	[ STRONG, STRONG, STRONG, WEAK,   NORMAL ], # Devil (strong against everything, weak to angel)
 ]
 
+## Goblins with a high brutality value prioritize killing goblins over wounding them.
+const BRUTALITY_BY_TYPE: Dictionary[Gobs.Type, float] = {
+	Gobs.FIRE: 0.5,
+	Gobs.WATER: 0.6,
+	Gobs.GRASS: 0.4,
+	Gobs.ANGEL: 0.1,
+	Gobs.DEVIL: 0.9,
+}
+
 static func plan_attacks(from: Army, type: Gobs.Type) -> Array[Attack]:
 	var attacks: Array[Attack] = []
 	
@@ -20,10 +29,20 @@ static func plan_attacks(from: Army, type: Gobs.Type) -> Array[Attack]:
 		if gob.type != type:
 			continue
 		
-		var attack: Attack = Attack.new()
-		attack.source = gob
-		attack.count = gob.count
-		attacks.append(attack)
+		var healthy_count: Big = gob.get_healthy_count()
+		if healthy_count.is_gt(Big.ZERO):
+			var attack: Attack = Attack.new()
+			attack.source = gob
+			attack.count = healthy_count
+			attacks.append(attack)
+		
+		var wounded_count: Big = gob.get_wounded_count()
+		if wounded_count.is_gt(Big.ZERO):
+			var attack: Attack = Attack.new()
+			attack.source = gob
+			attack.count = wounded_count
+			attack.wounded = true
+			attacks.append(attack)
 	
 	return attacks
 
@@ -36,6 +55,9 @@ static func effectiveness(from: Gobs.Type, to: Gobs.Type) -> float:
 	return MATCHUPS[from][to]
 
 
+## Resolves one round of attacks. Each attack in [param attacks] hits defenders, removing and wounding goblins.[br]
+## [br]
+## Attackers search for defenders they're effective against, spreading out attacks based on their brutality value.
 static func resolve_attacks(from: Army, to: Army, attacks: Array[Attack],
 		vulnerable_types: Array[Gobs.Type]) -> Array[Kill]:
 	var attacker_pool: AttackerPool = AttackerPool.new(attacks)
@@ -43,61 +65,76 @@ static func resolve_attacks(from: Army, to: Army, attacks: Array[Attack],
 	
 	var kills: Array[Kill] = []
 	# mapping from the source gob to the kill which may claim its wound
-	var pending_wounds: Dictionary[Gob, Kill]
+	var pending_wounds: Dictionary[Gob, Array]
+	
+	# Attackers prioritize targets in the following order:
+	# 1. First, attack all super-effective targets, spreading out attacks.
+	# 2. Next, attack all super-effective targets, concentrating attacks for kills.
+	# 3. Next, repeat steps 1 and 2 for normally effective targets.
+	# 4. Next, repeat steps 1 and 2 for ineffective targets.
+	#
+	# These four fields are used to maintain this complex cursor -- tracking whether we've exhausted all super-
+	# effective targets, and tracking whether we're spreading out attacks or not.
+	
+	# the first defender which we did not kill. if we loop back to them, we enable murder_mode to finish them off
+	var first_spared_target: Gob = null
+	var prev_effectiveness: float = STRONG # the effectiveness of the previous attack
+	var murder_mode: bool = false # whether attackers are concentrating attacks for kills
+	var defender_index: int = 0
 	
 	while not attacker_pool.is_empty() and not defender_pool.is_empty():
 		var attack: Attack = attacker_pool.current()
-		var target_index: int = find_target_index_for_attack(attacker_pool, defender_pool)
+		var target_index: int = find_target_index_for_attack(attacker_pool, defender_pool, defender_index)
 		var target: Gob = defender_pool.get_gob_at(target_index)
 		
-		var damage_per_hit: int = maxi(1, \
-				roundi(attack.source.attack * effectiveness(attack.source.type, target.type)))
-		var hits_per_kill: int = ceili(target.hp_max / float(damage_per_hit))
-		var hits_to_kill_wounded: int = ceili(target.hp / float(damage_per_hit))
-		var max_hits_taken: Big = Big.mul(Big.sub(target.count, 1), hits_per_kill)
-		max_hits_taken = Big.add(max_hits_taken, ceili(target.hp / float(damage_per_hit)))
-		var hits_taken: Big = attacker_pool.take(max_hits_taken)
+		if target == first_spared_target:
+			murder_mode = true
 		
-		var kill_count: Big
-		var new_hp: int
-		var wounded: bool = false
-		if hits_taken.is_gte(hits_to_kill_wounded):
-			var hits_left: Big = Big.sub(hits_taken, hits_to_kill_wounded)
-			kill_count = Big.add(1, Big.div(hits_left, hits_per_kill))
-			hits_left = Big.mod(hits_left, hits_per_kill)
-			new_hp = target.hp_max - hits_left.to_int() * damage_per_hit
-			wounded = hits_left.is_gt(0)
+		var result: Dictionary[String, Variant] = resolve_attack(attack, target, attacker_pool.remaining, murder_mode)
+		attacker_pool.take(result["hits_taken"])
+		
+		if not attacker_pool.is_empty() and attacker_pool.current() != attack:
+			# advanced to next attacker
+			first_spared_target = null
+			murder_mode = false
+			prev_effectiveness = STRONG
 		else:
-			kill_count = Big.ZERO
-			new_hp = target.hp - hits_taken.to_int() * damage_per_hit
-			wounded = hits_taken.is_gt(0)
+			# kept same attacker
+			var curr_effectiveness: float = effectiveness(attack.source.type, target.type)
+			if curr_effectiveness < prev_effectiveness:
+				prev_effectiveness = curr_effectiveness
+				first_spared_target = null
+				murder_mode = false
+			if first_spared_target == null and not target.is_dead():
+				first_spared_target = target
 		
-		target.hp = new_hp
-		target.count = Big.sub(target.count, kill_count)
+		if not target.is_dead():
+			defender_index = target_index + 1
 		
-		if kill_count.is_gt(0):
+		if result["kill_count"].is_gt(0):
 			# award gold/xp for kills
-			from.gold = Big.add(from.gold, Big.mul(kill_count, target.gold))
-			var total_xp_gain: Big = Big.mul(kill_count, target.get_kill_exp())
-			var per_gob_xp_gain: int = roundi(total_xp_gain.to_float() / attack.source.count.to_float())
+			from.gold = Big.add(from.gold, Big.mul(result["kill_count"], target.gold))
+			var total_xp_gain: Big = Big.mul(result["kill_count"], target.get_kill_exp())
+			var per_gob_xp_gain: int = roundi(total_xp_gain.to_float() / attack.source.get_count().to_float())
 			attack.source.xp += per_gob_xp_gain
-		if target.count.is_lte(0):
+		if target.is_dead():
 			to.remove_gob(target)
 			defender_pool.remove_at(target_index)
 		
 		var kill: Kill = Kill.new()
 		kill.source = attack.source
 		kill.target = target
-		kill.kill_count = kill_count
+		kill.kill_count = result["kill_count"]
 		kills.append(kill)
 		
-		if wounded:
-			pending_wounds[target] = kill
+		if result["wounded_count"].is_gt(0):
+			pending_wounds[target] = [kill, result["wounded_count"]]
 	
 	# give credit for wounding targets
 	for target: Gob in pending_wounds:
-		if target.count.is_gte(1):
-			pending_wounds[target].wounded_count = Big.ONE
+		if not target.is_dead():
+			pending_wounds[target][0].wounded_count = pending_wounds[target][1]
+	
 	# remove any 'kills' which didn't actually wound or kill any units
 	for kill_index: int in range(kills.size() - 1, -1, -1):
 		var kill: Kill = kills[kill_index]
@@ -107,12 +144,112 @@ static func resolve_attacks(from: Army, to: Army, attacks: Array[Attack],
 	return kills
 
 
-static func find_target_index_for_attack(attacker_pool: AttackerPool, defender_pool: DefenderPool) -> int:
+static func floor_to_multiple(f: float, factor: float) -> float:
+	return floor(f / factor) * factor
+
+
+## Applies up to [param attacks_remaining] hits from a single attack, removing and wounding defending goblins.[br]
+## [br]
+## Hits are broken into four categories: hits which kill healthy back goblins, hits which wound healthy back goblins,
+## hits which kill wounded back goblins, and hits which kill/wound the front goblin. Goblins split their attacks into
+## trying to kill and wound healthy units. The [param murder_mode] flag overrides this behavior to maximize kills.
+static func resolve_attack(attack: Attack, target: Gob, attacks_remaining: Big, murder_mode: bool) \
+		-> Dictionary[String, Variant]:
+	var killed_by_attack: Big = Big.ZERO
+	var wounded_by_attack: Big = Big.ZERO
+	var hits_taken: Big = Big.ZERO
+	
+	var damage_per_hit: int = maxi(1, \
+			roundi(attack.source.attack \
+			* effectiveness(attack.source.type, target.type) \
+			* (Gobs.WOUNDED_ATTACK_FACTOR if attack.wounded else 1.0)))
+	
+	var hits_per_kill: int = ceili(target.hp_max / float(damage_per_hit))
+	var hits_per_wound: int = maxi(1, roundi((target.hp_max * Gobs.WOUNDED_HP_THRESHOLD) / float(damage_per_hit)))
+	var hits_to_kill_front: int = ceili(target.front_hp / float(damage_per_hit))
+	
+	# how many hits do we want to apply, assuming the target were not wounded and at full health?
+	var old_target_count: Big = target.get_count()
+	var brutality: float = 1.0 if murder_mode else BRUTALITY_BY_TYPE[attack.source.type]
+	var how_many_hits_can_they_take: float = hits_per_kill \
+			* (target.back_count.to_float() - target.back_wounded.to_float())
+	how_many_hits_can_they_take += hits_per_wound * target.back_wounded.to_float()
+	how_many_hits_can_they_take += hits_to_kill_front
+	var how_many_hits_do_they_deserve: float = roundf(hits_per_kill * target.get_count().to_float() \
+			* lerp(0.5, 1.0, brutality))
+	var how_many_hits_will_we_do: float = \
+			min(how_many_hits_can_they_take, how_many_hits_do_they_deserve, attacks_remaining.to_float())
+	var unassigned_hits: float = how_many_hits_will_we_do
+
+	var full_hits: float = 0.0 # hits spent killing healthy back goblins
+	var wounded_half_hits: float = 0.0 # hits spent killing wounded back goblins
+	var healthy_half_hits: float = 0.0 # hits spent wounding healthy back goblins
+	var front_hits: float = 0.0 # hits spent killing/wounding the front goblin
+	
+	if target.back_count.is_gt(0):
+		# calculate full hits (to kill healthy back goblins)
+		full_hits = unassigned_hits * brutality
+		full_hits = floor_to_multiple(full_hits, hits_per_kill)
+		full_hits = min(full_hits, unassigned_hits,
+				hits_per_kill * (target.back_count.to_float() - target.back_wounded.to_float()))
+		unassigned_hits -= full_hits
+		
+		# calculate wounded half-hits (to kill wounded back goblins)
+		var half_hits: float = unassigned_hits
+		wounded_half_hits = half_hits * (target.back_wounded.to_float() / target.back_count.to_float())
+		wounded_half_hits = floor_to_multiple(wounded_half_hits, hits_per_wound)
+		wounded_half_hits = min(wounded_half_hits, unassigned_hits,
+				hits_per_wound * target.back_wounded.to_float())
+		unassigned_hits -= wounded_half_hits
+		
+		# calculate healthy half-hits (to wound healthy back goblins)
+		healthy_half_hits = floor_to_multiple(unassigned_hits, hits_per_wound)
+		healthy_half_hits = min(healthy_half_hits, unassigned_hits,
+				hits_per_wound * (target.back_count.to_float() - target.back_wounded.to_float()))
+		unassigned_hits -= healthy_half_hits
+	
+	# calculate front_hits (to wound/kill the front goblin)
+	front_hits  = unassigned_hits
+	
+	# apply full hits (to kill healthy back goblins)
+	var healthy_to_dead: float = roundf(full_hits / hits_per_kill)
+	target.back_count = Big.sub(target.back_count, healthy_to_dead)
+	
+	# apply wounded half-hits (to kill wounded back goblins)
+	var wounded_to_dead: float = roundf(wounded_half_hits / hits_per_wound)
+	target.back_count = Big.sub(target.back_count, wounded_to_dead)
+	target.back_wounded = Big.sub(target.back_wounded, wounded_to_dead)
+	
+	# apply healthy half-hits (to wound healthy back goblins)
+	var healthy_to_wounded: float = roundf(healthy_half_hits / hits_per_wound)
+	target.back_wounded = Big.add(target.back_wounded, healthy_to_wounded)
+	
+	# apply front hits (to wound/kill the front goblin)
+	if front_hits >= hits_to_kill_front:
+		target.kill_front()
+		front_hits -= hits_to_kill_front
+	if front_hits > 0.0:
+		target.front_hp = max(1, target.front_hp - front_hits * damage_per_hit)
+	
+	hits_taken = Big.new(how_many_hits_will_we_do)
+	killed_by_attack = Big.sub(old_target_count, target.get_count())
+	wounded_by_attack = Big.add(wounded_by_attack, healthy_to_wounded)
+	if front_hits > 0.0:
+		wounded_by_attack = Big.add(wounded_by_attack, Big.ONE)
+	return {
+		"hits_taken": hits_taken,
+		"kill_count": killed_by_attack,
+		"wounded_count": wounded_by_attack,
+	}
+
+
+static func find_target_index_for_attack(attacker_pool: AttackerPool, defender_pool: DefenderPool, \
+		start_index: int) -> int:
 	var attack: Attack = attacker_pool.current()
 	var best_target_index: int = 0
 	var best_effectiveness: float = 0.0
 	for target_offset: int in defender_pool.size():
-		var target_index: int = (attacker_pool.index + target_offset) % defender_pool.size()
+		var target_index: int = (start_index + target_offset) % defender_pool.size()
 		var target_gob: Gob = defender_pool.get_gob_at(target_index)
 		var target_effectiveness: float = effectiveness(attack.source.type, target_gob.type)
 		if target_effectiveness > best_effectiveness:
@@ -142,6 +279,7 @@ static func resolve_level_ups(army: Army) -> Array[LevelUp]:
 class Attack:
 	var source: Gob
 	var count: Big = Big.ZERO
+	var wounded: bool = false
 
 
 class Kill:
