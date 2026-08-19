@@ -228,7 +228,7 @@ static func resolve_attack(attack: Attack, target: Gob, attacks_remaining: Big, 
 	if front_hits >= hits_to_kill_front:
 		target.kill_front()
 		front_hits -= hits_to_kill_front
-	if front_hits > 0.0:
+	if front_hits > 0.0 and target.front_hp >= 1:
 		target.front_hp = max(1, target.front_hp - front_hits * damage_per_hit)
 	
 	hits_taken = Big.new(how_many_hits_will_we_do)

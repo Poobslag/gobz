@@ -258,6 +258,18 @@ func test_plan_and_resolve_attacks_david_goliath_11() -> void:
 	assert_kills(["🔥 1 -> 🔥 10, 1/0"])
 
 
+## The details of the battle don't matter too much, but it used to cause a softlock.
+func test_softlock() -> void:
+	PlayerDataTestUtils.load_player_data("res://assets/test/softlock_save.json")
+	player_army = PlayerData.army
+	enemy_army = PlayerData.dungeons[1].army
+	assert_eq(enemy_army.get_total_goblins().to_float(), 16_818_897.0)
+	
+	plan_and_resolve_attacks()
+	assert_eq(enemy_army.get_total_goblins().to_float(), 11_623_825.0)
+
+
+
 func resolve_attack(source_index: int, target_index: int, wounded: bool, murder_mode: bool) \
 		-> Dictionary[String, Variant]:
 	var new_attack: BattleResolver.Attack = attack(player_army, source_index, wounded)
