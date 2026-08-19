@@ -269,7 +269,6 @@ func test_softlock() -> void:
 	assert_eq(enemy_army.get_total_goblins().to_float(), 11_623_825.0)
 
 
-
 func resolve_attack(source_index: int, target_index: int, wounded: bool, murder_mode: bool) \
 		-> Dictionary[String, Variant]:
 	var new_attack: BattleResolver.Attack = attack(player_army, source_index, wounded)
