@@ -139,6 +139,7 @@ func get_summary() -> ArmySummary:
 	for goblin_type: Gobs.Type in Gobs.Type.values():
 		result.goblins_by_type[goblin_type] = Big.ZERO
 		result.attack_by_type[goblin_type] = Big.ZERO
+		result.wounded_by_type[goblin_type] = Big.ZERO
 	
 	for gob: Gob in gobs:
 		result.goblins_by_type[gob.type] = \
@@ -147,6 +148,8 @@ func get_summary() -> ArmySummary:
 				Big.add(result.total_goblins, gob.get_count())
 		result.attack_by_type[gob.type] = \
 				Big.add(result.attack_by_type[gob.type], gob.get_total_attack())
+		result.wounded_by_type[gob.type] = \
+				Big.add(result.wounded_by_type[gob.type], gob.get_wounded_count())
 		result.total_attack = \
 				Big.add(result.total_attack, gob.get_total_attack())
 		result.total_gold = \
@@ -225,6 +228,7 @@ class ArmySummary:
 	var total_goblins: Big = Big.ZERO
 	var total_attack: Big = Big.ZERO
 	var goblins_by_type: Dictionary[Gobs.Type, Big] = {}
+	var wounded_by_type: Dictionary[Gobs.Type, Big] = {}
 	var attack_by_type: Dictionary[Gobs.Type, Big] = {}
 	var total_gold: Big = Big.ZERO
 	
@@ -233,6 +237,7 @@ class ArmySummary:
 			"total_goblins": total_goblins,
 			"total_attack": total_attack,
 			"goblins_by_type": goblins_by_type,
+			"wounded_by_type": wounded_by_type,
 			"attack_by_type": attack_by_type,
 			"total_gold": total_gold,
 		})

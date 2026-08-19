@@ -45,9 +45,16 @@ static func army_bbcode(army: Army) -> String:
 			[summary.total_goblins.to_aa(), summary.total_attack.to_aa()]
 	for goblin_type: Type in Type.values():
 		if summary.goblins_by_type[goblin_type].is_gte(1):
-			result += "%s: %s goblins, ⚔️%s\n" % [
+			var wounded_string: String = ""
+			if summary.wounded_by_type[goblin_type].is_gte(1):
+				var wounded_percent: float = 100 * summary.wounded_by_type[goblin_type].to_float() \
+						/ summary.goblins_by_type[goblin_type].to_float()
+				wounded_percent = max(wounded_percent, 1)
+				wounded_string = "(%d%% 🩹)" % [wounded_percent]
+			result += "%s: %s goblins, %s⚔️%s\n" % [
 					EMOJIS_BY_GOBLIN_TYPE[goblin_type],
 					summary.goblins_by_type[goblin_type].to_aa(),
+					wounded_string,
 					summary.attack_by_type[goblin_type].to_aa()]
 	
 	return result.strip_edges()
