@@ -3,16 +3,10 @@
 [ext_resource type="Script" uid="uid://dnsby44puvf3e" path="res://src/main/home_base/day_label.gd" id="1_kk5qu"]
 
 [node name="DayLabel" type="RichTextLabel" unique_id=513796362]
-custom_minimum_size = Vector2(0, 46)
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -476.0
-offset_right = 476.0
-offset_bottom = 46.0
-grow_horizontal = 2
+offset_right = 100.0
+offset_bottom = 30.0
 bbcode_enabled = true
-text = "Day 1"
+text = "[b]Day 1[/b]"
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
