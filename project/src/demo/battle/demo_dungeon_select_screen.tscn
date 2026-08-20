@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bxlag37aqlhjr"]
 
 [ext_resource type="PackedScene" uid="uid://bvcry38kh66ds" path="res://src/main/battle/dungeon_select_screen.tscn" id="1_furq3"]
-[ext_resource type="Script" uid="uid://bhkj1lt0c5p1t" path="res://src/demo/demo_dungeon_select_screen.gd" id="1_rxoap"]
+[ext_resource type="Script" uid="uid://bhkj1lt0c5p1t" path="res://src/demo/battle/demo_dungeon_select_screen.gd" id="1_rxoap"]
 
 [node name="Demo" type="Control" unique_id=1924681475]
 layout_mode = 3
