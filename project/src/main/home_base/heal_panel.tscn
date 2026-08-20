@@ -1,10 +1,12 @@
 [gd_scene format=3 uid="uid://cck5hgu22cl7a"]
 
 [ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/ui/screen_panel.tscn" id="1_wxnd2"]
+[ext_resource type="Script" uid="uid://djhbxu52xckqj" path="res://src/main/home_base/heal_panel.gd" id="2_cj732"]
 [ext_resource type="PackedScene" uid="uid://dqjjgkwxab0ht" path="res://src/main/ui/splash_shower.tscn" id="2_forku"]
 [ext_resource type="PackedScene" uid="uid://dbm3uqjrgg63m" path="res://src/main/ui/splash_art.tscn" id="3_jue1v"]
 [ext_resource type="Texture2D" uid="uid://bu4t5ousnvj2d" path="res://assets/main/splash/recruit.png" id="4_cj732"]
 [ext_resource type="PackedScene" uid="uid://g7b12cf0ow6o" path="res://src/main/home_base/home_nav.tscn" id="5_jue1v"]
+[ext_resource type="PackedScene" uid="uid://dgtblx72civbg" path="res://src/main/home_base/heal_navigator.tscn" id="6_g5ynr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cj732"]
 bg_color = Color(0.25490198, 0.17254902, 0.2, 1)
@@ -20,6 +22,7 @@ corner_radius_bottom_left = 4
 
 [node name="HealPanel" unique_id=806142582 instance=ExtResource("1_wxnd2")]
 color = Color(0.49019608, 0.2784314, 0.34901962, 1)
+script = ExtResource("2_cj732")
 
 [node name="SplashShower" parent="MarginContainer/Panel" parent_id_path=PackedInt32Array(2033304710) index="0" unique_id=731007175 instance=ExtResource("2_forku")]
 layout_mode = 0
@@ -76,7 +79,8 @@ theme_override_constants/separation = 50
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" index="0" unique_id=821837159]
+[node name="InventoryLabel" type="RichTextLabel" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" index="0" unique_id=821837159]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 71)
 layout_mode = 2
 text = "🔥: 11.2m goblins, (4% 🩹) ⚔76.1m
@@ -88,45 +92,8 @@ layout_mode = 2
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer" index="0" unique_id=1305807419]
+[node name="HealNavigator" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer" index="0" unique_id=1129179821 instance=ExtResource("6_g5ynr")]
 layout_mode = 2
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer" index="0" unique_id=2105956649]
-layout_mode = 2
-
-[node name="Spacer2" type="Control" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" index="0" unique_id=859094483]
-layout_mode = 2
-size_flags_horizontal = 3
-mouse_filter = 2
-
-[node name="Button4" type="Button" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" index="1" unique_id=2136226754]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "To Kitchen"
-
-[node name="Spacer" type="Control" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" index="2" unique_id=5514079]
-layout_mode = 2
-size_flags_horizontal = 3
-mouse_filter = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer" index="1" unique_id=885146533]
-layout_mode = 2
-
-[node name="Button" type="Button" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" index="0" unique_id=1759884195]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Visit 💧 Sceeg"
-
-[node name="Label" type="Label" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" index="1" unique_id=762948442]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Visiting 🔥 Gleex"
-horizontal_alignment = 1
-
-[node name="Button3" type="Button" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" index="2" unique_id=1730567033]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Visit 🌳 Kroot"
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" index="2" unique_id=1897283855]
 layout_mode = 2

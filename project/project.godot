@@ -22,6 +22,7 @@ config/icon="res://icon.svg"
 Global="*uid://b665exkm50ujh"
 PlayerData="*uid://e7a2mbx7jndi"
 PlayerSave="*uid://7vpk8bm2ud2r"
+HomeBaseData="*uid://dd4rwu6sshhpj"
 
 [debug]
 

@@ -1,16 +1,18 @@
 [gd_scene format=3 uid="uid://bk1nxsm06kn85"]
 
 [ext_resource type="PackedScene" uid="uid://cck5hgu22cl7a" path="res://src/main/home_base/heal_panel.tscn" id="1_8m2oa"]
+[ext_resource type="Script" uid="uid://bo6ccwlvva6r" path="res://src/main/home_base/heal_screen.gd" id="1_ksplh"]
 [ext_resource type="PackedScene" uid="uid://dr0eu5pnc02od" path="res://src/main/home_base/kitchen_panel.tscn" id="2_w26rl"]
 [ext_resource type="PackedScene" uid="uid://h73338s4fipn" path="res://src/main/ui/command_palette.tscn" id="8_uwnlv"]
 
-[node name="Heal" type="Control" unique_id=1368189123]
+[node name="HealScreen" type="Control" unique_id=1368189123]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_ksplh")
 
 [node name="HealPanel" parent="." unique_id=806142582 instance=ExtResource("1_8m2oa")]
 visible = false

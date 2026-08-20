@@ -159,6 +159,9 @@ func get_ripoff_factor() -> float:
 	return _ripoff_factor_cache
 
 
+
+
+
 func to_json_dict() -> Dictionary[String, Variant]:
 	var result: Dictionary[String, Variant] = {}
 	result["day"] = day
@@ -188,6 +191,8 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 		dungeon.from_json_dict(typed_dungeon_json)
 		dungeons.append(dungeon)
 	home_base_multiplier = Big.new(json.get("home_base_multiplier", 1.0))
+
+
 
 
 func _calculate_ripoff_factor() -> float:
