@@ -4,7 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://dqjjgkwxab0ht" path="res://src/main/ui/splash_shower.tscn" id="3_jccdc"]
 [ext_resource type="PackedScene" uid="uid://dbm3uqjrgg63m" path="res://src/main/ui/splash_art.tscn" id="4_hnmox"]
 [ext_resource type="Texture2D" uid="uid://bu4t5ousnvj2d" path="res://assets/main/splash/recruit.png" id="5_wsayi"]
-[ext_resource type="PackedScene" uid="uid://ctpm75l6a3tx0" path="res://src/main/home_base/day_label.tscn" id="6_n32lt"]
 [ext_resource type="PackedScene" uid="uid://g7b12cf0ow6o" path="res://src/main/home_base/home_nav.tscn" id="8_encft"]
 [ext_resource type="PackedScene" uid="uid://h73338s4fipn" path="res://src/main/ui/command_palette.tscn" id="9_itqvk"]
 
@@ -61,17 +60,13 @@ modulate = Color(0.7882353, 0.53333336, 0.29411766, 0.5019608)
 position = Vector2(-220, -256)
 texture = ExtResource("5_wsayi")
 
-[node name="DayLabel" parent="ScreenPanel/MarginContainer/Panel" parent_id_path=PackedInt32Array(806142582, 2033304710) index="1" unique_id=513796362 instance=ExtResource("6_n32lt")]
-unique_name_in_owner = true
-layout_mode = 0
-anchors_preset = 0
-anchor_left = 0.0
-anchor_right = 0.0
-offset_left = 0.0
-offset_right = 952.0
-grow_horizontal = 1
+[node name="MarginContainer" parent="ScreenPanel/MarginContainer/Panel" parent_id_path=PackedInt32Array(806142582, 2033304710) index="1" unique_id=1781904422]
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer" parent_id_path=PackedInt32Array(806142582, 1781904422) index="0" unique_id=1694624302]
+[node name="HBoxContainer" type="HBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer" index="0" unique_id=1694624302]
 layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer" unique_id=228279447]

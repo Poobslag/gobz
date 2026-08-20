@@ -8,6 +8,12 @@
 color = Color(0.23921569, 0.28235295, 0.4392157, 1)
 script = ExtResource("2_r0v21")
 
+[node name="MarginContainer" parent="." index="0" unique_id=1114080921]
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
 [node name="SplashHolder" type="Control" parent="MarginContainer/Panel" parent_id_path=PackedInt32Array(2033304710) index="0" unique_id=947051547]
 layout_mode = 1
 anchors_preset = 8
