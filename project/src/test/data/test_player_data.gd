@@ -40,6 +40,7 @@ func test_convert_to_json_and_back() -> void:
 	PlayerData.day = 5
 	PlayerData.army.add_gob(gob("🔥 3"))
 	PlayerData.gold = Big.new(6700)
+	PlayerData.inventory.add_item(Items.HERB_1, Big.new(123))
 	PlayerData.dungeons.append(Dungeon.new())
 	PlayerData.dungeons[0].army.add_gob(gob("💧 2"))
 	PlayerData.dungeons[0].recon_army.add_gob(gob("💧 3"))
@@ -49,4 +50,5 @@ func test_convert_to_json_and_back() -> void:
 	PlayerData.from_json_dict(result)
 	assert_eq(PlayerData.day, 5)
 	assert_eq(PlayerData.army.get_total_goblins().to_int(), 1)
+	assert_eq(PlayerData.inventory.get_count(Items.HERB_1).to_float(), 123.0)
 	assert_eq(PlayerData.dungeons.size(), 1)

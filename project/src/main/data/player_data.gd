@@ -23,6 +23,7 @@ var gold: Big = Big.ZERO:
 	set(value):
 		gold = value
 		mark_ripoff_factor_dirty()
+var inventory: Inventory = Inventory.new()
 var dungeons: Array[Dungeon] = []
 var dungeon_index: int
 
@@ -31,10 +32,8 @@ var ripoff_factor: float:
 	get():
 		return get_ripoff_factor()
 
-
 var _ripoff_factor_cache: float = 0.0
 var _ripoff_factor_dirty: bool = true
-
 
 var tips: Array[String] = [
 	"🌳 goblins are strong against 💧, but struggle with 🔥.",
@@ -165,6 +164,7 @@ func to_json_dict() -> Dictionary[String, Variant]:
 	result["day"] = day
 	result["army"] = army.to_glob()
 	result["gold"] = gold.to_float()
+	result["inventory"] = inventory.to_json_dict()
 	var dungeons_json: Array[Dictionary] = []
 	for dungeon: Dungeon in dungeons:
 		dungeons_json.append(dungeon.to_json_dict())
@@ -179,6 +179,8 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 	if json.has("army"):
 		army.from_glob(json["army"])
 	gold = Big.new(json.get("gold", 0.0))
+	if json.has("inventory"):
+		inventory.from_json_dict(json["inventory"])
 	for dungeon_json: Dictionary in json.get("dungeons", []):
 		var dungeon: Dungeon = Dungeon.new()
 		var typed_dungeon_json: Dictionary[String, Variant] = {}
