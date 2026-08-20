@@ -103,6 +103,7 @@ func retreat() -> void:
 func _end_battle() -> void:
 	PlayerData.day += 1
 	PlayerData.cycle_dungeons()
+	PlayerData.mark_heal_groups_dirty()
 
 
 func _show_splash(shower: Node) -> void:

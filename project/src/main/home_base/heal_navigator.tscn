@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://dgtblx72civbg"]
+
+[ext_resource type="Script" uid="uid://dg8vnk5abp1px" path="res://src/main/home_base/heal_navigator.gd" id="1_kyvl6"]
+
+[node name="HealNavigator" type="VBoxContainer" unique_id=1129179821]
+offset_right = 528.0
+offset_bottom = 172.0
+script = ExtResource("1_kyvl6")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="." unique_id=339672627]
+layout_mode = 2
+
+[node name="Spacer1" type="Control" parent="HBoxContainer2" unique_id=776496081]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="KitchenButton" type="Button" parent="HBoxContainer2" unique_id=534486336]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "To Kitchen"
+
+[node name="Spacer2" type="Control" parent="HBoxContainer2" unique_id=1964620598]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="." unique_id=184841124]
+layout_mode = 2
+
+[node name="Spacer3" type="Control" parent="HBoxContainer3" unique_id=429489374]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="LeftButton" type="Button" parent="HBoxContainer3" unique_id=144827580]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Visit 💧 Sceeg"
+
+[node name="CenterButton" type="Button" parent="HBoxContainer3" unique_id=771153853]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+focus_mode = 0
+disabled = true
+text = "Visiting 🔥 Gleex"
+autowrap_trim_flags = 192
+
+[node name="RightButton" type="Button" parent="HBoxContainer3" unique_id=1282351517]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Visit 🌳 Kroot"
+
+[node name="Spacer4" type="Control" parent="HBoxContainer3" unique_id=1384470818]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
