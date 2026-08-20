@@ -82,7 +82,15 @@ static func resolve_attacks(from: Army, to: Army, attacks: Array[Attack],
 	var murder_mode: bool = false # whether attackers are concentrating attacks for kills
 	var defender_index: int = 0
 	
+	var mercy: float = 0
+	
 	while not attacker_pool.is_empty() and not defender_pool.is_empty():
+		if mercy > 100000:
+			# at most, we should have about 500 units looping about 3,000 times to find their target.
+			push_error("Battle did not terminate after %s attacks." % [mercy])
+			break
+		mercy += 1
+		
 		var attack: Attack = attacker_pool.current()
 		var target_index: int = find_target_index_for_attack(attacker_pool, defender_pool, defender_index)
 		var target: Gob = defender_pool.get_gob_at(target_index)
@@ -155,6 +163,8 @@ static func floor_to_multiple(f: float, factor: float) -> float:
 ## trying to kill and wound healthy units. The [param murder_mode] flag overrides this behavior to maximize kills.
 static func resolve_attack(attack: Attack, target: Gob, attacks_remaining: Big, murder_mode: bool) \
 		-> Dictionary[String, Variant]:
+	target.assert_valid()
+	
 	var killed_by_attack: Big = Big.ZERO
 	var wounded_by_attack: Big = Big.ZERO
 	var hits_taken: Big = Big.ZERO
@@ -166,14 +176,13 @@ static func resolve_attack(attack: Attack, target: Gob, attacks_remaining: Big, 
 	
 	var hits_per_kill: int = ceili(target.hp_max / float(damage_per_hit))
 	var hits_per_wound: int = maxi(1, roundi((target.hp_max * Gobs.WOUNDED_HP_THRESHOLD) / float(damage_per_hit)))
-	var hits_to_kill_front: int = ceili(target.front_hp / float(damage_per_hit))
+	var hits_to_kill_front: int = _hits_to_kill_front(target, damage_per_hit)
 	
 	# how many hits do we want to apply, assuming the target were not wounded and at full health?
 	var old_target_count: Big = target.get_count()
 	var brutality: float = 1.0 if murder_mode else BRUTALITY_BY_TYPE[attack.source.type]
-	var how_many_hits_can_they_take: float = hits_per_kill \
-			* (target.back_count.to_float() - target.back_wounded.to_float())
-	how_many_hits_can_they_take += hits_per_wound * target.back_wounded.to_float()
+	var how_many_hits_can_they_take: float = _max_full_hits(target, hits_per_kill)
+	how_many_hits_can_they_take += _max_wounded_half_hits(target, hits_per_wound)
 	how_many_hits_can_they_take += hits_to_kill_front
 	var how_many_hits_do_they_deserve: float = roundf(hits_per_kill * target.get_count().to_float() \
 			* lerp(0.5, 1.0, brutality))
@@ -190,22 +199,19 @@ static func resolve_attack(attack: Attack, target: Gob, attacks_remaining: Big, 
 		# calculate full hits (to kill healthy back goblins)
 		full_hits = unassigned_hits * brutality
 		full_hits = floor_to_multiple(full_hits, hits_per_kill)
-		full_hits = min(full_hits, unassigned_hits,
-				hits_per_kill * (target.back_count.to_float() - target.back_wounded.to_float()))
+		full_hits = min(full_hits, unassigned_hits, _max_full_hits(target, hits_per_kill))
 		unassigned_hits -= full_hits
 		
 		# calculate wounded half-hits (to kill wounded back goblins)
 		var half_hits: float = unassigned_hits
 		wounded_half_hits = half_hits * (target.back_wounded.to_float() / target.back_count.to_float())
 		wounded_half_hits = floor_to_multiple(wounded_half_hits, hits_per_wound)
-		wounded_half_hits = min(wounded_half_hits, unassigned_hits,
-				hits_per_wound * target.back_wounded.to_float())
+		wounded_half_hits = min(wounded_half_hits, unassigned_hits, _max_wounded_half_hits(target, hits_per_wound))
 		unassigned_hits -= wounded_half_hits
 		
 		# calculate healthy half-hits (to wound healthy back goblins)
 		healthy_half_hits = floor_to_multiple(unassigned_hits, hits_per_wound)
-		healthy_half_hits = min(healthy_half_hits, unassigned_hits,
-				hits_per_wound * (target.back_count.to_float() - target.back_wounded.to_float()))
+		healthy_half_hits = min(healthy_half_hits, unassigned_hits, _max_healthy_half_hits(target, hits_per_wound))
 		unassigned_hits -= healthy_half_hits
 	
 	# calculate front_hits (to wound/kill the front goblin)
@@ -221,14 +227,24 @@ static func resolve_attack(attack: Attack, target: Gob, attacks_remaining: Big, 
 	target.back_wounded = Big.sub(target.back_wounded, wounded_to_dead)
 	
 	# apply healthy half-hits (to wound healthy back goblins)
+	# ensure we don't try to wound more guys than possible
+	if healthy_half_hits > _max_healthy_half_hits(target, hits_per_wound):
+		var excess_hits: float = (healthy_half_hits - _max_healthy_half_hits(target, hits_per_wound))
+		hits_taken = Big.sub(hits_taken, excess_hits)
+		healthy_half_hits -= excess_hits
 	var healthy_to_wounded: float = roundf(healthy_half_hits / hits_per_wound)
 	target.back_wounded = Big.add(target.back_wounded, healthy_to_wounded)
 	
 	# apply front hits (to wound/kill the front goblin)
 	if front_hits >= hits_to_kill_front:
+		if front_hits > hits_to_kill_front:
+			var excess_hits: float = (front_hits - _hits_to_kill_front(target, damage_per_hit))
+			hits_taken = Big.sub(hits_taken, excess_hits)
+			front_hits -= excess_hits
 		target.kill_front()
 		front_hits -= hits_to_kill_front
-	if front_hits > 0.0 and target.front_hp >= 1:
+		hits_to_kill_front = _hits_to_kill_front(target, damage_per_hit)
+	else:
 		target.front_hp = max(1, target.front_hp - front_hits * damage_per_hit)
 	
 	hits_taken = Big.new(how_many_hits_will_we_do)
@@ -236,6 +252,10 @@ static func resolve_attack(attack: Attack, target: Gob, attacks_remaining: Big, 
 	wounded_by_attack = Big.add(wounded_by_attack, healthy_to_wounded)
 	if front_hits > 0.0:
 		wounded_by_attack = Big.add(wounded_by_attack, Big.ONE)
+	
+	target.assert_valid()
+	target.fix_invalid()
+	
 	return {
 		"hits_taken": hits_taken,
 		"kill_count": killed_by_attack,
@@ -274,6 +294,22 @@ static func resolve_level_ups(army: Army) -> Array[LevelUp]:
 			level_up.count = level_up_count
 			level_ups.append(level_up)
 	return level_ups
+
+
+static func _max_full_hits(target: Gob, hits_per_kill: int) -> float:
+	return hits_per_kill * (target.back_count.to_float() - target.back_wounded.to_float())
+
+
+static func _max_wounded_half_hits(target: Gob, hits_per_wound: int) -> float:
+	return hits_per_wound * target.back_wounded.to_float()
+
+
+static func _max_healthy_half_hits(target: Gob, hits_per_wound: int) -> float:
+	return hits_per_wound * (target.back_count.to_float() - target.back_wounded.to_float())
+
+
+static func _hits_to_kill_front(target: Gob, damage_per_hit: int) -> int:
+	return ceili(target.front_hp / float(damage_per_hit))
 
 
 class Attack:

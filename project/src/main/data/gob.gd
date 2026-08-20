@@ -42,6 +42,21 @@ func get_count() -> Big:
 	return Big.add(back_count, Big.ONE if front_hp > 0 else Big.ZERO)
 
 
+func assert_valid() -> void:
+	assert(back_count.is_gte(0), "back_count (%s) < 0" % [back_count])
+	assert(back_wounded.is_gte(0), "back_wounded (%s) < 0" % [back_wounded])
+	assert(back_wounded.is_lte(back_count), "back_wounded (%s) > back_count (%s)" % [back_wounded, back_count])
+
+
+func fix_invalid() -> void:
+	if back_count.is_lt(0):
+		back_count = Big.ZERO
+	if back_wounded.is_lt(0):
+		back_wounded = Big.ZERO
+	if back_wounded.is_gt(back_count):
+		back_wounded = back_count
+
+
 func is_dead() -> bool:
 	return back_count.is_lte(0) and front_hp == 0
 
@@ -147,3 +162,7 @@ func to_json_dict() -> Dictionary[String, Variant]:
 		"gold": gold,
 		"xp": xp,
 	}
+
+
+func _to_string() -> String:
+	return JSON.stringify(to_json_dict())
