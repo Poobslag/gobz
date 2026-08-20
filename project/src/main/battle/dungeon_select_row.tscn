@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://jratby1g2yr6"]
 
-[ext_resource type="Script" uid="uid://c3tmi6b1g8gwo" path="res://src/main/dungeon_select_row.gd" id="1_ymirb"]
+[ext_resource type="Script" uid="uid://c3tmi6b1g8gwo" path="res://src/main/battle/dungeon_select_row.gd" id="1_ymirb"]
 
 [node name="DungeonSelectRow" type="HBoxContainer" unique_id=971645189]
 script = ExtResource("1_ymirb")

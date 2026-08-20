@@ -61,4 +61,4 @@ func _on_watch_panel_finished() -> void:
 
 func _on_results_panel_finished() -> void:
 	PlayerSave.save_data()
-	get_tree().change_scene_to_file("res://src/main/home_base_screen.tscn")
+	get_tree().change_scene_to_file("res://src/main/home_base/home_base_screen.tscn")

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ctpm75l6a3tx0"]
 
-[ext_resource type="Script" uid="uid://dnsby44puvf3e" path="res://src/main/day_label.gd" id="1_kk5qu"]
+[ext_resource type="Script" uid="uid://dnsby44puvf3e" path="res://src/main/home_base/day_label.gd" id="1_kk5qu"]
 
 [node name="DayLabel" type="RichTextLabel" unique_id=513796362]
 custom_minimum_size = Vector2(0, 46)
