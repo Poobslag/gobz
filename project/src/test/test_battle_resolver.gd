@@ -266,7 +266,24 @@ func test_softlock() -> void:
 	assert_eq(enemy_army.get_total_goblins().to_float(), 16_818_897.0)
 	
 	plan_and_resolve_attacks()
-	assert_eq(enemy_army.get_total_goblins().to_float(), 11_623_825.0)
+	assert_eq(enemy_army.get_total_goblins().to_float(), 11_639_432.0)
+
+
+## It used to be possible to attack 101 goblins, kill 5 of them and wound 100 of them, leaving the Gob in an
+## invalid state with -5 healthy goblins.
+func test_too_many_wounded() -> void:
+	player_army.add_gob(gob("🕊 8"))
+	player_army.gobs[0].back_count = Big.new(500)
+	enemy_army.add_gob(gob("😈 8"))
+	enemy_army.gobs[0].back_count = Big.new(100)
+	var target: Gob = enemy_army.gobs[0]
+	
+	var result: Dictionary[String, Variant] = resolve_attack(0, 0, false, false)
+	assert_eq(target.back_count.to_int(), 95)
+	assert_eq(target.back_wounded.to_int(), 95)
+	assert_eq(result["kill_count"].to_int(), 5)
+	assert_eq(result["wounded_count"].to_int(), 96)
+	assert_eq(result["hits_taken"].to_int(), 111)
 
 
 func resolve_attack(source_index: int, target_index: int, wounded: bool, murder_mode: bool) \
