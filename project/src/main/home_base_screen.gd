@@ -11,8 +11,6 @@ func _ready() -> void:
 		%Recruits.remove_child(child)
 		child.queue_free()
 	
-	%DayLabel.text = "Day %s" % [StringUtils.comma_sep(PlayerData.day)]
-	
 	_refresh_recruits()
 	_refresh_summary()
 	_refresh_dungeons()

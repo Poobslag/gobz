@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://g7b12cf0ow6o"]
+
+[ext_resource type="Script" uid="uid://c7gskogqs1j67" path="res://src/main/home_nav.gd" id="1_ir0yr"]
+
+[node name="HomeNav" type="VBoxContainer" unique_id=1142993029]
+script = ExtResource("1_ir0yr")
+
+[node name="Home" type="Button" parent="." unique_id=2022025604 groups=["nav_buttons"]]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+disabled = true
+text = "🏠 Home"
+
+[node name="Shop" type="Button" parent="." unique_id=236354063 groups=["nav_buttons"]]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "💰 Shop"
+
+[node name="Heal" type="Button" parent="." unique_id=360384607 groups=["nav_buttons"]]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "🩹 Heal"

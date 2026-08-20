@@ -7,6 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://bu4t5ousnvj2d" path="res://assets/main/splash/recruit.png" id="4_bxn6b"]
 [ext_resource type="PackedScene" uid="uid://dqjjgkwxab0ht" path="res://src/main/splash_shower.tscn" id="4_ds7ld"]
 [ext_resource type="PackedScene" uid="uid://dbm3uqjrgg63m" path="res://src/main/splash_art.tscn" id="4_emhyr"]
+[ext_resource type="PackedScene" uid="uid://ctpm75l6a3tx0" path="res://src/main/day_label.tscn" id="6_7vaeo"]
+[ext_resource type="PackedScene" uid="uid://g7b12cf0ow6o" path="res://src/main/home_nav.tscn" id="8_jg6nf"]
 
 [node name="HomeBase" type="Control" unique_id=1368189123]
 layout_mode = 3
@@ -62,31 +64,28 @@ modulate = Color(0.27058825, 0.5411765, 0.38039216, 0.5019608)
 position = Vector2(-220, -256)
 texture = ExtResource("4_bxn6b")
 
-[node name="DayLabel" type="RichTextLabel" parent="ScreenPanel/MarginContainer/Panel" parent_id_path=PackedInt32Array(806142582, 2033304710) index="1" unique_id=232688582]
+[node name="DayLabel" parent="ScreenPanel/MarginContainer/Panel" parent_id_path=PackedInt32Array(806142582, 2033304710) index="1" unique_id=513796362 instance=ExtResource("6_7vaeo")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 46)
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -476.0
-offset_right = 476.0
-offset_bottom = 46.0
-grow_horizontal = 2
-bbcode_enabled = true
-text = "Day 1"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
+layout_mode = 0
+anchors_preset = 0
+anchor_left = 0.0
+anchor_right = 0.0
+offset_left = 0.0
+offset_right = 952.0
+grow_horizontal = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer" parent_id_path=PackedInt32Array(806142582, 1781904422) index="0" unique_id=228279447]
+[node name="HBoxContainer" type="HBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer" parent_id_path=PackedInt32Array(806142582, 1781904422) index="0" unique_id=1694624302]
 layout_mode = 2
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=353040870]
+[node name="VBoxContainer" type="VBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer" unique_id=228279447]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=353040870]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ArmyLabel" type="RichTextLabel" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1099782014]
+[node name="ArmyLabel" type="RichTextLabel" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer3" unique_id=1099782014]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -98,55 +97,58 @@ text = "Your army:
 
 💰25"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=615496478]
+[node name="VBoxContainer" type="VBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer3" unique_id=615496478]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer3/VBoxContainer" unique_id=1498261927]
+[node name="Label" type="Label" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer3/VBoxContainer" unique_id=1498261927]
 layout_mode = 2
 text = "Dungeons:"
 
-[node name="Dungeons" type="VBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer3/VBoxContainer" unique_id=1317341331]
+[node name="Dungeons" type="VBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer3/VBoxContainer" unique_id=1317341331]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Recruits" type="VBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=1381450448]
+[node name="Recruits" type="VBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1381450448]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer/Recruits" unique_id=616338784 instance=ExtResource("3_45odm")]
+[node name="HBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Recruits" unique_id=616338784 instance=ExtResource("3_45odm")]
 layout_mode = 2
 
-[node name="HBoxContainer2" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer/Recruits" unique_id=961380687 instance=ExtResource("3_45odm")]
+[node name="HBoxContainer2" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Recruits" unique_id=961380687 instance=ExtResource("3_45odm")]
 layout_mode = 2
 
-[node name="HBoxContainer3" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer/Recruits" unique_id=1206501521 instance=ExtResource("3_45odm")]
+[node name="HBoxContainer3" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Recruits" unique_id=1206501521 instance=ExtResource("3_45odm")]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=1327478529]
+[node name="HBoxContainer" type="HBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1327478529]
 custom_minimum_size = Vector2(0, 31)
 layout_mode = 2
 
-[node name="MultiplyButton" type="Button" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1433921640]
+[node name="MultiplyButton" type="Button" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1433921640]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "×10"
 
-[node name="DivideButton" type="Button" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=269882561]
+[node name="DivideButton" type="Button" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=269882561]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "÷10"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=288008880]
+[node name="HBoxContainer2" type="HBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=288008880]
 layout_mode = 2
 
-[node name="FightButton" type="Button" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=682209607]
+[node name="FightButton" type="Button" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2" unique_id=682209607]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "Go fight"
+text = "Go Fight"
+
+[node name="HomeNav" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer" unique_id=1142993029 instance=ExtResource("8_jg6nf")]
+layout_mode = 2
 
 [node name="CommandPalette" parent="." unique_id=1368678133 instance=ExtResource("4_5sywx")]
 unique_name_in_owner = true

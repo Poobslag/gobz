@@ -1,0 +1,28 @@
+@tool
+extends VBoxContainer
+
+@export
+var location_index: int = 0:
+	set(value):
+		location_index = value
+		if not is_node_ready():
+			return
+		_refresh()
+
+func _ready() -> void:
+	_refresh()
+	%Home.pressed.connect(get_tree().change_scene_to_file.bind("res://src/main/home_base_screen.tscn"))
+	%Shop.pressed.connect(get_tree().change_scene_to_file.bind("res://src/main/shop_screen.tscn"))
+	%Heal.pressed.connect(get_tree().change_scene_to_file.bind("res://src/main/heal_screen.tscn"))
+
+
+func _refresh() -> void:
+	var nav_buttons: Array[Node] = get_tree().get_nodes_in_group("nav_buttons").filter(is_ancestor_of)
+	if location_index >= nav_buttons.size():
+		push_error("location_index out of bounds: %s >= %s" % [location_index, nav_buttons.size()])
+		return
+	
+	for i in nav_buttons.size():
+		var nav_button: Button = nav_buttons[i]
+		nav_button.disabled = false
+	nav_buttons[location_index].disabled = true

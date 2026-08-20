@@ -1,0 +1,88 @@
+[gd_scene format=3 uid="uid://bk1nxsm06kn85"]
+
+[ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/screen_panel.tscn" id="2_haubd"]
+[ext_resource type="PackedScene" uid="uid://dqjjgkwxab0ht" path="res://src/main/splash_shower.tscn" id="3_bosar"]
+[ext_resource type="PackedScene" uid="uid://dbm3uqjrgg63m" path="res://src/main/splash_art.tscn" id="4_y30lk"]
+[ext_resource type="Texture2D" uid="uid://bu4t5ousnvj2d" path="res://assets/main/splash/recruit.png" id="5_tkh4j"]
+[ext_resource type="PackedScene" uid="uid://ctpm75l6a3tx0" path="res://src/main/day_label.tscn" id="6_p15t3"]
+[ext_resource type="PackedScene" uid="uid://g7b12cf0ow6o" path="res://src/main/home_nav.tscn" id="7_ds73y"]
+[ext_resource type="PackedScene" uid="uid://h73338s4fipn" path="res://src/main/ui/command_palette.tscn" id="8_uwnlv"]
+
+[node name="Heal" type="Control" unique_id=1368189123]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScreenPanel" parent="." unique_id=806142582 instance=ExtResource("2_haubd")]
+layout_mode = 1
+color = Color(0.49019608, 0.2784314, 0.34901962, 1)
+
+[node name="SplashShower" parent="ScreenPanel/MarginContainer/Panel" parent_id_path=PackedInt32Array(806142582, 2033304710) index="0" unique_id=731007175 instance=ExtResource("3_bosar")]
+layout_mode = 0
+offset_right = 1052.0
+offset_bottom = 548.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BottomRight" type="Control" parent="ScreenPanel/MarginContainer/Panel/SplashShower" unique_id=427641823]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -11.0
+offset_top = -27.0
+offset_right = 29.0
+offset_bottom = 13.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="SplashArt1" parent="ScreenPanel/MarginContainer/Panel/SplashShower/BottomRight" unique_id=1575316682 instance=ExtResource("4_y30lk")]
+visible = false
+modulate = Color(0.16078432, 0.12941177, 0.14117648, 1)
+position = Vector2(-194, -162)
+scale = Vector2(0.66, 0.66)
+texture = ExtResource("5_tkh4j")
+
+[node name="SplashArt3" parent="ScreenPanel/MarginContainer/Panel/SplashShower/BottomRight" unique_id=1172502470 instance=ExtResource("4_y30lk")]
+visible = false
+modulate = Color(0.16078432, 0.12941177, 0.14117648, 1)
+position = Vector2(-153, -117)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5_tkh4j")
+flip_h = true
+
+[node name="SplashArt2" parent="ScreenPanel/MarginContainer/Panel/SplashShower/BottomRight" unique_id=320577346 instance=ExtResource("4_y30lk")]
+modulate = Color(0.49019608, 0.2784314, 0.34901962, 0.5019608)
+position = Vector2(-220, -256)
+texture = ExtResource("5_tkh4j")
+
+[node name="DayLabel" parent="ScreenPanel/MarginContainer/Panel" parent_id_path=PackedInt32Array(806142582, 2033304710) index="1" unique_id=513796362 instance=ExtResource("6_p15t3")]
+unique_name_in_owner = true
+layout_mode = 0
+anchors_preset = 0
+anchor_left = 0.0
+anchor_right = 0.0
+offset_left = 0.0
+offset_right = 952.0
+grow_horizontal = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer" parent_id_path=PackedInt32Array(806142582, 1781904422) index="0" unique_id=1694624302]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer" unique_id=228279447]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HomeNav" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer" unique_id=1142993029 instance=ExtResource("7_ds73y")]
+layout_mode = 2
+location_index = 2
+
+[node name="CommandPalette" parent="." unique_id=1368678133 instance=ExtResource("8_uwnlv")]
+unique_name_in_owner = true
+
+[editable path="ScreenPanel"]
