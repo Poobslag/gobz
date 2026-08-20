@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://om6bmomkr2ec"]
 
-[ext_resource type="Script" uid="uid://cwf0jr8a8hfti" path="res://src/demo/demo_save_slot_row.gd" id="1_uju5d"]
+[ext_resource type="Script" uid="uid://cwf0jr8a8hfti" path="res://src/demo/main_menu/demo_save_slot_row.gd" id="1_uju5d"]
 [ext_resource type="PackedScene" uid="uid://sn8q4ho5fq8x" path="res://src/main/main_menu/save_slot_row.tscn" id="1_vpyx1"]
 
 [node name="Node" type="Node" unique_id=438414993]

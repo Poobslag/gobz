@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://djr5kqx6es4hn"]
 
-[ext_resource type="Script" uid="uid://bopy43ac5sqm2" path="res://src/demo/demo_battle_screen.gd" id="1_8uiub"]
+[ext_resource type="Script" uid="uid://bopy43ac5sqm2" path="res://src/demo/battle/demo_battle_screen.gd" id="1_8uiub"]
 [ext_resource type="PackedScene" uid="uid://b52wmmst18hw1" path="res://src/main/battle/battle_screen.tscn" id="1_xhtdv"]
 
 [node name="Demo" type="Control" unique_id=2008555978]
