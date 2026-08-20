@@ -171,8 +171,7 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 
 
 func to_json_dict() -> Dictionary[String, Variant]:
-	var result: Dictionary[String, Variant] = {
-	}
+	var result: Dictionary[String, Variant] = {}
 	result["gobs"] = []
 	for gob: Gob in gobs:
 		result["gobs"].append(gob.to_json_dict())
