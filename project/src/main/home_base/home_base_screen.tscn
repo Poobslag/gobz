@@ -1,14 +1,14 @@
 [gd_scene format=3 uid="uid://mptfydptrejo"]
 
-[ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/screen_panel.tscn" id="1_dm42n"]
-[ext_resource type="Script" uid="uid://caqw2l8itjc7j" path="res://src/main/home_base_screen.gd" id="1_q6unp"]
-[ext_resource type="PackedScene" uid="uid://bo7p3nknmvwls" path="res://src/main/home_base_recruit_row.tscn" id="3_45odm"]
+[ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/ui/screen_panel.tscn" id="1_dm42n"]
+[ext_resource type="Script" uid="uid://caqw2l8itjc7j" path="res://src/main/home_base/home_base_screen.gd" id="1_q6unp"]
+[ext_resource type="PackedScene" uid="uid://bo7p3nknmvwls" path="res://src/main/home_base/home_base_recruit_row.tscn" id="3_45odm"]
 [ext_resource type="PackedScene" uid="uid://h73338s4fipn" path="res://src/main/ui/command_palette.tscn" id="4_5sywx"]
 [ext_resource type="Texture2D" uid="uid://bu4t5ousnvj2d" path="res://assets/main/splash/recruit.png" id="4_bxn6b"]
-[ext_resource type="PackedScene" uid="uid://dqjjgkwxab0ht" path="res://src/main/splash_shower.tscn" id="4_ds7ld"]
-[ext_resource type="PackedScene" uid="uid://dbm3uqjrgg63m" path="res://src/main/splash_art.tscn" id="4_emhyr"]
-[ext_resource type="PackedScene" uid="uid://ctpm75l6a3tx0" path="res://src/main/day_label.tscn" id="6_7vaeo"]
-[ext_resource type="PackedScene" uid="uid://g7b12cf0ow6o" path="res://src/main/home_nav.tscn" id="8_jg6nf"]
+[ext_resource type="PackedScene" uid="uid://dqjjgkwxab0ht" path="res://src/main/ui/splash_shower.tscn" id="4_ds7ld"]
+[ext_resource type="PackedScene" uid="uid://dbm3uqjrgg63m" path="res://src/main/ui/splash_art.tscn" id="4_emhyr"]
+[ext_resource type="PackedScene" uid="uid://ctpm75l6a3tx0" path="res://src/main/home_base/day_label.tscn" id="6_7vaeo"]
+[ext_resource type="PackedScene" uid="uid://g7b12cf0ow6o" path="res://src/main/home_base/home_nav.tscn" id="8_jg6nf"]
 
 [node name="HomeBase" type="Control" unique_id=1368189123]
 layout_mode = 3

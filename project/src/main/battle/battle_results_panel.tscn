@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://brabaa2k31rib"]
 
-[ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/screen_panel.tscn" id="1_ofqs2"]
-[ext_resource type="Script" uid="uid://bh8b4f45goivs" path="res://src/main/battle_results_panel.gd" id="2_4d5h7"]
+[ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/ui/screen_panel.tscn" id="1_ofqs2"]
+[ext_resource type="Script" uid="uid://bh8b4f45goivs" path="res://src/main/battle/battle_results_panel.gd" id="2_4d5h7"]
 [ext_resource type="Texture2D" uid="uid://do5epr70eqwxc" path="res://assets/main/splash/victory.png" id="3_iwsqu"]
-[ext_resource type="PackedScene" uid="uid://dqjjgkwxab0ht" path="res://src/main/splash_shower.tscn" id="3_x4m72"]
-[ext_resource type="PackedScene" uid="uid://dbm3uqjrgg63m" path="res://src/main/splash_art.tscn" id="4_2n0uy"]
+[ext_resource type="PackedScene" uid="uid://dqjjgkwxab0ht" path="res://src/main/ui/splash_shower.tscn" id="3_x4m72"]
+[ext_resource type="PackedScene" uid="uid://dbm3uqjrgg63m" path="res://src/main/ui/splash_art.tscn" id="4_2n0uy"]
 [ext_resource type="Texture2D" uid="uid://catn7my5jmy1u" path="res://assets/main/splash/defeat.png" id="6_gr4cf"]
 [ext_resource type="Texture2D" uid="uid://d2u1tkbtjvvic" path="res://assets/main/splash/retreat.png" id="7_acq14"]
 

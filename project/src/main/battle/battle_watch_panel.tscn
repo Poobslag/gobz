@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://ce8qrjpsew051"]
 
-[ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/screen_panel.tscn" id="1_4pg3q"]
-[ext_resource type="Script" uid="uid://dw7dtdydavwc2" path="res://src/main/battle_watch_panel.gd" id="2_q2wy1"]
+[ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/ui/screen_panel.tscn" id="1_4pg3q"]
+[ext_resource type="Script" uid="uid://dw7dtdydavwc2" path="res://src/main/battle/battle_watch_panel.gd" id="2_q2wy1"]
 [ext_resource type="Texture2D" uid="uid://d1no6y4cfjva8" path="res://assets/main/splash/battle_hit.png" id="4_6nw7c"]
 
 [node name="WatchPanel" unique_id=806142582 instance=ExtResource("1_4pg3q")]

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bbyuo5i46dqoy"]
 
-[ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/screen_panel.tscn" id="1_w75nw"]
-[ext_resource type="Script" uid="uid://xudosipb6eq3" path="res://src/main/battle_pick_panel.gd" id="2_r0v21"]
+[ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/ui/screen_panel.tscn" id="1_w75nw"]
+[ext_resource type="Script" uid="uid://xudosipb6eq3" path="res://src/main/battle/battle_pick_panel.gd" id="2_r0v21"]
 [ext_resource type="Texture2D" uid="uid://qfgm6sdjbewp" path="res://assets/main/splash/battle_ready.png" id="3_084u8"]
 
 [node name="PickPanel" unique_id=806142582 instance=ExtResource("1_w75nw")]

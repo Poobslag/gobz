@@ -1,14 +1,14 @@
 [gd_scene format=3 uid="uid://cqtn41iceqg40"]
 
-[ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/screen_panel.tscn" id="1_kq665"]
-[ext_resource type="Script" uid="uid://gwyhffa4qow7" path="res://src/main/main_menu_screen.gd" id="1_r85qb"]
-[ext_resource type="PackedScene" uid="uid://sn8q4ho5fq8x" path="res://src/main/save_slot_row.tscn" id="3_5wv06"]
-[ext_resource type="PackedScene" uid="uid://dqjjgkwxab0ht" path="res://src/main/splash_shower.tscn" id="4_6fnkm"]
-[ext_resource type="PackedScene" uid="uid://dbm3uqjrgg63m" path="res://src/main/splash_art.tscn" id="5_15lh7"]
+[ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/ui/screen_panel.tscn" id="1_kq665"]
+[ext_resource type="Script" uid="uid://gwyhffa4qow7" path="res://src/main/main_menu/main_menu_screen.gd" id="1_r85qb"]
+[ext_resource type="PackedScene" uid="uid://sn8q4ho5fq8x" path="res://src/main/main_menu/save_slot_row.tscn" id="3_5wv06"]
+[ext_resource type="PackedScene" uid="uid://dqjjgkwxab0ht" path="res://src/main/ui/splash_shower.tscn" id="4_6fnkm"]
+[ext_resource type="PackedScene" uid="uid://dbm3uqjrgg63m" path="res://src/main/ui/splash_art.tscn" id="5_15lh7"]
 [ext_resource type="Texture2D" uid="uid://qfgm6sdjbewp" path="res://assets/main/splash/battle_ready.png" id="5_k7ix4"]
 [ext_resource type="Texture2D" uid="uid://2ws83stx7ew3" path="res://assets/main/splash/dungeon_select.png" id="6_15lh7"]
 [ext_resource type="Texture2D" uid="uid://do5epr70eqwxc" path="res://assets/main/splash/victory.png" id="6_n8j7u"]
-[ext_resource type="Script" uid="uid://do7fvk3pg818c" path="res://src/main/version_label.gd" id="9_ya4fg"]
+[ext_resource type="Script" uid="uid://do7fvk3pg818c" path="res://src/main/ui/version_label.gd" id="9_ya4fg"]
 
 [node name="MainMenuScreen" type="Control" unique_id=282256494]
 layout_mode = 3

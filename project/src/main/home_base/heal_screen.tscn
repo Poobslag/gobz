@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://bk1nxsm06kn85"]
 
-[ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/screen_panel.tscn" id="2_haubd"]
-[ext_resource type="PackedScene" uid="uid://dqjjgkwxab0ht" path="res://src/main/splash_shower.tscn" id="3_bosar"]
-[ext_resource type="PackedScene" uid="uid://dbm3uqjrgg63m" path="res://src/main/splash_art.tscn" id="4_y30lk"]
+[ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/ui/screen_panel.tscn" id="2_haubd"]
+[ext_resource type="PackedScene" uid="uid://dqjjgkwxab0ht" path="res://src/main/ui/splash_shower.tscn" id="3_bosar"]
+[ext_resource type="PackedScene" uid="uid://dbm3uqjrgg63m" path="res://src/main/ui/splash_art.tscn" id="4_y30lk"]
 [ext_resource type="Texture2D" uid="uid://bu4t5ousnvj2d" path="res://assets/main/splash/recruit.png" id="5_tkh4j"]
-[ext_resource type="PackedScene" uid="uid://ctpm75l6a3tx0" path="res://src/main/day_label.tscn" id="6_p15t3"]
-[ext_resource type="PackedScene" uid="uid://g7b12cf0ow6o" path="res://src/main/home_nav.tscn" id="7_ds73y"]
+[ext_resource type="PackedScene" uid="uid://ctpm75l6a3tx0" path="res://src/main/home_base/day_label.tscn" id="6_p15t3"]
+[ext_resource type="PackedScene" uid="uid://g7b12cf0ow6o" path="res://src/main/home_base/home_nav.tscn" id="7_ds73y"]
 [ext_resource type="PackedScene" uid="uid://h73338s4fipn" path="res://src/main/ui/command_palette.tscn" id="8_uwnlv"]
 
 [node name="Heal" type="Control" unique_id=1368189123]

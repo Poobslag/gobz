@@ -1,6 +1,6 @@
 extends Control
 
-const DUNGEON_ROW_SCENE: PackedScene = preload("res://src/main/dungeon_select_row.tscn")
+const DUNGEON_ROW_SCENE: PackedScene = preload("res://src/main/battle/dungeon_select_row.tscn")
 
 func _ready() -> void:
 	refresh()
@@ -29,7 +29,7 @@ func _add_dungeon_row(dungeon: Dungeon) -> void:
 	]
 	dungeon_row.pressed.connect(func() -> void:
 		PlayerData.dungeon_index = PlayerData.dungeons.find(dungeon)
-		get_tree().change_scene_to_file("res://src/main/battle_screen.tscn"))
+		get_tree().change_scene_to_file("res://src/main/battle/battle_screen.tscn"))
 	%Dungeons.add_child(dungeon_row)
 
 

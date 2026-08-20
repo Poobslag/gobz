@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cpxgc5d7dmk6r"]
 
 [ext_resource type="Script" uid="uid://5lxoypbgpkc2" path="res://src/demo/data/demo_goblin_names.gd" id="1_tnf38"]
-[ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/screen_panel.tscn" id="1_ygc2h"]
+[ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/ui/screen_panel.tscn" id="1_ygc2h"]
 
 [node name="DemoGoblinNames" type="Control" unique_id=1822466490]
 layout_mode = 3

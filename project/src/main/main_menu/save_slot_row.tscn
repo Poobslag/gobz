@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://sn8q4ho5fq8x"]
 
-[ext_resource type="Script" uid="uid://chc3lj0x7jc7y" path="res://src/main/save_slot_row.gd" id="1_52y65"]
+[ext_resource type="Script" uid="uid://chc3lj0x7jc7y" path="res://src/main/main_menu/save_slot_row.gd" id="1_52y65"]
 
 [node name="SaveSlotRow" type="HBoxContainer" unique_id=733917493]
 script = ExtResource("1_52y65")

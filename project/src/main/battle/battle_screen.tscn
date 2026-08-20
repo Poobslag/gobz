@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://b52wmmst18hw1"]
 
-[ext_resource type="Script" uid="uid://cs5tws828ga8o" path="res://src/main/battle_screen.gd" id="1_1snqp"]
-[ext_resource type="PackedScene" uid="uid://bbyuo5i46dqoy" path="res://src/main/battle_pick_panel.tscn" id="1_p08ga"]
-[ext_resource type="PackedScene" uid="uid://ce8qrjpsew051" path="res://src/main/battle_watch_panel.tscn" id="2_1snqp"]
-[ext_resource type="PackedScene" uid="uid://brabaa2k31rib" path="res://src/main/battle_results_panel.tscn" id="4_v7pbc"]
+[ext_resource type="Script" uid="uid://cs5tws828ga8o" path="res://src/main/battle/battle_screen.gd" id="1_1snqp"]
+[ext_resource type="PackedScene" uid="uid://bbyuo5i46dqoy" path="res://src/main/battle/battle_pick_panel.tscn" id="1_p08ga"]
+[ext_resource type="PackedScene" uid="uid://ce8qrjpsew051" path="res://src/main/battle/battle_watch_panel.tscn" id="2_1snqp"]
+[ext_resource type="PackedScene" uid="uid://brabaa2k31rib" path="res://src/main/battle/battle_results_panel.tscn" id="4_v7pbc"]
 
 [node name="BattleScreen" type="Control" unique_id=320767478]
 layout_mode = 3

@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://bvcry38kh66ds"]
 
-[ext_resource type="Script" uid="uid://x0e81wy3egvr" path="res://src/main/dungeon_select_screen.gd" id="1_atl5w"]
-[ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/screen_panel.tscn" id="1_qmtpw"]
-[ext_resource type="PackedScene" uid="uid://jratby1g2yr6" path="res://src/main/dungeon_select_row.tscn" id="2_dx72l"]
-[ext_resource type="PackedScene" uid="uid://dqjjgkwxab0ht" path="res://src/main/splash_shower.tscn" id="3_r0u77"]
-[ext_resource type="PackedScene" uid="uid://dbm3uqjrgg63m" path="res://src/main/splash_art.tscn" id="4_vy7bb"]
+[ext_resource type="Script" uid="uid://x0e81wy3egvr" path="res://src/main/battle/dungeon_select_screen.gd" id="1_atl5w"]
+[ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/ui/screen_panel.tscn" id="1_qmtpw"]
+[ext_resource type="PackedScene" uid="uid://jratby1g2yr6" path="res://src/main/battle/dungeon_select_row.tscn" id="2_dx72l"]
+[ext_resource type="PackedScene" uid="uid://dqjjgkwxab0ht" path="res://src/main/ui/splash_shower.tscn" id="3_r0u77"]
+[ext_resource type="PackedScene" uid="uid://dbm3uqjrgg63m" path="res://src/main/ui/splash_art.tscn" id="4_vy7bb"]
 [ext_resource type="Texture2D" uid="uid://2ws83stx7ew3" path="res://assets/main/splash/dungeon_select.png" id="5_q8grs"]
 
 [node name="DungeonSelect" type="Control" unique_id=1192315041]

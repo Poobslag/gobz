@@ -1,8 +1,8 @@
 extends Control
 
 const RECRUIT_COUNT: int = 3
-const RECRUIT_ROW_SCENE: PackedScene = preload("res://src/main/home_base_recruit_row.tscn")
-const DUNGEON_ROW_SCENE: PackedScene = preload("res://src/main/dungeon_preview_row.tscn")
+const RECRUIT_ROW_SCENE: PackedScene = preload("res://src/main/home_base/home_base_recruit_row.tscn")
+const DUNGEON_ROW_SCENE: PackedScene = preload("res://src/main/home_base/dungeon_preview_row.tscn")
 
 const MAX_MULTIPLIER: float = 1e300
 
@@ -17,7 +17,7 @@ func _ready() -> void:
 	
 	%FightButton.pressed.connect(func() -> void:
 		PlayerSave.save_data()
-		get_tree().change_scene_to_file("res://src/main/dungeon_select_screen.tscn"))
+		get_tree().change_scene_to_file("res://src/main/battle/dungeon_select_screen.tscn"))
 	
 	%CommandPalette.command_entered.connect(_on_command_palette_command_entered)
 	
