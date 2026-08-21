@@ -1,5 +1,8 @@
 extends Node
 
+const SPEECH_CHARACTER_DELAY: float = 0.05
+const SPEECH_LINE_DELAY: float = 0.50
+
 @export var verbose_stdout_mode := false
 
 func _ready() -> void:

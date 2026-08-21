@@ -4,7 +4,6 @@
 [ext_resource type="Script" uid="uid://djhbxu52xckqj" path="res://src/main/home_base/heal_panel.gd" id="2_cj732"]
 [ext_resource type="PackedScene" uid="uid://dqjjgkwxab0ht" path="res://src/main/ui/splash_shower.tscn" id="2_forku"]
 [ext_resource type="PackedScene" uid="uid://dbm3uqjrgg63m" path="res://src/main/ui/splash_art.tscn" id="3_jue1v"]
-[ext_resource type="Script" uid="uid://c5vn5lk2fwibf" path="res://src/main/home_base/heal_chat_lines.gd" id="3_tyxgg"]
 [ext_resource type="Texture2D" uid="uid://bu4t5ousnvj2d" path="res://assets/main/splash/recruit.png" id="4_cj732"]
 [ext_resource type="PackedScene" uid="uid://g7b12cf0ow6o" path="res://src/main/home_base/home_nav.tscn" id="5_jue1v"]
 [ext_resource type="PackedScene" uid="uid://dgtblx72civbg" path="res://src/main/home_base/heal_navigator.tscn" id="6_g5ynr"]
@@ -12,18 +11,9 @@
 [ext_resource type="PackedScene" uid="uid://dosa1eu8p5pla" path="res://src/main/home_base/HealChatShower.tscn" id="8_p5uyb"]
 [ext_resource type="PackedScene" uid="uid://3g77w3qduy8y" path="res://src/main/home_base/heal_chat_picker.tscn" id="9_vwjcu"]
 
-[sub_resource type="Resource" id="Resource_cv5aw"]
-script = ExtResource("3_tyxgg")
-metadata/_custom_type_script = "uid://c5vn5lk2fwibf"
-
-[sub_resource type="Resource" id="Resource_31owe"]
-script = ExtResource("3_tyxgg")
-metadata/_custom_type_script = "uid://c5vn5lk2fwibf"
-
 [node name="HealPanel" unique_id=806142582 instance=ExtResource("1_wxnd2")]
 color = Color(0.49019608, 0.2784314, 0.34901962, 1)
 script = ExtResource("2_cj732")
-heal_chat_lines = Array[ExtResource("3_tyxgg")]([SubResource("Resource_cv5aw"), SubResource("Resource_31owe")])
 
 [node name="SplashShower" parent="MarginContainer/Panel" parent_id_path=PackedInt32Array(2033304710) index="0" unique_id=731007175 instance=ExtResource("2_forku")]
 layout_mode = 0
