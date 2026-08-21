@@ -34,8 +34,12 @@ func _on_chat_picker_option_picked(option_index: int) -> void:
 		var center_group: HealData.HealGroup = HomeBaseData.heal_data.get_center_group()
 		center_group.decrement_chats_remaining()
 		if center_group.chats_remaining == 0:
+			for gob: Gob in center_group.gobs:
+				gob.back_wounded = Big.ZERO
+				gob.front_hp = gob.hp_max
 			center_group.wounded_count = Big.ZERO
 			%ChatShower.append_great_response("\"%s\""% [_heal_chat_lines[option_index].response_good])
+			refresh()
 		else:
 			%ChatShower.append_good_response("\"%s\"" % [_heal_chat_lines[option_index].response_good])
 	else:

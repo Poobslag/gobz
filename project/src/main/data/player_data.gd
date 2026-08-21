@@ -125,7 +125,7 @@ func initialize_starting_army() -> void:
 		gob.hp_max = randi_range(2, 4)
 		gob.front_hp = gob.hp_max
 		
-		for _i in range(2):
+		for _i in 2:
 			if randf() < 0.5:
 				gob.level_up()
 		
@@ -193,7 +193,7 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 func _calculate_ripoff_factor() -> float:
 	var result: float = RIPOFF_CURVE.back()[1]
 	var total_gold: Big = Big.add(gold, army.get_total_gold())
-	for i in range(RIPOFF_CURVE.size() - 1):
+	for i in RIPOFF_CURVE.size() - 1:
 		var lo_gold: float = RIPOFF_CURVE[i][0]
 		var hi_gold: float = RIPOFF_CURVE[i + 1][0]
 		if total_gold.is_lte(hi_gold):
