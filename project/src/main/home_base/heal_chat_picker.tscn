@@ -1,0 +1,71 @@
+[gd_scene format=3 uid="uid://3g77w3qduy8y"]
+
+[ext_resource type="Script" uid="uid://y41ck4qxlna7" path="res://src/main/home_base/heal_chat_picker.gd" id="1_gqygf"]
+
+[node name="HealChatPicker" type="GridContainer" unique_id=1285803141]
+columns = 3
+script = ExtResource("1_gqygf")
+
+[node name="PlaceholderButton" type="Button" parent="." unique_id=919220511]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(-1, 54)
+custom_maximum_size = Vector2(278, -1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "\"Well...\""
+
+[node name="Button1" type="Button" parent="." unique_id=1485548491]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(-1, 54)
+custom_maximum_size = Vector2(278, -1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "\"Well...\""
+
+[node name="Button2" type="Button" parent="." unique_id=1740771723]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(-1, 54)
+custom_maximum_size = Vector2(278, -1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "\"Don't be such a wimp\""
+
+[node name="Button3" type="Button" parent="." unique_id=757027983]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(-1, 54)
+custom_maximum_size = Vector2(278, -1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "\"Don't be such a wimp\""
+
+[node name="Button4" type="Button" parent="." unique_id=1731490535]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(-1, 54)
+custom_maximum_size = Vector2(278, -1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "\"Don't be such a wimp\""
+
+[node name="Button5" type="Button" parent="." unique_id=1981203076]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(-1, 54)
+custom_maximum_size = Vector2(278, -1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "\"Don't be such a wimp, I'll bet you can kill a thousand guys\""
+autowrap_mode = 2
+
+[node name="Button6" type="Button" parent="." unique_id=137311072]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(-1, 54)
+custom_maximum_size = Vector2(278, -1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "\"Don't be such a wimp, I'll bet you can kill a thousand guys\""
+autowrap_mode = 2

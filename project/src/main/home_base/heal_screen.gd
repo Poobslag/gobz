@@ -10,7 +10,7 @@ func _ready() -> void:
 func show_heal_panel() -> void:
 	%KitchenPanel.hide()
 	%HealPanel.show()
-	%HealPanel.refresh()
+	%HealPanel.initialize()
 
 
 func show_kitchen_panel() -> void:

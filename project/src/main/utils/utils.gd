@@ -36,6 +36,31 @@ static func enum_to_snake_case(
 	return result
 
 
+## Invalidates a tween if it is already active.[br]
+## [br]
+## Killing a tween requires a null check, but this makes it a one-liner.
+static func kill_tween(tween: Tween) -> Tween:
+	if tween:
+		tween.kill()
+	return null
+
+
+static func get_lines_from_file(file: FileAccess) -> PackedStringArray:
+	# from https://github.com/godotengine/godot-proposals/issues/2820#issuecomment-892900467
+	return file.get_buffer(file.get_length()).get_string_from_utf8().replace("\r\n", "\n").split("\n")
+
+
+## Creates/recreates a tween, invalidating it if it is already active.[br]
+## [br]
+## Tweens should be created and discarded, but tweening the same property with multiple tweens causes unpredictable
+## behavior. This ensures only one tween modifies a given property at a time.[br]
+## [br]
+## The new tween is bound to [param node] and respects its lifecycle (e.g., pausing when the game is paused.)
+static func recreate_tween(node: Node, tween: Tween) -> Tween:
+	kill_tween(tween)
+	return node.create_tween()
+
+
 ## Workaround for Godot https://github.com/godotengine/godot-proposals/issues/11598: Add a DirAccess method to remove a
 ## non-empty directory.
 static func remove_dir_recursive(dir: String) -> void:

@@ -1,3 +1,3 @@
 extends Node
 
-var heal_state: HealState = HealState.new()
+var heal_data: HealData = HealData.new()

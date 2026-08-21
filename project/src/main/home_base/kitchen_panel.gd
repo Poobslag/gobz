@@ -3,9 +3,9 @@ extends ColorRect
 signal kitchen_exited
 
 func _ready() -> void:
-	%HealNavigator.navigate_left_pressed.connect(kitchen_exited.emit)
-	%HealNavigator.navigate_center_pressed.connect(kitchen_exited.emit)
-	%HealNavigator.navigate_right_pressed.connect(kitchen_exited.emit)
+	%HealNavigator.move_left.connect(kitchen_exited.emit)
+	%HealNavigator.move_center.connect(kitchen_exited.emit)
+	%HealNavigator.move_right.connect(kitchen_exited.emit)
 
 
 func refresh() -> void:
