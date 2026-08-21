@@ -6,7 +6,7 @@ func _ready() -> void:
 		var gob: Gob = PlayerData.army.generate_random_recruit({"count": Big.new(10)})
 		gob.back_wounded = Big.new(randf_range(2, 8))
 		PlayerData.army.add_gob(gob)
-	HomeBaseData.heal_state.mark_groups_dirty()
+	HomeBaseData.heal_data.mark_groups_dirty()
 	
 	PlayerData.gold = Big.new(5000)
 	PlayerData.inventory.add_item(Items.HERB_1, Big.new(5000))
