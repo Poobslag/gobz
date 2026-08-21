@@ -9,8 +9,15 @@ func _ready() -> void:
 	%HealNavigator.navigate_left_pressed.connect(refresh)
 	%HealNavigator.navigate_right_pressed.connect(refresh)
 	
-	_chat_option_values = [3, 1, 1, 2]
-	%ChatPicker.options = ["I hope you feel better", "You're stupid", "I hope you feel worse", "You're such a wimp"] as Array[String]
+	var heal_chat_lines: Array[HealChatLines.HealChatLine] = HealChatLines.get_random_lines(4)
+	var new_chat_option_values: Array[int] = []
+	var new_chat_picker_options: Array[String] = []
+	for chat_line: HealChatLines.HealChatLine in heal_chat_lines:
+		new_chat_option_values.append(chat_line.value)
+		new_chat_picker_options.append(chat_line.prompt_abbr_1 if randf() < 0.5 else chat_line.prompt_abbr_2)
+	
+	_chat_option_values = new_chat_option_values
+	%ChatPicker.options = new_chat_picker_options
 	%ChatPicker.option_picked.connect(_on_chat_picker_option_picked)
 
 
@@ -24,11 +31,3 @@ func _on_chat_picker_option_picked(option_index: int) -> void:
 		# heal the goblin
 		# update the text
 		pass
-
-
-class Asdf:
-	var player_message_1: String
-	var player_message_2: String
-	var good_response_message: String
-	var bad_response_message: String
-	var value: int
