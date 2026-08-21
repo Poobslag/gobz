@@ -1,0 +1,228 @@
+[gd_scene format=3 uid="uid://cck5hgu22cl7a"]
+
+[ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/ui/screen_panel.tscn" id="1_wxnd2"]
+[ext_resource type="Script" uid="uid://djhbxu52xckqj" path="res://src/main/home_base/heal_panel.gd" id="2_cj732"]
+[ext_resource type="PackedScene" uid="uid://dqjjgkwxab0ht" path="res://src/main/ui/splash_shower.tscn" id="2_forku"]
+[ext_resource type="PackedScene" uid="uid://dbm3uqjrgg63m" path="res://src/main/ui/splash_art.tscn" id="3_jue1v"]
+[ext_resource type="Texture2D" uid="uid://bu4t5ousnvj2d" path="res://assets/main/splash/recruit.png" id="4_cj732"]
+[ext_resource type="PackedScene" uid="uid://g7b12cf0ow6o" path="res://src/main/home_base/home_nav.tscn" id="5_jue1v"]
+[ext_resource type="PackedScene" uid="uid://dgtblx72civbg" path="res://src/main/home_base/heal_navigator.tscn" id="6_g5ynr"]
+[ext_resource type="PackedScene" uid="uid://t8f1tkis3ujq" path="res://src/main/home_base/heal_inventory_label.tscn" id="6_td10u"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cj732"]
+bg_color = Color(0.25490198, 0.17254902, 0.2, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="HealPanel" unique_id=806142582 instance=ExtResource("1_wxnd2")]
+color = Color(0.49019608, 0.2784314, 0.34901962, 1)
+script = ExtResource("2_cj732")
+
+[node name="SplashShower" parent="MarginContainer/Panel" parent_id_path=PackedInt32Array(2033304710) index="0" unique_id=731007175 instance=ExtResource("2_forku")]
+layout_mode = 0
+offset_right = 1052.0
+offset_bottom = 548.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BottomRight" type="Control" parent="MarginContainer/Panel/SplashShower" index="0" unique_id=989693817]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -11.0
+offset_top = -27.0
+offset_right = 29.0
+offset_bottom = 13.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="SplashArt1" parent="MarginContainer/Panel/SplashShower/BottomRight" index="0" unique_id=1575316682 instance=ExtResource("3_jue1v")]
+visible = false
+modulate = Color(0.16078432, 0.12941177, 0.14117648, 1)
+position = Vector2(-194, -162)
+scale = Vector2(0.66, 0.66)
+texture = ExtResource("4_cj732")
+
+[node name="SplashArt3" parent="MarginContainer/Panel/SplashShower/BottomRight" index="1" unique_id=703441581 instance=ExtResource("3_jue1v")]
+visible = false
+modulate = Color(0.16078432, 0.12941177, 0.14117648, 1)
+position = Vector2(-153, -117)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_cj732")
+flip_h = true
+
+[node name="SplashArt2" parent="MarginContainer/Panel/SplashShower/BottomRight" index="2" unique_id=892730900 instance=ExtResource("3_jue1v")]
+modulate = Color(0.49019608, 0.2784314, 0.34901962, 0.5019608)
+position = Vector2(-220, -256)
+texture = ExtResource("4_cj732")
+
+[node name="MarginContainer" parent="MarginContainer/Panel" parent_id_path=PackedInt32Array(2033304710) index="1" unique_id=1781904422]
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Panel/MarginContainer" index="0" unique_id=657901788]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Panel/MarginContainer/HBoxContainer" index="0" unique_id=1125725313]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="InventoryLabel" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" index="0" unique_id=1464235693 instance=ExtResource("6_td10u")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" index="1" unique_id=1333704636]
+layout_mode = 2
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HealNavigator" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer" index="0" unique_id=1129179821 instance=ExtResource("6_g5ynr")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" index="2" unique_id=1897283855]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_cj732")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer" index="0" unique_id=990297936]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer" index="0" unique_id=456533254]
+custom_minimum_size = Vector2(0, 71)
+layout_mode = 2
+bbcode_enabled = true
+text = "[right][i]\"Ugh, it hurts. Everything hurts...\"[/i][/right]
+[left]\"Don't worry! You'll pull through.\"[/left]
+[right][i]\"Oogh I don't think so...\"[/i][/right]"
+
+[node name="Spacer" type="Control" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" index="3" unique_id=549276661]
+custom_minimum_size = Vector2(0, 6)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" index="4" unique_id=2044065957]
+layout_mode = 2
+columns = 3
+
+[node name="PlaceholderButton" type="Button" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="0" unique_id=695051740]
+custom_minimum_size = Vector2(-1, 54)
+custom_maximum_size = Vector2(278, -1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "\"Well...\""
+
+[node name="Button1" type="Button" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="1" unique_id=902310759]
+visible = false
+custom_minimum_size = Vector2(-1, 54)
+custom_maximum_size = Vector2(278, -1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "\"Well...\""
+
+[node name="Button2" type="Button" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="2" unique_id=343603959]
+visible = false
+custom_minimum_size = Vector2(-1, 54)
+custom_maximum_size = Vector2(278, -1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "\"Don't be such a wimp\""
+
+[node name="Button3" type="Button" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="3" unique_id=1404250472]
+visible = false
+custom_minimum_size = Vector2(-1, 54)
+custom_maximum_size = Vector2(278, -1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "\"Don't be such a wimp\""
+
+[node name="Button4" type="Button" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="4" unique_id=1522278501]
+visible = false
+custom_minimum_size = Vector2(-1, 54)
+custom_maximum_size = Vector2(278, -1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "\"Don't be such a wimp\""
+
+[node name="Button5" type="Button" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="5" unique_id=66621860]
+visible = false
+custom_minimum_size = Vector2(-1, 54)
+custom_maximum_size = Vector2(278, -1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "\"Don't be such a wimp, I'll bet you can kill a thousand guys\""
+autowrap_mode = 2
+
+[node name="Button6" type="Button" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/GridContainer" index="6" unique_id=2057343318]
+visible = false
+custom_minimum_size = Vector2(-1, 54)
+custom_maximum_size = Vector2(278, -1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "\"Don't be such a wimp, I'll bet you can kill a thousand guys\""
+autowrap_mode = 2
+
+[node name="Spacer2" type="Control" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" index="5" unique_id=75763139]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" index="6" unique_id=1329550722]
+layout_mode = 2
+
+[node name="MedicineButton" type="Button" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2" index="0" unique_id=40684836]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "-🍰 1.3k"
+
+[node name="Label" type="Label" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2" index="1" unique_id=1189682818]
+layout_mode = 2
+text = "Treat 🔥 Gleex + 999k others, +3.0m ⚔"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" index="7" unique_id=1902465816]
+layout_mode = 2
+
+[node name="MoneyButton" type="Button" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer3" index="0" unique_id=1817465344]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "-💰 1.3k"
+
+[node name="Label" type="Label" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer3" index="1" unique_id=1901875473]
+layout_mode = 2
+text = "Treat 🔥 Gleex + 999k others, +3.0m ⚔"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" index="8" unique_id=1480023214]
+layout_mode = 2
+
+[node name="MoneyButton" type="Button" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer4" index="0" unique_id=1482198659]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "×10"
+
+[node name="MoneyButton2" type="Button" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer4" index="1" unique_id=1455871341]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "÷10"
+
+[node name="HomeNav" parent="MarginContainer/Panel/MarginContainer/HBoxContainer" index="1" unique_id=1142993029 instance=ExtResource("5_jue1v")]
+layout_mode = 2
+location_index = 2
