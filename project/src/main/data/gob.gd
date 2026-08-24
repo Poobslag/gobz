@@ -38,6 +38,10 @@ func get_wounded_count() -> Big:
 	return Big.new(back_wounded.to_float() + (1 if is_front_wounded() else 0))
 
 
+func get_hurt_count() -> Big:
+	return Big.new(back_wounded.to_float() + (1 if is_front_hurt() else 0))
+
+
 func get_count() -> Big:
 	return Big.add(back_count, Big.ONE if front_hp > 0 else Big.ZERO)
 
@@ -61,8 +65,16 @@ func is_dead() -> bool:
 	return back_count.is_lte(0) and front_hp == 0
 
 
+func is_hurt() -> bool:
+	return back_wounded.is_gt(0) or is_front_hurt()
+
+
 func is_front_wounded() -> bool:
 	return front_hp <= hp_max * Gobs.WOUNDED_HP_THRESHOLD
+
+
+func is_front_hurt() -> bool:
+	return front_hp < hp_max
 
 
 func get_total_attack() -> Big:

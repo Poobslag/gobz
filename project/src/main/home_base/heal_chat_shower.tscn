@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://dosa1eu8p5pla"]
+
+[ext_resource type="Script" uid="uid://cjnjdkmid8xcf" path="res://src/main/home_base/heal_chat_shower.gd" id="1_sspmd"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cj732"]
+bg_color = Color(0.25490198, 0.17254902, 0.2, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="HBoxContainer" type="HBoxContainer" unique_id=285173218]
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 602.0
+offset_bottom = 83.0
+size_flags_horizontal = 4
+script = ExtResource("1_sspmd")
+
+[node name="HealChatShower" type="PanelContainer" parent="." unique_id=1667571667]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_cj732")
+
+[node name="MarginContainer" type="MarginContainer" parent="HealChatShower" unique_id=456543337]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HealChatShower/MarginContainer" unique_id=1971366363]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 71)
+layout_mode = 2
+bbcode_enabled = true
+text = "[right]\"Ugh, it hurts. Everything hurts...\"[/right]
+[left]\"Don't worry! You'll pull through.\"[/left]
+[right]\"Oogh I don't think so...\"[/right]"
+visible_characters_behavior = 1
+
+[node name="Face" type="Label" parent="." unique_id=762648307]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "😐"

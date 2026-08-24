@@ -13,3 +13,11 @@ static func comma_sep(n: int) -> String:
 		i /= 1000
 	
 	return "%s%s%s" % ["-" if n < 0 else "", i, result]
+
+
+## Gets the substring after the first occurrence of a separator.
+static func substring_after(s: String, sep: String) -> String:
+	if not sep:
+		return s
+	var pos: int = s.find(sep)
+	return "" if pos == -1 else s.substr(pos + sep.length())
