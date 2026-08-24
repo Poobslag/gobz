@@ -13,6 +13,7 @@ custom_maximum_size = Vector2(278, -1)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "\"Well...\""
+autowrap_mode = 2
 
 [node name="Button1" type="Button" parent="." unique_id=1485548491]
 unique_name_in_owner = true
@@ -22,6 +23,7 @@ custom_maximum_size = Vector2(278, -1)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "\"Well...\""
+autowrap_mode = 2
 
 [node name="Button2" type="Button" parent="." unique_id=1740771723]
 unique_name_in_owner = true
@@ -31,6 +33,7 @@ custom_maximum_size = Vector2(278, -1)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "\"Don't be such a wimp\""
+autowrap_mode = 2
 
 [node name="Button3" type="Button" parent="." unique_id=757027983]
 unique_name_in_owner = true
@@ -40,6 +43,7 @@ custom_maximum_size = Vector2(278, -1)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "\"Don't be such a wimp\""
+autowrap_mode = 2
 
 [node name="Button4" type="Button" parent="." unique_id=1731490535]
 unique_name_in_owner = true
@@ -49,6 +53,7 @@ custom_maximum_size = Vector2(278, -1)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "\"Don't be such a wimp\""
+autowrap_mode = 2
 
 [node name="Button5" type="Button" parent="." unique_id=1981203076]
 unique_name_in_owner = true

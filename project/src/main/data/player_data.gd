@@ -180,7 +180,9 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 		army.from_glob(json["army"])
 	gold = Big.new(json.get("gold", 0.0))
 	if json.has("inventory"):
-		inventory.from_json_dict(json["inventory"])
+		var typed_inventory_json: Dictionary[String, Variant] = {}
+		typed_inventory_json.assign(json["inventory"])
+		inventory.from_json_dict(typed_inventory_json)
 	for dungeon_json: Dictionary in json.get("dungeons", []):
 		var dungeon: Dungeon = Dungeon.new()
 		var typed_dungeon_json: Dictionary[String, Variant] = {}

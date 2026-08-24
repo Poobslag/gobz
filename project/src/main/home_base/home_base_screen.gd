@@ -106,6 +106,13 @@ func _adjust_multiplier(factor: float) -> void:
 
 
 func _on_command_palette_command_entered(command: String) -> void:
+	match command:
+		"army":
+			print("----------")
+			print("Army: %s goblins, %s attack" \
+					% [PlayerData.army.get_total_goblins().to_aa(), PlayerData.army.get_total_attack().to_aa()])
+			var army_json: Dictionary[String, Variant] = PlayerData.army.to_json_dict()
+			print(JSON.stringify(army_json, "  "))
 	match command.substr(0, 1):
 		"g":
 			if not command.substr(1).is_valid_int():

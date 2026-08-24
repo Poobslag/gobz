@@ -4,8 +4,8 @@ func gob(s: String) -> Gob:
 	return ArmyTestUtils.gob(s)
 
 
-func after_each() -> void:
-	PlayerData.army.reset()
+func before_each() -> void:
+	PlayerData.reset()
 
 
 func test_get_total_attack_overflow() -> void:

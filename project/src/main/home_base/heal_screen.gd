@@ -1,3 +1,4 @@
+class_name HealScreen
 extends Control
 
 func _ready() -> void:
@@ -5,6 +6,10 @@ func _ready() -> void:
 	%HealPanel.kitchen_entered.connect(show_kitchen_panel)
 	
 	show_heal_panel()
+
+
+func get_heal_panel() -> HealPanel:
+	return %HealPanel
 
 
 func show_heal_panel() -> void:

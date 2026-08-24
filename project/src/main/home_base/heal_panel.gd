@@ -1,3 +1,4 @@
+class_name HealPanel
 extends ColorRect
 
 signal kitchen_entered
@@ -5,7 +6,6 @@ signal kitchen_entered
 const HEAL_HELLO_PATH: String = "res://assets/main/home_base/heal_hello.csv"
 const HEAL_GOODBYE_PATH: String = "res://assets/main/home_base/heal_goodbye_chat.csv"
 
-var _chat_option_values: Array[int]
 var _heal_chat_lines: Array[HealChatLines.HealChatLine]
 
 var _ui_state_per_heal_group: Dictionary[HealData.HealGroup, Dictionary] = {}
@@ -21,7 +21,7 @@ func _ready() -> void:
 
 func initialize() -> void:
 	%ChatShower.clear()
-	%ChatShower.append_neutral_response(LinePool.get_random_line(HEAL_HELLO_PATH))
+	%ChatShower.append_neutral_response("\"%s\"" % [LinePool.get_random_line(HEAL_HELLO_PATH)])
 	_generate_chat_picker_options()
 	refresh()
 
@@ -31,28 +31,37 @@ func refresh() -> void:
 	%HealNavigator.refresh()
 
 
+func inject_chat_line(line: HealChatLines.HealChatLine) -> void:
+	if _heal_chat_lines.size() >= 1:
+		_heal_chat_lines[0] = line
+		_refresh_chat_picker()
+
+
 func _generate_chat_picker_options() -> void:
 	var center_group: HealData.HealGroup = HomeBaseData.heal_data.get_center_group()
 	if center_group == null:
 		return
 	
 	_heal_chat_lines = HealChatLines.get_random_lines(center_group.option_count)
-	var new_chat_option_values: Array[int] = []
+	_refresh_chat_picker()
+
+
+func _refresh_chat_picker() -> void:
 	var new_chat_picker_options: Array[String] = []
 	for chat_line: HealChatLines.HealChatLine in _heal_chat_lines:
-		new_chat_option_values.append(chat_line.value)
 		new_chat_picker_options.append(chat_line.prompt_abbr_1 if randf() < 0.5 else chat_line.prompt_abbr_2)
-	
-	_chat_option_values = new_chat_option_values
 	%ChatPicker.options = new_chat_picker_options
 
 
 func _on_chat_picker_option_picked(option_index: int) -> void:
 	%ChatPicker.set_option_buttons_disabled(true)
 	%ChatShower.append_prompt("\"%s\"" % [_heal_chat_lines[option_index].prompt])
-	if _chat_option_values[option_index] == _chat_option_values.max():
+	var center_group: HealData.HealGroup = HomeBaseData.heal_data.get_center_group()
+	var max_value: int = 0
+	for chat_line: HealChatLines.HealChatLine in _heal_chat_lines:
+		max_value = maxi(max_value, chat_line.value)
+	if _heal_chat_lines[option_index].value == max_value:
 		# heal the goblin
-		var center_group: HealData.HealGroup = HomeBaseData.heal_data.get_center_group()
 		var append_goodbye: bool = (center_group.chats_remaining == 1)
 		center_group.decrement_chats_remaining()
 		if center_group.chats_remaining == 0:
@@ -67,11 +76,13 @@ func _on_chat_picker_option_picked(option_index: int) -> void:
 		else:
 			%ChatShower.append_good_response("\"%s\"" % [_heal_chat_lines[option_index].response_good])
 	else:
-		var center_group: HealData.HealGroup = HomeBaseData.heal_data.get_center_group()
 		center_group.increment_chats_remaining()
 		%ChatShower.append_bad_response("\"%s\"" % [_heal_chat_lines[option_index].response_bad])
 	
-	_generate_chat_picker_options()
+	if center_group.chats_remaining > 0:
+		_generate_chat_picker_options()
+	else:
+		%ChatPicker.options = [] as Array[String]
 
 
 func _on_heal_navigator_before_move() -> void:
