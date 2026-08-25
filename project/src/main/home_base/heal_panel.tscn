@@ -10,6 +10,8 @@
 [ext_resource type="PackedScene" uid="uid://t8f1tkis3ujq" path="res://src/main/home_base/heal_inventory_label.tscn" id="6_td10u"]
 [ext_resource type="PackedScene" uid="uid://dosa1eu8p5pla" path="res://src/main/home_base/heal_chat_shower.tscn" id="8_p5uyb"]
 [ext_resource type="PackedScene" uid="uid://3g77w3qduy8y" path="res://src/main/home_base/heal_chat_picker.tscn" id="9_vwjcu"]
+[ext_resource type="PackedScene" uid="uid://7dpbtetnc3k4" path="res://src/main/home_base/heal_with_medicine_row.tscn" id="10_tyxgg"]
+[ext_resource type="PackedScene" uid="uid://c5t8ic3dnnljj" path="res://src/main/home_base/heal_with_gold_row.tscn" id="11_qqabu"]
 
 [node name="HealPanel" unique_id=806142582 instance=ExtResource("1_wxnd2")]
 color = Color(0.49019608, 0.2784314, 0.34901962, 1)
@@ -101,39 +103,30 @@ layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" index="6" unique_id=1329550722]
+[node name="HealWithWeakMedicineRow" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" index="6" unique_id=1257331575 instance=ExtResource("10_tyxgg")]
+unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
-[node name="MedicineButton" type="Button" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2" index="0" unique_id=40684836]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-text = "-🍰 1.3k"
-
-[node name="Label" type="Label" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2" index="1" unique_id=1189682818]
-layout_mode = 2
-text = "Treat 🔥 Gleex + 999k others, +3.0m ⚔"
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" index="7" unique_id=1902465816]
+[node name="HealWithStrongMedicineRow" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" index="7" unique_id=42979598 instance=ExtResource("10_tyxgg")]
+unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
-[node name="MoneyButton" type="Button" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer3" index="0" unique_id=1817465344]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-text = "-💰 1.3k"
-
-[node name="Label" type="Label" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer3" index="1" unique_id=1901875473]
-layout_mode = 2
-text = "Treat 🔥 Gleex + 999k others, +3.0m ⚔"
-
-[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" index="8" unique_id=1480023214]
+[node name="HealWithGoldRow" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" index="8" unique_id=38152776 instance=ExtResource("11_qqabu")]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="MoneyButton" type="Button" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer4" index="0" unique_id=1482198659]
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" index="9" unique_id=1480023214]
+visible = false
+layout_mode = 2
+
+[node name="MultiplyButton" type="Button" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer4" index="0" unique_id=1482198659]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "×10"
 
-[node name="MoneyButton2" type="Button" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer4" index="1" unique_id=1455871341]
+[node name="DivideButton" type="Button" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer4" index="1" unique_id=1455871341]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "÷10"

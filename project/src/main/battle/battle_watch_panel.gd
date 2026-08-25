@@ -2,6 +2,9 @@ extends ColorRect
 
 signal finished
 
+## Player's goblins which were hit and need their wound severity rerolled.
+var player_hit_gobs: Dictionary[Gob, bool] = {}
+
 var _initial_enemy_orders: Array[Gobs.Type] = []
 var _initial_player_orders: Array[Gobs.Type] = []
 var _player_orders: Array[Gobs.Type] = []
@@ -179,6 +182,9 @@ func _play_next() -> void:
 			
 		if not enemy_level_ups.is_empty():
 			_append_level_up_announcements(%EnemyAttack, enemy_level_ups)
+		
+		for enemy_kill: BattleResolver.Kill in enemy_kills:
+			player_hit_gobs[enemy_kill.target] = true
 	
 	%YourAttack.text = %YourAttack.text.strip_edges()
 	%EnemyAttack.text = %EnemyAttack.text.strip_edges()

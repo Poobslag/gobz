@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://c5t8ic3dnnljj"]
+
+[ext_resource type="Script" uid="uid://cvfwu4mh3q27o" path="res://src/main/home_base/heal_with_gold_row.gd" id="1_4fc7h"]
+
+[node name="HealWithGoldRow" type="HBoxContainer" unique_id=38152776]
+script = ExtResource("1_4fc7h")
+
+[node name="Button" type="Button" parent="." unique_id=1679837195]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "-💰 1.3k"
+
+[node name="Label" type="Label" parent="." unique_id=2118027113]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Treat 🔥 Gleex + 999k others, +3.0m ⚔"

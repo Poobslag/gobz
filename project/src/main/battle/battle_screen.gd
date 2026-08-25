@@ -20,6 +20,8 @@ func show_results_panel() -> void:
 	%PickPanel.hide()
 	%WatchPanel.hide()
 	%ResultsPanel.show()
+	
+	HomeBaseData.heal_data.reroll_wound_severity(%WatchPanel.player_hit_gobs)
 
 
 func _on_pick_panel_finished() -> void:

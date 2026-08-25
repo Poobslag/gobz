@@ -10,6 +10,8 @@ func _ready() -> void:
 			gob.back_wounded = Big.new(randf_range(2, 8))
 		if randf() < 0.5:
 			gob.front_hp = randi_range(1, gob.front_hp - 1)
+		if gob.is_hurt():
+			gob.increase_wound_severity()
 		PlayerData.army.add_gob(gob)
 	HomeBaseData.heal_data.mark_groups_dirty()
 	

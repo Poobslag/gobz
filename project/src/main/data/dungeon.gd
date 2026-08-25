@@ -14,9 +14,7 @@ func perform_recon(force: bool = false) -> void:
 	for i in recon_count:
 		var gob: Gob = army.gobs[i]
 		var recon_gob: Gob = gob.duplicate()
-		var scalar: int = int(recon_scalar)
-		if randf() < (recon_scalar - int(recon_scalar)):
-			scalar += 1
+		var scalar: int = Utils.stochastic_roundi(recon_scalar)
 		recon_gob.back_count = Big.new((recon_gob.back_count.to_float() + 1) * scalar - 1)
 		recon_army.add_gob(recon_gob)
 
