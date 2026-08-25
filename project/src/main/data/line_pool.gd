@@ -2,23 +2,37 @@ class_name LinePool
 
 static var _cache: Dictionary[String, Array] = {}
 
-static func get_random_line(path: String) -> String:
-	# initialize the cache
+static func get_longest_line(path: String) -> String:
+	var lines: Array[String] = get_cached_lines(path)
+	var longest_line_index: int = 0
+	var max_length: int = 0
+	for i in lines.size():
+		var line_length: int = lines[i].length()
+		if line_length > max_length:
+			longest_line_index = i
+			max_length = line_length
+	var line: String = lines.pop_at(longest_line_index)
+	lines.push_back(line)
+	return line
+
+
+static func get_cached_lines(path: String) -> Array[String]:
 	if not _cache.has(path):
 		var file: FileAccess = FileAccess.open(path, FileAccess.READ)
 		var lines: Array[String] = []
-		lines.assign(Utils.get_lines_from_file(file))
-		for i in range(lines.size() - 1, -1, -1):
-			if lines[i].is_empty():
-				lines.pop_at(i)
+		while not file.eof_reached():
+			var csv_line: PackedStringArray = file.get_csv_line()
+			if csv_line.size() >= 1 and not csv_line[0].is_empty():
+				lines.append(csv_line[0])
+		if lines.is_empty():
+			push_error("No lines loaded from %s" % [path])
 		_cache[path] = lines
-	
-	# return a random line from the cache
-	var cached_lines: Array[String] = _cache[path]
-	if cached_lines.is_empty():
-		push_error("No lines loaded from %s" % [path])
-		return ""
+	return _cache[path]
+
+
+static func get_random_line(path: String) -> String:
+	var lines: Array[String] = get_cached_lines(path)
 	@warning_ignore("integer_division")
-	var cached_line: String = cached_lines.pop_at(randi_range(0, cached_lines.size() / 2))
-	cached_lines.push_back(cached_line)
-	return cached_line
+	var line: String = lines.pop_at(randi_range(0, lines.size() / 2))
+	lines.push_back(line)
+	return line

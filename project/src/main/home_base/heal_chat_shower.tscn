@@ -43,6 +43,8 @@ bbcode_enabled = true
 text = "[right]\"Ugh, it hurts. Everything hurts...\"[/right]
 [left]\"Don't worry! You'll pull through.\"[/left]
 [right]\"Oogh I don't think so...\"[/right]"
+scroll_active = false
+scroll_following = true
 visible_characters_behavior = 1
 
 [node name="Face" type="Label" parent="." unique_id=762648307]

@@ -45,11 +45,6 @@ static func kill_tween(tween: Tween) -> Tween:
 	return null
 
 
-static func get_lines_from_file(file: FileAccess) -> PackedStringArray:
-	# from https://github.com/godotengine/godot-proposals/issues/2820#issuecomment-892900467
-	return file.get_buffer(file.get_length()).get_string_from_utf8().replace("\r\n", "\n").split("\n")
-
-
 ## Creates/recreates a tween, invalidating it if it is already active.[br]
 ## [br]
 ## Tweens should be created and discarded, but tweening the same property with multiple tweens causes unpredictable

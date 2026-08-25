@@ -1,37 +1,38 @@
 value,prompt_abbr_1,prompt_abbr_2,prompt,response_good,response_bad
-6,You’re perfect,You’re just perfect,You’re perfect.,"Yeah, I am perfect!",That kind of bums me out...
-6,You’re perfect,You’re just perfect,You’re perfect.,"Yeah, I am perfect!",That kind of bums me out...
-6,You’re perfect,You’re just perfect,You’re perfect.,"Yeah, I am perfect!",That kind of bums me out...
-6,You’re perfect,You’re just perfect,You’re perfect.,"Yeah, I am perfect!",That kind of bums me out...
-6,You’re perfect,You’re just perfect,You’re perfect.,"Yeah, I am perfect!",That kind of bums me out...
-6,You’re perfect,You’re just perfect,You’re perfect.,"Yeah, I am perfect!",That kind of bums me out...
-5,You’re great,You’re just great,You’re great.,"Yeah, I am great!","Ehh, I thought I was perfect..."
-5,You’re great,You’re just great,You’re great.,"Yeah, I am great!","Ehh, I thought I was perfect..."
-5,You’re great,You’re just great,You’re great.,"Yeah, I am great!","Ehh, I thought I was perfect..."
-5,You’re great,You’re just great,You’re great.,"Yeah, I am great!","Ehh, I thought I was perfect..."
-5,You’re great,You’re just great,You’re great.,"Yeah, I am great!","Ehh, I thought I was perfect..."
-5,You’re great,You’re just great,You’re great.,"Yeah, I am great!","Ehh, I thought I was perfect..."
-4,You’re good,You’re just good,You’re good.,"Yeah, I am good!","Ehh, I thought I was great..."
-4,You’re good,You’re just good,You’re good.,"Yeah, I am good!","Ehh, I thought I was great..."
-4,You’re good,You’re just good,You’re good.,"Yeah, I am good!","Ehh, I thought I was great..."
-4,You’re good,You’re just good,You’re good.,"Yeah, I am good!","Ehh, I thought I was great..."
-4,You’re good,You’re just good,You’re good.,"Yeah, I am good!","Ehh, I thought I was great..."
-4,You’re good,You’re just good,You’re good.,"Yeah, I am good!","Ehh, I thought I was great..."
-3,You’re ok,You’re just ok,You’re ok.,"Yeah, I am OK!","Ehh, I thought I was good..."
-3,You’re ok,You’re just ok,You’re ok.,"Yeah, I am OK!","Ehh, I thought I was good..."
-3,You’re ok,You’re just ok,You’re ok.,"Yeah, I am OK!","Ehh, I thought I was good..."
-3,You’re ok,You’re just ok,You’re ok.,"Yeah, I am OK!","Ehh, I thought I was good..."
-3,You’re ok,You’re just ok,You’re ok.,"Yeah, I am OK!","Ehh, I thought I was good..."
-3,You’re ok,You’re just ok,You’re ok.,"Yeah, I am OK!","Ehh, I thought I was good..."
-2,You’re bad,You’re just bad,You’re bad.,"Yeah, I am bad!","Ehh, I thought I was OK..."
-2,You’re bad,You’re just bad,You’re bad.,"Yeah, I am bad!","Ehh, I thought I was OK..."
-2,You’re bad,You’re just bad,You’re bad.,"Yeah, I am bad!","Ehh, I thought I was OK..."
-2,You’re bad,You’re just bad,You’re bad.,"Yeah, I am bad!","Ehh, I thought I was OK..."
-2,You’re bad,You’re just bad,You’re bad.,"Yeah, I am bad!","Ehh, I thought I was OK..."
-2,You’re bad,You’re just bad,You’re bad.,"Yeah, I am bad!","Ehh, I thought I was OK..."
-1,You’re miss,You’re just miss,You’re miss.,"Yeah, I am miss!!","Ehh, I thought I was bad..."
-1,You’re miss,You’re just miss,You’re miss.,"Yeah, I am miss!!","Ehh, I thought I was bad..."
-1,You’re miss,You’re just miss,You’re miss.,"Yeah, I am miss!!","Ehh, I thought I was bad..."
-1,You’re miss,You’re just miss,You’re miss.,"Yeah, I am miss!!","Ehh, I thought I was bad..."
-1,You’re miss,You’re just miss,You’re miss.,"Yeah, I am miss!!","Ehh, I thought I was bad..."
-1,You’re miss,You’re just miss,You’re miss.,"Yeah, I am miss!!","Ehh, I thought I was bad..."
+4,What a goblin!,You’re a credit to goblinkind!,What a goblin! You’re a real credit to goblinkind.,"Aw c’mon! There were a lot of tough guys out there, heh heh...","Aw c’mon! There were a lot of tough guys out there, heh heh..."
+4,Nobody can take you down!,They didn’t know what hit ‘em!,Those guys didn’t know what hit em! Nobody can take you down.,Heck yeah man! You better stay on my good side.,Heck yeah man! You better stay on my good side.
+4,I knew you could handle it,They couldn’t even scratch you!,I knew you could handle it! They barely put a scratch on you.,Ain’t nobody tougher than me! Those guys didn’t stand a chance.,Ain’t nobody tougher than me! Those guys didn’t stand a chance.
+4,Teach us to fight like that!,How do you fight like that!,I wish you could teach the other guys to fight like that!,True talent can’t be taught! But I can beat ‘em up if you want.,True talent can’t be taught! But I can beat ‘em up if you want.
+4,You were so tough!,I can’t believe it!,"You were so tough out there, I couldn’t believe it!","That’s right, the legends are true! Make sure to spread the word about how awesome I am.","That’s right, the legends are true! Make sure to spread the word about how awesome I am."
+4,That was amazing!,You fought so amazing!,"I’ve never seen anyone fight like that, that was amazing!",Heh you should follow me around more often! That was nothing.,Heh you should follow me around more often! That was nothing.
+4,You were unstoppable!,You took down so many guys!,"You must have taken down 10 or 20 guys, you were unstoppable out there!",Yeah I stopped counting once I got to 50! I ain’t so good with numbers.,Yeah I stopped counting once I got to 50! I ain’t so good with numbers.
+4,You’re so brave!,You’re the bravest goblin!,You’re the bravest goblin I’ve ever seen!,It ain’t bravery if you know you got the goods to back it up!,It ain’t bravery if you know you got the goods to back it up!
+4,You were untouchable!,You’re untouchable out there!,"You were untouchable out there! I mean you got touched a little, but still!","Yeah I let ‘em get a hit or two in! I just felt bad, y’know?","Yeah I let ‘em get a hit or two in! I just felt bad, y’know?"
+3,Try dodging,Nice work,"Nice work out there, just... maybe try dodging next time.","Dodging? Pshh, that takes all the fun outta gettin’ hit!","Dodging? Man, why don’t you try shuttin’ your mouth."
+3,Whatever doesn’t kill you...,Let’s get back out there,"Whatever doesn’t kill you, right? Let’s get back out there.",I been practicing not getting killed my whole life! I’m gettin’ good at it.,Are you crazy!? I’m wounded over here. (cough cough)
+3,Learn from your mistakes,It’s OK to make mistakes,Learn from your mistakes. You’ll get ‘em next time.,Yeah I already know what I messed up. I’ll get ‘em.,Only mistake I made is listening to your crazy nonsense...
+3,Everybody gets beat up sometimes,No shame in getting beaten  up,"Everybody gets beat up sometimes, no shame in it.",That’s half the fun of it right? Gettin’ beat up ain’t so bad.,Yeah but how come I’m always the one gettin’ beat up?
+3,Hang in there,We can use you out there,"Hang in there, we can use guys like you out there.","Don’t worry, you ain’t losin’ me yet. Get me back out there! Rarr!","Nahh, I don’t even know what I’m doin’ here..."
+3,Take care of yourself,We need guys like you,"Take care of yourself, alright? We need guys like you.","Take care of what, this bug bite? Gimme a break, this ain’t nothin’!","Don’t worry, I got a feelin’ I’ll be “taken care of” soon."
+3,Good job out there,You’ll do better tomorrow,Hey good job out there today. You’ll do a better job tomorrow.,Yeah you can count on me! I got this.,You call that a good job? (cough cough) Man I’m so useless.
+3,You fought well,Sometimes it’s tough,"You put up a good fight. Sometimes it’s just tough, y’know?",You call that tough? I’m still standin’ aren’t I? Bring it on!,Is it this hard for everyone? Ugh...
+3,Do you need anything?,Tell me if you need anything,Just lemme know if you need anything.,Ahh you don’t gotta worry about me! I’m already feelin’ better.,Yeah thanks I guess. I don’t really know...
+2,You’re better than that,Aren’t you better than that?,"C’mon, you’re better than that. Or maybe you ain’t.","Hey you should see the other guy! This is nothin’, ha ha.",Ow... (cough cough) Everything hurts...
+2,What was that?,Get it together,What the heck was that? Get it together...,"Those guys were tough, but I’m tougher! Just gimme a minute.","Yeah, I can’t do anything right..."
+2,Are you done?,You had enough?,"You done, or are you gonna keep doin’, uhh... whatever that was?",I’m done when I say I’m done. I got some fight in me yet!,"I don’t know, I’m such a screw-up."
+2,You look hurt,You’re pretty hurt,"You look pretty hurt. Well, if you get better let me know.",Nothin’ keeps me down. I’ll be back on my feet before you know it!,"Yeah I dunno, this one might take awhile."
+2,Your guts look gross,"Ew, guts","Ugh, I hope my guts don’t look like that.",Hey some of those guts ain’t mine! It was brutal out there.,Ooogh.... So much pain.... (cough)
+2,Should that bend that way?,Why is that bent that way,Eww. There’s no way that’s supposed to bend that way.,Sometimes I like bending things that way! You should try it.,"Ow, my bent thing... It hurts so bad..."
+2,What’s that thingy?,What is that thingy?,"Whoa, what’s that thingy? Was that always there?","You never seen one of THOSE before? Tsk, we gotta get you outside!",(cough cough) Owww... My insides....
+2,Lemme see your fingers,"Ew, what’s with your fingers",Lemme see your fingers. Yeesh. These are your fingers!?,"Pshh, who needs all those fingers anyway?","Oww, my fingers! I need them to touch things..."
+2,Who are you?,"Uhh, who are you?","Sorry, who are you again?","Pay attention next time! I’m the one out there smashin’ the most faces, heh heh.",Don’t worry about it... (cough)
+1,You’re a waste of food,No food for you,"If it’s alright, we’re gonna save our food for stronger guys than you.","Hah, keep your pity food! I can take care of myself.","Yeah, it’s okay. I understand..."
+1,Can we chuck you in a river,Do we have to bury you,"We’re short on tombstones, can we just chuck you in a river?",Save the tombstones for the bad guys! I’m doin’ just fine over here.,A river’s overkill... (cough cough) Just chuck me in a hole somewhere.
+1,Still clinging to life?,Why bother living?,Still clinging to life huh? I mean what’s the point? Look at you.,Life is for livin’! I ain’t done yet.,Dying’s really hard... (cough) It’s hard and it hurts.
+1,Why are you still here?,What are you wasting your time for?,"Look at you, you can’t even fight. Quit wasting our time.","You think I can’t fight!? Put me back out there, you’ll see.",I thought I was stronger than this...
+1,You’re weaker than a kitten,You’re weak as a kitten,I’ve fought kittens stronger than you.,Why the heck are you fightin’ a kitten!? I’ll break your bones right here!,(sad meow)
+1,Just give up,You’re bad at this,"Whatever you’re good at, it sure ain’t this.",Hey I’m just here for a good time! Beatin’ guys up is more of a hobby than a job.,"Yeah, maybe I should just give up... (cough)"
+1,You’re a bad goblin,You’re bad at being a goblin,Maybe being a goblin isn’t right for you.,I’ll tell you when I’m done bein’ a goblin! I’m more goblin than you’ll ever know.,Soon I’ll just be worms and dirt. I think I’d be a good worm.
+1,You looked so stupid,You looked stupid out there,Me and all the other goblins were just talking about how stupid you looked!,"Ha, those greenhorns couldn’t fight their way out of a wet sack!","And then I got myself hurt, as always..."
+1,You’re so fragile,Look at Mr. Tissue Paper,"Sheesh, look at Mr. Tissue Paper over here...",I ain’t hurt! I’m just buildin’ up some new scars so I’ll look more intimidating.,Maybe I’m just built wrong...
+1,A butterfly could beat you up,A butterfly is stronger than you,Who did this to you? Was it a butterfly?,"What this little tiny scratch? Yeah, that was me cuttin’ my finger opening a can of fist-medicine.",I mean it probably coulda been. I’m pathetic...
