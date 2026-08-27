@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dosa1eu8p5pla"]
 
-[ext_resource type="Script" uid="uid://cjnjdkmid8xcf" path="res://src/main/home_base/heal_chat_shower.gd" id="1_sspmd"]
+[ext_resource type="Script" uid="uid://cjnjdkmid8xcf" path="res://src/main/home_base/heal/heal_chat_shower.gd" id="1_sspmd"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cj732"]
 bg_color = Color(0.25490198, 0.17254902, 0.2, 1)

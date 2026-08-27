@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dy7s1xoxanbki"]
 
-[ext_resource type="Script" uid="uid://bughmkj2hjb53" path="res://src/main/home_base/cook_herb_row.gd" id="1_pf31p"]
+[ext_resource type="Script" uid="uid://bughmkj2hjb53" path="res://src/main/home_base/heal/cook_herb_row.gd" id="1_pf31p"]
 
 [node name="CookHerbRow" type="HBoxContainer" unique_id=107235900 groups=["cook_herb_rows"]]
 script = ExtResource("1_pf31p")

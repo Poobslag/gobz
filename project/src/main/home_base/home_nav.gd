@@ -12,7 +12,7 @@ var location_index: int = 0:
 func _ready() -> void:
 	_refresh()
 	%Home.pressed.connect(get_tree().change_scene_to_file.bind("res://src/main/home_base/home_base_screen.tscn"))
-	%Heal.pressed.connect(get_tree().change_scene_to_file.bind("res://src/main/home_base/heal_screen.tscn"))
+	%Heal.pressed.connect(get_tree().change_scene_to_file.bind("res://src/main/home_base/heal/heal_screen.tscn"))
 
 
 func _refresh() -> void:

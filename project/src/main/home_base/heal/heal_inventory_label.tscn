@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://t8f1tkis3ujq"]
 
-[ext_resource type="Script" uid="uid://bnttim3akv0pt" path="res://src/main/home_base/heal_inventory_label.gd" id="1_c2ogy"]
+[ext_resource type="Script" uid="uid://bnttim3akv0pt" path="res://src/main/home_base/heal/heal_inventory_label.gd" id="1_c2ogy"]
 
 [node name="InventoryLabel" type="RichTextLabel" unique_id=1464235693]
 custom_minimum_size = Vector2(0, 71)
