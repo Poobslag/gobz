@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dud62excdghvg" path="res://src/main/home_base/heal_with_medicine_row.gd" id="1_q2klv"]
 
-[node name="TreatWithMedicineRow" type="HBoxContainer" unique_id=1257331575]
+[node name="HealWithMedicineRow" type="HBoxContainer" unique_id=1257331575]
 script = ExtResource("1_q2klv")
 
 [node name="Button" type="Button" parent="." unique_id=410277370]

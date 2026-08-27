@@ -139,7 +139,7 @@ func _on_heal_with_gold_row_pressed() -> void:
 	var remaining_hurt_count: float = 0.0
 	for gob: Gob in %HealWithGoldRow.gobs:
 		remaining_hurt_count += gob.get_hurt_count().to_float()
-	PlayerData.gold = Big.sub(PlayerData.gold, %HealWithGoldRow.cost)
+	PlayerData.take_gold(%HealWithGoldRow.cost)
 	for gob: Gob in %HealWithGoldRow.gobs:
 		var gold_per_hurt: float = remaining_gob_income / remaining_hurt_count
 		var gold_for_this_gob: float = gob.get_hurt_count().to_float() * gold_per_hurt

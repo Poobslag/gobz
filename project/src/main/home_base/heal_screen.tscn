@@ -15,9 +15,9 @@ script = ExtResource("1_ksplh")
 
 [node name="HealPanel" parent="." unique_id=806142582 instance=ExtResource("1_8m2oa")]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 
 [node name="KitchenPanel" parent="." unique_id=1594739662 instance=ExtResource("2_w26rl")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1

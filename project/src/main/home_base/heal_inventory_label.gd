@@ -15,17 +15,22 @@ func refresh() -> void:
 				wounded_percent = max(wounded_percent, 1)
 				wounded_string = "(%d%% 🩹) " % [wounded_percent]
 			%InventoryLabel.text += "%s: %s goblins, %s⚔️%s\n" % [
-					Gobs.EMOJIS_BY_GOBLIN_TYPE[goblin_type],
+					Gobs.emoji_from_type(goblin_type),
 					summary.goblins_by_type[goblin_type].to_aa(),
 					wounded_string,
 					summary.attack_by_type[goblin_type].to_aa()]
 	
-	%InventoryLabel.text += "💰 %s - 🍰 %s - 🍺 %s\n" % [
+	%InventoryLabel.text += "💰 %s - %s %s - %s %s\n" % [
 			PlayerData.gold.to_aa(),
+			Items.emoji_from_type(Items.WEAK_MEDICINE),
 			PlayerData.inventory.get_count(Items.WEAK_MEDICINE).to_aa(),
+			Items.emoji_from_type(Items.STRONG_MEDICINE),
 			PlayerData.inventory.get_count(Items.STRONG_MEDICINE).to_aa(),]
 	
-	%InventoryLabel.text += "🌿 %s - 🍄 %s - 🍞 %s" % [
+	%InventoryLabel.text += "%s %s - %s %s - %s %s" % [
+			Items.emoji_from_type(Items.HERB_1),
 			PlayerData.inventory.get_count(Items.HERB_1).to_aa(),
+			Items.emoji_from_type(Items.HERB_2),
 			PlayerData.inventory.get_count(Items.HERB_2).to_aa(),
+			Items.emoji_from_type(Items.HERB_3),
 			PlayerData.inventory.get_count(Items.HERB_3).to_aa(),]

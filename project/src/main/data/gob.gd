@@ -169,7 +169,6 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 	increase_wound_severity()
 
 
-
 ## Goblins injured in battle have their wound severity increased.[br]
 ## [br]
 ## A wound severity is rolled, and they take the higher of their current wound severity and the new wound severity.

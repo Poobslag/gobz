@@ -72,6 +72,7 @@ func _refresh_recruits() -> void:
 		%Recruits.add_child(recruit_row)
 	for recruit_row: HomeBaseRecruitRow in %Recruits.get_children():
 		recruit_row.refresh()
+	
 	%MultiplyButton.disabled = PlayerData.gold.is_lt(Big.mul(PlayerData.home_base_multiplier, 80)) \
 			or PlayerData.home_base_multiplier.is_gt(MAX_MULTIPLIER)
 	%DivideButton.disabled = PlayerData.home_base_multiplier.is_lte(1)
@@ -81,7 +82,7 @@ func _recruit(recruit_row: HomeBaseRecruitRow) -> void:
 	if PlayerData.gold.is_lt(recruit_row.get_cost()):
 		return
 	
-	PlayerData.gold = Big.sub(PlayerData.gold, recruit_row.get_cost())
+	PlayerData.take_gold(recruit_row.get_cost())
 	PlayerData.army.add_gob(recruit_row.gob)
 	
 	%Recruits.remove_child(recruit_row)
