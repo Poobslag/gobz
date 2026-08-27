@@ -6,10 +6,12 @@
 script = ExtResource("1_q2klv")
 
 [node name="Button" type="Button" parent="." unique_id=410277370]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "-🍰 1.3k"
 
 [node name="Label" type="Label" parent="." unique_id=35418448]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Treat 🔥 Gleex + 999k others, +3.0m ⚔"

@@ -12,12 +12,6 @@ layout_mode = 2
 disabled = true
 text = "🏠 Home"
 
-[node name="Shop" type="Button" parent="." unique_id=236354063 groups=["nav_buttons"]]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-text = "💰 Shop"
-
 [node name="Heal" type="Button" parent="." unique_id=360384607 groups=["nav_buttons"]]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)

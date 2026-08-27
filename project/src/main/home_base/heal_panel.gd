@@ -20,11 +20,16 @@ func _ready() -> void:
 	%ChatPicker.option_picked.connect(_on_chat_picker_option_picked)
 	%ChatShower.all_messages_shown.connect(_on_chat_shower_all_messages_shown)
 	%HealWithGoldRow.pressed.connect(_on_heal_with_gold_row_pressed)
+	%HealWithMedicineRow.pressed.connect(_on_heal_with_medicine_row_pressed)
 
 
 func initialize() -> void:
 	%ChatShower.clear()
-	%ChatShower.append_neutral_response("\"%s\"" % [LinePool.get_random_line(HEAL_HELLO_PATH)])
+	if HomeBaseData.heal_data.groups.is_empty():
+		%ChatShower.append_prompt("(There's nobody to heal.)")
+		%ChatShower.hide_face()
+	else:
+		%ChatShower.append_neutral_response("\"%s\"" % [LinePool.get_random_line(HEAL_HELLO_PATH)])
 	_generate_chat_picker_options()
 	refresh()
 
@@ -33,12 +38,21 @@ func refresh() -> void:
 	%InventoryLabel.refresh()
 	%HealNavigator.refresh()
 	
+	%ChatPicker.visible = true
+	%HealWithMedicineRow.visible = true
+	%HealWithGoldRow.visible = true
+	%ChatPicker.set_disabled(false)
+	
 	var center_group: HealData.HealGroup = HomeBaseData.heal_data.get_center_group()
-	if center_group == null or center_group.hurt_count.is_eq(0):
-		%HealWithGoldRow.visible = false
+	if center_group == null:
+		%ChatPicker.visible = false
+		%HealWithMedicineRow.gobs = [] as Array[Gob]
+		%HealWithGoldRow.gobs =  [] as Array[Gob]
 	else:
-		%HealWithGoldRow.visible = true
+		%HealWithMedicineRow.gobs = center_group.gobs
 		%HealWithGoldRow.gobs = center_group.gobs
+		if center_group.hurt_count.is_eq(0):
+			%ChatPicker.set_disabled(true)
 
 
 func inject_chat_line(line: HealChatLines.HealChatLine) -> void:
@@ -64,7 +78,7 @@ func _refresh_chat_picker() -> void:
 
 
 func _on_chat_picker_option_picked(option_index: int) -> void:
-	%ChatPicker.set_option_buttons_disabled(true)
+	%ChatPicker.set_disabled(true)
 	%ChatShower.append_prompt("\"%s\"" % [_heal_chat_lines[option_index].prompt])
 	var center_group: HealData.HealGroup = HomeBaseData.heal_data.get_center_group()
 	var max_value: int = 0
@@ -88,10 +102,7 @@ func _on_chat_picker_option_picked(option_index: int) -> void:
 		center_group.increment_chats_remaining()
 		%ChatShower.append_bad_response("\"%s\"" % [_heal_chat_lines[option_index].response_bad])
 	
-	if center_group.chats_remaining > 0:
-		_generate_chat_picker_options()
-	else:
-		%ChatPicker.options = [] as Array[String]
+	_generate_chat_picker_options()
 
 
 func _on_heal_navigator_before_move() -> void:
@@ -121,11 +132,15 @@ func _on_heal_navigator_move() -> void:
 		%ChatShower.clear()
 		%ChatShower.append_neutral_response("\"%s\"" % [LinePool.get_random_line(HEAL_HELLO_PATH)])
 	_generate_chat_picker_options()
-	%ChatPicker.set_option_buttons_disabled(false)
+	
+	if center_group != null and center_group.hurt_count.is_gt(0):
+		%ChatPicker.set_disabled(false)
 
 
 func _on_chat_shower_all_messages_shown() -> void:
-	%ChatPicker.set_option_buttons_disabled(false)
+	var center_group: HealData.HealGroup = HomeBaseData.heal_data.get_center_group()
+	if center_group != null and center_group.hurt_count.is_gt(0):
+		%ChatPicker.set_disabled(false)
 
 
 func _on_heal_with_gold_row_pressed() -> void:
@@ -152,5 +167,19 @@ func _on_heal_with_gold_row_pressed() -> void:
 		HealData.full_heal(gob)
 	
 	%ChatShower.append_great_response("\"%s\"" % [LinePool.get_random_line(HEAL_GOODBYE_GOLD_PATH)])
+	HomeBaseData.heal_data.get_center_group().refresh()
+	refresh()
+
+
+func _on_heal_with_medicine_row_pressed() -> void:
+	if not %HealWithMedicineRow.has_enough_medicine():
+		return
+	
+	PlayerData.inventory.take_item(Items.WEAK_MEDICINE, %HealWithMedicineRow.weak_medicine_needed)
+	PlayerData.inventory.take_item(Items.STRONG_MEDICINE, %HealWithMedicineRow.strong_medicine_needed)
+	for gob: Gob in %HealWithMedicineRow.gobs:
+		HealData.full_heal(gob)
+	
+	%ChatShower.append_great_response("\"%s\"" % [LinePool.get_random_line(HEAL_GOODBYE_MEDICINE_PATH)])
 	HomeBaseData.heal_data.get_center_group().refresh()
 	refresh()
