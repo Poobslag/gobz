@@ -58,23 +58,16 @@ func refresh() -> void:
 
 func get_kill_report(source_type: Gobs.Type, kills: Array[BattleResolver.Kill]) -> Array[Dictionary]:
 	var kills_by_type: Dictionary[Gobs.Type, Big] = {}
-	var wounded_set: Dictionary[Gob, bool] = {}
-	var wounded_by_type: Dictionary[Gobs.Type, Big] = {}
 	for kill: BattleResolver.Kill in kills:
 		if not kills_by_type.has(kill.target.type):
 			kills_by_type[kill.target.type] = Big.ZERO
-			wounded_by_type[kill.target.type] = Big.ZERO
 		kills_by_type[kill.target.type] = Big.add(kills_by_type[kill.target.type], kill.kill_count)
-		if not wounded_set.has(kill.target):
-			wounded_by_type[kill.target.type] = Big.add(wounded_by_type[kill.target.type], kill.wounded_count)
-			wounded_set[kill.target] = true
 	
 	var result: Array[Dictionary] = []
 	for type: Gobs.Type in kills_by_type.keys():
 		result.append({
 			"type": type,
 			"kill_count": kills_by_type[type],
-			"wounded_count": wounded_by_type[type],
 			"effectiveness": BattleResolver.effectiveness(source_type, type),
 		})
 	result.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
@@ -142,10 +135,15 @@ func _play_next() -> void:
 					kill_strings.append("%s×%s killed" %
 							[kill_report_gob["kill_count"].to_aa(),
 									Gobs.emoji_from_type(kill_report_gob["type"])])
-				if kill_report_gob["wounded_count"].is_gt(0):
+				
+				var new_enemy_army_summary: Army.ArmySummary = enemy_army.get_summary()
+				var wounded_count: Big = Big.sub(new_enemy_army_summary.wounded_by_type.get(kill_report_gob["type"]), 
+						enemy_army_summary.wounded_by_type.get(kill_report_gob["type"]))
+				if wounded_count.is_gt(0):
 					kill_strings.append("%s×%s wounded" %
-							[kill_report_gob["wounded_count"].to_aa(),
+							[wounded_count.to_aa(),
 									Gobs.emoji_from_type(kill_report_gob["type"])])
+				
 				var effectiveness_string: String = ""
 				if kill_report_gob["effectiveness"] > 1.0:
 					effectiveness_string = "Very effective!"
@@ -169,10 +167,15 @@ func _play_next() -> void:
 					kill_strings.append("%s×%s killed" %
 							[kill_report_gob["kill_count"].to_aa(),
 									Gobs.emoji_from_type(kill_report_gob["type"])])
-				if kill_report_gob["wounded_count"].is_gt(0):
+				
+				var new_player_army_summary: Army.ArmySummary = player_army.get_summary()
+				var wounded_count: Big = Big.sub(new_player_army_summary.wounded_by_type.get(kill_report_gob["type"]), 
+						player_army_summary.wounded_by_type.get(kill_report_gob["type"]))
+				if wounded_count.is_gt(0):
 					kill_strings.append("%s×%s wounded" %
-							[kill_report_gob["wounded_count"].to_aa(),
+							[wounded_count.to_aa(),
 									Gobs.emoji_from_type(kill_report_gob["type"])])
+				
 				var effectiveness_string: String = ""
 				if kill_report_gob["effectiveness"] > 1.0:
 					effectiveness_string = "A terrible blow!"

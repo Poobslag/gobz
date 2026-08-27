@@ -121,9 +121,8 @@ func test_wound_and_kill() -> void:
 	enemy_army.add_gob(gob("🔥 1"))
 	plan_and_resolve_attacks()
 	
-	# the target requires two attacks to die, but we don't report them as wounded
-	assert_kills([
-		"🔥 1 -> 🔥 1, 1/0"])
+	# the target requires two attacks to die
+	assert_kills(["🔥 1 -> 🔥 1, 0/0", "🔥 1 -> 🔥 1, 1/0"])
 
 
 func test_angels_wound() -> void:
@@ -199,7 +198,6 @@ func test_resolve_attack_wounded_attackers_murder_mode() -> void:
 	assert_eq(target.back_count.to_int(), 7)
 	assert_eq(target.back_wounded.to_int(), 1)
 	assert_eq(result["kill_count"].to_int(), 2)
-	assert_eq(result["wounded_count"].to_int(), 1)
 	assert_eq(result["hits_taken"].to_int(), 10)
 
 
@@ -229,7 +227,7 @@ func test_plan_and_resolve_attacks_david_goliath_1() -> void:
 	assert_eq(target.back_count.to_int(), 0)
 	assert_eq(target.back_wounded.to_int(), 0)
 	assert_eq(40, target.front_hp)
-	assert_kills(["🔥 1 -> 🔥 10, 0/1"])
+	assert_kills(["🔥 1 -> 🔥 10, 0/0"])
 
 
 func test_plan_and_resolve_attacks_david_goliath_10() -> void:
@@ -242,7 +240,7 @@ func test_plan_and_resolve_attacks_david_goliath_10() -> void:
 	assert_eq(target.back_count.to_int(), 0)
 	assert_eq(target.back_wounded.to_int(), 0)
 	assert_eq(target.front_hp, 4)
-	assert_kills(["🔥 1 -> 🔥 10, 0/1"])
+	assert_kills(["🔥 1 -> 🔥 10, 0/1", "🔥 1 -> 🔥 10, 0/1"])
 
 
 func test_plan_and_resolve_attacks_david_goliath_11() -> void:
@@ -255,7 +253,7 @@ func test_plan_and_resolve_attacks_david_goliath_11() -> void:
 	assert_eq(target.back_count.to_int(), 0)
 	assert_eq(target.back_wounded.to_int(), 0)
 	assert_eq(target.front_hp, 0)
-	assert_kills(["🔥 1 -> 🔥 10, 1/0"])
+	assert_kills(["🔥 1 -> 🔥 10, 0/0", "🔥 1 -> 🔥 10, 1/0"])
 
 
 ## The details of the battle don't matter too much, but it used to cause a softlock.
@@ -282,7 +280,6 @@ func test_too_many_wounded() -> void:
 	assert_eq(target.back_count.to_int(), 95)
 	assert_eq(target.back_wounded.to_int(), 95)
 	assert_eq(result["kill_count"].to_int(), 5)
-	assert_eq(result["wounded_count"].to_int(), 96)
 	assert_eq(result["hits_taken"].to_int(), 111)
 
 
@@ -315,6 +312,6 @@ func assert_kills(expected_kill_strings: Array[String]) -> void:
 	for kill: BattleResolver.Kill in battle_result["kills"]:
 		var source_string: String = "%s %s" % [Gobs.emoji_from_type(kill.source.type), kill.source.level]
 		var target_string: String = "%s %s" % [Gobs.emoji_from_type(kill.target.type), kill.target.level]
-		var kw_string: String = "%s/%s" % [kill.kill_count.to_aa(), kill.wounded_count.to_aa()]
+		var kw_string: String = "%s/%s" % [kill.kill_count.to_aa(), kill.target.get_wounded_count().to_aa()]
 		got_kill_strings.append("%s -> %s, %s" % [source_string, target_string, kw_string])
 	assert_eq(got_kill_strings, expected_kill_strings)
