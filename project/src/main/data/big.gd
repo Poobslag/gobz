@@ -15,7 +15,8 @@ static var _suffixes_aa: Dictionary[int, String] = {
 	3: "b", # billion
 	4: "t", # trillion
 	5: "q", # quadrillion
-	6: "bj", # a bajillion
+	6: "z", # zillion
+	7: "bj", # a bajillion
 }
 
 var _value: float
@@ -59,9 +60,9 @@ func to_aa() -> String:
 		result = ",%03d%s" % [fmod(ipart, 1000), result]
 		ipart = floor(ipart / 1000)
 	if not _suffixes_aa.has(suffix_key):
-		var offset: int = (suffix_key) % 21
+		var offset: int = (suffix_key - 1) % 21
 		@warning_ignore("integer_division")
-		var base: int = ((suffix_key) / 21)
+		var base: int = ((suffix_key - 1) / 21)
 		_suffixes_aa[suffix_key] = "%s%s" % [ALPHABET[base], ALPHABET[offset]]
 	var suffix: String = _suffixes_aa[suffix_key]
 	result = "%d%s%s" % [ipart, result, suffix]

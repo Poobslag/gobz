@@ -74,12 +74,12 @@ func test_negative_boundaries() -> void:
 
 
 func test_to_aa_billions_and_up_boundaries() -> void:
-	assert_eq(Big.new(9.999_999_999e21).to_aa(), "9.9bk")
-	assert_eq(Big.new(1.000_000_000e22).to_aa(), "10.0bk")
-	assert_eq(Big.new(9.999_999_999e22).to_aa(), "99.9bk")
-	assert_eq(Big.new(1.000_000_000e23).to_aa(), "100bk")
-	assert_eq(Big.new(9.999_999_999e23).to_aa(), "999bk")
-	assert_eq(Big.new(1.000_000_000e24).to_aa(), "1.0bl")
+	assert_eq(Big.new(9.999_999_999e24).to_aa(), "9.9bk")
+	assert_eq(Big.new(1.000_000_000e25).to_aa(), "10.0bk")
+	assert_eq(Big.new(9.999_999_999e25).to_aa(), "99.9bk")
+	assert_eq(Big.new(1.000_000_000e26).to_aa(), "100bk")
+	assert_eq(Big.new(9.999_999_999e26).to_aa(), "999bk")
+	assert_eq(Big.new(1.000_000_000e27).to_aa(), "1.0bl")
 
 
 func test_to_aa_negative() -> void:
@@ -101,20 +101,21 @@ func test_to_aa_billions_and_up() -> void:
 	assert_eq(Big.new(32.57e9).to_aa(), "32.5b")
 	assert_eq(Big.new(32.57e12).to_aa(), "32.5t")
 	assert_eq(Big.new(32.57e15).to_aa(), "32.5q")
+	assert_eq(Big.new(32.57e18).to_aa(), "32.5z")
 	
 	# count from bajillion, bakillion... banillion, bapillion, skipping 'baoillion' which is hard to pronounce
-	assert_eq(Big.new(32.57e18).to_aa(), "32.5bj")
-	assert_eq(Big.new(32.57e21).to_aa(), "32.5bk")
-	assert_eq(Big.new(32.57e24).to_aa(), "32.5bl")
-	assert_eq(Big.new(32.57e27).to_aa(), "32.5bm")
-	assert_eq(Big.new(32.57e30).to_aa(), "32.5bn")
-	assert_eq(Big.new(32.57e33).to_aa(), "32.5bp")
+	assert_eq(Big.new(32.57e21).to_aa(), "32.5bj")
+	assert_eq(Big.new(32.57e24).to_aa(), "32.5bk")
+	assert_eq(Big.new(32.57e27).to_aa(), "32.5bl")
+	assert_eq(Big.new(32.57e30).to_aa(), "32.5bm")
+	assert_eq(Big.new(32.57e33).to_aa(), "32.5bn")
+	assert_eq(Big.new(32.57e36).to_aa(), "32.5bp")
 	
 	# continue from bazillion to cabillion, cacillion...
-	assert_eq(Big.new(32.57e60).to_aa(), "32.5bz")
-	assert_eq(Big.new(32.57e63).to_aa(), "32.5cb")
-	assert_eq(Big.new(32.57e180).to_aa(), "32.5dx")
-	assert_eq(Big.new(32.57e270).to_aa(), "32.5gj")
+	assert_eq(Big.new(32.57e63).to_aa(), "32.5bz")
+	assert_eq(Big.new(32.57e66).to_aa(), "32.5cb")
+	assert_eq(Big.new(32.57e180).to_aa(), "32.5dw")
+	assert_eq(Big.new(32.57e270).to_aa(), "32.5gh")
 
 
 func test_sum() -> void:
