@@ -26,8 +26,10 @@ var gold: Big = Big.ZERO:
 var inventory: Inventory = Inventory.new()
 var dungeons: Array[Dungeon] = []
 var dungeon_index: int
+var market: Market = Market.new()
 
 var home_base_multiplier: Big = Big.ONE
+var kitchen_multiplier: Big = Big.ONE
 var ripoff_factor: float:
 	get():
 		return get_ripoff_factor()
@@ -94,12 +96,14 @@ func reset() -> void:
 	dungeons = []
 	dungeon_index = 0
 	home_base_multiplier = Big.ONE
+	kitchen_multiplier = Big.ONE
 	_ripoff_factor_dirty = true
 
 
 func start_new_game() -> void:
 	reset()
 	initialize_starting_army()
+	initialize_starting_inventory()
 	cycle_dungeons()
 
 
@@ -113,6 +117,14 @@ func get_dungeon() -> Dungeon:
 
 func get_dungeon_army() -> Army:
 	return get_dungeon().army
+
+
+func initialize_starting_inventory() -> void:
+	PlayerData.inventory.add_item(Items.HERB_1, Big.new(5))
+	PlayerData.inventory.add_item(Items.HERB_2, Big.new(8))
+	PlayerData.inventory.add_item(Items.HERB_3, Big.new(9))
+	PlayerData.inventory.add_item(Items.WEAK_MEDICINE, Big.new(4))
+	PlayerData.inventory.add_item(Items.STRONG_MEDICINE, Big.new(3))
 
 
 func initialize_starting_army() -> void:
@@ -159,6 +171,10 @@ func get_ripoff_factor() -> float:
 	return _ripoff_factor_cache
 
 
+func take_gold(count: Big) -> void:
+	gold = Big.new(max(0, gold.to_float() - count.to_float()))
+
+
 func to_json_dict() -> Dictionary[String, Variant]:
 	var result: Dictionary[String, Variant] = {}
 	result["day"] = day
@@ -170,6 +186,7 @@ func to_json_dict() -> Dictionary[String, Variant]:
 		dungeons_json.append(dungeon.to_json_dict())
 	result["dungeons"] = dungeons_json
 	result["home_base_multiplier"] = home_base_multiplier.to_float()
+	result["kitchen_multiplier"] = kitchen_multiplier.to_float()
 	return result
 
 
@@ -190,6 +207,7 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 		dungeon.from_json_dict(typed_dungeon_json)
 		dungeons.append(dungeon)
 	home_base_multiplier = Big.new(json.get("home_base_multiplier", 1.0))
+	kitchen_multiplier = Big.new(json.get("kitchen_multiplier", 1.0))
 
 
 func _calculate_ripoff_factor() -> float:

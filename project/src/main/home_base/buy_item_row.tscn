@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://cf6eisag38iyh"]
+
+[ext_resource type="Script" uid="uid://c465f2dmp2b2q" path="res://src/main/home_base/buy_item_row.gd" id="1_nu1bu"]
+
+[node name="BuyItemRow" type="HBoxContainer" unique_id=2050432156 groups=["buy_item_rows"]]
+script = ExtResource("1_nu1bu")
+
+[node name="Button" type="Button" parent="." unique_id=120247928]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "-💰 1.3k"
+
+[node name="Label" type="Label" parent="." unique_id=1518697102]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Buy 🍰×3"
