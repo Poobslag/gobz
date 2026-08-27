@@ -8,12 +8,19 @@ signal option_picked(index: int)
 		_refresh()
 
 var _placeholder_button_pressed: bool = false
+
 @onready var option_buttons: Array[Button] = [%Button1, %Button2, %Button3, %Button4, %Button5, %Button6]
 
 func _ready() -> void:
 	%PlaceholderButton.pressed.connect(_on_placeholder_button_pressed)
 	for i in option_buttons.size():
 		option_buttons[i].pressed.connect(option_picked.emit.bind(i))
+
+
+func set_disabled(new_disabled: bool) -> void:
+	for button: Button in option_buttons:
+		button.disabled = new_disabled
+	%PlaceholderButton.disabled = new_disabled
 
 
 func set_option_buttons_disabled(new_disabled: bool) -> void:

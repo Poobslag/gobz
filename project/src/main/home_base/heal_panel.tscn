@@ -103,21 +103,15 @@ layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="HealWithWeakMedicineRow" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" index="6" unique_id=1257331575 instance=ExtResource("10_tyxgg")]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-
-[node name="HealWithStrongMedicineRow" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" index="7" unique_id=42979598 instance=ExtResource("10_tyxgg")]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-
-[node name="HealWithGoldRow" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" index="8" unique_id=38152776 instance=ExtResource("11_qqabu")]
+[node name="HealWithMedicineRow" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" index="6" unique_id=1257331575 instance=ExtResource("10_tyxgg")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" index="9" unique_id=1480023214]
+[node name="HealWithGoldRow" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" index="7" unique_id=38152776 instance=ExtResource("11_qqabu")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" index="8" unique_id=1480023214]
 visible = false
 layout_mode = 2
 
@@ -133,4 +127,4 @@ text = "÷10"
 
 [node name="HomeNav" parent="MarginContainer/Panel/MarginContainer/HBoxContainer" index="1" unique_id=1142993029 instance=ExtResource("5_jue1v")]
 layout_mode = 2
-location_index = 2
+location_index = 1

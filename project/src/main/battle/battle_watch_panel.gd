@@ -137,7 +137,8 @@ func _play_next() -> void:
 									Gobs.emoji_from_type(kill_report_gob["type"])])
 				
 				var new_enemy_army_summary: Army.ArmySummary = enemy_army.get_summary()
-				var wounded_count: Big = Big.sub(new_enemy_army_summary.wounded_by_type.get(kill_report_gob["type"]), 
+				var wounded_count: Big = Big.sub(
+						new_enemy_army_summary.wounded_by_type.get(kill_report_gob["type"]),
 						enemy_army_summary.wounded_by_type.get(kill_report_gob["type"]))
 				if wounded_count.is_gt(0):
 					kill_strings.append("%s×%s wounded" %
@@ -169,7 +170,8 @@ func _play_next() -> void:
 									Gobs.emoji_from_type(kill_report_gob["type"])])
 				
 				var new_player_army_summary: Army.ArmySummary = player_army.get_summary()
-				var wounded_count: Big = Big.sub(new_player_army_summary.wounded_by_type.get(kill_report_gob["type"]), 
+				var wounded_count: Big = Big.sub(
+						new_player_army_summary.wounded_by_type.get(kill_report_gob["type"]),
 						player_army_summary.wounded_by_type.get(kill_report_gob["type"]))
 				if wounded_count.is_gt(0):
 					kill_strings.append("%s×%s wounded" %

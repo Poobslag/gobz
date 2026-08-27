@@ -120,6 +120,11 @@ func append_great_response(response: String) -> void:
 func reset_mood() -> void:
 	%Face.text = EMOJI_NEUTRAL
 
+
+func hide_face() -> void:
+	%Face.text = ""
+
+
 func _frown() -> void:
 	_face_tween = Utils.recreate_tween(self, _face_tween)
 	%Face.text = EMOJI_BIG_FROWN

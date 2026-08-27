@@ -1,18 +1,15 @@
 extends Node
 ## [b]Keys:[/b][br]
 ## 	[kbd]L[/kbd]: Inject a long heal prompt.
+## 	[kbd]E[/kbd]: Heal all gobs and refresh the heal screen.
+## 	[kbd]W[/kbd]: Wound all gobs and refresh the heal screen.
 
 func _ready() -> void:
 	PlayerData.reset()
 	for _i in 50:
 		var gob: Gob = PlayerData.army.generate_random_recruit({"count": Big.new(10)})
-		if randf() < 0.5:
-			gob.back_wounded = Big.new(randf_range(2, 8))
-		if randf() < 0.5:
-			gob.front_hp = randi_range(1, gob.front_hp - 1)
-		if gob.is_hurt():
-			gob.increase_wound_severity()
 		PlayerData.army.add_gob(gob)
+	hurt_all_gobs()
 	HomeBaseData.heal_data.mark_groups_dirty()
 	
 	PlayerData.gold = Big.new(5000)
@@ -21,13 +18,36 @@ func _ready() -> void:
 	PlayerData.inventory.add_item(Items.HERB_3, Big.new(5000))
 	PlayerData.inventory.add_item(Items.WEAK_MEDICINE, Big.new(5000))
 	PlayerData.inventory.add_item(Items.STRONG_MEDICINE, Big.new(5000))
-	%HealScreen.show_heal_panel()
+	%HealScreen.show_heal_panel(true)
+
+
+func hurt_all_gobs() -> void:
+	for gob: Gob in PlayerData.army.gobs:
+		if randf() < 0.5:
+			gob.back_wounded = Big.new(randf_range(2, 8))
+		if randf() < 0.5:
+			gob.front_hp = randi_range(1, gob.front_hp - 1)
+		if gob.is_hurt():
+			gob.increase_wound_severity()
+
+
+func heal_all_gobs() -> void:
+	for gob: Gob in PlayerData.army.gobs:
+		HealData.full_heal(gob)
 
 
 func _input(event: InputEvent) -> void:
 	match Utils.key_press(event):
 		KEY_L:
 			%HealScreen.get_heal_panel().inject_chat_line(get_long_heal_chat_line())
+		KEY_E:
+			heal_all_gobs()
+			HomeBaseData.heal_data.mark_groups_dirty()
+			%HealScreen.show_heal_panel(true)
+		KEY_W:
+			hurt_all_gobs()
+			HomeBaseData.heal_data.mark_groups_dirty()
+			%HealScreen.show_heal_panel(true)
 
 
 func get_long_heal_chat_line() -> HealChatLines.HealChatLine:

@@ -156,4 +156,4 @@ text = "÷10"
 
 [node name="HomeNav" parent="MarginContainer/Panel/MarginContainer/HBoxContainer" index="1" unique_id=1142993029 instance=ExtResource("5_50ujn")]
 layout_mode = 2
-location_index = 2
+location_index = 1

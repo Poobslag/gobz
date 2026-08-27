@@ -179,6 +179,19 @@ static func full_heal(gob: Gob) -> void:
 	gob.front_hp = gob.hp_max
 
 
+static func get_heal_stats(gobs: Array[Gob]) -> Dictionary[String, Variant]:
+	var total_hurt_count: float = 0.0
+	var total_penalty: float = 0.0
+	for gob: Gob in gobs:
+		total_hurt_count += gob.get_hurt_count().to_float()
+		total_penalty += gob.get_wounded_count().to_float() \
+				* roundi(gob.attack * (1.0 - Gobs.WOUNDED_ATTACK_FACTOR))
+	return {
+		"hurt_count": total_hurt_count,
+		"penalty": total_penalty,
+	}
+
+
 class HealThreshold:
 	var exponent: float
 	var groups: int

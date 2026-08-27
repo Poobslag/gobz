@@ -66,12 +66,6 @@ func refresh() -> void:
 func _adjust_multiplier(factor: float) -> void:
 	@warning_ignore("narrowing_conversion")
 	PlayerData.kitchen_multiplier = Big.clamp(PlayerData.kitchen_multiplier.to_float() * factor, 1, MAX_MULTIPLIER)
-	var buy_item_rows: Array[Node] = get_tree().get_nodes_in_group("buy_item_rows").filter(is_ancestor_of)
-	for buy_item_row: BuyItemRow in buy_item_rows:
-		buy_item_row.count = PlayerData.kitchen_multiplier
-	var cook_herb_rows: Array[Node] = get_tree().get_nodes_in_group("cook_herb_rows").filter(is_ancestor_of)
-	for cook_herb_row: CookHerbRow in cook_herb_rows:
-		cook_herb_row.output_count = PlayerData.kitchen_multiplier
 	refresh()
 
 
@@ -80,7 +74,7 @@ func _on_cook_herb_row_pressed(cook_herb_row: CookHerbRow) -> void:
 	var has_all_ingredients: bool = true
 	for ingredient: CookHerbRow.RecipeIngredient in cook_herb_row.recipe:
 		var ingredients_available: Big = PlayerData.inventory.get_count(ingredient.type)
-		var ingredients_needed: Big = Big.mul(ingredient.count, cook_herb_row.output_count)
+		var ingredients_needed: Big = Big.mul(ingredient.count, PlayerData.kitchen_multiplier)
 		if ingredients_available.is_lt(ingredients_needed):
 			has_all_ingredients = false
 			break
@@ -89,9 +83,9 @@ func _on_cook_herb_row_pressed(cook_herb_row: CookHerbRow) -> void:
 	
 	# remove the ingredients and add the output
 	for ingredient: CookHerbRow.RecipeIngredient in cook_herb_row.recipe:
-		var ingredients_needed: Big = Big.mul(ingredient.count, cook_herb_row.output_count)
+		var ingredients_needed: Big = Big.mul(ingredient.count, PlayerData.kitchen_multiplier)
 		PlayerData.inventory.take_item(ingredient.type, ingredients_needed)
-	PlayerData.inventory.add_item(cook_herb_row.output_type, cook_herb_row.output_count)
+	PlayerData.inventory.add_item(cook_herb_row.output_type, PlayerData.kitchen_multiplier)
 	refresh()
 
 
@@ -101,5 +95,5 @@ func _on_buy_item_row_pressed(buy_item_row: BuyItemRow) -> void:
 		return
 	
 	PlayerData.take_gold(buy_item_row.get_cost())
-	PlayerData.inventory.add_item(buy_item_row.type, buy_item_row.count)
+	PlayerData.inventory.add_item(buy_item_row.type, PlayerData.kitchen_multiplier)
 	refresh()
