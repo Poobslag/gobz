@@ -2,6 +2,23 @@
 class_name Utils
 ## Contains global utilities.
 
+static func stochastic_roundi(f: float) -> int:
+	return ceil(f) if randf() < f - floor(f) else floor(f)
+
+
+static func apply_market_whim(f: float) -> float:
+	var result: float = f
+	if randf() < 0.2:
+		result = float(result) * 1.5
+		if randf() < 0.2:
+			result = float(result) * 1.5
+	elif randf() < 0.2:
+		result = float(result) / 1.5
+		if randf() < 0.2:
+			result = float(result) / 1.5
+	return result
+
+
 ## Returns the [member InputEventKey.keycode] for a key press event, or -1 if the event is not a key press event.
 static func key_press(event: InputEvent) -> int:
 	var keycode := -1

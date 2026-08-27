@@ -52,7 +52,7 @@ func defeat() -> void:
 	%Message.text += "%s %s is inspired by the bravery of the fallen goblins!\n" % [
 		Gobs.emoji_from_type(goblin.type), goblin.name
 	]
-	%Message.text += "They give what money they have and prepare for battle."
+	%Message.text += "They give what gold they have and prepare for battle."
 	
 	_end_battle()
 

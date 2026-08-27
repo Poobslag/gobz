@@ -4,7 +4,9 @@ extends ColorRect
 signal kitchen_entered
 
 const HEAL_HELLO_PATH: String = "res://assets/main/home_base/heal_hello.csv"
-const HEAL_GOODBYE_PATH: String = "res://assets/main/home_base/heal_goodbye_chat.csv"
+const HEAL_GOODBYE_CHAT_PATH: String = "res://assets/main/home_base/heal_goodbye_chat.csv"
+const HEAL_GOODBYE_GOLD_PATH: String = "res://assets/main/home_base/heal_goodbye_gold.csv"
+const HEAL_GOODBYE_MEDICINE_PATH: String = "res://assets/main/home_base/heal_goodbye_medicine.csv"
 
 var _heal_chat_lines: Array[HealChatLines.HealChatLine]
 
@@ -17,6 +19,7 @@ func _ready() -> void:
 	%HealNavigator.move_right.connect(_on_heal_navigator_move)
 	%ChatPicker.option_picked.connect(_on_chat_picker_option_picked)
 	%ChatShower.all_messages_shown.connect(_on_chat_shower_all_messages_shown)
+	%HealWithGoldRow.pressed.connect(_on_heal_with_gold_row_pressed)
 
 
 func initialize() -> void:
@@ -29,6 +32,13 @@ func initialize() -> void:
 func refresh() -> void:
 	%InventoryLabel.refresh()
 	%HealNavigator.refresh()
+	
+	var center_group: HealData.HealGroup = HomeBaseData.heal_data.get_center_group()
+	if center_group == null or center_group.hurt_count.is_eq(0):
+		%HealWithGoldRow.visible = false
+	else:
+		%HealWithGoldRow.visible = true
+		%HealWithGoldRow.gobs = center_group.gobs
 
 
 func inject_chat_line(line: HealChatLines.HealChatLine) -> void:
@@ -66,12 +76,11 @@ func _on_chat_picker_option_picked(option_index: int) -> void:
 		center_group.decrement_chats_remaining()
 		if center_group.chats_remaining == 0:
 			for gob: Gob in center_group.gobs:
-				gob.back_wounded = Big.ZERO
-				gob.front_hp = gob.hp_max
+				HealData.full_heal(gob)
 			center_group.hurt_count = Big.ZERO
 			%ChatShower.append_great_response("\"%s\"" % [_heal_chat_lines[option_index].response_good])
 			if append_goodbye:
-				%ChatShower.append_great_response("\"%s\"" % [LinePool.get_random_line(HEAL_GOODBYE_PATH)])
+				%ChatShower.append_great_response("\"%s\"" % [LinePool.get_random_line(HEAL_GOODBYE_CHAT_PATH)])
 			refresh()
 		else:
 			%ChatShower.append_good_response("\"%s\"" % [_heal_chat_lines[option_index].response_good])
@@ -110,10 +119,38 @@ func _on_heal_navigator_move() -> void:
 		%ChatPicker.options = _ui_state_per_heal_group[center_group]["options"]
 	else:
 		%ChatShower.clear()
-		%ChatShower.append_neutral_response(LinePool.get_random_line(HEAL_HELLO_PATH))
+		%ChatShower.append_neutral_response("\"%s\"" % [LinePool.get_random_line(HEAL_HELLO_PATH)])
 	_generate_chat_picker_options()
 	%ChatPicker.set_option_buttons_disabled(false)
 
 
 func _on_chat_shower_all_messages_shown() -> void:
 	%ChatPicker.set_option_buttons_disabled(false)
+
+
+func _on_heal_with_gold_row_pressed() -> void:
+	if PlayerData.gold.is_lt(%HealWithGoldRow.cost):
+		return
+	
+	# Goblins are vaguely reimbursed when you heal them. If you pay $10, the goblin will pocket about $5. Stochastic
+	# rounding is applied for the case where 5 billion goblins have to split 2 billion gold.
+	var remaining_gob_income: float = %HealWithGoldRow.cost.to_float()
+	remaining_gob_income *= HealData.HEAL_GOLD_RETENTION_RATE
+	var remaining_hurt_count: float = 0.0
+	for gob: Gob in %HealWithGoldRow.gobs:
+		remaining_hurt_count += gob.get_hurt_count().to_float()
+	PlayerData.gold = Big.sub(PlayerData.gold, %HealWithGoldRow.cost)
+	for gob: Gob in %HealWithGoldRow.gobs:
+		var gold_per_hurt: float = remaining_gob_income / remaining_hurt_count
+		var gold_for_this_gob: float = gob.get_hurt_count().to_float() * gold_per_hurt
+		var gold_per_gob: int = Utils.stochastic_roundi(gold_for_this_gob / gob.get_count().to_float())
+		gob.gold += gold_per_gob
+		remaining_gob_income -= gold_per_gob * gob.get_count().to_float()
+		remaining_hurt_count -= gob.get_hurt_count().to_float()
+	
+	for gob: Gob in %HealWithGoldRow.gobs:
+		HealData.full_heal(gob)
+	
+	%ChatShower.append_great_response("\"%s\"" % [LinePool.get_random_line(HEAL_GOODBYE_GOLD_PATH)])
+	HomeBaseData.heal_data.get_center_group().refresh()
+	refresh()

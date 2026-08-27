@@ -90,6 +90,8 @@ REGEX="\(^##"$'\t'"\|## "$'\t\t\t'"\|^"$'\t\t'"*##\)"
 RESULT=$(grep -R -n "$REGEX" --include="*.gd" project/src \
   | grep -v "army\.gd.*##" \
   | grep -v "save_data_upgrader\.gd.*##" \
+  | grep -v "heal_data\.gd.*## A goblin may be" \
+  | grep -v "heal_data\.gd.*## Calculate count, hurt" \
   )
 if [ -n "$RESULT" ]; then
   echo ""

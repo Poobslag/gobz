@@ -1,5 +1,15 @@
 class_name HealData
 
+## How bumpy the healing curve is. [br]
+## 2.0 = Some wounds cost about 4x as much to heal.
+## 4.0 = Some wounds cost about 16x as much to heal.
+const HEAL_COST_EXP: float = 2.0
+const HEAL_COST_FACTOR: float = 25.0
+
+## It's more expensive to heal with gold, but you get about half of it back eventually.
+const HEAL_GOLD_COST_FACTOR: float = 50.0
+const HEAL_GOLD_RETENTION_RATE: float = 0.5
+
 static var HEAL_THRESHOLDS: Array[HealThreshold] = [
 	HealThreshold.new( 1.0,  2, 1, 2),
 	HealThreshold.new( 2.0,  3, 2, 3),
@@ -25,6 +35,12 @@ var group_index: int
 
 var _groups_cache: Array[HealGroup]
 var _groups_dirty: bool = true
+
+var _greed_factor_by_gob: Dictionary[Gob, float]
+
+func get_greed_factor(gob: Gob) -> float:
+	return _greed_factor_by_gob.get(gob, 1.0)
+
 
 func mark_groups_dirty() -> void:
 	_groups_dirty = true
@@ -75,18 +91,34 @@ func get_right_index() -> int:
 	return wrapi(group_index + 1, 0, groups.size() - 1)
 
 
+func reroll_wound_severity(wounded: Dictionary[Gob, bool]) -> void:
+	for gob: Gob in PlayerData.army.gobs:
+		if gob in wounded:
+			gob.increase_wound_severity()
+		else:
+			gob.decrease_wound_severity()
+
+
 func _calculate_groups() -> Array[HealGroup]:
+	_recalculate_greed_factor()
+	
 	var result: Array[HealGroup] = []
 	var hurt_gobs_by_type: Dictionary[Gobs.Type, Array] = {}
 	var hurt_gob_count_by_type: Dictionary[Gobs.Type, Big] = {}
 	for type: Gobs.Type in Gobs.Type.values():
 		hurt_gobs_by_type[type] = [] as Array[Gob]
 		hurt_gob_count_by_type[type] = Big.ZERO
+	
+	# group by wound severity
+	var sorted_by_wound_severity: Array[Gob] = PlayerData.army.gobs.duplicate()
+	sorted_by_wound_severity.sort_custom(func(a: Gob, b: Gob) -> bool:
+		return a.wound_severity < b.wound_severity)
 	for gob: Gob in PlayerData.army.gobs:
 		if gob.is_hurt():
 			hurt_gobs_by_type[gob.type].append(gob)
 			hurt_gob_count_by_type[gob.type] = \
 					Big.add(hurt_gob_count_by_type[gob.type], gob.get_hurt_count())
+	
 	for type: Gobs.Type in hurt_gobs_by_type:
 		var gobs_of_type: Array[Gob] = hurt_gobs_by_type[type]
 		if gobs_of_type.is_empty():
@@ -99,12 +131,21 @@ func _calculate_groups() -> Array[HealGroup]:
 		for i in mini(gobs_of_type.size(), heal_threshold.groups):
 			gob_groups.append([] as Array[Gob])
 		for i in gobs_of_type.size():
-			gob_groups[i % gob_groups.size()].append(gobs_of_type[i])
+			@warning_ignore("integer_division")
+			var target_group_index: int = i * gob_groups.size() / gobs_of_type.size()
+			gob_groups[target_group_index].append(gobs_of_type[i])
 		for group: Array[Gob] in gob_groups:
 			result.append(HealGroup.new(group, heal_threshold))
 	
 	result.shuffle()
 	return result
+
+
+func _recalculate_greed_factor() -> void:
+	for gob: Gob in PlayerData.army.gobs:
+		var greed_factor: float = [0.6, 0.8, 1.0, 1.0, 1.0, 1.2, 1.4].pick_random()
+		greed_factor = Utils.apply_market_whim(greed_factor)
+		_greed_factor_by_gob[gob] = greed_factor
 
 
 static func get_heal_threshold(hurt_count: Big) -> HealThreshold:
@@ -133,6 +174,11 @@ static func get_heal_threshold(hurt_count: Big) -> HealThreshold:
 	return result
 
 
+static func full_heal(gob: Gob) -> void:
+	gob.back_wounded = Big.ZERO
+	gob.front_hp = gob.hp_max
+
+
 class HealThreshold:
 	var exponent: float
 	var groups: int
@@ -157,21 +203,28 @@ class HealGroup:
 	var option_count: int = 5
 	var count: Big = Big.ZERO
 	
-	# A goblin may be hurt without being wounded. A goblin with 7/8 hp is hurt, and can be healed.
+	## A goblin may be hurt without being wounded. A goblin with 7/8 hp is hurt, and can be healed.
 	var hurt_count: Big = Big.ZERO
 	
 	func _init(init_gobs: Array[Gob], heal_threshold: HealThreshold) -> void:
 		gobs = init_gobs
 		
-		# calculate count, wounded count
-		for gob: Gob in gobs:
-			count = Big.add(count, gob.get_count())
-			hurt_count = Big.add(hurt_count, gob.get_hurt_count())
+		refresh()
 		
 		# initialize chats
 		max_chats_remaining = heal_threshold.chats
 		chats_remaining = heal_threshold.chats
 		option_count = heal_threshold.options
+	
+	## Calculate count, hurt count
+	func refresh() -> void:
+		count = Big.ZERO
+		hurt_count = Big.ZERO
+		
+		for gob: Gob in gobs:
+			count = Big.add(count, gob.get_count())
+			hurt_count = Big.add(hurt_count, gob.get_hurt_count())
+	
 	
 	func front() -> Gob:
 		return gobs.front()

@@ -56,7 +56,7 @@ var tips: Array[String] = [
 	"If an enemy dungeon has a surprise you're not prepared for, it's OK to leave!",
 	"A type hint like \"🌳🌳🔥\" means there are a lot of 🌳, and a few 🔥.",
 	"A type hint like \"🔥💧🌳\" means there are several 🔥, some 💧, and a few 🌳.",
-	"Recruit your goblins carefully! Some goblins ask for too much money.",
+	"Recruit your goblins carefully! Some goblins ask for too much gold.",
 	"Recruit your goblins carefully! Some types are more useful than others.",
 ]
 

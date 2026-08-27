@@ -1,6 +1,8 @@
 class_name Gob
 ## A group of goblins is a gob.
 
+const WOUND_INCREASE_FACTOR: float = 2.0
+
 var name: String = ""
 
 ## Total goblins, excluding the front goblin
@@ -8,6 +10,9 @@ var back_count: Big = Big.ZERO
 
 ## Number of wounded goblins, excluding the front goblin
 var back_wounded: Big = Big.ZERO
+
+## 0.0 = requires cheap healing; 1.0 = requires expensive healing
+var wound_severity: float = 0.0
 
 ## Level for each goblin
 var level: int = 1
@@ -160,6 +165,27 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 	attack = json.get("attack", 2)
 	gold = json.get("gold", 0)
 	xp = json.get("xp", 0)
+	
+	increase_wound_severity()
+
+
+
+## Goblins injured in battle have their wound severity increased.[br]
+## [br]
+## A wound severity is rolled, and they take the higher of their current wound severity and the new wound severity.
+func increase_wound_severity() -> void:
+	if not is_hurt():
+		wound_severity = 0.0
+	else:
+		wound_severity = max(wound_severity, pow(randf(), WOUND_INCREASE_FACTOR))
+
+
+## Goblins not injured in battle have their wound severity decreased by a random factor.
+func decrease_wound_severity() -> void:
+	if not is_hurt():
+		wound_severity = 0.0
+	else:
+		wound_severity = wound_severity * randf_range(0.3, 0.7)
 
 
 func to_json_dict() -> Dictionary[String, Variant]:

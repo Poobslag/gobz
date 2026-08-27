@@ -112,20 +112,11 @@ func generate_random_recruit(data: Dictionary[String, Variant] = {}) -> Gob:
 	gob.gold += fractional_level_cost
 	
 	# adjust price
-	if randf() < 0.2:
-		gob.gold = ceili(float(gob.gold) * 1.5)
-		if randf() < 0.2:
-			gob.gold = ceili(float(gob.gold) * 1.5)
-	elif randf() < 0.2:
-		gob.gold = floori(float(gob.gold) / 1.5)
-		if randf() < 0.2:
-			gob.gold = floori(float(gob.gold) / 1.5)
+	gob.gold = roundi(Utils.apply_market_whim(gob.gold))
 	gob.gold = maxi(gob.gold, 1)
 	if data.has("gold_factor"):
 		var gold_float: float = gob.gold
-		gob.gold = maxi(1, floor(gob.gold * data["gold_factor"]))
-		if randf() < (gold_float - gob.gold):
-			gob.gold += 1
+		gob.gold = maxi(1, Utils.stochastic_roundi(gold_float * data["gold_factor"]))
 	
 	if data.has("count"):
 		gob.back_count = Big.new((gob.back_count.to_float() + 1) * data["count"].to_float() - 1)
