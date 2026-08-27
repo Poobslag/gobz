@@ -75,11 +75,11 @@ func is_hurt() -> bool:
 
 
 func is_front_wounded() -> bool:
-	return front_hp <= hp_max * Gobs.WOUNDED_HP_THRESHOLD
+	return front_hp >= 1 and front_hp <= hp_max * Gobs.WOUNDED_HP_THRESHOLD
 
 
 func is_front_hurt() -> bool:
-	return front_hp < hp_max
+	return front_hp >= 1 and front_hp < hp_max
 
 
 func get_total_attack() -> Big:

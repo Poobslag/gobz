@@ -64,8 +64,6 @@ static func resolve_attacks(from: Army, to: Army, attacks: Array[Attack],
 	var defender_pool: DefenderPool = DefenderPool.new(to, vulnerable_types)
 	
 	var kills: Array[Kill] = []
-	# mapping from the source gob to the kill which may claim its wound
-	var pending_wounds: Dictionary[Gob, Array]
 	
 	# Attackers prioritize targets in the following order:
 	# 1. First, attack all super-effective targets, spreading out attacks.
@@ -134,20 +132,6 @@ static func resolve_attacks(from: Army, to: Army, attacks: Array[Attack],
 		kill.target = target
 		kill.kill_count = result["kill_count"]
 		kills.append(kill)
-		
-		if result["wounded_count"].is_gt(0):
-			pending_wounds[target] = [kill, result["wounded_count"]]
-	
-	# give credit for wounding targets
-	for target: Gob in pending_wounds:
-		if not target.is_dead():
-			pending_wounds[target][0].wounded_count = pending_wounds[target][1]
-	
-	# remove any 'kills' which didn't actually wound or kill any units
-	for kill_index: int in range(kills.size() - 1, -1, -1):
-		var kill: Kill = kills[kill_index]
-		if kill.wounded_count.is_eq(Big.ZERO) and kill.kill_count.is_eq(Big.ZERO):
-			kills.remove_at(kill_index)
 	
 	return kills
 
@@ -166,7 +150,6 @@ static func resolve_attack(attack: Attack, target: Gob, attacks_remaining: Big, 
 	target.assert_valid()
 	
 	var killed_by_attack: Big = Big.ZERO
-	var wounded_by_attack: Big = Big.ZERO
 	var hits_taken: Big = Big.ZERO
 	
 	var damage_per_hit: int = maxi(1, \
@@ -249,9 +232,6 @@ static func resolve_attack(attack: Attack, target: Gob, attacks_remaining: Big, 
 	
 	hits_taken = Big.new(how_many_hits_will_we_do)
 	killed_by_attack = Big.sub(old_target_count, target.get_count())
-	wounded_by_attack = Big.add(wounded_by_attack, healthy_to_wounded)
-	if front_hits > 0.0:
-		wounded_by_attack = Big.add(wounded_by_attack, Big.ONE)
 	
 	target.assert_valid()
 	target.fix_invalid()
@@ -259,7 +239,6 @@ static func resolve_attack(attack: Attack, target: Gob, attacks_remaining: Big, 
 	return {
 		"hits_taken": hits_taken,
 		"kill_count": killed_by_attack,
-		"wounded_count": wounded_by_attack,
 	}
 
 
