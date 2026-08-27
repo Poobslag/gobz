@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c5t8ic3dnnljj"]
 
-[ext_resource type="Script" uid="uid://cvfwu4mh3q27o" path="res://src/main/home_base/heal_with_gold_row.gd" id="1_4fc7h"]
+[ext_resource type="Script" uid="uid://cvfwu4mh3q27o" path="res://src/main/home_base/heal/heal_with_gold_row.gd" id="1_4fc7h"]
 
 [node name="HealWithGoldRow" type="HBoxContainer" unique_id=38152776]
 script = ExtResource("1_4fc7h")

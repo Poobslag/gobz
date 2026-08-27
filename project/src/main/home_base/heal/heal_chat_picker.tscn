@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://3g77w3qduy8y"]
 
-[ext_resource type="Script" uid="uid://y41ck4qxlna7" path="res://src/main/home_base/heal_chat_picker.gd" id="1_gqygf"]
+[ext_resource type="Script" uid="uid://y41ck4qxlna7" path="res://src/main/home_base/heal/heal_chat_picker.gd" id="1_gqygf"]
 
 [node name="HealChatPicker" type="GridContainer" unique_id=1285803141]
 columns = 3

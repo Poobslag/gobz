@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://buivjof1uqsls"]
 
-[ext_resource type="PackedScene" uid="uid://bk1nxsm06kn85" path="res://src/main/home_base/heal_screen.tscn" id="1_5qsma"]
+[ext_resource type="PackedScene" uid="uid://bk1nxsm06kn85" path="res://src/main/home_base/heal/heal_screen.tscn" id="1_5qsma"]
 [ext_resource type="Script" uid="uid://h3igfr2hd3x7" path="res://src/demo/home_base/demo_heal_screen.gd" id="1_okqdo"]
 
 [node name="Node" type="Control" unique_id=1036503578]

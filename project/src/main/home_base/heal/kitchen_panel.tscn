@@ -1,15 +1,15 @@
 [gd_scene format=3 uid="uid://dr0eu5pnc02od"]
 
 [ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/ui/screen_panel.tscn" id="1_isfg8"]
-[ext_resource type="Script" uid="uid://dmbdmtqqtp0oj" path="res://src/main/home_base/kitchen_panel.gd" id="2_q3anq"]
+[ext_resource type="Script" uid="uid://dmbdmtqqtp0oj" path="res://src/main/home_base/heal/kitchen_panel.gd" id="2_q3anq"]
 [ext_resource type="PackedScene" uid="uid://dqjjgkwxab0ht" path="res://src/main/ui/splash_shower.tscn" id="2_scasu"]
 [ext_resource type="PackedScene" uid="uid://dbm3uqjrgg63m" path="res://src/main/ui/splash_art.tscn" id="3_q3anq"]
 [ext_resource type="Texture2D" uid="uid://bu4t5ousnvj2d" path="res://assets/main/splash/recruit.png" id="4_2typ8"]
 [ext_resource type="PackedScene" uid="uid://g7b12cf0ow6o" path="res://src/main/home_base/home_nav.tscn" id="5_50ujn"]
-[ext_resource type="PackedScene" uid="uid://t8f1tkis3ujq" path="res://src/main/home_base/heal_inventory_label.tscn" id="6_2typ8"]
-[ext_resource type="PackedScene" uid="uid://dgtblx72civbg" path="res://src/main/home_base/heal_navigator.tscn" id="6_q3anq"]
-[ext_resource type="PackedScene" uid="uid://cf6eisag38iyh" path="res://src/main/home_base/buy_item_row.tscn" id="8_50ujn"]
-[ext_resource type="PackedScene" uid="uid://dy7s1xoxanbki" path="res://src/main/home_base/cook_herb_row.tscn" id="9_w4pnk"]
+[ext_resource type="PackedScene" uid="uid://t8f1tkis3ujq" path="res://src/main/home_base/heal/heal_inventory_label.tscn" id="6_2typ8"]
+[ext_resource type="PackedScene" uid="uid://dgtblx72civbg" path="res://src/main/home_base/heal/heal_navigator.tscn" id="6_q3anq"]
+[ext_resource type="PackedScene" uid="uid://cf6eisag38iyh" path="res://src/main/home_base/heal/buy_item_row.tscn" id="8_50ujn"]
+[ext_resource type="PackedScene" uid="uid://dy7s1xoxanbki" path="res://src/main/home_base/heal/cook_herb_row.tscn" id="9_w4pnk"]
 
 [node name="KitchenPanel" unique_id=806142582 instance=ExtResource("1_isfg8")]
 color = Color(0.49019608, 0.2784314, 0.34901962, 1)

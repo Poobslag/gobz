@@ -3,10 +3,10 @@ extends ColorRect
 
 signal kitchen_entered
 
-const HEAL_HELLO_PATH: String = "res://assets/main/home_base/heal_hello.csv"
-const HEAL_GOODBYE_CHAT_PATH: String = "res://assets/main/home_base/heal_goodbye_chat.csv"
-const HEAL_GOODBYE_GOLD_PATH: String = "res://assets/main/home_base/heal_goodbye_gold.csv"
-const HEAL_GOODBYE_MEDICINE_PATH: String = "res://assets/main/home_base/heal_goodbye_medicine.csv"
+const HEAL_HELLO_PATH: String = "res://assets/main/home_base/heal/heal_hello.csv"
+const HEAL_GOODBYE_CHAT_PATH: String = "res://assets/main/home_base/heal/heal_goodbye_chat.csv"
+const HEAL_GOODBYE_GOLD_PATH: String = "res://assets/main/home_base/heal/heal_goodbye_gold.csv"
+const HEAL_GOODBYE_MEDICINE_PATH: String = "res://assets/main/home_base/heal/heal_goodbye_medicine.csv"
 
 var _heal_chat_lines: Array[HealChatLines.HealChatLine]
 

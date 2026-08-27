@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://bk1nxsm06kn85"]
 
-[ext_resource type="PackedScene" uid="uid://cck5hgu22cl7a" path="res://src/main/home_base/heal_panel.tscn" id="1_8m2oa"]
-[ext_resource type="Script" uid="uid://bo6ccwlvva6r" path="res://src/main/home_base/heal_screen.gd" id="1_ksplh"]
-[ext_resource type="PackedScene" uid="uid://dr0eu5pnc02od" path="res://src/main/home_base/kitchen_panel.tscn" id="2_w26rl"]
+[ext_resource type="PackedScene" uid="uid://cck5hgu22cl7a" path="res://src/main/home_base/heal/heal_panel.tscn" id="1_8m2oa"]
+[ext_resource type="Script" uid="uid://bo6ccwlvva6r" path="res://src/main/home_base/heal/heal_screen.gd" id="1_ksplh"]
+[ext_resource type="PackedScene" uid="uid://dr0eu5pnc02od" path="res://src/main/home_base/heal/kitchen_panel.tscn" id="2_w26rl"]
 
 [node name="HealScreen" type="Control" unique_id=1368189123]
 layout_mode = 3

@@ -1,6 +1,6 @@
 class_name HealChatLines
 
-const HEAL_PROMPTS_PATH: String = "res://assets/main/home_base/heal_prompts.csv"
+const HEAL_PROMPTS_PATH: String = "res://assets/main/home_base/heal/heal_prompts.csv"
 
 static var _cached_lines: Array[HealChatLine] = []
 

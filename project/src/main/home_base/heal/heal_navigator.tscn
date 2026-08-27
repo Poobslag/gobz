@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dgtblx72civbg"]
 
-[ext_resource type="Script" uid="uid://dg8vnk5abp1px" path="res://src/main/home_base/heal_navigator.gd" id="1_kyvl6"]
+[ext_resource type="Script" uid="uid://dg8vnk5abp1px" path="res://src/main/home_base/heal/heal_navigator.gd" id="1_kyvl6"]
 
 [node name="HealNavigator" type="VBoxContainer" unique_id=1129179821]
 offset_right = 528.0
