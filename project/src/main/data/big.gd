@@ -3,7 +3,7 @@ class_name Big extends Resource
 const MIN_INT: int = -999_999_999_999_999_999
 const MAX_INT: int = 999_999_999_999_999_999
 
-const ALPHABET: String = "abcdefghijklmnopqrstuvwxyz"
+const ALPHABET: String = "bcdfghjklmnpqrstvwxyz"
 
 static var ZERO: Big = Big.new(0)
 static var ONE: Big = Big.new(1)
@@ -59,9 +59,9 @@ func to_aa() -> String:
 		result = ",%03d%s" % [fmod(ipart, 1000), result]
 		ipart = floor(ipart / 1000)
 	if not _suffixes_aa.has(suffix_key):
-		var offset: int = (suffix_key + 29) % 26
+		var offset: int = (suffix_key) % 21
 		@warning_ignore("integer_division")
-		var base: int = ((suffix_key + 29) / 26)
+		var base: int = ((suffix_key) / 21)
 		_suffixes_aa[suffix_key] = "%s%s" % [ALPHABET[base], ALPHABET[offset]]
 	var suffix: String = _suffixes_aa[suffix_key]
 	result = "%d%s%s" % [ipart, result, suffix]

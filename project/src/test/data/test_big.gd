@@ -101,11 +101,20 @@ func test_to_aa_billions_and_up() -> void:
 	assert_eq(Big.new(32.57e9).to_aa(), "32.5b")
 	assert_eq(Big.new(32.57e12).to_aa(), "32.5t")
 	assert_eq(Big.new(32.57e15).to_aa(), "32.5q")
+	
+	# count from bajillion, bakillion... banillion, bapillion, skipping 'baoillion' which is hard to pronounce
 	assert_eq(Big.new(32.57e18).to_aa(), "32.5bj")
 	assert_eq(Big.new(32.57e21).to_aa(), "32.5bk")
 	assert_eq(Big.new(32.57e24).to_aa(), "32.5bl")
-	assert_eq(Big.new(32.57e102).to_aa(), "32.5cl")
-	assert_eq(Big.new(32.57e180).to_aa(), "32.5dl")
+	assert_eq(Big.new(32.57e27).to_aa(), "32.5bm")
+	assert_eq(Big.new(32.57e30).to_aa(), "32.5bn")
+	assert_eq(Big.new(32.57e33).to_aa(), "32.5bp")
+	
+	# continue from bazillion to cabillion, cacillion...
+	assert_eq(Big.new(32.57e60).to_aa(), "32.5bz")
+	assert_eq(Big.new(32.57e63).to_aa(), "32.5cb")
+	assert_eq(Big.new(32.57e180).to_aa(), "32.5dx")
+	assert_eq(Big.new(32.57e270).to_aa(), "32.5gj")
 
 
 func test_sum() -> void:
