@@ -33,9 +33,11 @@ var groups: Array[HealGroup]:
 		return get_groups()
 var group_index: int
 
+## Forces a deterministic heal threshold for unit tests.
+var forced_heal_threshold: HealThreshold = null
+
 var _groups_cache: Array[HealGroup]
 var _groups_dirty: bool = true
-
 var _greed_factor_by_gob: Dictionary[Gob, float]
 
 func get_greed_factor(gob: Gob) -> float:
@@ -48,8 +50,8 @@ func mark_groups_dirty() -> void:
 
 func remove_group_at(i: int) -> void:
 	groups.remove_at(i)
-	if i < group_index or group_index >= _groups_cache.size():
-		group_index -= 1
+	if i <= group_index or group_index >= _groups_cache.size():
+		group_index = maxi(0, group_index - 1)
 
 
 func get_groups() -> Array[HealGroup]:
@@ -110,6 +112,13 @@ func reroll_wound_severity(wounded: Dictionary[Gob, bool]) -> void:
 			gob.decrease_wound_severity()
 
 
+func reset() -> void:
+	group_index = 0
+	_groups_cache = []
+	_groups_dirty = true
+	_greed_factor_by_gob = {}
+
+
 func _calculate_groups() -> Array[HealGroup]:
 	_recalculate_greed_factor()
 	
@@ -134,8 +143,11 @@ func _calculate_groups() -> Array[HealGroup]:
 		var gobs_of_type: Array[Gob] = hurt_gobs_by_type[type]
 		if gobs_of_type.is_empty():
 			continue
-		var heal_threshold: HealThreshold = \
-				get_heal_threshold(hurt_gob_count_by_type[gobs_of_type.front().type])
+		var heal_threshold: HealThreshold
+		if forced_heal_threshold:
+			heal_threshold = forced_heal_threshold
+		else:
+			heal_threshold = get_heal_threshold(hurt_gob_count_by_type[gobs_of_type.front().type])
 		
 		# split goblins from gobs_of_type into heal groups
 		var gob_groups: Array[Array] = []

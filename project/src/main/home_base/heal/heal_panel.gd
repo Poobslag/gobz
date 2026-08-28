@@ -131,9 +131,9 @@ func _append_chat_shower_hello() -> void:
 	if _ui_state_per_heal_group.has(center_group):
 		%ChatShower.set_shown_lines(_ui_state_per_heal_group[center_group]["lines"])
 		%ChatPicker.options = _ui_state_per_heal_group[center_group]["options"]
-	elif not HomeBaseData.heal_data.get_center_group().is_hurt():
+	elif not center_group.is_hurt():
 		%ChatShower.clear()
-		match _heal_type_by_gob.get(HomeBaseData.heal_data.get_center_group().front()):
+		match _heal_type_by_gob.get(center_group.front()):
 			HealType.MEDICINE:
 				%ChatShower.append_great_response("\"%s\"" % [LinePool.get_random_line(HEAL_GOODBYE_MEDICINE_PATH)])
 			HealType.MONEY:
