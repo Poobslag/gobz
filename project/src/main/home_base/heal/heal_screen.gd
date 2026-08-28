@@ -25,3 +25,4 @@ func show_kitchen_panel() -> void:
 	%HealPanel.hide()
 	%KitchenPanel.show()
 	%KitchenPanel.refresh()
+	%KitchenPanel.splash_shower.sync(%HealPanel.splash_shower)
