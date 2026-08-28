@@ -1,6 +1,8 @@
 @tool
 extends VBoxContainer
 
+signal before_scene_change
+
 @export
 var location_index: int = 0:
 	set(value):
@@ -11,8 +13,13 @@ var location_index: int = 0:
 
 func _ready() -> void:
 	_refresh()
-	%Home.pressed.connect(get_tree().change_scene_to_file.bind("res://src/main/home_base/home_base_screen.tscn"))
-	%Heal.pressed.connect(get_tree().change_scene_to_file.bind("res://src/main/home_base/heal/heal_screen.tscn"))
+	%Home.pressed.connect(change_scene.bind("res://src/main/home_base/home_base_screen.tscn"))
+	%Heal.pressed.connect(change_scene.bind("res://src/main/home_base/heal/heal_screen.tscn"))
+
+
+func change_scene(path: String) -> void:
+	before_scene_change.emit()
+	get_tree().change_scene_to_file(path)
 
 
 func _refresh() -> void:

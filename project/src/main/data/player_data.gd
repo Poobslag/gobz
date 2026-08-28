@@ -29,6 +29,7 @@ var dungeon_index: int
 var market: Market = Market.new()
 
 var home_base_multiplier: Big = Big.ONE
+var heal_multiplier: Big = Big.ONE
 var kitchen_multiplier: Big = Big.ONE
 var ripoff_factor: float:
 	get():
@@ -96,6 +97,7 @@ func reset() -> void:
 	dungeons = []
 	dungeon_index = 0
 	home_base_multiplier = Big.ONE
+	heal_multiplier = Big.ONE
 	kitchen_multiplier = Big.ONE
 	_ripoff_factor_dirty = true
 
@@ -186,6 +188,7 @@ func to_json_dict() -> Dictionary[String, Variant]:
 		dungeons_json.append(dungeon.to_json_dict())
 	result["dungeons"] = dungeons_json
 	result["home_base_multiplier"] = home_base_multiplier.to_float()
+	result["heal_multiplier"] = heal_multiplier.to_float()
 	result["kitchen_multiplier"] = kitchen_multiplier.to_float()
 	return result
 
@@ -207,6 +210,7 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 		dungeon.from_json_dict(typed_dungeon_json)
 		dungeons.append(dungeon)
 	home_base_multiplier = Big.new(json.get("home_base_multiplier", 1.0))
+	heal_multiplier = Big.new(json.get("heal_multiplier", 1.0))
 	kitchen_multiplier = Big.new(json.get("kitchen_multiplier", 1.0))
 
 
