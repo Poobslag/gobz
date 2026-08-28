@@ -27,10 +27,7 @@ func _refresh() -> void:
 	for gob: Gob in gobs:
 		if not gob.is_hurt():
 			continue
-		var cost_per_goblin: float = maxf(1.0, HealData.HEAL_COST_FACTOR \
-				* pow(gob.wound_severity, HealData.HEAL_COST_EXP) \
-				* HomeBaseData.heal_data.get_greed_factor(gob))
-		total_cost += cost_per_goblin * gob.get_hurt_count().to_float()
+		total_cost += HomeBaseData.heal_data.get_gob_heal_cost(gob)
 	cost = Big.new(total_cost)
 	
 	%Button.text = "-💰 %s" % [cost.to_aa()]
