@@ -3,6 +3,7 @@ extends Node
 ## 	[kbd]L[/kbd]: Inject a long heal prompt.
 ## 	[kbd]E[/kbd]: Heal all gobs and refresh the heal screen.
 ## 	[kbd]W[/kbd]: Wound all gobs and refresh the heal screen.
+## 	[kbd]M[/kbd]: Randomize market costs.
 
 func _ready() -> void:
 	PlayerData.reset()
@@ -48,6 +49,9 @@ func _input(event: InputEvent) -> void:
 			hurt_all_gobs()
 			HomeBaseData.heal_data.mark_groups_dirty()
 			%HealScreen.show_heal_panel(true)
+		KEY_M:
+			PlayerData.market.mark_costs_dirty()
+			%HealScreen.show_kitchen_panel()
 
 
 func get_long_heal_chat_line() -> HealChatLines.HealChatLine:
