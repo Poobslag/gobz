@@ -112,19 +112,21 @@ unique_name_in_owner = true
 layout_mode = 2
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" index="8" unique_id=1480023214]
-visible = false
 layout_mode = 2
 
 [node name="MultiplyButton" type="Button" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer4" index="0" unique_id=1482198659]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "×10"
 
 [node name="DivideButton" type="Button" parent="MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer4" index="1" unique_id=1455871341]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "÷10"
 
 [node name="HomeNav" parent="MarginContainer/Panel/MarginContainer/HBoxContainer" index="1" unique_id=1142993029 instance=ExtResource("5_jue1v")]
+unique_name_in_owner = true
 layout_mode = 2
 location_index = 1

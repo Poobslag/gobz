@@ -64,7 +64,7 @@ func get_center_group() -> HealGroup:
 
 
 func get_group_at(i: int) -> HealGroup:
-	return groups[i] if i < groups.size() else null
+	return groups[i] if i >= 0 and i < groups.size() else null
 
 
 func get_left_group() -> HealGroup:
@@ -84,11 +84,11 @@ func move_right() -> void:
 
 
 func get_left_index() -> int:
-	return wrapi(group_index - 1, 0, groups.size() - 1)
+	return wrapi(group_index - 1, 0, groups.size())
 
 
 func get_right_index() -> int:
-	return wrapi(group_index + 1, 0, groups.size() - 1)
+	return wrapi(group_index + 1, 0, groups.size())
 
 
 func reroll_wound_severity(wounded: Dictionary[Gob, bool]) -> void:
@@ -229,6 +229,10 @@ class HealGroup:
 		chats_remaining = heal_threshold.chats
 		option_count = heal_threshold.options
 	
+	func is_hurt() -> bool:
+		return hurt_count.is_gt(0)
+	
+	
 	## Calculate count, hurt count
 	func refresh() -> void:
 		count = Big.ZERO
@@ -241,6 +245,10 @@ class HealGroup:
 	
 	func front() -> Gob:
 		return gobs.front()
+	
+	
+	func get_type() -> Gobs.Type:
+		return front().type
 	
 	
 	func increment_chats_remaining() -> void:
