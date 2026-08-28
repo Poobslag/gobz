@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bbyuo5i46dqoy" path="res://src/main/battle/battle_pick_panel.tscn" id="1_p08ga"]
 [ext_resource type="PackedScene" uid="uid://ce8qrjpsew051" path="res://src/main/battle/battle_watch_panel.tscn" id="2_1snqp"]
 [ext_resource type="PackedScene" uid="uid://brabaa2k31rib" path="res://src/main/battle/battle_results_panel.tscn" id="4_v7pbc"]
+[ext_resource type="PackedScene" uid="uid://bap8l8nqs54bs" path="res://src/main/battle/battle_tutorial_panel.tscn" id="5_gb7cv"]
 
 [node name="BattleScreen" type="Control" unique_id=320767478]
 layout_mode = 3
@@ -24,6 +25,11 @@ visible = false
 layout_mode = 1
 
 [node name="ResultsPanel" parent="." unique_id=146793951 instance=ExtResource("4_v7pbc")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+
+[node name="TutorialPanel" parent="." unique_id=1320629983 instance=ExtResource("5_gb7cv")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1

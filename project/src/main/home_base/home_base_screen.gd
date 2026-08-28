@@ -27,6 +27,11 @@ func _ready() -> void:
 	
 	%MultiplyButton.pressed.connect(_adjust_multiplier.bind(10.0))
 	%DivideButton.pressed.connect(_adjust_multiplier.bind(1/10.0))
+	%TutorialButton.pressed.connect(%TutorialPanel.open)
+	
+	if not PlayerData.finished_tutorials.has(PlayerData.HOME_BASE_TUTORIAL):
+		%TutorialPanel.open()
+		PlayerData.finished_tutorials[PlayerData.HOME_BASE_TUTORIAL] = true
 
 
 func _refresh_dungeons() -> void:

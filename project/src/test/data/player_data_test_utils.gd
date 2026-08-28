@@ -23,3 +23,12 @@ static func load_player_data(filename: String) -> Error:
 	typed_data_dict.assign(save_json)
 	PlayerData.from_json_dict(typed_data_dict)
 	return OK
+
+
+static func prepare_demo() -> void:
+	PlayerSave.save_folder = "user://demo_sav_183"
+	PlayerData.finished_tutorials = {
+		PlayerData.BATTLE_TUTORIAL: true,
+		PlayerData.HOME_BASE_TUTORIAL: true,
+	}
+	PlayerData.start_new_game()

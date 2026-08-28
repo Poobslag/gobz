@@ -1,5 +1,5 @@
 extends Control
 
 func _ready() -> void:
-	PlayerData.start_new_game()
+	PlayerDataTestUtils.prepare_demo()
 	%BattleScreen.show_pick_panel()

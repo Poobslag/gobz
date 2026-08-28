@@ -1,6 +1,7 @@
 extends ColorRect
 
 signal finished
+signal tutorial_pressed
 
 ## Player's goblins which were hit and need their wound severity rerolled.
 var player_hit_gobs: Dictionary[Gob, bool] = {}
@@ -12,6 +13,7 @@ var _enemy_orders: Array[Gobs.Type] = []
 
 func _ready() -> void:
 	%NextButton.pressed.connect(_on_next_button_pressed)
+	%TutorialButton.pressed.connect(tutorial_pressed.emit)
 	refresh()
 
 
@@ -145,12 +147,15 @@ func _play_next() -> void:
 							[wounded_count.to_aa(),
 									Gobs.emoji_from_type(kill_report_gob["type"])])
 				
-				var effectiveness_string: String = ""
-				if kill_report_gob["effectiveness"] > 1.0:
-					effectiveness_string = "Very effective!"
-				elif kill_report_gob["effectiveness"] < 1.0:
-					effectiveness_string = "Not very effective..."
-				%YourAttack.text += "%s. %s\n" % [", ".join(kill_strings), effectiveness_string]
+				if kill_strings.is_empty():
+					%YourAttack.text += "They're trying their best...\n"
+				else:
+					var effectiveness_string: String = ""
+					if kill_report_gob["effectiveness"] > 1.0:
+						effectiveness_string = "Very effective!"
+					elif kill_report_gob["effectiveness"] < 1.0:
+						effectiveness_string = "Not very effective..."
+					%YourAttack.text += "%s. %s\n" % [", ".join(kill_strings), effectiveness_string]
 		
 		if not player_level_ups.is_empty():
 			_append_level_up_announcements(%YourAttack, player_level_ups)
@@ -178,12 +183,15 @@ func _play_next() -> void:
 							[wounded_count.to_aa(),
 									Gobs.emoji_from_type(kill_report_gob["type"])])
 				
-				var effectiveness_string: String = ""
-				if kill_report_gob["effectiveness"] > 1.0:
-					effectiveness_string = "A terrible blow!"
-				elif kill_report_gob["effectiveness"] < 1.0:
-					effectiveness_string = "Not very effective..."
-				%EnemyAttack.text += "%s. %s\n" % [", ".join(kill_strings), effectiveness_string]
+				if kill_strings.is_empty():
+					%EnemyAttack.text += "They're trying their best...\n"
+				else:
+					var effectiveness_string: String = ""
+					if kill_report_gob["effectiveness"] > 1.0:
+						effectiveness_string = "A terrible blow!"
+					elif kill_report_gob["effectiveness"] < 1.0:
+						effectiveness_string = "Not very effective..."
+					%EnemyAttack.text += "%s. %s\n" % [", ".join(kill_strings), effectiveness_string]
 			
 		if not enemy_level_ups.is_empty():
 			_append_level_up_announcements(%EnemyAttack, enemy_level_ups)
