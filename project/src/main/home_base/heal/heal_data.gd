@@ -91,6 +91,17 @@ func get_right_index() -> int:
 	return wrapi(group_index + 1, 0, groups.size())
 
 
+func get_gob_heal_cost(gob: Gob) -> float:
+	var cost_per_goblin: float = maxf(1.0, HEAL_GOLD_COST_FACTOR \
+		* pow(gob.wound_severity, HEAL_COST_EXP) \
+		* get_greed_factor(gob))
+	return cost_per_goblin * gob.get_hurt_count().to_float()
+
+
+func gob_needs_strong_medicine(gob: Gob) -> bool:
+	return gob.wound_severity >= 0.5
+
+
 func reroll_wound_severity(wounded: Dictionary[Gob, bool]) -> void:
 	for gob: Gob in PlayerData.army.gobs:
 		if gob in wounded:
