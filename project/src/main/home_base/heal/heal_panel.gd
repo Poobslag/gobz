@@ -22,6 +22,8 @@ var _heal_chat_lines: Array[HealChatLines.HealChatLine]
 var _ui_state_per_heal_group: Dictionary[HealData.HealGroup, Dictionary] = {}
 var _heal_type_by_gob: Dictionary[Gob, HealType] = {}
 
+@onready var splash_shower: SplashShower = %SplashShower
+
 func _ready() -> void:
 	%HealNavigator.move_kitchen.connect(kitchen_entered.emit)
 	%HealNavigator.before_move.connect(_on_heal_navigator_before_move)

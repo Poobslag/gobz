@@ -4,6 +4,8 @@ signal kitchen_exited
 
 const MAX_MULTIPLIER: float = 1e300
 
+@onready var splash_shower: SplashShower = %SplashShower
+
 func _ready() -> void:
 	%HealNavigator.move_left.connect(kitchen_exited.emit)
 	%HealNavigator.move_center.connect(kitchen_exited.emit)

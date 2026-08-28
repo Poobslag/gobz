@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://djhbxu52xckqj" path="res://src/main/home_base/heal/heal_panel.gd" id="2_cj732"]
 [ext_resource type="PackedScene" uid="uid://dqjjgkwxab0ht" path="res://src/main/ui/splash_shower.tscn" id="2_forku"]
 [ext_resource type="PackedScene" uid="uid://dbm3uqjrgg63m" path="res://src/main/ui/splash_art.tscn" id="3_jue1v"]
-[ext_resource type="Texture2D" uid="uid://bu4t5ousnvj2d" path="res://assets/main/splash/recruit.png" id="4_cj732"]
+[ext_resource type="Texture2D" uid="uid://bpo0q0144nynq" path="res://assets/main/splash/heal.png" id="4_kwvix"]
 [ext_resource type="PackedScene" uid="uid://g7b12cf0ow6o" path="res://src/main/home_base/home_nav.tscn" id="5_jue1v"]
 [ext_resource type="PackedScene" uid="uid://dgtblx72civbg" path="res://src/main/home_base/heal/heal_navigator.tscn" id="6_g5ynr"]
 [ext_resource type="PackedScene" uid="uid://t8f1tkis3ujq" path="res://src/main/home_base/heal/heal_inventory_label.tscn" id="6_td10u"]
@@ -18,6 +18,7 @@ color = Color(0.49019608, 0.2784314, 0.34901962, 1)
 script = ExtResource("2_cj732")
 
 [node name="SplashShower" parent="MarginContainer/Panel" parent_id_path=PackedInt32Array(2033304710) index="0" unique_id=731007175 instance=ExtResource("2_forku")]
+unique_name_in_owner = true
 layout_mode = 0
 offset_right = 1052.0
 offset_bottom = 548.0
@@ -39,24 +40,24 @@ grow_horizontal = 0
 grow_vertical = 0
 
 [node name="SplashArt1" parent="MarginContainer/Panel/SplashShower/BottomRight" index="0" unique_id=1575316682 instance=ExtResource("3_jue1v")]
-visible = false
-modulate = Color(0.16078432, 0.12941177, 0.14117648, 1)
-position = Vector2(-194, -162)
+modulate = Color(0.49019608, 0.2784314, 0.34901962, 1)
+position = Vector2(-169, -178)
 scale = Vector2(0.66, 0.66)
-texture = ExtResource("4_cj732")
+texture = ExtResource("4_kwvix")
 
-[node name="SplashArt3" parent="MarginContainer/Panel/SplashShower/BottomRight" index="1" unique_id=703441581 instance=ExtResource("3_jue1v")]
+[node name="SplashArt3" parent="MarginContainer/Panel/SplashShower/BottomRight" index="1" unique_id=2087204376 instance=ExtResource("3_jue1v")]
 visible = false
 modulate = Color(0.16078432, 0.12941177, 0.14117648, 1)
-position = Vector2(-153, -117)
+position = Vector2(-181, -123)
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("4_cj732")
+texture = ExtResource("4_kwvix")
 flip_h = true
 
-[node name="SplashArt2" parent="MarginContainer/Panel/SplashShower/BottomRight" index="2" unique_id=892730900 instance=ExtResource("3_jue1v")]
+[node name="SplashArt2" parent="MarginContainer/Panel/SplashShower/BottomRight" index="2" unique_id=1601240777 instance=ExtResource("3_jue1v")]
+visible = false
 modulate = Color(0.49019608, 0.2784314, 0.34901962, 0.5019608)
-position = Vector2(-220, -256)
-texture = ExtResource("4_cj732")
+position = Vector2(-568, -241)
+texture = ExtResource("4_kwvix")
 
 [node name="MarginContainer" parent="MarginContainer/Panel" parent_id_path=PackedInt32Array(2033304710) index="1" unique_id=1781904422]
 theme_override_constants/margin_left = 30
