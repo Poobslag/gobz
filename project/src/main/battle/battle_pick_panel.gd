@@ -1,5 +1,6 @@
 extends ColorRect
 
+signal tutorial_pressed
 signal finished
 
 var orders: Array[Gobs.Type] = []
@@ -19,6 +20,7 @@ func _ready() -> void:
 		button.pressed.connect(_append_order.bind(type))
 	%Undo.pressed.connect(_undo_pressed)
 	%Done.pressed.connect(_done_pressed)
+	%TutorialButton.pressed.connect(tutorial_pressed.emit)
 	
 	refresh()
 

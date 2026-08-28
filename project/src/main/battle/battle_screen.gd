@@ -4,8 +4,14 @@ func _ready() -> void:
 	%PickPanel.finished.connect(_on_pick_panel_finished)
 	%WatchPanel.finished.connect(_on_watch_panel_finished)
 	%ResultsPanel.finished.connect(_on_results_panel_finished)
+	%PickPanel.tutorial_pressed.connect(%TutorialPanel.open)
+	%WatchPanel.tutorial_pressed.connect(%TutorialPanel.open)
 	
 	show_pick_panel()
+	
+	if not PlayerData.finished_tutorials.has(PlayerData.BATTLE_TUTORIAL):
+		%TutorialPanel.open()
+		PlayerData.finished_tutorials[PlayerData.BATTLE_TUTORIAL] = true
 
 
 func show_pick_panel() -> void:

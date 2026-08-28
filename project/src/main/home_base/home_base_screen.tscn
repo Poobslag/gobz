@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://dbm3uqjrgg63m" path="res://src/main/ui/splash_art.tscn" id="4_emhyr"]
 [ext_resource type="PackedScene" uid="uid://ctpm75l6a3tx0" path="res://src/main/home_base/day_label.tscn" id="6_7vaeo"]
 [ext_resource type="PackedScene" uid="uid://g7b12cf0ow6o" path="res://src/main/home_base/home_nav.tscn" id="8_jg6nf"]
+[ext_resource type="PackedScene" uid="uid://dn3pdlhuw1iap" path="res://src/main/home_base/home_base_tutorial_panel.tscn" id="9_m4idb"]
 
 [node name="HomeBase" type="Control" unique_id=1368189123]
 layout_mode = 3
@@ -157,7 +158,20 @@ text = "Go Fight"
 [node name="HomeNav" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer" unique_id=1142993029 instance=ExtResource("8_jg6nf")]
 layout_mode = 2
 
+[node name="TutorialButton" type="Button" parent="ScreenPanel/MarginContainer/Panel/MarginContainer" index="1" unique_id=1297527272]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "Help"
+
 [node name="CommandPalette" parent="." unique_id=1368678133 instance=ExtResource("4_5sywx")]
 unique_name_in_owner = true
+
+[node name="TutorialPanel" parent="." unique_id=1007842494 instance=ExtResource("9_m4idb")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
 
 [editable path="ScreenPanel"]

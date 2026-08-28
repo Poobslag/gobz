@@ -2,5 +2,5 @@ extends Control
 
 
 func _ready() -> void:
-	PlayerData.start_new_game()
+	PlayerDataTestUtils.prepare_demo()
 	%DungeonSelect.refresh()

@@ -1,6 +1,9 @@
 extends Node
 ## Stores the player's army.
 
+const HOME_BASE_TUTORIAL: String = "home_base_tutorial"
+const BATTLE_TUTORIAL: String = "battle_tutorial"
+
 const RIPOFF_CURVE: Array[Array] = [
 	[0.0,   1.00],
 	[50.0,  0.80],
@@ -34,6 +37,8 @@ var kitchen_multiplier: Big = Big.ONE
 var ripoff_factor: float:
 	get():
 		return get_ripoff_factor()
+
+var finished_tutorials: Dictionary[String, bool] = {}
 
 var _ripoff_factor_cache: float = 0.0
 var _ripoff_factor_dirty: bool = true
@@ -99,6 +104,7 @@ func reset() -> void:
 	home_base_multiplier = Big.ONE
 	heal_multiplier = Big.ONE
 	kitchen_multiplier = Big.ONE
+	finished_tutorials.clear()
 	_ripoff_factor_dirty = true
 
 
@@ -190,6 +196,7 @@ func to_json_dict() -> Dictionary[String, Variant]:
 	result["home_base_multiplier"] = home_base_multiplier.to_float()
 	result["heal_multiplier"] = heal_multiplier.to_float()
 	result["kitchen_multiplier"] = kitchen_multiplier.to_float()
+	result["finished_tutorials"] = finished_tutorials
 	return result
 
 
@@ -212,6 +219,7 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 	home_base_multiplier = Big.new(json.get("home_base_multiplier", 1.0))
 	heal_multiplier = Big.new(json.get("heal_multiplier", 1.0))
 	kitchen_multiplier = Big.new(json.get("kitchen_multiplier", 1.0))
+	finished_tutorials.assign(json.get("finished_tutorials", {}))
 
 
 func _calculate_ripoff_factor() -> float:
