@@ -52,7 +52,7 @@ func is_empty() -> bool:
 
 
 func generate_random_recruit(data: Dictionary[String, Variant] = {}) -> Gob:
-	var gob: Gob = Gob.new()
+	var gob: Gob = PlayerData.create_gob()
 	gob.name = GoblinNames.random_name()
 	var total_goblins: Big = get_total_goblins()
 	
@@ -156,7 +156,7 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 	for gob_json: Dictionary in json.get("gobs", []):
 		var typed_gob_json: Dictionary[String, Variant] = {}
 		typed_gob_json.assign(gob_json)
-		var gob: Gob = Gob.new()
+		var gob: Gob = PlayerData.create_gob()
 		gob.from_json_dict(typed_gob_json)
 		gobs.append(gob)
 

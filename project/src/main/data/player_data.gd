@@ -42,6 +42,7 @@ var finished_tutorials: Dictionary[String, bool] = {}
 
 var _ripoff_factor_cache: float = 0.0
 var _ripoff_factor_dirty: bool = true
+var _next_gob_id: int = 0
 
 var tips: Array[String] = [
 	"🌳 goblins are strong against 💧, but struggle with 🔥.",
@@ -106,6 +107,7 @@ func reset() -> void:
 	kitchen_multiplier = Big.ONE
 	finished_tutorials.clear()
 	_ripoff_factor_dirty = true
+	_next_gob_id = 0
 
 
 func start_new_game() -> void:
@@ -134,11 +136,17 @@ func initialize_starting_inventory() -> void:
 	PlayerData.inventory.add_item(Items.WEAK_MEDICINE, Big.new(4))
 	PlayerData.inventory.add_item(Items.STRONG_MEDICINE, Big.new(3))
 
+func create_gob() -> Gob:
+	var gob: Gob = Gob.new()
+	gob.id = _next_gob_id
+	_next_gob_id += 1
+	return gob
+
 
 func initialize_starting_army() -> void:
 	var goblin_count: Big = PlayerData.army.get_summary().total_goblins
 	while goblin_count.is_lt(3):
-		var gob: Gob = Gob.new()
+		var gob: Gob = create_gob()
 		
 		gob.name = GoblinNames.random_name()
 		gob.type = [Gobs.FIRE, Gobs.WATER, Gobs.GRASS].pick_random()
@@ -197,6 +205,7 @@ func to_json_dict() -> Dictionary[String, Variant]:
 	result["heal_multiplier"] = heal_multiplier.to_float()
 	result["kitchen_multiplier"] = kitchen_multiplier.to_float()
 	result["finished_tutorials"] = finished_tutorials
+	result["next_gob_id"] = _next_gob_id
 	return result
 
 
@@ -220,6 +229,7 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 	heal_multiplier = Big.new(json.get("heal_multiplier", 1.0))
 	kitchen_multiplier = Big.new(json.get("kitchen_multiplier", 1.0))
 	finished_tutorials.assign(json.get("finished_tutorials", {}))
+	_next_gob_id = json.get("next_gob_id", 0)
 
 
 func _calculate_ripoff_factor() -> float:

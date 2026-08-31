@@ -6,7 +6,7 @@ static func gob(s: String) -> Gob:
 	var type: Gobs.Type = Gobs.GOBLIN_TYPES_BY_EMOJI[s_split[0]]
 	var level: int = int(s_split[1])
 	
-	var result: Gob = Gob.new()
+	var result: Gob = PlayerData.create_gob()
 	result.name = "%s%s" % [Utils.enum_to_snake_case(Gobs.Type, result.type, "none"), level]
 	result.type = type
 	var type_cost: int = 5

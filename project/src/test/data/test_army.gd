@@ -42,8 +42,9 @@ func test_to_json_dict() -> void:
 	var json: Dictionary[String, Variant] = PlayerData.army.to_json_dict()
 	assert_eq(json, {
 			"gobs": [
-				{"name": "fire4", "back_count": 0.0, "level": 4, "type": "fire",
-					"hp": "20/20", "back_wounded": 0.0, "attack": 10, "gold": 25, "xp": 0},
+				{"id": 0, "name": "fire4", "back_count": 0.0, "level": 4, "type": "fire",
+					"hp": "20/20", "back_wounded": 0.0, "attack": 10, "gold": 25, "xp": 0,
+					"morale": { "value": 0.0, "events": [] }},
 			],
 			"gold": 0.0,
 		})

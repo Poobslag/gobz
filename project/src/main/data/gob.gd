@@ -3,6 +3,8 @@ class_name Gob
 
 const WOUND_INCREASE_FACTOR: float = 2.0
 
+var id: int = -1
+
 var name: String = ""
 
 ## Total goblins, excluding the front goblin
@@ -34,6 +36,8 @@ var gold: int = 0
 
 ## Experience for each goblin
 var xp: int = 0
+
+var morale: GobMorale = GobMorale.new()
 
 func get_healthy_count() -> Big:
 	return Big.new(back_count.to_float() - back_wounded.to_float() + (0 if is_front_wounded() else 1))
@@ -91,6 +95,7 @@ func get_total_attack() -> Big:
 
 func duplicate() -> Gob:
 	var copy: Gob = Gob.new()
+	copy.id = id
 	copy.name = name
 	copy.back_count = back_count
 	copy.back_wounded = back_wounded
@@ -152,6 +157,7 @@ func get_kill_exp() -> int:
 
 
 func from_json_dict(json: Dictionary[String, Variant]) -> void:
+	id = json.get("id", -1)
 	name = json.get("name", "")
 	back_count = Big.new(json.get("back_count", 0))
 	back_wounded = Big.new(json.get("back_wounded", 0))
@@ -165,6 +171,10 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 	attack = json.get("attack", 2)
 	gold = json.get("gold", 0)
 	xp = json.get("xp", 0)
+	if json.has("morale"):
+		var typed_morale_json: Dictionary[String, Variant] = {}
+		typed_morale_json.assign(json["morale"])
+		morale.from_json_dict(typed_morale_json)
 	
 	increase_wound_severity()
 
@@ -189,6 +199,7 @@ func decrease_wound_severity() -> void:
 
 func to_json_dict() -> Dictionary[String, Variant]:
 	return {
+		"id": id,
 		"name": name,
 		"back_count": back_count.to_float(),
 		"back_wounded": back_wounded.to_float(),
@@ -198,6 +209,7 @@ func to_json_dict() -> Dictionary[String, Variant]:
 		"attack": attack,
 		"gold": gold,
 		"xp": xp,
+		"morale": morale.to_json_dict(),
 	}
 
 
