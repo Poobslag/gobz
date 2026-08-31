@@ -126,5 +126,33 @@ func test_kill_front_back_wounded() -> void:
 	assert_eq(gob.front_hp, 8)
 
 
+func test_morale_desc() -> void:
+	gob = new_gob("🔥 3")
+	gob.name = "Morson"
+	var event: MoraleEvent = MoraleEvent.new()
+	event.type = MoraleEvent.DAY_OFF
+	event.delta = 10.0
+	gob.morale.add_event(event)
+	assert_eq(event.get_desc(gob), "Morson enjoyed their day off.")
+	
+	event.delta = -10.0
+	assert_eq(event.get_desc(gob), "Morson grew restless during their day off.")
+
+
+func test_convert_morale_to_json_and_back() -> void:
+	gob = new_gob("🔥 3")
+	var event: MoraleEvent = MoraleEvent.new()
+	event.type = MoraleEvent.DAY_OFF
+	event.delta = 10.0
+	gob.morale.add_event(event)
+	var result: Dictionary[String, Variant] = gob.to_json_dict()
+	gob = new_gob("🔥 3")
+	gob.from_json_dict(result)
+	
+	assert_eq(gob.morale.size(), 1)
+	assert_eq(gob.morale.get_event(0).type, MoraleEvent.DAY_OFF)
+	assert_eq(gob.morale.get_event(0).delta, 10.0)
+
+
 func new_gob(s: String) -> Gob:
 	return ArmyTestUtils.gob(s)

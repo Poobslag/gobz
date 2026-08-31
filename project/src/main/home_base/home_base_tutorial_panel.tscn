@@ -17,6 +17,7 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [node name="TutorialPanel" type="ColorRect" unique_id=1320629983]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
