@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://bap8l8nqs54bs"]
 
 [ext_resource type="Script" uid="uid://cmry76phip7ys" path="res://src/main/home_base/tutorial_panel.gd" id="1_5jx6a"]
-[ext_resource type="Texture2D" uid="uid://drlbeby00nafg" path="res://assets/main/tutorial/tutorial-combat-1.png" id="2_qnoqf"]
-[ext_resource type="Texture2D" uid="uid://tpweei0382p6" path="res://assets/main/tutorial/tutorial-combat-2.png" id="3_csb6d"]
-[ext_resource type="Texture2D" uid="uid://bxkt2movkra23" path="res://assets/main/tutorial/tutorial-combat-3.png" id="4_nba51"]
+[ext_resource type="Texture2D" uid="uid://drlbeby00nafg" path="res://assets/main/tutorial/tutorial_combat_1.png" id="2_qnoqf"]
+[ext_resource type="Texture2D" uid="uid://tpweei0382p6" path="res://assets/main/tutorial/tutorial_combat_2.png" id="3_csb6d"]
+[ext_resource type="Texture2D" uid="uid://bxkt2movkra23" path="res://assets/main/tutorial/tutorial_combat_3.png" id="4_nba51"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o7hqo"]
 bg_color = Color(0.76862746, 0.77254903, 0.7294118, 1)
@@ -18,7 +18,6 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [node name="TutorialPanel" type="ColorRect" unique_id=1320629983]
-anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2

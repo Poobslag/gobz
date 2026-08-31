@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://8koq5elp85xd"
-path="res://.godot/imported/tutorial-recruit-1.png-85fd0a4d214621931ccb2b299bc9e6ab.ctex"
+uid="uid://tpweei0382p6"
+path="res://.godot/imported/tutorial_combat_2.png-656b6912c353d37b074913d55b1b75fe.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/main/tutorial/tutorial-recruit-1.png"
-dest_files=["res://.godot/imported/tutorial-recruit-1.png-85fd0a4d214621931ccb2b299bc9e6ab.ctex"]
+source_file="res://assets/main/tutorial/tutorial_combat_2.png"
+dest_files=["res://.godot/imported/tutorial_combat_2.png-656b6912c353d37b074913d55b1b75fe.ctex"]
 
 [params]
 

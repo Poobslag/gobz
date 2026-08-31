@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bxkt2movkra23"
-path="res://.godot/imported/tutorial-combat-3.png-eab7e2c81e295d041379378f247f9a88.ctex"
+path="res://.godot/imported/tutorial_combat_3.png-e12ec3d7daa9fc2bae43b448e4ace335.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/main/tutorial/tutorial-combat-3.png"
-dest_files=["res://.godot/imported/tutorial-combat-3.png-eab7e2c81e295d041379378f247f9a88.ctex"]
+source_file="res://assets/main/tutorial/tutorial_combat_3.png"
+dest_files=["res://.godot/imported/tutorial_combat_3.png-e12ec3d7daa9fc2bae43b448e4ace335.ctex"]
 
 [params]
 

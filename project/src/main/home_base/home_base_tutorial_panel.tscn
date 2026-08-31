@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://dn3pdlhuw1iap"]
 
 [ext_resource type="Script" uid="uid://cmry76phip7ys" path="res://src/main/home_base/tutorial_panel.gd" id="1_ob23c"]
-[ext_resource type="Texture2D" uid="uid://8koq5elp85xd" path="res://assets/main/tutorial/tutorial-recruit-1.png" id="2_45p6r"]
-[ext_resource type="Texture2D" uid="uid://su6vktxtc8i1" path="res://assets/main/tutorial/tutorial-recruit-2.png" id="3_dsldy"]
+[ext_resource type="Texture2D" uid="uid://8koq5elp85xd" path="res://assets/main/tutorial/tutorial_recruit_1.png" id="2_45p6r"]
+[ext_resource type="Texture2D" uid="uid://su6vktxtc8i1" path="res://assets/main/tutorial/tutorial_recruit_2.png" id="3_dsldy"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o7hqo"]
 bg_color = Color(0.76862746, 0.77254903, 0.7294118, 1)
@@ -17,7 +17,6 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [node name="TutorialPanel" type="ColorRect" unique_id=1320629983]
-anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
