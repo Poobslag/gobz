@@ -102,7 +102,9 @@ func retreat() -> void:
 
 func _end_battle() -> void:
 	PlayerData.day += 1
-	PlayerData.cycle_dungeons()
+	if PlayerData.get_dungeon_army().is_empty() and PlayerData.get_dungeon().boss:
+		PlayerData.bosses_defeated += 1
+	DungeonDirector.cycle_dungeons()
 	HomeBaseData.heal_data.mark_groups_dirty()
 	PlayerData.market.mark_costs_dirty()
 	PlayerData.print_gold_history()

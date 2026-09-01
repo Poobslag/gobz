@@ -3,6 +3,7 @@ class_name Dungeon
 var name: String
 var army: Army = Army.new()
 var recon_army: Army = Army.new()
+var boss: bool = false
 
 func perform_recon(force: bool = false) -> void:
 	if not recon_army.is_empty() and not force:
@@ -28,6 +29,7 @@ func to_json_dict() -> Dictionary[String, Variant]:
 	result["name"] = name
 	result["army"] = army.to_glob()
 	result["recon_army"] = recon_army.to_glob()
+	result["boss"] = boss
 	return result
 
 
@@ -37,3 +39,4 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 		army.from_glob(json["army"])
 	if json.has("recon_army"):
 		recon_army.from_glob(json["recon_army"])
+	boss = json.get("boss", false)

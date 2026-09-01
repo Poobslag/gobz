@@ -7,7 +7,10 @@ signal skip_pressed
 var gob: Gob
 
 func _ready() -> void:
-	gob = PlayerData.army.generate_random_recruit({"count": PlayerData.home_base_multiplier})
+	gob = PlayerData.army.generate_random_recruit({
+		"count": PlayerData.home_base_multiplier,
+		"type_weights": DungeonDirector.get_recruit_type_weights(PlayerData.day),
+		})
 	
 	%RecruitButton.text = "-💰%s" % [get_cost().to_aa()]
 	var goblin_name: String = gob.name
