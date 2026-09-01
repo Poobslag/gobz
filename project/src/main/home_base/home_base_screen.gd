@@ -4,7 +4,7 @@ const RECRUIT_COUNT: int = 3
 const RECRUIT_ROW_SCENE: PackedScene = preload("res://src/main/home_base/home_base_recruit_row.tscn")
 const DUNGEON_ROW_SCENE: PackedScene = preload("res://src/main/home_base/dungeon_preview_row.tscn")
 
-const MAX_MULTIPLIER: float = 1e300
+const MAX_MULTIPLIER: float = 1.0e267
 
 func _ready() -> void:
 	for child: Node in %Recruits.get_children():

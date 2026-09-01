@@ -98,10 +98,6 @@ func generate_random_recruit(data: Dictionary[String, Variant] = {}) -> Gob:
 		target_level = randi_range(1, max_level)
 	while gob.level < target_level:
 		gob.level_up()
-		var level_cost: int = [3, 4, 5, 5, 5, 6, 7].pick_random()
-		if gob.type == Gobs.DEVIL:
-			level_cost *= 2
-		gob.gold += level_cost
 	
 	gob.xp = randi_range(0, gob.get_exp_threshold() - 1)
 	var fractional_level_cost: int = [3, 4, 5, 5, 5, 6, 7].pick_random()

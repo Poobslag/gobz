@@ -1,7 +1,7 @@
 class_name DungeonGenerator
 
 ## Reduces the gold given by enemy goblins. 0.25 = killing four goblins lets you recruit one goblin.
-const RIPOFF_FACTOR: float = 0.5
+const RIPOFF_FACTOR: float = 0.75
 
 static var _archetypes_by_slot_count: Dictionary[int, Array] = {
 	1: [
