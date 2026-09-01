@@ -35,6 +35,7 @@ func _on_save_slot_row_play_pressed(save_slot: int) -> void:
 		PlayerData.start_new_game()
 		PlayerSave.save_data()
 	
+	PlayerData.print_gold_history()
 	get_tree().change_scene_to_file("res://src/main/home_base/home_base_screen.tscn")
 
 

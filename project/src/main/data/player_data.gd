@@ -4,28 +4,9 @@ extends Node
 const HOME_BASE_TUTORIAL: String = "home_base_tutorial"
 const BATTLE_TUTORIAL: String = "battle_tutorial"
 
-const RIPOFF_CURVE: Array[Array] = [
-	[0.0,   1.00],
-	[50.0,  0.80],
-	[500.0, 0.60],
-	[5e3,   0.50],
-	[5e4,   0.40],
-	[5e5,   0.30],
-	[5e6,   0.20],
-	[5e9,   0.10],
-	[5e12,  0.05],
-	[5e15,  0.03],
-	[5e18,  0.02],
-	[5e21,  0.01],
-]
-
-
 var day: int = 1
 var army: Army = Army.new()
-var gold: Big = Big.ZERO:
-	set(value):
-		gold = value
-		mark_ripoff_factor_dirty()
+var gold: Big = Big.ZERO
 var inventory: Inventory = Inventory.new()
 var dungeons: Array[Dungeon] = []
 var dungeon_index: int
@@ -34,15 +15,11 @@ var market: Market = Market.new()
 var home_base_multiplier: Big = Big.ONE
 var heal_multiplier: Big = Big.ONE
 var kitchen_multiplier: Big = Big.ONE
-var ripoff_factor: float:
-	get():
-		return get_ripoff_factor()
 
 var finished_tutorials: Dictionary[String, bool] = {}
 
-var _ripoff_factor_cache: float = 0.0
-var _ripoff_factor_dirty: bool = true
 var _next_gob_id: int = 0
+var _prev_total_gold: Big = Big.ZERO
 
 var tips: Array[String] = [
 	"🌳 goblins are strong against 💧, but struggle with 🔥.",
@@ -106,7 +83,6 @@ func reset() -> void:
 	heal_multiplier = Big.ONE
 	kitchen_multiplier = Big.ONE
 	finished_tutorials.clear()
-	_ripoff_factor_dirty = true
 	_next_gob_id = 0
 
 
@@ -146,21 +122,14 @@ func create_gob() -> Gob:
 func initialize_starting_army() -> void:
 	var goblin_count: Big = PlayerData.army.get_summary().total_goblins
 	while goblin_count.is_lt(3):
-		var gob: Gob = create_gob()
-		
-		gob.name = GoblinNames.random_name()
-		gob.type = [Gobs.FIRE, Gobs.WATER, Gobs.GRASS].pick_random()
-		gob.hp_max = randi_range(2, 4)
-		gob.front_hp = gob.hp_max
-		
-		for _i in 2:
-			if randf() < 0.5:
-				gob.level_up()
-		
+		var gob: Gob = army.generate_random_recruit({
+			"type": [Gobs.FIRE, Gobs.WATER, Gobs.GRASS].pick_random(),
+			"level": (4 if goblin_count.is_eq(0) else 3),
+		})
 		army.add_gob(gob)
 		goblin_count = Big.add(goblin_count, 1)
 	
-	gold = Big.max(gold, 25)
+	gold = Big.max(gold, 30)
 
 
 func add_dungeon(target_attack: Big) -> void:
@@ -174,17 +143,6 @@ func scale_army_units(factor: float) -> void:
 		for gob: Gob in dungeon.army.gobs:
 			gob.back_count = Big.new((gob.back_count.to_float() + 1) * factor - 1)
 	gold = Big.new(gold.to_float() * factor)
-
-
-func mark_ripoff_factor_dirty() -> void:
-	_ripoff_factor_dirty = true
-
-
-func get_ripoff_factor() -> float:
-	if _ripoff_factor_dirty:
-		_ripoff_factor_dirty = false
-		_ripoff_factor_cache = _calculate_ripoff_factor()
-	return _ripoff_factor_cache
 
 
 func take_gold(count: Big) -> void:
@@ -232,15 +190,11 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 	_next_gob_id = json.get("next_gob_id", 0)
 
 
-func _calculate_ripoff_factor() -> float:
-	var result: float = RIPOFF_CURVE.back()[1]
+func print_gold_history() -> void:
 	var total_gold: Big = Big.add(gold, army.get_total_gold())
-	for i in RIPOFF_CURVE.size() - 1:
-		var lo_gold: float = RIPOFF_CURVE[i][0]
-		var hi_gold: float = RIPOFF_CURVE[i + 1][0]
-		if total_gold.is_lte(hi_gold):
-			var lo_val: float = RIPOFF_CURVE[i][1]
-			var hi_val: float = RIPOFF_CURVE[i + 1][1]
-			result = remap(total_gold.to_float(), lo_gold, hi_gold, lo_val, hi_val)
-			break
-	return result
+	if _prev_total_gold.is_eq(0):
+		print("Gold: %s" % [total_gold])
+	else:
+		print("Gold: %s -> %s (%.2f)" % [_prev_total_gold, total_gold,
+				total_gold.to_float() / _prev_total_gold.to_float()])
+	_prev_total_gold = total_gold
