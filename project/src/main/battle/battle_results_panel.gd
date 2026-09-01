@@ -95,7 +95,7 @@ func retreat() -> void:
 	if looted_gold.is_gt(0):
 		%Message.text += "You scurry home with 💰%s in your pockets." % [looted_gold.to_aa()]
 	else:
-		%Message.text += "You scurry home empty-handed." % [looted_gold.to_aa()]
+		%Message.text += "You scurry home empty-handed."
 	
 	_end_battle()
 

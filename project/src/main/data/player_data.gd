@@ -20,6 +20,7 @@ var finished_tutorials: Dictionary[String, bool] = {}
 
 var _next_gob_id: int = 0
 var _prev_total_gold: Big = Big.ZERO
+var _print_gold_history: bool = true
 
 var tips: Array[String] = [
 	"🌳 goblins are strong against 💧, but struggle with 🔥.",
@@ -84,6 +85,7 @@ func reset() -> void:
 	kitchen_multiplier = Big.ONE
 	finished_tutorials.clear()
 	_next_gob_id = 0
+	_prev_total_gold = Big.ZERO
 
 
 func start_new_game() -> void:
@@ -111,6 +113,7 @@ func initialize_starting_inventory() -> void:
 	PlayerData.inventory.add_item(Items.HERB_3, Big.new(9))
 	PlayerData.inventory.add_item(Items.WEAK_MEDICINE, Big.new(4))
 	PlayerData.inventory.add_item(Items.STRONG_MEDICINE, Big.new(3))
+
 
 func create_gob() -> Gob:
 	var gob: Gob = Gob.new()
@@ -192,9 +195,13 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 
 func print_gold_history() -> void:
 	var total_gold: Big = Big.add(gold, army.get_total_gold())
-	if _prev_total_gold.is_eq(0):
-		print("Gold: %s" % [total_gold])
+	
+	if not _print_gold_history:
+		pass
+	elif _prev_total_gold.is_eq(0):
+		print("Day %s; Gold: %s" % [PlayerData.day, total_gold.to_aa()])
 	else:
-		print("Gold: %s -> %s (%.2f)" % [_prev_total_gold, total_gold,
+		print("Day %s; Gold: %s -> %s (%.2f)" % [PlayerData.day, _prev_total_gold.to_aa(), total_gold.to_aa(),
 				total_gold.to_float() / _prev_total_gold.to_float()])
+	
 	_prev_total_gold = total_gold

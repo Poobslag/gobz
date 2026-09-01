@@ -41,6 +41,11 @@ func to_int() -> int:
 
 
 func to_aa() -> String:
+	if is_nan(_value):
+		return "nan"
+	if is_inf(_value):
+		return "-inf" if _value < 0.0 else "inf"
+	
 	# calculate abs_value, mantissa
 	var abs_value: float = abs(_value)
 	var exponent: float = floor(log(abs_value) / log(10)) # 3,257 = 3.2 * 10e3; exponent = 3

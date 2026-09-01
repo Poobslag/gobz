@@ -53,7 +53,7 @@ func refresh() -> void:
 	# if you have $1,000, or 1,000 of any item, you can increase the multiplier to 1,000
 	var multiply_button_disabled: bool = true
 	if multiply_button_disabled == true:
-		if PlayerData.gold.is_gte(PlayerData.kitchen_multiplier.to_float() * 10):
+		if PlayerData.gold.is_gte(PlayerData.kitchen_multiplier.to_float()):
 			multiply_button_disabled = false
 	if multiply_button_disabled == true:
 		for type: Items.Type in PlayerData.inventory.items:

@@ -82,6 +82,12 @@ func test_to_aa_billions_and_up_boundaries() -> void:
 	assert_eq(Big.new(1.000_000_000e27).to_aa(), "1.0bl")
 
 
+func test_inf() -> void:
+	assert_eq(Big.new(INF).to_aa(), "inf")
+	assert_eq(Big.new(-INF).to_aa(), "-inf")
+	assert_eq(Big.new(NAN).to_aa(), "nan")
+
+
 func test_to_aa_negative() -> void:
 	assert_eq(Big.new(-3).to_aa(), "-3")
 	assert_eq(Big.new(-32).to_aa(), "-32")
