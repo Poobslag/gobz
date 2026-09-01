@@ -23,19 +23,6 @@ func test_scale_up_avoid_overflow() -> void:
 	assert_almost_eq(PlayerData.gold.to_float(), 1.52e34, 1e32)
 
 
-func test_calc_ripoff_factor() -> void:
-	PlayerData.gold = Big.new(5_000)
-	assert_eq(PlayerData.get_ripoff_factor(), 0.5)
-	PlayerData.gold = Big.new(27_500)
-	assert_eq(PlayerData.get_ripoff_factor(), 0.45)
-	PlayerData.gold = Big.new(50_000)
-	assert_eq(PlayerData.get_ripoff_factor(), 0.4)
-	PlayerData.gold = Big.new(500_000)
-	assert_eq(PlayerData.get_ripoff_factor(), 0.3)
-	PlayerData.gold = Big.new(5e50)
-	assert_eq(PlayerData.get_ripoff_factor(), 0.01)
-
-
 func test_convert_to_json_and_back() -> void:
 	PlayerData.day = 5
 	PlayerData.army.add_gob(gob("🔥 3"))

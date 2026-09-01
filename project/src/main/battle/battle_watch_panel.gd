@@ -131,6 +131,7 @@ func _play_next() -> void:
 							player_army_summary.goblins_by_type.get(player_type).to_aa()]
 			
 			var kill_report: Array[Dictionary] = get_kill_report(player_type, player_kills)
+			var printed_a_message: bool = false
 			for kill_report_gob: Dictionary in kill_report:
 				var kill_strings: Array[String] = []
 				if kill_report_gob["kill_count"].is_gt(0):
@@ -147,15 +148,16 @@ func _play_next() -> void:
 							[wounded_count.to_aa(),
 									Gobs.emoji_from_type(kill_report_gob["type"])])
 				
-				if kill_strings.is_empty():
-					%YourAttack.text += "They're trying their best...\n"
-				else:
+				if not kill_strings.is_empty():
+					printed_a_message = true
 					var effectiveness_string: String = ""
 					if kill_report_gob["effectiveness"] > 1.0:
 						effectiveness_string = "Very effective!"
 					elif kill_report_gob["effectiveness"] < 1.0:
 						effectiveness_string = "Not very effective..."
 					%YourAttack.text += "%s. %s\n" % [", ".join(kill_strings), effectiveness_string]
+			if not printed_a_message:
+				%YourAttack.text += "They're trying their best...\n"
 		
 		if not player_level_ups.is_empty():
 			_append_level_up_announcements(%YourAttack, player_level_ups)
@@ -167,6 +169,7 @@ func _play_next() -> void:
 							enemy_army_summary.goblins_by_type.get(enemy_type).to_aa()]
 			
 			var kill_report: Array[Dictionary] = get_kill_report(enemy_type, enemy_kills)
+			var printed_a_message: bool = false
 			for kill_report_gob: Dictionary in kill_report:
 				var kill_strings: Array[String] = []
 				if kill_report_gob["kill_count"].is_gt(0):
@@ -183,15 +186,16 @@ func _play_next() -> void:
 							[wounded_count.to_aa(),
 									Gobs.emoji_from_type(kill_report_gob["type"])])
 				
-				if kill_strings.is_empty():
-					%EnemyAttack.text += "They're trying their best...\n"
-				else:
+				if not kill_strings.is_empty():
+					printed_a_message = true
 					var effectiveness_string: String = ""
 					if kill_report_gob["effectiveness"] > 1.0:
 						effectiveness_string = "A terrible blow!"
 					elif kill_report_gob["effectiveness"] < 1.0:
 						effectiveness_string = "Not very effective..."
 					%EnemyAttack.text += "%s. %s\n" % [", ".join(kill_strings), effectiveness_string]
+			if not printed_a_message:
+				%EnemyAttack.text += "They're trying their best...\n"
 			
 		if not enemy_level_ups.is_empty():
 			_append_level_up_announcements(%EnemyAttack, enemy_level_ups)
@@ -206,7 +210,6 @@ func _play_next() -> void:
 	_erase_invalid_orders(_enemy_orders, PlayerData.get_dungeon_army())
 	
 	refresh()
-	PlayerData.mark_ripoff_factor_dirty()
 
 
 func _append_level_up_announcements(text_area: RichTextLabel, level_ups: Array[BattleResolver.LevelUp]) -> void:

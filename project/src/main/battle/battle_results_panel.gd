@@ -105,6 +105,7 @@ func _end_battle() -> void:
 	PlayerData.cycle_dungeons()
 	HomeBaseData.heal_data.mark_groups_dirty()
 	PlayerData.market.mark_costs_dirty()
+	PlayerData.print_gold_history()
 
 
 func _show_splash(shower: Node) -> void:

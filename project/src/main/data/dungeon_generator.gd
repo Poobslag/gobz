@@ -1,5 +1,8 @@
 class_name DungeonGenerator
 
+## Reduces the gold given by enemy goblins. 0.25 = killing four goblins lets you recruit one goblin.
+const RIPOFF_FACTOR: float = 0.5
+
 static var _archetypes_by_slot_count: Dictionary[int, Array] = {
 	1: [
 		DungeonArchetype.new(2.0, ["1"])
@@ -112,7 +115,7 @@ static func _generate_dungeon_for_archetype(target_attack: Big, composition: Dic
 		var new_recruit: Gob = dungeon.army.generate_random_recruit({
 			"count": count,
 			"type": type,
-			"gold_factor": PlayerData.get_ripoff_factor(),
+			"gold_factor": RIPOFF_FACTOR,
 		})
 		dungeon.army.add_gob(new_recruit)
 		total_attack = Big.add(total_attack, Big.mul(new_recruit.attack, new_recruit.get_count()))
