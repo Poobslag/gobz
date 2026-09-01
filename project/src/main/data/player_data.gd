@@ -17,10 +17,12 @@ var heal_multiplier: Big = Big.ONE
 var kitchen_multiplier: Big = Big.ONE
 
 var finished_tutorials: Dictionary[String, bool] = {}
+var bosses_defeated: int = 0
+
+var should_log_gold_history: bool = true
 
 var _next_gob_id: int = 0
 var _prev_total_gold: Big = Big.ZERO
-var _print_gold_history: bool = true
 
 var tips: Array[String] = [
 	"🌳 goblins are strong against 💧, but struggle with 🔥.",
@@ -53,21 +55,6 @@ func _ready() -> void:
 	tips.shuffle()
 
 
-func cycle_dungeons() -> void:
-	for dungeon: Dungeon in PlayerData.dungeons.duplicate():
-		if dungeon.is_empty():
-			PlayerData.dungeons.erase(dungeon)
-			@warning_ignore("narrowing_conversion")
-			PlayerData.add_dungeon(Big.new(PlayerData.army.get_total_attack().to_float() * randf_range(0.4, 1.4)))
-	
-	if not PlayerData.dungeons.is_empty():
-		PlayerData.dungeons.remove_at(0)
-	
-	while PlayerData.dungeons.size() < 5:
-		@warning_ignore("narrowing_conversion")
-		PlayerData.add_dungeon(Big.new(PlayerData.army.get_total_attack().to_float() * randf_range(0.4, 1.4)))
-
-
 func get_next_tip() -> String:
 	var result: String = tips[_tip_index]
 	_tip_index = (_tip_index + 1) % tips.size()
@@ -84,6 +71,7 @@ func reset() -> void:
 	heal_multiplier = Big.ONE
 	kitchen_multiplier = Big.ONE
 	finished_tutorials.clear()
+	bosses_defeated = 0
 	_next_gob_id = 0
 	_prev_total_gold = Big.ZERO
 
@@ -92,7 +80,7 @@ func start_new_game() -> void:
 	reset()
 	initialize_starting_army()
 	initialize_starting_inventory()
-	cycle_dungeons()
+	DungeonDirector.cycle_dungeons()
 
 
 func has_current_dungeon() -> bool:
@@ -126,7 +114,7 @@ func initialize_starting_army() -> void:
 	var goblin_count: Big = PlayerData.army.get_summary().total_goblins
 	while goblin_count.is_lt(3):
 		var gob: Gob = army.generate_random_recruit({
-			"type": [Gobs.FIRE, Gobs.WATER, Gobs.GRASS].pick_random(),
+			"type_weights": [1.0, 1.0, 1.0, 0.0, 0.0],
 			"level": (4 if goblin_count.is_eq(0) else 3),
 		})
 		army.add_gob(gob)
@@ -135,14 +123,12 @@ func initialize_starting_army() -> void:
 	gold = Big.max(gold, 30)
 
 
-func add_dungeon(target_attack: Big) -> void:
-	dungeons.append(DungeonGenerator.generate_random_dungeon(target_attack))
-
-
 func scale_army_units(factor: float) -> void:
 	for gob: Gob in PlayerData.army.gobs:
 		gob.back_count = Big.new((gob.back_count.to_float() + 1) * factor - 1)
 	for dungeon: Dungeon in PlayerData.dungeons:
+		if dungeon.boss:
+			continue
 		for gob: Gob in dungeon.army.gobs:
 			gob.back_count = Big.new((gob.back_count.to_float() + 1) * factor - 1)
 	gold = Big.new(gold.to_float() * factor)
@@ -167,6 +153,7 @@ func to_json_dict() -> Dictionary[String, Variant]:
 	result["kitchen_multiplier"] = kitchen_multiplier.to_float()
 	result["finished_tutorials"] = finished_tutorials
 	result["next_gob_id"] = _next_gob_id
+	result["bosses_defeated"] = bosses_defeated
 	return result
 
 
@@ -190,13 +177,14 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 	heal_multiplier = Big.new(json.get("heal_multiplier", 1.0))
 	kitchen_multiplier = Big.new(json.get("kitchen_multiplier", 1.0))
 	finished_tutorials.assign(json.get("finished_tutorials", {}))
+	bosses_defeated = json.get("bosses_defeated", 0)
 	_next_gob_id = json.get("next_gob_id", 0)
 
 
 func print_gold_history() -> void:
 	var total_gold: Big = Big.add(gold, army.get_total_gold())
 	
-	if not _print_gold_history:
+	if not should_log_gold_history:
 		pass
 	elif _prev_total_gold.is_eq(0):
 		print("Day %s; Gold: %s" % [PlayerData.day, total_gold.to_aa()])

@@ -3,6 +3,15 @@ class_name DungeonGenerator
 ## Reduces the gold given by enemy goblins. 0.25 = killing four goblins lets you recruit one goblin.
 const RIPOFF_FACTOR: float = 0.75
 
+## Increases the gold given in boss dungeons. 2.0x = killing one goblin lets you recruit two goblins.
+const BOSS_REWARD_MULTIPLIER: float = 4.0
+
+## We limit the size of regular dungeons so the player can't massively outscale the boss. If the boss only has 100
+## goblins, then we limit dungeon size so the player can't get more than 16 goblins per battle.
+const BOSS_PROGRESS_CAP: float = 0.18
+
+const MAX_DUNGEON_STRENGTH: float = 6.9e267
+
 static var _archetypes_by_slot_count: Dictionary[int, Array] = {
 	1: [
 		DungeonArchetype.new(2.0, ["1"])
@@ -80,9 +89,13 @@ static var _archetypes_by_slot_count: Dictionary[int, Array] = {
 
 static var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
-static func _generate_random_composition(allow_advanced_types: bool = true) -> Dictionary[String, Variant]:
+static func _generate_random_composition(blueprint: DungeonBlueprint) -> void:
+	if not blueprint.composition.is_empty():
+		return
 	var slot_count: int
-	if allow_advanced_types:
+	if not blueprint.forced_types.is_empty():
+		slot_count = blueprint.forced_types.size()
+	elif blueprint.allow_advanced_types:
 		slot_count = [1, 2, 3, 4, 5][_rng.rand_weighted([1, 2, 4, 4, 4])]
 	else:
 		slot_count = [1, 2, 3][_rng.rand_weighted([1, 2, 4])]
@@ -90,32 +103,32 @@ static func _generate_random_composition(allow_advanced_types: bool = true) -> D
 	var weights: Array[float] = []
 	var archetypes: Array[DungeonArchetype] = _archetypes_by_slot_count[slot_count]
 	for archetype: DungeonArchetype in archetypes:
-		if archetype.has_advanced_types() and not allow_advanced_types:
+		if archetype.has_advanced_types() and not blueprint.allow_advanced_types:
 			weights.append(0)
 		else:
 			weights.append(archetype.rarity)
 	var archetype: DungeonArchetype = archetypes[_rng.rand_weighted(weights)]
-	return archetype.roll_composition(allow_advanced_types)
+	blueprint.composition = archetype.roll_composition(blueprint)
 
 
-static func _generate_dungeon_for_archetype(target_attack: Big, composition: Dictionary[String, Variant]) -> Dungeon:
+static func _generate_dungeon_for_archetype(blueprint: DungeonBlueprint) -> Dungeon:
 	var min_count: Big = Big.ONE
 	var max_count: Big = Big.ONE
-	if target_attack.is_gte(500):
-		min_count = Big.new(maxf(1, round(target_attack.to_float() * 0.0003)))
-		max_count = Big.new(maxf(1, round(target_attack.to_float() * 0.0008)))
+	if blueprint.attack.is_gte(500):
+		min_count = Big.new(maxf(1, round(blueprint.attack.to_float() * 0.0003)))
+		max_count = Big.new(maxf(1, round(blueprint.attack.to_float() * 0.0008)))
 	
 	var dungeon: Dungeon = Dungeon.new()
 	dungeon.name = DungeonNames.random_name()
 	var mercy: int = 0
 	var total_attack: Big = Big.ZERO
-	while total_attack.is_lt(target_attack) and mercy < 1000:
+	while total_attack.is_lt(blueprint.attack) and mercy < 1000:
 		var count: Big = Big.new(round(_rng.randf_range(min_count.to_float(), max_count.to_float())))
-		var type: Gobs.Type = composition["types"][_rng.rand_weighted(composition["weights"])]
+		var type: Gobs.Type = blueprint.composition["types"][_rng.rand_weighted(blueprint.composition["weights"])]
 		var new_recruit: Gob = dungeon.army.generate_random_recruit({
 			"count": count,
 			"type": type,
-			"gold_factor": RIPOFF_FACTOR,
+			"gold_factor": blueprint.gold_factor,
 		})
 		dungeon.army.add_gob(new_recruit)
 		total_attack = Big.add(total_attack, Big.mul(new_recruit.attack, new_recruit.get_count()))
@@ -124,23 +137,31 @@ static func _generate_dungeon_for_archetype(target_attack: Big, composition: Dic
 	return dungeon
 
 
-static func generate_random_dungeon(target_attack: Big) -> Dungeon:
-	var allow_advanced_types: bool = target_attack.is_gte(200)
-	var composition: Dictionary[String, Variant] = _generate_random_composition(allow_advanced_types)
-	var dungeon: Dungeon = _generate_dungeon_for_archetype(target_attack, composition)
+static func generate_random_dungeon(blueprint: DungeonBlueprint) -> Dungeon:
+	_generate_random_composition(blueprint)
+	var dungeon: Dungeon = _generate_dungeon_for_archetype(blueprint)
 	
 	if Global.verbose_stdout_mode:
 		print("----------")
 		print("Generated new dungeon: %s" % [dungeon.name])
 		var composition_json_dict: Dictionary[String, Variant] = {}
-		for i: int in composition["types"].size():
-			var type: Gobs.Type = composition["types"][i]
-			var weight: float = composition["weights"][i]
+		for i: int in blueprint.composition["types"].size():
+			var type: Gobs.Type = blueprint.composition["types"][i]
+			var weight: float = blueprint.composition["weights"][i]
 			composition_json_dict[Utils.enum_to_snake_case(Gobs.Type, type)] = weight
 		print("Composition: %s" % [composition_json_dict])
 		print("Army (%s gobs): %s" % [dungeon.army.gobs.size(), dungeon.army.get_summary()])
 	
 	return dungeon
+
+
+static func calculate_boss_dungeon_attack(boss_index: int) -> Big:
+	var boss_dungeon_goblin_count: Big = Big.new(100 * pow(60.0, boss_index))
+	# If we consider an "average goblin" a $20 level 4 goblin with 8 attack, then a dungeon with 100 goblins
+	# should have about 800 attack.
+	var boss_dungeon_goblin_attack: Big = Big.mul(boss_dungeon_goblin_count, 8)
+	boss_dungeon_goblin_attack = Big.min(boss_dungeon_goblin_attack, MAX_DUNGEON_STRENGTH)
+	return boss_dungeon_goblin_attack
 
 
 class DungeonArchetype:
@@ -160,9 +181,12 @@ class DungeonArchetype:
 				if s.contains("angel") || s.contains("devil"):
 					_advanced_types = true
 	
-	func roll_composition(allow_advanced_types: bool = true) -> Dictionary[String, Variant]:
+	
+	func roll_composition(blueprint: DungeonBlueprint) -> Dictionary[String, Variant]:
 		var candidate_types: Array[Gobs.Type] = []
-		if allow_advanced_types:
+		if blueprint.forced_types:
+			candidate_types.assign(blueprint.forced_types)
+		elif blueprint.allow_advanced_types:
 			candidate_types.assign(Gobs.Type.values())
 		else:
 			candidate_types.assign([Gobs.Type.FIRE, Gobs.Type.WATER, Gobs.Type.GRASS])
@@ -194,3 +218,11 @@ class DungeonArchetype:
 	
 	func has_advanced_types() -> bool:
 		return _advanced_types
+
+
+class DungeonBlueprint:
+	var attack: Big = Big.ZERO
+	var gold_factor: float = DungeonGenerator.RIPOFF_FACTOR
+	var allow_advanced_types: bool = false
+	var forced_types: Array[Gobs.Type] = []
+	var composition: Dictionary[String, Variant] = {}

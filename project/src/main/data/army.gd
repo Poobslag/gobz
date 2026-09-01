@@ -62,13 +62,9 @@ func generate_random_recruit(data: Dictionary[String, Variant] = {}) -> Gob:
 	else:
 		var types: Array[Gobs.Type] = \
 				[Gobs.FIRE, Gobs.WATER, Gobs.GRASS, Gobs.ANGEL, Gobs.DEVIL]
-		var weights: PackedFloat32Array
-		if total_goblins.is_lt(20):
-			weights = [1.0, 1.0, 1.0, 0.0, 0.0]
-		elif total_goblins.is_lt(200):
-			weights = [1.0, 1.0, 1.0, 0.4, 0.4]
-		else:
-			weights = [1.0, 1.0, 1.0, 1.0, 1.0]
+		var weights: PackedFloat32Array = [1.0, 1.0, 1.0, 1.0, 1.0]
+		if data.has("type_weights"):
+			weights = data["type_weights"]
 		gob.type = types[rng.rand_weighted(weights)]
 	
 	# initialize attack/hp/cost
