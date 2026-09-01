@@ -6,8 +6,8 @@ const RIPOFF_FACTOR: float = 0.75
 ## Increases the gold given in boss dungeons. 2.0x = killing one goblin lets you recruit two goblins.
 const BOSS_REWARD_MULTIPLIER: float = 4.0
 
-## We limit the size of regular dungeons so the player can't massively outscale the boss. If the boss only has 100
-## goblins, then we limit dungeon size so the player can't get more than 16 goblins per battle.
+## We cap non-boss dungeon size so the player can't massively outscale the boss. 0.15 = if the boss has 100
+## attack, the player should only gain 15 attack from clearing a non-boss dungeon.
 const BOSS_PROGRESS_CAP: float = 0.18
 
 const MAX_DUNGEON_STRENGTH: float = 6.9e267
@@ -184,7 +184,7 @@ class DungeonArchetype:
 	
 	func roll_composition(blueprint: DungeonBlueprint) -> Dictionary[String, Variant]:
 		var candidate_types: Array[Gobs.Type] = []
-		if blueprint.forced_types:
+		if not blueprint.forced_types.is_empty():
 			candidate_types.assign(blueprint.forced_types)
 		elif blueprint.allow_advanced_types:
 			candidate_types.assign(Gobs.Type.values())
