@@ -146,10 +146,8 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 	gold = Big.new(json.get("gold", 0))
 	gobs.clear()
 	for gob_json: Dictionary in json.get("gobs", []):
-		var typed_gob_json: Dictionary[String, Variant] = {}
-		typed_gob_json.assign(gob_json)
 		var gob: Gob = PlayerData.create_gob()
-		gob.from_json_dict(typed_gob_json)
+		gob.from_json_dict(Utils.typed_json_dict(gob_json))
 		gobs.append(gob)
 
 
@@ -178,13 +176,10 @@ func from_glob(glob: String) -> void:
 	if result != OK:
 		push_error("Error in glob: (%s) %s" % [test_json_conv.get_error_line(), test_json_conv.data])
 	if test_json_conv.data is Dictionary:
-		var json: Dictionary[String, Variant] = {}
-		json.assign(test_json_conv.data)
-		from_json_dict(json)
+		from_json_dict(Utils.typed_json_dict(test_json_conv.data))
 
 
 static func json_dict_from_glob(glob: String) -> Dictionary[String, Variant]:
-	var json: Dictionary[String, Variant] = {}
 	var compressed_bytes: PackedByteArray = Marshalls.base64_to_raw(glob)
 	var json_bytes: PackedByteArray = compressed_bytes.decompress_dynamic(-1, FileAccess.COMPRESSION_GZIP)
 	var json_str: String = json_bytes.get_string_from_utf8()
@@ -192,11 +187,11 @@ static func json_dict_from_glob(glob: String) -> Dictionary[String, Variant]:
 	var result: int = test_json_conv.parse(json_str)
 	if result != OK:
 		push_error("Error in glob: (%s) %s" % [test_json_conv.get_error_line(), test_json_conv.data])
+		return {}
 	if not test_json_conv.data is Dictionary:
 		push_error("Error in glob: Glob was not a json dictionary.")
-	else:
-		json.assign(test_json_conv.data)
-	return json
+		return {}
+	return Utils.typed_json_dict(test_json_conv.data)
 
 
 static func glob_from_json_dict(json: Dictionary[String, Variant]) -> String:

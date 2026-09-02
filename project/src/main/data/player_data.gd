@@ -8,6 +8,7 @@ var day: int = 1
 var army: Army = Army.new()
 var gold: Big = Big.ZERO
 var inventory: Inventory = Inventory.new()
+var morale_digest: MoraleDigest = MoraleDigest.new()
 var dungeons: Array[Dungeon] = []
 var dungeon_index: int
 var market: Market = Market.new()
@@ -65,6 +66,8 @@ func reset() -> void:
 	day = 1
 	army.reset()
 	gold = Big.ZERO
+	inventory.reset()
+	morale_digest.reset()
 	dungeons = []
 	dungeon_index = 0
 	home_base_multiplier = Big.ONE
@@ -144,6 +147,7 @@ func to_json_dict() -> Dictionary[String, Variant]:
 	result["army"] = army.to_glob()
 	result["gold"] = gold.to_float()
 	result["inventory"] = inventory.to_json_dict()
+	result["morale_digest"] = morale_digest.to_json_dict()
 	var dungeons_json: Array[Dictionary] = []
 	for dungeon: Dungeon in dungeons:
 		dungeons_json.append(dungeon.to_json_dict())
@@ -164,14 +168,12 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 		army.from_glob(json["army"])
 	gold = Big.new(json.get("gold", 0.0))
 	if json.has("inventory"):
-		var typed_inventory_json: Dictionary[String, Variant] = {}
-		typed_inventory_json.assign(json["inventory"])
-		inventory.from_json_dict(typed_inventory_json)
+		inventory.from_json_dict(Utils.typed_json_dict(json["inventory"]))
+	if json.has("morale_digest"):
+		morale_digest.from_json_dict(Utils.typed_json_dict(json["morale_digest"]))
 	for dungeon_json: Dictionary in json.get("dungeons", []):
 		var dungeon: Dungeon = Dungeon.new()
-		var typed_dungeon_json: Dictionary[String, Variant] = {}
-		typed_dungeon_json.assign(dungeon_json)
-		dungeon.from_json_dict(typed_dungeon_json)
+		dungeon.from_json_dict(Utils.typed_json_dict(dungeon_json))
 		dungeons.append(dungeon)
 	home_base_multiplier = Big.new(json.get("home_base_multiplier", 1.0))
 	heal_multiplier = Big.new(json.get("heal_multiplier", 1.0))

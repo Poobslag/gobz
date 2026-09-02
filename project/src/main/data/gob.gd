@@ -172,9 +172,7 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 	gold = json.get("gold", 0)
 	xp = json.get("xp", 0)
 	if json.has("morale"):
-		var typed_morale_json: Dictionary[String, Variant] = {}
-		typed_morale_json.assign(json["morale"])
-		morale.from_json_dict(typed_morale_json)
+		morale.from_json_dict(Utils.typed_json_dict(json["morale"]))
 	
 	increase_wound_severity()
 

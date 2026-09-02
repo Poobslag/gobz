@@ -59,15 +59,12 @@ func _load_player_data_internal(player_data: PlayerData, loaded_save_slot: int) 
 		push_error("Error in %s: (%s) %s" %
 				[filename, test_json_conv.get_error_line(), test_json_conv.get_error_message()])
 		return ERR_FILE_CORRUPT
-	var save_json: Dictionary[String, Variant] = {}
-	save_json.assign(test_json_conv.data)
+	var save_json: Dictionary[String, Variant] = Utils.typed_json_dict(test_json_conv.data)
 	
 	if _upgrader.needs_upgrade(save_json):
 		_upgrader.upgrade(save_json)
 	
-	var typed_data_dict: Dictionary[String, Variant] = {}
-	typed_data_dict.assign(save_json)
-	player_data.from_json_dict(typed_data_dict)
+	player_data.from_json_dict(Utils.typed_json_dict(save_json))
 	return OK
 
 
