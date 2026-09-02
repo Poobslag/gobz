@@ -139,6 +139,17 @@ func test_morale_desc() -> void:
 	assert_eq(event.get_desc(gob), "Morson grew restless during their day off.")
 
 
+func test_morale_gob_ref() -> void:
+	gob = new_gob("🔥 3")
+	gob.name = "Morson"
+	var event: MoraleEvent = MoraleEvent.new()
+	event.type = MoraleEvent.MADE_FRIEND
+	event.delta = 10.0
+	event.params = [{"id": 714, "name": "Jekzar"}]
+	gob.morale.add_event(event)
+	assert_eq(event.get_desc(gob), "Morson became friends with Jekzar.")
+
+
 func test_convert_morale_to_json_and_back() -> void:
 	gob = new_gob("🔥 3")
 	var event: MoraleEvent = MoraleEvent.new()
