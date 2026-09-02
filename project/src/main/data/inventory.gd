@@ -2,6 +2,10 @@ class_name Inventory
 
 var items: Dictionary[Items.Type, Big] = {}
 
+func reset() -> void:
+	items.clear()
+
+
 func add_item(type: Items.Type, count: Big) -> void:
 	if not items.has(type):
 		items[type] = count

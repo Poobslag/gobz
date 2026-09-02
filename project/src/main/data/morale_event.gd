@@ -32,9 +32,7 @@ func get_desc(gob: Gob) -> String:
 
 func gob_ref_from_param(i: int) -> GobRef:
 	var gob_ref: GobRef = GobRef.new()
-	var gob_ref_dict: Dictionary[String, Variant] = {}
-	gob_ref_dict.assign(params[i])
-	gob_ref.from_json_dict(gob_ref_dict)
+	gob_ref.from_json_dict(Utils.typed_json_dict(params[i]))
 	return gob_ref
 
 

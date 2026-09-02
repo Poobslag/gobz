@@ -23,10 +23,8 @@ func get_event(index: int) -> MoraleEvent:
 func from_json_dict(json: Dictionary[String, Variant]) -> void:
 	value = json.get("value", 0.0)
 	for event_json_dict: Dictionary in json.get("events", []):
-		var typed_event_json_dict: Dictionary[String, Variant] = {}
-		typed_event_json_dict.assign(event_json_dict)
 		var event: MoraleEvent = MoraleEvent.new()
-		event.from_json_dict(typed_event_json_dict)
+		event.from_json_dict(Utils.typed_json_dict(event_json_dict))
 		_events.append(event)
 
 

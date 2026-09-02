@@ -12,8 +12,7 @@ static func load_player_data(filename: String) -> Error:
 		push_error("Error in %s: (%s) %s" %
 				[filename, test_json_conv.get_error_line(), test_json_conv.get_error_message()])
 		return ERR_FILE_CORRUPT
-	var save_json: Dictionary[String, Variant] = {}
-	save_json.assign(test_json_conv.data)
+	var save_json: Dictionary[String, Variant] = Utils.typed_json_dict(test_json_conv.data)
 	
 	var upgrader := PlayerSaveUpgrader.new()
 	if upgrader.needs_upgrade(save_json):

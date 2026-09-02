@@ -86,3 +86,10 @@ static func remove_dir_recursive(dir: String) -> void:
 ## Truncates a number to an integer by removing the fractional part of the number.
 static func trunc(f: float) -> float:
 	return floor(abs(f)) * sign(f)
+
+
+## Converts an untyped Dictionary (e.g. from JSON.parse()) into a typed Dictionary[String, Variant]
+static func typed_json_dict(from: Dictionary) -> Dictionary[String, Variant]:
+	var result: Dictionary[String, Variant] = {}
+	result.assign(from)
+	return result
