@@ -46,7 +46,7 @@ func test_generate_exact_types() -> void:
 	blueprint.attack = Big.new(50)
 	var dungeon: Dungeon = DungeonGenerator.generate_random_dungeon(blueprint)
 	assert_between(dungeon.army.gobs.size(), 2, 40)
-	for gob in dungeon.army.gobs:
+	for gob: Gob in dungeon.army.gobs:
 		assert_true(gob.type in [Gobs.Type.DEVIL, Gobs.Type.GRASS])
 
 
