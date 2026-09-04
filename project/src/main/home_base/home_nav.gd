@@ -7,9 +7,8 @@ signal before_scene_change
 var location_index: int = 0:
 	set(value):
 		location_index = value
-		if not is_node_ready():
-			return
-		_refresh()
+		if is_node_ready():
+			_refresh()
 
 func _ready() -> void:
 	_refresh()

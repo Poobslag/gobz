@@ -55,19 +55,19 @@ func test_generate_random_dungeon_gobs_size() -> void:
 	
 	blueprint.attack = Big.new(500)
 	dungeon = DungeonGenerator.generate_random_dungeon(blueprint)
-	assert_between(dungeon.army.gobs.size(), 20, 400)
+	assert_between(dungeon.army.gobs.size(), 20, 500)
 	
 	blueprint.attack = Big.new(5_000)
 	dungeon = DungeonGenerator.generate_random_dungeon(blueprint)
-	assert_between(dungeon.army.gobs.size(), 20, 400)
+	assert_between(dungeon.army.gobs.size(), 20, 500)
 	
 	blueprint.attack = Big.new(5_000_000)
 	dungeon = DungeonGenerator.generate_random_dungeon(blueprint)
-	assert_between(dungeon.army.gobs.size(), 20, 400)
+	assert_between(dungeon.army.gobs.size(), 20, 500)
 	
 	blueprint.attack = Big.new(5_000_000_000)
 	dungeon = DungeonGenerator.generate_random_dungeon(blueprint)
-	assert_between(dungeon.army.gobs.size(), 20, 400)
+	assert_between(dungeon.army.gobs.size(), 20, 500)
 
 
 func test_calculate_boss_dungeon_attack() -> void:

@@ -202,12 +202,11 @@ static func resolve_attack(attack: Attack, target: Gob, attacks_remaining: Big, 
 	
 	# apply full hits (to kill healthy back goblins)
 	var healthy_to_dead: float = roundf(full_hits / hits_per_kill)
-	target.back_count = Big.sub(target.back_count, healthy_to_dead)
+	target.kill_back_healthy(Big.new(healthy_to_dead))
 	
 	# apply wounded half-hits (to kill wounded back goblins)
 	var wounded_to_dead: float = roundf(wounded_half_hits / hits_per_wound)
-	target.back_count = Big.sub(target.back_count, wounded_to_dead)
-	target.back_wounded = Big.sub(target.back_wounded, wounded_to_dead)
+	target.kill_back_wounded(Big.new(wounded_to_dead))
 	
 	# apply healthy half-hits (to wound healthy back goblins)
 	# ensure we don't try to wound more guys than possible
@@ -216,7 +215,7 @@ static func resolve_attack(attack: Attack, target: Gob, attacks_remaining: Big, 
 		hits_taken = Big.sub(hits_taken, excess_hits)
 		healthy_half_hits -= excess_hits
 	var healthy_to_wounded: float = roundf(healthy_half_hits / hits_per_wound)
-	target.back_wounded = Big.add(target.back_wounded, healthy_to_wounded)
+	target.wound_back(Big.new(healthy_to_wounded))
 	
 	# apply front hits (to wound/kill the front goblin)
 	if front_hits >= hits_to_kill_front:

@@ -133,10 +133,10 @@ func test_morale_desc() -> void:
 	event.type = MoraleEvent.DAY_OFF
 	event.delta = 10.0
 	gob.morale.add_event(event)
-	assert_eq(event.get_desc(gob), "Morson enjoyed their day off.")
+	assert_eq(event.get_desc(gob), "Relaxing day off")
 	
 	event.delta = -10.0
-	assert_eq(event.get_desc(gob), "Morson grew restless during their day off.")
+	assert_eq(event.get_desc(gob), "Boring day off")
 
 
 func test_morale_gob_ref() -> void:
@@ -147,7 +147,7 @@ func test_morale_gob_ref() -> void:
 	event.delta = 10.0
 	event.params = [{"id": 714, "name": "Jekzar"}]
 	gob.morale.add_event(event)
-	assert_eq(event.get_desc(gob), "Morson became friends with Jekzar.")
+	assert_eq(event.get_desc(gob), "Befriended Jekzar")
 
 
 func test_convert_morale_to_json_and_back() -> void:
@@ -163,6 +163,47 @@ func test_convert_morale_to_json_and_back() -> void:
 	assert_eq(gob.morale.size(), 1)
 	assert_eq(gob.morale.get_event(0).type, MoraleEvent.DAY_OFF)
 	assert_eq(gob.morale.get_event(0).delta, 10.0)
+
+
+func test_kill_back_wounded() -> void:
+	gob = new_gob("🔥 3")
+	gob.back_count = Big.new(9)
+	gob.back_wounded = Big.new(4)
+	
+	assert_eq(gob.kill_back_wounded(Big.new(3)).to_int(), 3)
+	assert_eq(gob.back_count.to_int(), 6)
+	assert_eq(gob.back_wounded.to_int(), 1)
+	
+	assert_eq(gob.kill_back_wounded(Big.new(3)).to_int(), 1)
+	assert_eq(gob.back_count.to_int(), 5)
+	assert_eq(gob.back_wounded.to_int(), 0)
+
+
+func test_kill_back_healthy() -> void:
+	gob = new_gob("🔥 3")
+	gob.back_count = Big.new(9)
+	gob.back_wounded = Big.new(4)
+	
+	assert_eq(gob.kill_back_healthy(Big.new(3)).to_int(), 3)
+	assert_eq(gob.back_count.to_int(), 6)
+	assert_eq(gob.back_wounded.to_int(), 4)
+	
+	assert_eq(gob.kill_back_healthy(Big.new(3)).to_int(), 2)
+	assert_eq(gob.back_count.to_int(), 4)
+
+
+func test_wound_back() -> void:
+	gob = new_gob("🔥 3")
+	gob.back_count = Big.new(9)
+	gob.back_wounded = Big.new(4)
+	
+	assert_eq(gob.wound_back(Big.new(3)).to_int(), 3)
+	assert_eq(gob.back_count.to_int(), 9)
+	assert_eq(gob.back_wounded.to_int(), 7)
+	
+	assert_eq(gob.wound_back(Big.new(3)).to_int(), 2)
+	assert_eq(gob.back_count.to_int(), 9)
+	assert_eq(gob.back_wounded.to_int(), 9)
 
 
 func new_gob(s: String) -> Gob:

@@ -9,6 +9,7 @@ var gob: Gob
 func _ready() -> void:
 	gob = PlayerData.army.generate_random_recruit({
 		"count": PlayerData.home_base_multiplier,
+		"max_level": DungeonDirector.get_recruit_max_level(PlayerData.day),
 		"type_weights": DungeonDirector.get_recruit_type_weights(PlayerData.day),
 		})
 	

@@ -25,16 +25,14 @@ const FONT_COLOR_PROPERTIES: Array[String] = [
 @export var desc: String:
 	set(value):
 		desc = value
-		if not is_node_ready():
-			return
-		_refresh()
+		if is_node_ready():
+			_refresh()
 
 @export var state: State = State.EXISTS:
 	set(value):
 		state = value
-		if not is_node_ready():
-			return
-		_refresh()
+		if is_node_ready():
+			_refresh()
 
 func _ready() -> void:
 	%PlayButton.pressed.connect(play_pressed.emit)

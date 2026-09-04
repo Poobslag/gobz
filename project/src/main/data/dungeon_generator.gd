@@ -129,6 +129,7 @@ static func _generate_dungeon_for_archetype(blueprint: DungeonBlueprint) -> Dung
 			"count": count,
 			"type": type,
 			"gold_factor": blueprint.gold_factor,
+			"max_level": DungeonDirector.get_recruit_max_level(PlayerData.day),
 		})
 		dungeon.army.add_gob(new_recruit)
 		total_attack = Big.add(total_attack, Big.mul(new_recruit.attack, new_recruit.get_count()))

@@ -1,3 +1,4 @@
+@tool
 class_name Big extends Resource
 
 const MIN_INT: int = -999_999_999_999_999_999
@@ -64,6 +65,7 @@ func to_aa() -> String:
 	while ipart >= 1000:
 		result = ",%03d%s" % [fmod(ipart, 1000), result]
 		ipart = floor(ipart / 1000)
+	
 	if not _suffixes_aa.has(suffix_key):
 		var offset: int = (suffix_key - 1) % 21
 		@warning_ignore("integer_division")
@@ -73,6 +75,7 @@ func to_aa() -> String:
 	result = "%d%s%s" % [ipart, result, suffix]
 	if _value < 0:
 		result = "%s%s" % ["-", result]
+	
 	return result
 
 

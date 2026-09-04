@@ -121,6 +121,25 @@ func kill_front() -> void:
 		back_count = Big.sub(back_count, Big.ONE)
 
 
+func kill_back_healthy(count: Big) -> Big:
+	var to_kill: Big = Big.new(min(count.to_float(), back_count.to_float() - back_wounded.to_float()))
+	back_count = Big.sub(back_count, to_kill)
+	return to_kill
+
+
+func kill_back_wounded(count: Big) -> Big:
+	var to_kill: Big = Big.new(min(count.to_float(), back_wounded.to_float(), back_count.to_float()))
+	back_count = Big.sub(back_count, to_kill)
+	back_wounded = Big.sub(back_wounded, to_kill)
+	return to_kill
+
+
+func wound_back(count: Big) -> Big:
+	var to_wound: Big = Big.new(min(count.to_float(), back_count.to_float() - back_wounded.to_float()))
+	back_wounded = Big.add(back_wounded, to_wound)
+	return to_wound
+
+
 func level_up() -> void:
 	xp = max(0, xp - get_exp_threshold())
 	var hp_gain: int = 0
