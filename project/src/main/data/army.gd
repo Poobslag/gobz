@@ -111,6 +111,8 @@ func generate_random_recruit(data: Dictionary[String, Variant] = {}) -> Gob:
 	if data.has("count"):
 		gob.back_count = Big.new((gob.back_count.to_float() + 1) * data["count"].to_float() - 1)
 	
+	gob.morale.randomize_value()
+	
 	return gob
 
 
@@ -145,6 +147,33 @@ func get_summary() -> ArmySummary:
 		result.attack_by_type[type] = Big.new(attack_by_type[type])
 	result.total_gold = Big.new(total_gold)
 	
+	return result
+
+
+func get_average_morale() -> float:
+	var count: float = PlayerData.army.get_total_goblins().to_float()
+	if count == 0.0:
+		return 0.0
+	var morale_sum: float = 0
+	for gob: Gob in PlayerData.army.gobs:
+		morale_sum += gob.get_count().to_float() * gob.morale.value
+	return morale_sum / count
+
+
+func get_average_morale_by_type() -> Dictionary[Gobs.Type, float]:
+	var morale_sum_by_type: Dictionary[Gobs.Type, float] = {}
+	var count_by_type: Dictionary[Gobs.Type, float] = {}
+	for type: Gobs.Type in Gobs.Type.values():
+		morale_sum_by_type[type] = 0.0
+		count_by_type[type] = 0.0
+	var result: Dictionary[Gobs.Type, float] = {}
+	for gob: Gob in PlayerData.army.gobs:
+		morale_sum_by_type[gob.type] += gob.get_count().to_float() * gob.morale.value
+		count_by_type[gob.type] += gob.get_count().to_float()
+	for type: Gobs.Type in Gobs.Type.values():
+		var morale_sum: float = morale_sum_by_type.get(type, 0.0)
+		var count: float = count_by_type.get(type, 0.0)
+		result[type] = 0.0 if count == 0 else morale_sum / count
 	return result
 
 

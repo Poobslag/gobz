@@ -34,6 +34,28 @@ const GOBLIN_TYPES_BY_EMOJI: Dictionary[String, Type] = {
 	"😈": DEVIL,
 }
 
+const MORALE_THRESHOLDS: Array[Array] = [
+	[0, "😭", "WTF"],
+	[4, "😭", "Traumitized"],
+	[8, "😥", "Awful"],
+	[16, "😥", "All messed up"],
+	[24, "☹", "Pretty bad"],
+	[30, "☹", "Bummed out"],
+	[36, "😕", "Distracted"],
+	[40, "😕", "Meh"],
+	[45, "😐", "Whatever"],
+	[50, "😐", "Fine"],
+	[55, "🙂", "Alright"],
+	[60, "🙂", "Pretty good"],
+	[64, "🙂", "Good"],
+	[70, "😀", "Pretty Great"],
+	[76, "😀", "Great"],
+	[84, "😄", "Amazing"],
+	[92, "😄", "Awesome"],
+	[96, "🤩", "Totally awesome"],
+	[100, "🤩", "LFG"],
+]
+
 static func emoji_from_type(type: Type) -> String:
 	return EMOJIS_BY_GOBLIN_TYPE[type]
 
@@ -58,3 +80,21 @@ static func army_bbcode(army: Army) -> String:
 					summary.attack_by_type[goblin_type].to_aa()]
 	
 	return result.strip_edges()
+
+
+static func morale_bbcode(morale: float, bold: bool = false) -> String:
+	var threshold_index: int = MORALE_THRESHOLDS.size() - 1
+	for i in MORALE_THRESHOLDS.size() - 2:
+		if morale <= MORALE_THRESHOLDS[i][0]:
+			threshold_index = i
+			break
+	var emoji: String = MORALE_THRESHOLDS[threshold_index][1]
+	var text: String = MORALE_THRESHOLDS[threshold_index][2]
+	
+	var percent: String = "%s%%" % [roundi(clampf(morale, 0.0, 100.0))]
+	var result: String
+	if bold:
+		result = "%s[b] %s (%s)[/b]" % [emoji, text, percent]
+	else:
+		result = "%s %s (%s)" % [emoji, text, percent]
+	return result

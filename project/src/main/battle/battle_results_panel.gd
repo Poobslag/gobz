@@ -106,6 +106,7 @@ func _end_battle() -> void:
 		PlayerData.bosses_defeated += 1
 	DungeonDirector.cycle_dungeons()
 	HomeBaseData.heal_data.mark_groups_dirty()
+	HomeBaseData.party_data.cycle_parties()
 	PlayerData.market.mark_costs_dirty()
 	PlayerData.print_gold_history()
 

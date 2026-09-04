@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://cr6qnl0sdo2gw"]
+
+[ext_resource type="Script" uid="uid://bst88vv8wmcla" path="res://src/main/home_base/party_message_shower.gd" id="1_jnbbx"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cj732"]
+bg_color = Color(0.16862746, 0.2784314, 0.21176471, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="MessageShower" type="PanelContainer" unique_id=1098626767]
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_cj732")
+script = ExtResource("1_jnbbx")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=692359422]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer" unique_id=2011365147]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 71)
+layout_mode = 2
+bbcode_enabled = true
+text = "[i](Let's do something fun!)[/i]"
+scroll_active = false
+scroll_following = true
+visible_characters_behavior = 1

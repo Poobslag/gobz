@@ -1,0 +1,218 @@
+[gd_scene format=3 uid="uid://cnw1rmfc3p7hh"]
+
+[ext_resource type="Script" uid="uid://c8dce2pclvj46" path="res://src/main/home_base/party_screen.gd" id="1_37b2g"]
+[ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/ui/screen_panel.tscn" id="2_r6ljt"]
+[ext_resource type="PackedScene" uid="uid://dqjjgkwxab0ht" path="res://src/main/ui/splash_shower.tscn" id="3_5ludj"]
+[ext_resource type="PackedScene" uid="uid://dbm3uqjrgg63m" path="res://src/main/ui/splash_art.tscn" id="4_skb38"]
+[ext_resource type="Texture2D" uid="uid://bu4t5ousnvj2d" path="res://assets/main/splash/recruit.png" id="5_ifnwp"]
+[ext_resource type="PackedScene" uid="uid://ctpm75l6a3tx0" path="res://src/main/home_base/day_label.tscn" id="6_8g6io"]
+[ext_resource type="PackedScene" uid="uid://cir5qcucd02dt" path="res://src/main/home_base/party_row.tscn" id="6_rulba"]
+[ext_resource type="PackedScene" uid="uid://6sjerx040ugp" path="res://src/main/home_base/party_gob_row.tscn" id="7_5ludj"]
+[ext_resource type="PackedScene" uid="uid://cr6qnl0sdo2gw" path="res://src/main/home_base/party_message_shower.tscn" id="7_r6ljt"]
+[ext_resource type="PackedScene" uid="uid://g7b12cf0ow6o" path="res://src/main/home_base/home_nav.tscn" id="8_5gpve"]
+[ext_resource type="PackedScene" uid="uid://dvdna5v6cbdwc" path="res://src/main/home_base/inventory_header.tscn" id="9_1jy88"]
+[ext_resource type="Script" uid="uid://qu3s0w2fnrmu" path="res://src/main/home_base/party_row.gd" id="9_skb38"]
+[ext_resource type="PackedScene" uid="uid://h73338s4fipn" path="res://src/main/ui/command_palette.tscn" id="10_winkc"]
+[ext_resource type="PackedScene" uid="uid://dn3pdlhuw1iap" path="res://src/main/home_base/home_base_tutorial_panel.tscn" id="11_14txa"]
+
+[node name="PartyScreen" type="Control" unique_id=1368189123]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_37b2g")
+
+[node name="ScreenPanel" parent="." unique_id=806142582 instance=ExtResource("2_r6ljt")]
+layout_mode = 1
+color = Color(0.27058825, 0.5411765, 0.38039216, 1)
+
+[node name="SplashShower" parent="ScreenPanel/MarginContainer/Panel" parent_id_path=PackedInt32Array(806142582, 2033304710) index="0" unique_id=731007175 instance=ExtResource("3_5ludj")]
+layout_mode = 0
+offset_right = 1052.0
+offset_bottom = 548.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BottomRight" type="Control" parent="ScreenPanel/MarginContainer/Panel/SplashShower" unique_id=427641823]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -11.0
+offset_top = -27.0
+offset_right = 29.0
+offset_bottom = 13.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="SplashArt1" parent="ScreenPanel/MarginContainer/Panel/SplashShower/BottomRight" unique_id=1575316682 instance=ExtResource("4_skb38")]
+visible = false
+modulate = Color(0.12941177, 0.17254902, 0.14509805, 1)
+position = Vector2(-194, -162)
+scale = Vector2(0.66, 0.66)
+texture = ExtResource("5_ifnwp")
+
+[node name="SplashArt3" parent="ScreenPanel/MarginContainer/Panel/SplashShower/BottomRight" unique_id=1172502470 instance=ExtResource("4_skb38")]
+visible = false
+modulate = Color(0.12941177, 0.17254902, 0.14509805, 1)
+position = Vector2(-153, -117)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5_ifnwp")
+flip_h = true
+
+[node name="SplashArt2" parent="ScreenPanel/MarginContainer/Panel/SplashShower/BottomRight" unique_id=320577346 instance=ExtResource("4_skb38")]
+modulate = Color(0.27058825, 0.5411765, 0.38039216, 0.5019608)
+position = Vector2(-220, -256)
+texture = ExtResource("5_ifnwp")
+
+[node name="DayLabel" parent="ScreenPanel/MarginContainer/Panel" parent_id_path=PackedInt32Array(806142582, 2033304710) index="1" unique_id=513796362 instance=ExtResource("6_8g6io")]
+unique_name_in_owner = true
+modulate = Color(0.12941177, 0.17254902, 0.14509805, 1)
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+
+[node name="MarginContainer" parent="ScreenPanel/MarginContainer/Panel" parent_id_path=PackedInt32Array(806142582, 2033304710) index="2" unique_id=1781904422]
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer" index="0" unique_id=1694624302]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer" unique_id=228279447]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=353040870]
+layout_mode = 2
+
+[node name="ArmyLabel" type="RichTextLabel" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer3" unique_id=1099782014]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+text = "Your army:
+[b]240m goblins,[/b] 😐 Lacrimose (50%)
+🔥: 1 goblins, 🙂 Nice (61%)
+🌳: 2 goblins, 🙁 Horrified (21%)"
+fit_content = true
+scroll_active = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer3" unique_id=1365123277]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AskAroundButton" type="Button" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer3/VBoxContainer" unique_id=156145342]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Ask around"
+
+[node name="PartyGobRows" type="VBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer3/VBoxContainer" unique_id=2033483395]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 170)
+layout_mode = 2
+theme_override_constants/separation = -2
+
+[node name="PartyGobRow" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer3/VBoxContainer/PartyGobRows" unique_id=667722124 instance=ExtResource("7_5ludj")]
+layout_mode = 2
+
+[node name="PartyGobRow2" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer3/VBoxContainer/PartyGobRows" unique_id=1326592508 instance=ExtResource("7_5ludj")]
+layout_mode = 2
+
+[node name="PartyGobRow3" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer3/VBoxContainer/PartyGobRows" unique_id=161564801 instance=ExtResource("7_5ludj")]
+layout_mode = 2
+
+[node name="PartyGobRow4" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer3/VBoxContainer/PartyGobRows" unique_id=88003093 instance=ExtResource("7_5ludj")]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1784303068]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MessageShower" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer" unique_id=1098626767 instance=ExtResource("7_r6ljt")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Parties" type="VBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1381450448]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="PartyRow1" type="HBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Parties" unique_id=616338784]
+layout_mode = 2
+script = ExtResource("9_skb38")
+
+[node name="Button" type="Button" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Parties/PartyRow1" unique_id=1082212655]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_vertical = 4
+text = "🍺15"
+
+[node name="MoraleEffect" type="Label" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Parties/PartyRow1" unique_id=1454501231]
+unique_name_in_owner = true
+layout_mode = 2
+text = "👍🌳🔥 
+👎💧"
+
+[node name="Prompt" type="RichTextLabel" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Parties/PartyRow1" unique_id=499617902]
+unique_name_in_owner = true
+clip_contents = false
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+mouse_filter = 2
+bbcode_enabled = true
+text = "[b][color=green]+10[/color][/b] Massive campwide game of murderball"
+fit_content = true
+autowrap_mode = 0
+
+[node name="PartyRow2" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Parties" unique_id=173315659 instance=ExtResource("6_rulba")]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1327478529]
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+
+[node name="MultiplyButton" type="Button" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1433921640]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "+🍺"
+
+[node name="DivideButton" type="Button" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=269882561]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "-🍺"
+
+[node name="HomeNav" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer" unique_id=1142993029 instance=ExtResource("8_5gpve")]
+layout_mode = 2
+location_index = 2
+
+[node name="InventoryHeader" parent="." unique_id=1067956976 instance=ExtResource("9_1jy88")]
+layout_mode = 1
+offset_bottom = 23.0
+color = Color(0.21960784, 0.4117647, 0.29803923, 1)
+inventory_items = Array[int]([1])
+
+[node name="CommandPalette" parent="." unique_id=1368678133 instance=ExtResource("10_winkc")]
+unique_name_in_owner = true
+
+[node name="TutorialPanel" parent="." unique_id=1007842494 instance=ExtResource("11_14txa")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+
+[editable path="ScreenPanel"]
