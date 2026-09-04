@@ -1,12 +1,17 @@
 extends Node
 ## Stores the player's army.
 
+signal gold_changed
+
 const HOME_BASE_TUTORIAL: String = "home_base_tutorial"
 const BATTLE_TUTORIAL: String = "battle_tutorial"
 
 var day: int = 1
 var army: Army = Army.new()
-var gold: Big = Big.ZERO
+var gold: Big = Big.ZERO:
+	set(value):
+		gold = value
+		gold_changed.emit()
 var inventory: Inventory = Inventory.new()
 var morale_digest: MoraleDigest = MoraleDigest.new()
 var dungeons: Array[Dungeon] = []
@@ -16,6 +21,9 @@ var market: Market = Market.new()
 var home_base_multiplier: Big = Big.ONE
 var heal_multiplier: Big = Big.ONE
 var kitchen_multiplier: Big = Big.ONE
+
+## 0 = no beer, 1 = some beer, 2 = lots of beer
+var party_multiplier: int = 0
 
 var finished_tutorials: Dictionary[String, bool] = {}
 var bosses_defeated: int = 0
@@ -73,6 +81,7 @@ func reset() -> void:
 	home_base_multiplier = Big.ONE
 	heal_multiplier = Big.ONE
 	kitchen_multiplier = Big.ONE
+	party_multiplier = 0
 	finished_tutorials.clear()
 	bosses_defeated = 0
 	_next_gob_id = 0
@@ -84,6 +93,7 @@ func start_new_game() -> void:
 	initialize_starting_army()
 	initialize_starting_inventory()
 	DungeonDirector.cycle_dungeons()
+	HomeBaseData.party_data.cycle_parties()
 
 
 func has_current_dungeon() -> bool:
@@ -155,6 +165,7 @@ func to_json_dict() -> Dictionary[String, Variant]:
 	result["home_base_multiplier"] = home_base_multiplier.to_float()
 	result["heal_multiplier"] = heal_multiplier.to_float()
 	result["kitchen_multiplier"] = kitchen_multiplier.to_float()
+	result["party_multiplier"] = party_multiplier
 	result["finished_tutorials"] = finished_tutorials
 	result["next_gob_id"] = _next_gob_id
 	result["bosses_defeated"] = bosses_defeated
@@ -178,6 +189,7 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 	home_base_multiplier = Big.new(json.get("home_base_multiplier", 1.0))
 	heal_multiplier = Big.new(json.get("heal_multiplier", 1.0))
 	kitchen_multiplier = Big.new(json.get("kitchen_multiplier", 1.0))
+	party_multiplier = json.get("party_multiplier", 1)
 	finished_tutorials.assign(json.get("finished_tutorials", {}))
 	bosses_defeated = json.get("bosses_defeated", 0)
 	_next_gob_id = json.get("next_gob_id", 0)

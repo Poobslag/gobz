@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://cj6wio62n82p5"]
+
+[ext_resource type="Script" uid="uid://bbfgjc2jj2cxi" path="res://src/demo/home_base/demo_party_screen.gd" id="1_n347c"]
+[ext_resource type="PackedScene" uid="uid://cnw1rmfc3p7hh" path="res://src/main/home_base/party_screen.tscn" id="1_w07vy"]
+
+[node name="Demo" type="Control" unique_id=361004091]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_n347c")
+
+[node name="PartyScreen" parent="." unique_id=1368189123 instance=ExtResource("1_w07vy")]
+unique_name_in_owner = true
+layout_mode = 1

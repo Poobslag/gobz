@@ -94,6 +94,7 @@ RESULT=$(grep -R -n "$REGEX" --include="*.gd" project/src \
   | grep -v "heal_data\.gd.*## Calculate count, hurt" \
   | grep -v "morale_digest\.gd.*## Subclasses should" \
   | grep -v "morale_digest\.gd.*## which is affected" \
+  | grep -v "morale_digest\.gd.*## A goblin cannot have" \
   )
 if [ -n "$RESULT" ]; then
   echo ""

@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://by5j7u2v7sewj"]
+
+[ext_resource type="Script" uid="uid://gybx5tyseeij" path="res://src/main/home_base/inventory_header_label.gd" id="1_4tryx"]
+
+[node name="Label" type="Label" unique_id=677130257 groups=["inventory_header_labels"]]
+custom_minimum_size = Vector2(100, 0)
+text = "🌿9,999"
+horizontal_alignment = 1
+script = ExtResource("1_4tryx")
+type = 2

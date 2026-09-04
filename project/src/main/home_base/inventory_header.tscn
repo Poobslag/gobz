@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://dvdna5v6cbdwc"]
+
+[ext_resource type="Script" uid="uid://bd78qvsqt6372" path="res://src/main/home_base/inventory_header.gd" id="1_3up8w"]
+[ext_resource type="PackedScene" uid="uid://du8cu2fuyvb07" path="res://src/main/home_base/inventory_gold_label.tscn" id="2_3up8w"]
+[ext_resource type="PackedScene" uid="uid://by5j7u2v7sewj" path="res://src/main/home_base/inventory_header_label.tscn" id="3_skbvd"]
+[ext_resource type="Script" uid="uid://gybx5tyseeij" path="res://src/main/home_base/inventory_header_label.gd" id="4_5cb11"]
+
+[node name="InventoryHeader" type="ColorRect" unique_id=826478186]
+custom_minimum_size = Vector2(0, 30)
+clip_contents = true
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+focus_mode = 3
+color = Color(0, 0, 0, 1)
+script = ExtResource("1_3up8w")
+inventory_items = Array[int]([3])
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1067956976]
+unique_name_in_owner = true
+propagate_maximum_size = false
+clip_contents = true
+layout_mode = 0
+offset_right = 204.0
+offset_bottom = 30.0
+focus_mode = 3
+mouse_filter = 0
+
+[node name="GoldLabel" parent="HBoxContainer" unique_id=677130257 instance=ExtResource("2_3up8w")]
+layout_mode = 2
+
+[node name="@Label@124595" type="Label" parent="HBoxContainer" unique_id=710464505 groups=["inventory_header_labels"] instance=ExtResource("3_skbvd")]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "🌽9,999"
+horizontal_alignment = 1
+script = ExtResource("4_5cb11")
+type = 3

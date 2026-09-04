@@ -192,6 +192,8 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 	xp = json.get("xp", 0)
 	if json.has("morale"):
 		morale.from_json_dict(Utils.typed_json_dict(json["morale"]))
+	else:
+		morale.randomize_value()
 	
 	increase_wound_severity()
 

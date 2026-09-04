@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://du8cu2fuyvb07"]
+
+[ext_resource type="Script" uid="uid://cb10vkapgp15k" path="res://src/main/home_base/inventory_gold_label.gd" id="1_j056h"]
+
+[node name="Label" type="Label" unique_id=677130257]
+custom_minimum_size = Vector2(100, 0)
+text = "💰9,999"
+horizontal_alignment = 1
+script = ExtResource("1_j056h")

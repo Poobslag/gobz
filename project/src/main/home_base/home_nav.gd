@@ -14,6 +14,7 @@ func _ready() -> void:
 	_refresh()
 	%Home.pressed.connect(change_scene.bind("res://src/main/home_base/home_base_screen.tscn"))
 	%Heal.pressed.connect(change_scene.bind("res://src/main/home_base/heal/heal_screen.tscn"))
+	%Party.pressed.connect(change_scene.bind("res://src/main/home_base/party_screen.tscn"))
 
 
 func change_scene(path: String) -> void:

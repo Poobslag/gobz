@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://6sjerx040ugp"]
+
+[ext_resource type="Script" uid="uid://b3ontn26vikx5" path="res://src/main/home_base/party_gob_row.gd" id="1_7wv4f"]
+
+[node name="PartyGobRow" type="VBoxContainer" unique_id=667722124]
+offset_right = 442.0
+offset_bottom = 44.0
+theme_override_constants/separation = -2
+script = ExtResource("1_7wv4f")
+
+[node name="Name" type="RichTextLabel" parent="." unique_id=1442187186]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 23)
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+text = "🔥 Alan 🙁 Morose (21%)"
+fit_content = true
+
+[node name="Event" type="RichTextLabel" parent="." unique_id=958624617]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+text = "		[i](Hit by blimp, Day 2, [color=red][b]-20[/b][/color])[/i]"
+fit_content = true

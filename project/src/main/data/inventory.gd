@@ -1,5 +1,7 @@
 class_name Inventory
 
+signal inventory_item_changed(type: Items.Type)
+
 var items: Dictionary[Items.Type, Big] = {}
 
 func reset() -> void:
@@ -11,6 +13,7 @@ func add_item(type: Items.Type, count: Big) -> void:
 		items[type] = count
 	else:
 		items[type] = Big.add(items[type], count)
+	inventory_item_changed.emit(type)
 
 
 func get_count(type: Items.Type) -> Big:
@@ -24,6 +27,7 @@ func has_item(type: Items.Type, count: Big) -> bool:
 func take_item(type: Items.Type, count: Big) -> void:
 	if items.has(type):
 		items[type] = Big.new(max(0, items[type].to_float() - count.to_float()))
+	inventory_item_changed.emit(type)
 
 
 func from_json_dict(json: Dictionary[String, Variant]) -> void:
