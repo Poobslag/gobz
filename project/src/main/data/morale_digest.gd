@@ -8,7 +8,7 @@ const CONDITIONS_BY_NAME: Dictionary[String, Script] = {
 static var NAMES_BY_CONDITION: Dictionary[Script, String] = {
 }
 
-var headlines: Array[MoraleHeadline] = []
+var headlines: Array[Headline] = []
 
 static func _static_init() -> void:
 	for name: String in CONDITIONS_BY_NAME:
@@ -20,7 +20,7 @@ func reset() -> void:
 
 
 func add_headline(type: MoraleEvent.MoraleEventType) -> HeadlineBuilder:
-	var headline: MoraleHeadline = MoraleHeadline.new()
+	var headline: Headline = Headline.new()
 	headline.type = type
 	headlines.append(headline)
 	return HeadlineBuilder.new(headline)
@@ -29,7 +29,7 @@ func add_headline(type: MoraleEvent.MoraleEventType) -> HeadlineBuilder:
 func from_json_dict(json: Dictionary[String, Variant]) -> void:
 	headlines.clear()
 	for headline_dict: Dictionary in json.get("headlines", []):
-		var headline: MoraleHeadline = MoraleHeadline.new()
+		var headline: Headline = Headline.new()
 		headline.from_json_dict(Utils.typed_json_dict(headline_dict))
 		headlines.append(headline)
 
@@ -37,12 +37,12 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 func to_json_dict() -> Dictionary[String, Variant]:
 	var result: Dictionary[String, Variant] = {}
 	result["headlines"] = []
-	for headline: MoraleHeadline in headlines:
+	for headline: Headline in headlines:
 		result["headlines"].append(headline.to_json_dict())
 	return result
 
 
-class MoraleHeadline:
+class Headline:
 	var type: MoraleEvent.MoraleEventType
 	
 	var conditions: Array[MoraleCondition] = []
@@ -124,9 +124,9 @@ class TypeCondition extends MoraleCondition:
 
 
 class HeadlineBuilder:
-	var headline: MoraleHeadline
+	var headline: Headline
 	
-	func _init(init_headline: MoraleHeadline) -> void:
+	func _init(init_headline: Headline) -> void:
 		headline = init_headline
 	
 	

@@ -14,19 +14,19 @@ var type: MoraleEventType = MoraleEventType.NONE
 var delta: float = 0.0
 var params: Array[Variant] = []
 
-func get_desc(gob: Gob) -> String:
+func get_desc(_gob: Gob) -> String:
 	var result: String
 	match type:
 		NONE:
 			pass
 		DAY_OFF:
 			if delta > 0.0:
-				result = "%s enjoyed their day off." % [gob.name]
+				result = "Relaxing day off"
 			else:
-				result = "%s grew restless during their day off." % [gob.name]
+				result = "Boring day off"
 		MADE_FRIEND:
 			var gob_ref: GobRef = gob_ref_from_param(0)
-			result = "%s became friends with %s." % [gob.name, gob_ref.name]
+			result = "Befriended %s" % [gob_ref.name]
 	return result
 
 

@@ -7,9 +7,8 @@ signal pressed
 @export var desc: String:
 	set(value):
 		desc = value
-		if not is_node_ready():
-			return
-		_refresh()
+		if is_node_ready():
+			_refresh()
 
 @export var button_text: String
 

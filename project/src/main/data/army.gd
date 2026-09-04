@@ -19,24 +19,24 @@ func duplicate() -> Army:
 
 
 func get_total_goblins() -> Big:
-	var total: Big = Big.ZERO
+	var total: float = 0.0
 	for gob: Gob in gobs:
-		total = Big.add(total, gob.get_count())
-	return total
+		total += gob.get_count().to_float()
+	return Big.new(total)
 
 
 func get_total_attack() -> Big:
-	var total: Big = Big.ZERO
+	var total: float = 0.0
 	for gob: Gob in gobs:
-		total = Big.add(total, gob.get_total_attack())
-	return total
+		total += gob.get_total_attack().to_float()
+	return Big.new(total)
 
 
 func get_total_gold() -> Big:
-	var total: Big = Big.ZERO
+	var total: float = 0.0
 	for gob: Gob in gobs:
-		total = Big.add(total, Big.mul(gob.gold, gob.get_count()))
-	return total
+		total += gob.gold * gob.get_count().to_float()
+	return Big.new(total)
 
 
 func add_gob(gob: Gob) -> void:
@@ -51,10 +51,15 @@ func is_empty() -> bool:
 	return gobs.is_empty()
 
 
+## The following dictionary keys are supported:
+## 	'type' (Gobs.Type): Goblin type to assign[br]
+## 	'type_weights' (Array[float]): Array of five weights for fire/water/grass/angel/devil goblins[br]
+## 	'level' (int): Goblin level
+## 	'gold_factor' (float): Multiply the goblin's gold
+## 	'count' (Big): Total goblins
 func generate_random_recruit(data: Dictionary[String, Variant] = {}) -> Gob:
 	var gob: Gob = PlayerData.create_gob()
 	gob.name = GoblinNames.random_name()
-	var total_goblins: Big = get_total_goblins()
 	
 	# calculate type
 	if data.has("type"):
@@ -84,14 +89,7 @@ func generate_random_recruit(data: Dictionary[String, Variant] = {}) -> Gob:
 	if data.has("level"):
 		target_level = data["level"]
 	else:
-		var max_level: int
-		if total_goblins.is_lt(10):
-			max_level = 4
-		elif total_goblins.is_lt(100):
-			max_level = 6
-		else:
-			max_level = 8
-		target_level = randi_range(1, max_level)
+		target_level = randi_range(1, data.get("max_level", 8))
 	while gob.level < target_level:
 		gob.level_up()
 	
@@ -119,25 +117,33 @@ func generate_random_recruit(data: Dictionary[String, Variant] = {}) -> Gob:
 func get_summary() -> ArmySummary:
 	var result: ArmySummary = ArmySummary.new()
 	
+	var total_goblins: float = 0.0
+	var total_attack: float = 0.0
+	var goblins_by_type: Dictionary[Gobs.Type, float] = {}
+	var wounded_by_type: Dictionary[Gobs.Type, float] = {}
+	var attack_by_type: Dictionary[Gobs.Type, float] = {}
+	var total_gold: float = 0.0
+	
 	for goblin_type: Gobs.Type in Gobs.Type.values():
-		result.goblins_by_type[goblin_type] = Big.ZERO
-		result.attack_by_type[goblin_type] = Big.ZERO
-		result.wounded_by_type[goblin_type] = Big.ZERO
+		goblins_by_type[goblin_type] = 0.0
+		attack_by_type[goblin_type] = 0.0
+		wounded_by_type[goblin_type] = 0.0
 	
 	for gob: Gob in gobs:
-		result.goblins_by_type[gob.type] = \
-				Big.add(result.goblins_by_type[gob.type], gob.get_count())
-		result.total_goblins = \
-				Big.add(result.total_goblins, gob.get_count())
-		result.attack_by_type[gob.type] = \
-				Big.add(result.attack_by_type[gob.type], gob.get_total_attack())
-		result.wounded_by_type[gob.type] = \
-				Big.add(result.wounded_by_type[gob.type], gob.get_wounded_count())
-		result.total_attack = \
-				Big.add(result.total_attack, gob.get_total_attack())
-		result.total_gold = \
-				Big.add(result.total_gold, \
-				Big.mul(gob.gold, gob.get_count()))
+		goblins_by_type[gob.type] += gob.get_count().to_float()
+		total_goblins += gob.get_count().to_float()
+		attack_by_type[gob.type] += gob.get_total_attack().to_float()
+		wounded_by_type[gob.type] += gob.get_wounded_count().to_float()
+		total_attack += gob.get_total_attack().to_float()
+		total_gold += gob.gold * gob.get_count().to_float()
+	
+	result.total_goblins = Big.new(total_goblins)
+	result.total_attack = Big.new(total_attack)
+	for type: Gobs.Type in Gobs.Type.values():
+		result.goblins_by_type[type] = Big.new(goblins_by_type[type])
+		result.wounded_by_type[type] = Big.new(wounded_by_type[type])
+		result.attack_by_type[type] = Big.new(attack_by_type[type])
+	result.total_gold = Big.new(total_gold)
 	
 	return result
 

@@ -26,6 +26,7 @@ static func get_cached_lines(path: String) -> Array[String]:
 				lines.append(csv_line[0])
 		if lines.is_empty():
 			push_error("No lines loaded from %s" % [path])
+		lines.shuffle()
 		_cache[path] = lines
 	return _cache[path]
 

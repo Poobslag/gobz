@@ -66,6 +66,11 @@ static func get_recruit_type_weights(day: int) -> Array[float]:
 	return [1.0, 1.0, 1.0, angel_weight, devil_weight]
 
 
+static func get_recruit_max_level(day: int) -> int:
+	@warning_ignore("narrowing_conversion")
+	return clampi(remap(day, 1, 20, 4, 8), 4, 8)
+
+
 static func _find_boss_dungeon_index() -> int:
 	return PlayerData.dungeons.find_custom(func(dungeon: Dungeon) -> bool:
 		return dungeon.boss)
