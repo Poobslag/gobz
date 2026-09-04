@@ -44,16 +44,23 @@ func _populate_parties() -> void:
 
 func _refresh_party_cost() -> void:
 	for party_row: PartyRow in %Parties.get_children():
+		var cost_factor: float = 0.0
 		match PlayerData.party_multiplier:
 			0:
+				cost_factor = 0.0
 				party_row.item_count = Big.ZERO
 				party_row.party.nerf_factor = 0.4
 			1:
+				cost_factor = 1.0
 				party_row.item_count = Big.new(max(1, PlayerData.army.get_total_goblins().to_float() * 0.01))
 				party_row.party.nerf_factor = 0.7
 			2:
-				party_row.item_count = Big.new(max(3, PlayerData.army.get_total_goblins().to_float() * 0.03))
+				cost_factor = 3.0
 				party_row.party.nerf_factor = 1.0
+		if party_row.party is PartyLibrary.Drinking:
+			cost_factor += 2.0
+		party_row.item_count = Big.new(max(cost_factor, \
+				PlayerData.army.get_total_goblins().to_float() * 0.01 * cost_factor))
 	%MultiplyButton.disabled = true if PlayerData.party_multiplier >= 2 else false
 	%DivideButton.disabled = true if PlayerData.party_multiplier <= 0 else false
 

@@ -27,4 +27,5 @@ func get_parties() -> Array[Party]:
 func _calculate_parties() -> Array[Party]:
 	var result: Array[Party] = []
 	result.append(PartyLibrary.get_random_party())
+	result.append(PartyLibrary.get_random_party())
 	return result
