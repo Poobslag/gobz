@@ -56,7 +56,9 @@ func refresh() -> void:
 			new_morale_text += "\n"
 		new_morale_text += "👎%s" % [_emoji_string(dislikers)]
 	%MoraleEffect.text = new_morale_text
-	%Prompt.text = "%s [b][color=green]+%s[/color][/b]" % [party.prompt, [3, 6, 10][PlayerData.party_multiplier]]
+	var base_reward_float: float = [0.3, 0.6, 1.0][PlayerData.party_multiplier]
+	var expected_reward_int: int = maxi(1, roundi(base_reward_float * party.expected_reward))
+	%Prompt.text = "%s [b][color=green]+%s[/color][/b]" % [party.prompt, expected_reward_int]
 
 
 func _emoji_string(types: Array[Gobs.Type]) -> String:

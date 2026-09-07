@@ -5,6 +5,8 @@ const CONDITIONS_BY_NAME: Dictionary[String, Script] = {
 	"type_weight": TypeWeightCondition,
 }
 
+const MAX_CAPACITY: int = 500
+
 static var NAMES_BY_CONDITION: Dictionary[Script, String] = {
 }
 
@@ -23,6 +25,8 @@ func add_headline(type: MoraleEvent.MoraleEventType) -> HeadlineBuilder:
 	var headline: Headline = Headline.new()
 	headline.type = type
 	headlines.append(headline)
+	while headlines.size() > MAX_CAPACITY:
+		headlines.pop_front()
 	return HeadlineBuilder.new(headline)
 
 
@@ -64,11 +68,7 @@ class Headline:
 	
 	
 	func create_event() -> MoraleEvent:
-		var morale_event: MoraleEvent = MoraleEvent.new()
-		morale_event.type = type
-		morale_event.delta = sign(delta) * clampf(abs(delta) * randf_range(0.6, 1.4), 1.0, 100.0)
-		morale_event.day = PlayerData.day
-		return morale_event
+		return MoraleEvent.new_randomized_event(type, delta)
 
 
 	func from_json_dict(json: Dictionary[String, Variant]) -> void:

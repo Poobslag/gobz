@@ -11,7 +11,6 @@
 [ext_resource type="PackedScene" uid="uid://cr6qnl0sdo2gw" path="res://src/main/home_base/party_message_shower.tscn" id="7_r6ljt"]
 [ext_resource type="PackedScene" uid="uid://g7b12cf0ow6o" path="res://src/main/home_base/home_nav.tscn" id="8_5gpve"]
 [ext_resource type="PackedScene" uid="uid://dvdna5v6cbdwc" path="res://src/main/home_base/inventory_header.tscn" id="9_1jy88"]
-[ext_resource type="Script" uid="uid://qu3s0w2fnrmu" path="res://src/main/home_base/party_row.gd" id="9_skb38"]
 [ext_resource type="PackedScene" uid="uid://h73338s4fipn" path="res://src/main/ui/command_palette.tscn" id="10_winkc"]
 [ext_resource type="PackedScene" uid="uid://dn3pdlhuw1iap" path="res://src/main/home_base/home_base_tutorial_panel.tscn" id="11_14txa"]
 
@@ -149,34 +148,8 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="PartyRow1" type="HBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Parties" unique_id=616338784]
+[node name="PartyRow1" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Parties" unique_id=616338784 instance=ExtResource("6_rulba")]
 layout_mode = 2
-script = ExtResource("9_skb38")
-
-[node name="Button" type="Button" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Parties/PartyRow1" unique_id=1082212655]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-size_flags_vertical = 4
-text = "🍺15"
-
-[node name="MoraleEffect" type="Label" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Parties/PartyRow1" unique_id=1454501231]
-unique_name_in_owner = true
-layout_mode = 2
-text = "👍🌳🔥 
-👎💧"
-
-[node name="Prompt" type="RichTextLabel" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Parties/PartyRow1" unique_id=499617902]
-unique_name_in_owner = true
-clip_contents = false
-layout_mode = 2
-size_flags_vertical = 4
-focus_mode = 0
-mouse_filter = 2
-bbcode_enabled = true
-text = "[b][color=green]+10[/color][/b] Massive campwide game of murderball"
-fit_content = true
-autowrap_mode = 0
 
 [node name="PartyRow2" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Parties" unique_id=173315659 instance=ExtResource("6_rulba")]
 layout_mode = 2

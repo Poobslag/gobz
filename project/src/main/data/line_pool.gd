@@ -34,6 +34,6 @@ static func get_cached_lines(path: String) -> Array[String]:
 static func get_random_line(path: String) -> String:
 	var lines: Array[String] = get_cached_lines(path)
 	@warning_ignore("integer_division")
-	var line: String = lines.pop_at(randi_range(0, lines.size() / 2))
+	var line: String = lines.pop_at(randi_range(0, (lines.size() - 1) / 2))
 	lines.push_back(line)
 	return line

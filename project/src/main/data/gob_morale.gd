@@ -12,6 +12,11 @@ func add_event(event: MoraleEvent) -> void:
 		value -= _events.pop_front().delta
 
 
+func clear() -> void:
+	randomize_value()
+	_events.clear()
+
+
 func size() -> int:
 	return _events.size()
 
@@ -22,6 +27,14 @@ func get_event(index: int) -> MoraleEvent:
 
 func get_last_event() -> MoraleEvent:
 	return _events.back() if _events else null
+
+
+func pop_last_event() -> MoraleEvent:
+	if not _events:
+		return null
+	var event: MoraleEvent = _events.pop_back()
+	value -= event.delta
+	return event
 
 
 func randomize_value() -> void:
