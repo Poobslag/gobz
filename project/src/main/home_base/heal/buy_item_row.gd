@@ -15,10 +15,10 @@ func _ready() -> void:
 
 
 func get_cost() -> Big:
-	return PlayerData.market.get_cost(type, PlayerData.kitchen_multiplier)
+	return PlayerData.market.get_cost(type, PlayerData.supplies_multiplier)
 
 
 func refresh() -> void:
 	%Button.disabled = get_cost().is_gt(PlayerData.gold)
-	%Button.text = "-💰 %s" % [get_cost().to_aa()]
-	%Label.text = "Buy %s×%s" % [Items.emoji_from_type(type), PlayerData.kitchen_multiplier.to_aa()]
+	%Button.text = "-💰%s" % [get_cost().to_aa()]
+	%Label.text = "Buy %s×%s" % [Items.emoji_from_type(type), PlayerData.supplies_multiplier.to_aa()]

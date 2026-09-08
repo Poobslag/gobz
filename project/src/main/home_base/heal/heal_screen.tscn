@@ -1,8 +1,17 @@
 [gd_scene format=3 uid="uid://bk1nxsm06kn85"]
 
-[ext_resource type="PackedScene" uid="uid://cck5hgu22cl7a" path="res://src/main/home_base/heal/heal_panel.tscn" id="1_8m2oa"]
 [ext_resource type="Script" uid="uid://bo6ccwlvva6r" path="res://src/main/home_base/heal/heal_screen.gd" id="1_ksplh"]
-[ext_resource type="PackedScene" uid="uid://dr0eu5pnc02od" path="res://src/main/home_base/heal/kitchen_panel.tscn" id="2_w26rl"]
+[ext_resource type="PackedScene" uid="uid://dqjjgkwxab0ht" path="res://src/main/ui/splash_shower.tscn" id="3_yuasg"]
+[ext_resource type="PackedScene" uid="uid://dbm3uqjrgg63m" path="res://src/main/ui/splash_art.tscn" id="4_t1u8u"]
+[ext_resource type="Texture2D" uid="uid://bpo0q0144nynq" path="res://assets/main/splash/heal.png" id="5_gst6q"]
+[ext_resource type="PackedScene" uid="uid://t8f1tkis3ujq" path="res://src/main/home_base/heal/heal_inventory_label.tscn" id="6_xxnno"]
+[ext_resource type="PackedScene" uid="uid://dgtblx72civbg" path="res://src/main/home_base/heal/heal_navigator.tscn" id="7_upyxw"]
+[ext_resource type="PackedScene" uid="uid://dosa1eu8p5pla" path="res://src/main/home_base/heal/heal_chat_shower.tscn" id="8_bkug6"]
+[ext_resource type="PackedScene" uid="uid://3g77w3qduy8y" path="res://src/main/home_base/heal/heal_chat_picker.tscn" id="9_iebgu"]
+[ext_resource type="PackedScene" uid="uid://7dpbtetnc3k4" path="res://src/main/home_base/heal/heal_with_medicine_row.tscn" id="10_47vpk"]
+[ext_resource type="PackedScene" uid="uid://c5t8ic3dnnljj" path="res://src/main/home_base/heal/heal_with_gold_row.tscn" id="11_lbxqm"]
+[ext_resource type="PackedScene" uid="uid://g7b12cf0ow6o" path="res://src/main/home_base/home_nav.tscn" id="12_ypm20"]
+[ext_resource type="PackedScene" uid="uid://dvdna5v6cbdwc" path="res://src/main/home_base/inventory_header.tscn" id="13_05gca"]
 
 [node name="HealScreen" type="Control" unique_id=1368189123]
 layout_mode = 3
@@ -13,11 +22,153 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ksplh")
 
-[node name="HealPanel" parent="." unique_id=806142582 instance=ExtResource("1_8m2oa")]
-unique_name_in_owner = true
+[node name="HealPanel" type="ColorRect" parent="." unique_id=806142582]
 layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.49019608, 0.2784314, 0.34901962, 1)
 
-[node name="KitchenPanel" parent="." unique_id=1594739662 instance=ExtResource("2_w26rl")]
-unique_name_in_owner = true
-visible = false
+[node name="MarginContainer" type="MarginContainer" parent="HealPanel" unique_id=1114080921]
 layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="Panel" type="Panel" parent="HealPanel/MarginContainer" unique_id=2033304710]
+layout_mode = 2
+
+[node name="SplashShower" parent="HealPanel/MarginContainer/Panel" unique_id=731007175 instance=ExtResource("3_yuasg")]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 1052.0
+offset_bottom = 548.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BottomRight" type="Control" parent="HealPanel/MarginContainer/Panel/SplashShower" unique_id=989693817]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -11.0
+offset_top = -27.0
+offset_right = 29.0
+offset_bottom = 13.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="SplashArt1" parent="HealPanel/MarginContainer/Panel/SplashShower/BottomRight" unique_id=1575316682 instance=ExtResource("4_t1u8u")]
+modulate = Color(0.49019608, 0.2784314, 0.34901962, 1)
+position = Vector2(-169, -178)
+scale = Vector2(0.66, 0.66)
+texture = ExtResource("5_gst6q")
+
+[node name="SplashArt3" parent="HealPanel/MarginContainer/Panel/SplashShower/BottomRight" unique_id=2087204376 instance=ExtResource("4_t1u8u")]
+visible = false
+modulate = Color(0.16078432, 0.12941177, 0.14117648, 1)
+position = Vector2(-181, -123)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5_gst6q")
+flip_h = true
+
+[node name="SplashArt2" parent="HealPanel/MarginContainer/Panel/SplashShower/BottomRight" unique_id=1601240777 instance=ExtResource("4_t1u8u")]
+visible = false
+modulate = Color(0.49019608, 0.2784314, 0.34901962, 0.5019608)
+position = Vector2(-568, -241)
+texture = ExtResource("5_gst6q")
+
+[node name="MarginContainer" type="MarginContainer" parent="HealPanel/MarginContainer/Panel" unique_id=1781904422]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HealPanel/MarginContainer/Panel/MarginContainer" unique_id=657901788]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HealPanel/MarginContainer/Panel/MarginContainer/HBoxContainer" unique_id=1125725313]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="InventoryLabel" parent="HealPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1464235693 instance=ExtResource("6_xxnno")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HealPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1333704636]
+layout_mode = 2
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HealNavigator" parent="HealPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer" unique_id=1129179821 instance=ExtResource("7_upyxw")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ChatShower" parent="HealPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1667571667 instance=ExtResource("8_bkug6")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="HealPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=549276661]
+custom_minimum_size = Vector2(0, 6)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ChatPicker" parent="HealPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1285803141 instance=ExtResource("9_iebgu")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Spacer2" type="Control" parent="HealPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=75763139]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="HealWithMedicineRow" parent="HealPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1257331575 instance=ExtResource("10_47vpk")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HealWithGoldRow" parent="HealPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=38152776 instance=ExtResource("11_lbxqm")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="HealPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1480023214]
+layout_mode = 2
+
+[node name="MultiplyButton" type="Button" parent="HealPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer4" unique_id=1482198659]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "×10"
+
+[node name="DivideButton" type="Button" parent="HealPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer4" unique_id=1455871341]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "÷10"
+
+[node name="HomeNav" parent="HealPanel/MarginContainer/Panel/MarginContainer/HBoxContainer" unique_id=1142993029 instance=ExtResource("12_ypm20")]
+unique_name_in_owner = true
+layout_mode = 2
+location_index = 1
+
+[node name="InventoryHeader" parent="HealPanel" unique_id=826478186 instance=ExtResource("13_05gca")]
+layout_mode = 1
+offset_bottom = 23.0
+color = Color(0.25490198, 0.17254902, 0.2, 0.5019608)
+inventory_items = Array[int]([0, 1])

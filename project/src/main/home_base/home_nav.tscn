@@ -23,3 +23,9 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "🍺 Party"
+
+[node name="Supplies" type="Button" parent="." unique_id=1672634979 groups=["nav_buttons"]]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "🛒 Supplies"

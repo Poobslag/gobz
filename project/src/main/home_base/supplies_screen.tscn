@@ -1,0 +1,140 @@
+[gd_scene format=3 uid="uid://uf82ev0us2ls"]
+
+[ext_resource type="Script" uid="uid://bt5fyq7dc4xpg" path="res://src/main/home_base/supplies_screen.gd" id="1_mhbhi"]
+[ext_resource type="PackedScene" uid="uid://cf6eisag38iyh" path="res://src/main/home_base/heal/buy_item_row.tscn" id="7_3a3uc"]
+[ext_resource type="PackedScene" uid="uid://dy7s1xoxanbki" path="res://src/main/home_base/heal/cook_herb_row.tscn" id="8_hpc5s"]
+[ext_resource type="PackedScene" uid="uid://g7b12cf0ow6o" path="res://src/main/home_base/home_nav.tscn" id="9_py0lg"]
+[ext_resource type="PackedScene" uid="uid://dvdna5v6cbdwc" path="res://src/main/home_base/inventory_header.tscn" id="10_q1ih0"]
+
+[node name="SuppliesScreen" type="Control" unique_id=1368189123]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_mhbhi")
+
+[node name="SuppliesPanel" type="ColorRect" parent="." unique_id=1594739662]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.68235296, 0.6509804, 0.63529414, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="SuppliesPanel" unique_id=1114080921]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="Panel" type="Panel" parent="SuppliesPanel/MarginContainer" unique_id=2033304710]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="SuppliesPanel/MarginContainer/Panel" unique_id=1781904422]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SuppliesPanel/MarginContainer/Panel/MarginContainer" unique_id=657901788]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SuppliesPanel/MarginContainer/Panel/MarginContainer/HBoxContainer" unique_id=1125725313]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SuppliesPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1466185609]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SuppliesPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1609343939]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BuyHerb1Row" parent="SuppliesPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=2050432156 instance=ExtResource("7_3a3uc")]
+unique_name_in_owner = true
+layout_mode = 2
+type = 2
+
+[node name="BuyHerb2Row" parent="SuppliesPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1276005954 instance=ExtResource("7_3a3uc")]
+unique_name_in_owner = true
+layout_mode = 2
+type = 3
+
+[node name="BuyHerb3Row" parent="SuppliesPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1325127293 instance=ExtResource("7_3a3uc")]
+unique_name_in_owner = true
+layout_mode = 2
+type = 4
+
+[node name="BuyWeakMedicineRow" parent="SuppliesPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=2074770553 instance=ExtResource("7_3a3uc")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="BuyStrongMedicineRow" parent="SuppliesPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=718796462 instance=ExtResource("7_3a3uc")]
+unique_name_in_owner = true
+layout_mode = 2
+type = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="SuppliesPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=2086768867]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CookHerb1Row" parent="SuppliesPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer2" unique_id=107235900 instance=ExtResource("8_hpc5s")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="CookHerb2Row" parent="SuppliesPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer2" unique_id=1709151390 instance=ExtResource("8_hpc5s")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="CookHerb3Row" parent="SuppliesPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer2" unique_id=1968658819 instance=ExtResource("8_hpc5s")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="CookStrongMedicineRow" parent="SuppliesPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer2" unique_id=1519396936 instance=ExtResource("8_hpc5s")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="SuppliesPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1300816334]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="SuppliesPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1567038286]
+layout_mode = 2
+
+[node name="MultiplyButton" type="Button" parent="SuppliesPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2" unique_id=1349090958]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "×10"
+
+[node name="DivideButton" type="Button" parent="SuppliesPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2" unique_id=97218935]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "÷10"
+
+[node name="HomeNav" parent="SuppliesPanel/MarginContainer/Panel/MarginContainer/HBoxContainer" unique_id=1142993029 instance=ExtResource("9_py0lg")]
+layout_mode = 2
+location_index = 3
+
+[node name="InventoryHeader" parent="SuppliesPanel" unique_id=826478186 instance=ExtResource("10_q1ih0")]
+layout_mode = 1
+offset_bottom = 23.0
+color = Color(0.33333334, 0.32156864, 0.3137255, 0.5019608)
+inventory_items = Array[int]([0, 1, 2, 3, 4])
