@@ -30,6 +30,7 @@ func victory() -> void:
 	PlayerData.army.gold = Big.ZERO
 	PlayerData.get_dungeon_army().gold = Big.ZERO
 	color = Color("458a61")
+	%InventoryHeader.color = Color("2b473680")
 	%Message.text = ""
 	%Message.text += "Victory!\n\n"
 	%Message.text += "You loot 💰%s from your fallen allies and enemies." % [looted_gold.to_aa()]
@@ -42,6 +43,8 @@ func defeat() -> void:
 	_show_splash(%DefeatShower)
 	
 	color = Color("8d8381")
+	%InventoryHeader.color = Color("48444380")
+	
 	PlayerData.army.gold = Big.ZERO
 	PlayerData.gold = Big.add(PlayerData.gold, Big.new(PlayerData.get_dungeon_army().gold.to_float() * 0.1))
 	PlayerData.initialize_starting_army()
@@ -62,13 +65,13 @@ func mutual_defeat() -> void:
 	_show_splash(%DefeatShower)
 	
 	color = Color("8d8381")
+	%InventoryHeader.color = Color("48444380")
 	var looted_gold: Big = Big.new(
 			Big.add(PlayerData.army.gold, PlayerData.get_dungeon_army().gold).to_float() * 0.5)
 	PlayerData.gold = Big.add(PlayerData.gold, looted_gold)
 	PlayerData.initialize_starting_army()
 
 	PlayerData.get_dungeon_army().gold = Big.ZERO
-	color = Color("458a61")
 	%Message.text = ""
 	%Message.text += "Mutual defeat...\n\n"
 	
@@ -90,6 +93,7 @@ func retreat() -> void:
 	PlayerData.army.gold = Big.ZERO
 	PlayerData.get_dungeon_army().gold = Big.ZERO
 	color = Color("8d8381")
+	%InventoryHeader.color = Color("48444380")
 	%Message.text = ""
 	%Message.text += "Retreat!\n\n"
 	if looted_gold.is_gt(0):

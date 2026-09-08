@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bst88vv8wmcla" path="res://src/main/home_base/party_message_shower.gd" id="1_jnbbx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cj732"]
-bg_color = Color(0.16862746, 0.2784314, 0.21176471, 1)
+bg_color = Color(0.22352941, 0.20784314, 0.16078432, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2

@@ -65,8 +65,7 @@ func _input(event: InputEvent) -> void:
 func _refresh_summary() -> void:
 	%ArmyLabel.text = ""
 	%ArmyLabel.text = "Your army:\n"
-	%ArmyLabel.text += Gobs.army_bbcode(PlayerData.army) + "\n\n"
-	%ArmyLabel.text += "💰%s" % [PlayerData.gold.to_aa()]
+	%ArmyLabel.text += Gobs.army_bbcode(PlayerData.army)
 
 
 func _refresh_recruits() -> void:

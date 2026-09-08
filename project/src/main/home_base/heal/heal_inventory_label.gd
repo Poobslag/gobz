@@ -19,18 +19,3 @@ func refresh() -> void:
 					summary.goblins_by_type[goblin_type].to_aa(),
 					wounded_string,
 					summary.attack_by_type[goblin_type].to_aa()]
-	
-	%InventoryLabel.text += "💰 %s - %s %s - %s %s\n" % [
-			PlayerData.gold.to_aa(),
-			Items.emoji_from_type(Items.WEAK_MEDICINE),
-			PlayerData.inventory.get_count(Items.WEAK_MEDICINE).to_aa(),
-			Items.emoji_from_type(Items.STRONG_MEDICINE),
-			PlayerData.inventory.get_count(Items.STRONG_MEDICINE).to_aa(),]
-	
-	%InventoryLabel.text += "%s %s - %s %s - %s %s" % [
-			Items.emoji_from_type(Items.HERB_1),
-			PlayerData.inventory.get_count(Items.HERB_1).to_aa(),
-			Items.emoji_from_type(Items.HERB_2),
-			PlayerData.inventory.get_count(Items.HERB_2).to_aa(),
-			Items.emoji_from_type(Items.HERB_3),
-			PlayerData.inventory.get_count(Items.HERB_3).to_aa(),]

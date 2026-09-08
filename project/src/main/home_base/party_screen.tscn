@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/ui/screen_panel.tscn" id="2_r6ljt"]
 [ext_resource type="PackedScene" uid="uid://dqjjgkwxab0ht" path="res://src/main/ui/splash_shower.tscn" id="3_5ludj"]
 [ext_resource type="PackedScene" uid="uid://dbm3uqjrgg63m" path="res://src/main/ui/splash_art.tscn" id="4_skb38"]
-[ext_resource type="Texture2D" uid="uid://bu4t5ousnvj2d" path="res://assets/main/splash/recruit.png" id="5_ifnwp"]
+[ext_resource type="Texture2D" uid="uid://do5epr70eqwxc" path="res://assets/main/splash/victory.png" id="5_5ludj"]
 [ext_resource type="PackedScene" uid="uid://ctpm75l6a3tx0" path="res://src/main/home_base/day_label.tscn" id="6_8g6io"]
 [ext_resource type="PackedScene" uid="uid://cir5qcucd02dt" path="res://src/main/home_base/party_row.tscn" id="6_rulba"]
 [ext_resource type="PackedScene" uid="uid://6sjerx040ugp" path="res://src/main/home_base/party_gob_row.tscn" id="7_5ludj"]
@@ -13,6 +13,18 @@
 [ext_resource type="PackedScene" uid="uid://dvdna5v6cbdwc" path="res://src/main/home_base/inventory_header.tscn" id="9_1jy88"]
 [ext_resource type="PackedScene" uid="uid://h73338s4fipn" path="res://src/main/ui/command_palette.tscn" id="10_winkc"]
 [ext_resource type="PackedScene" uid="uid://dn3pdlhuw1iap" path="res://src/main/home_base/home_base_tutorial_panel.tscn" id="11_14txa"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5ludj"]
+bg_color = Color(0.22352941, 0.20784314, 0.16078432, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [node name="PartyScreen" type="Control" unique_id=1368189123]
 layout_mode = 3
@@ -25,7 +37,7 @@ script = ExtResource("1_37b2g")
 
 [node name="ScreenPanel" parent="." unique_id=806142582 instance=ExtResource("2_r6ljt")]
 layout_mode = 1
-color = Color(0.27058825, 0.5411765, 0.38039216, 1)
+color = Color(0.8784314, 0.77254903, 0.4745098, 1)
 
 [node name="SplashShower" parent="ScreenPanel/MarginContainer/Panel" parent_id_path=PackedInt32Array(806142582, 2033304710) index="0" unique_id=731007175 instance=ExtResource("3_5ludj")]
 layout_mode = 0
@@ -50,23 +62,23 @@ grow_vertical = 0
 
 [node name="SplashArt1" parent="ScreenPanel/MarginContainer/Panel/SplashShower/BottomRight" unique_id=1575316682 instance=ExtResource("4_skb38")]
 visible = false
-modulate = Color(0.12941177, 0.17254902, 0.14509805, 1)
-position = Vector2(-194, -162)
+modulate = Color(0.22352941, 0.20784314, 0.16078432, 1)
+position = Vector2(-191, -131)
 scale = Vector2(0.66, 0.66)
-texture = ExtResource("5_ifnwp")
+texture = ExtResource("5_5ludj")
 
 [node name="SplashArt3" parent="ScreenPanel/MarginContainer/Panel/SplashShower/BottomRight" unique_id=1172502470 instance=ExtResource("4_skb38")]
 visible = false
-modulate = Color(0.12941177, 0.17254902, 0.14509805, 1)
-position = Vector2(-153, -117)
+modulate = Color(0.22352941, 0.20784314, 0.16078432, 1)
+position = Vector2(-145, -96)
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("5_ifnwp")
+texture = ExtResource("5_5ludj")
 flip_h = true
 
 [node name="SplashArt2" parent="ScreenPanel/MarginContainer/Panel/SplashShower/BottomRight" unique_id=320577346 instance=ExtResource("4_skb38")]
-modulate = Color(0.27058825, 0.5411765, 0.38039216, 0.5019608)
-position = Vector2(-220, -256)
-texture = ExtResource("5_ifnwp")
+modulate = Color(0.8784314, 0.77254903, 0.4745098, 0.5019608)
+position = Vector2(-205, -150)
+texture = ExtResource("5_5ludj")
 
 [node name="DayLabel" parent="ScreenPanel/MarginContainer/Panel" parent_id_path=PackedInt32Array(806142582, 2033304710) index="1" unique_id=513796362 instance=ExtResource("6_8g6io")]
 unique_name_in_owner = true
@@ -143,6 +155,7 @@ size_flags_vertical = 3
 [node name="MessageShower" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer" unique_id=1098626767 instance=ExtResource("7_r6ljt")]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_5ludj")
 
 [node name="Parties" type="VBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1381450448]
 unique_name_in_owner = true
@@ -177,7 +190,7 @@ location_index = 2
 [node name="InventoryHeader" parent="." unique_id=1067956976 instance=ExtResource("9_1jy88")]
 layout_mode = 1
 offset_bottom = 23.0
-color = Color(0.21960784, 0.4117647, 0.29803923, 1)
+color = Color(0.4117647, 0.36862746, 0.2509804, 0.5019608)
 inventory_items = Array[int]([1])
 
 [node name="CommandPalette" parent="." unique_id=1368678133 instance=ExtResource("10_winkc")]

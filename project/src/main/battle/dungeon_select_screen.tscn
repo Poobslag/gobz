@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dqjjgkwxab0ht" path="res://src/main/ui/splash_shower.tscn" id="3_r0u77"]
 [ext_resource type="PackedScene" uid="uid://dbm3uqjrgg63m" path="res://src/main/ui/splash_art.tscn" id="4_vy7bb"]
 [ext_resource type="Texture2D" uid="uid://2ws83stx7ew3" path="res://assets/main/splash/dungeon_select.png" id="5_q8grs"]
+[ext_resource type="PackedScene" uid="uid://dvdna5v6cbdwc" path="res://src/main/home_base/inventory_header.tscn" id="7_oehuh"]
 
 [node name="DungeonSelect" type="Control" unique_id=1192315041]
 layout_mode = 3
@@ -125,5 +126,10 @@ bbcode_enabled = true
 text = "Tip: 💧 goblins are good against 🌳, but struggle with 🔥."
 horizontal_alignment = 1
 vertical_alignment = 2
+
+[node name="InventoryHeader" parent="." unique_id=826478186 instance=ExtResource("7_oehuh")]
+layout_mode = 1
+offset_bottom = 23.0
+color = Color(0.2, 0.34117648, 0.36078432, 0.5019608)
 
 [editable path="ScreenPanel"]
