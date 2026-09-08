@@ -60,12 +60,12 @@ func _refresh() -> void:
 		if bottom_text:
 			bottom_text += "   "
 		var inventory_count: Big = PlayerData.inventory.get_count(cost.type)
-		var recipe_count: Big = Big.mul(cost.count, PlayerData.supplies_multiplier)
-		var has_ingredient: bool = inventory_count.is_gte(recipe_count)
+		var cost_count: Big = cost.count
+		var has_ingredient: bool = inventory_count.is_gte(cost_count)
 		bottom_text += "%s%s%s%s" % [
 			Items.emoji_from_type(cost.type),
 			"" if has_ingredient else "[color=b34947]",
-			recipe_count.to_aa(),
+			cost_count.to_aa(),
 			"" if has_ingredient else "[/color]",
 			]
 	%BottomLabel.text = bottom_text
