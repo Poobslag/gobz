@@ -14,6 +14,10 @@ func _ready() -> void:
 		PlayerData.finished_tutorials[PlayerData.BATTLE_TUTORIAL] = true
 
 
+func hide_tutorial_panel() -> void:
+	%TutorialPanel.hide()
+
+
 func show_pick_panel() -> void:
 	%WatchPanel.hide()
 	%ResultsPanel.hide()

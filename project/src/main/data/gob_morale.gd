@@ -2,7 +2,9 @@ class_name GobMorale
 
 const MAX_CAPACITY: int = 8
 
+## Morale happiness: Internally [-25, 125], shown as [0, 100].
 var value: float = 0.0
+
 var _events: Array[MoraleEvent] = []
 
 func add_event(event: MoraleEvent) -> void:

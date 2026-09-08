@@ -3,6 +3,10 @@ extends ColorRect
 signal finished
 signal tutorial_pressed
 
+const MORALE_MESSAGE_FREQUENCY: float = 0.2
+const MORALE_GOOD_PATH: String = "res://assets/main/battle/morale_good.csv"
+const MORALE_BAD_PATH: String = "res://assets/main/battle/morale_bad.csv"
+
 ## Player's goblins which were hit and need their wound severity rerolled.
 var player_hit_gobs: Dictionary[Gob, bool] = {}
 
@@ -10,6 +14,8 @@ var _initial_enemy_orders: Array[Gobs.Type] = []
 var _initial_player_orders: Array[Gobs.Type] = []
 var _player_orders: Array[Gobs.Type] = []
 var _enemy_orders: Array[Gobs.Type] = []
+
+var _flavor_budget: float = randf()
 
 func _ready() -> void:
 	%NextButton.pressed.connect(_on_next_button_pressed)
@@ -202,6 +208,20 @@ func _play_next() -> void:
 		
 		for enemy_kill: BattleResolver.Kill in enemy_kills:
 			player_hit_gobs[enemy_kill.target] = true
+		
+		# handle random morale messages
+		_flavor_budget += MORALE_MESSAGE_FREQUENCY
+		if %YourAttack.get_line_count() <= 6 and randf() < _flavor_budget:
+			_flavor_budget -= 1.0
+			var random_gob: Gob = player_kills.pick_random().source
+			var random_line: String
+			if randf_range(0.0, 100.0) < random_gob.morale.value:
+				random_line = LinePool.get_random_line(MORALE_GOOD_PATH)
+			else:
+				random_line = LinePool.get_random_line(MORALE_BAD_PATH)
+			var random_kill_name: String = random_gob.name
+			%YourAttack.text += "\n"
+			%YourAttack.text += "[i]%s[/i]\n" % [random_line.format([["name", random_kill_name]])]
 	
 	%YourAttack.text = %YourAttack.text.strip_edges()
 	%EnemyAttack.text = %EnemyAttack.text.strip_edges()
