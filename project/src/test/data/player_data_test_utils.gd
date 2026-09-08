@@ -25,9 +25,9 @@ static func load_player_data(filename: String) -> Error:
 
 
 static func prepare_demo() -> void:
+	PlayerData.start_new_game()
 	PlayerSave.save_folder = "user://demo_sav_183"
 	PlayerData.finished_tutorials = {
 		PlayerData.BATTLE_TUTORIAL: true,
 		PlayerData.HOME_BASE_TUTORIAL: true,
 	}
-	PlayerData.start_new_game()
