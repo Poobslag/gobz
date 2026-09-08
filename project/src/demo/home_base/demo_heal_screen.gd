@@ -3,7 +3,6 @@ extends Node
 ## 	[kbd]L[/kbd]: Inject a long heal prompt.
 ## 	[kbd]E[/kbd]: Heal all gobs and refresh the heal screen.
 ## 	[kbd]W[/kbd]: Wound all gobs and refresh the heal screen.
-## 	[kbd]M[/kbd]: Randomize market costs.
 
 func _ready() -> void:
 	PlayerData.reset()
@@ -19,7 +18,7 @@ func _ready() -> void:
 	PlayerData.inventory.add_item(Items.HERB_3, Big.new(5000))
 	PlayerData.inventory.add_item(Items.WEAK_MEDICINE, Big.new(5000))
 	PlayerData.inventory.add_item(Items.STRONG_MEDICINE, Big.new(5000))
-	%HealScreen.show_heal_panel(true)
+	%HealScreen.initialize()
 
 
 func hurt_all_gobs() -> void:
@@ -40,18 +39,15 @@ func heal_all_gobs() -> void:
 func _input(event: InputEvent) -> void:
 	match Utils.key_press(event):
 		KEY_L:
-			%HealScreen.get_heal_panel().inject_chat_line(get_long_heal_chat_line())
+			%HealScreen.inject_chat_line(get_long_heal_chat_line())
 		KEY_E:
 			heal_all_gobs()
 			HomeBaseData.heal_data.mark_groups_dirty()
-			%HealScreen.show_heal_panel(true)
+			%HealScreen.initialize()
 		KEY_W:
 			hurt_all_gobs()
 			HomeBaseData.heal_data.mark_groups_dirty()
-			%HealScreen.show_heal_panel(true)
-		KEY_M:
-			PlayerData.market.mark_costs_dirty()
-			%HealScreen.show_kitchen_panel()
+			%HealScreen.initialize()
 
 
 func get_long_heal_chat_line() -> HealChatLines.HealChatLine:

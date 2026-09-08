@@ -5,17 +5,8 @@ signal before_move
 signal move_left
 signal move_center
 signal move_right
-signal move_kitchen
-
-@export var kitchen: bool = false:
-	set(value):
-		kitchen = value
-		if is_node_ready():
-			refresh()
 
 func _ready() -> void:
-	%KitchenButton.pressed.connect(move_kitchen.emit)
-	
 	%LeftButton.pressed.connect(func() -> void:
 		before_move.emit()
 		HomeBaseData.heal_data.move_left()
@@ -29,13 +20,6 @@ func _ready() -> void:
 	%CenterButton.pressed.connect(func() -> void:
 		before_move.emit()
 		move_center.emit())
-	
-	if kitchen:
-		%KitchenButton.disabled = true
-		%CenterButton.disabled = false
-	else:
-		%KitchenButton.disabled = false
-		%CenterButton.disabled = true
 
 
 func refresh() -> void:
@@ -58,10 +42,7 @@ func refresh() -> void:
 		%RightButton.text = "Visit %s" % [_get_gob_string(right_group)]
 	
 	var center_group: HealData.HealGroup = HomeBaseData.heal_data.get_center_group()
-	if kitchen:
-		%CenterButton.text = "Visit %s" % [_get_gob_string(center_group)]
-	else:
-		%CenterButton.text = "Visiting %s" % [_get_gob_string(center_group)]
+	%CenterButton.text = "Visiting %s" % [_get_gob_string(center_group)]
 
 
 func _get_gob_string(heal_group: HealData.HealGroup) -> String:

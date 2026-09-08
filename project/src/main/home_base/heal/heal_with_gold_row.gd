@@ -30,7 +30,7 @@ func _refresh() -> void:
 		total_cost += HomeBaseData.heal_data.get_gob_heal_cost(gob)
 	cost = Big.new(total_cost)
 	
-	%Button.text = "-💰 %s" % [cost.to_aa()]
+	%Button.text = "-💰%s" % [cost.to_aa()]
 	
 	var heal_stats: Dictionary[String, Variant] = HealData.get_heal_stats(gobs)
 	var total_hurt_count: float = heal_stats["hurt_count"]

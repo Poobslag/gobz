@@ -7,25 +7,6 @@ offset_right = 528.0
 offset_bottom = 172.0
 script = ExtResource("1_kyvl6")
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="." unique_id=339672627]
-layout_mode = 2
-
-[node name="Spacer1" type="Control" parent="HBoxContainer2" unique_id=776496081]
-layout_mode = 2
-size_flags_horizontal = 3
-mouse_filter = 2
-
-[node name="KitchenButton" type="Button" parent="HBoxContainer2" unique_id=534486336]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-text = "To Kitchen"
-
-[node name="Spacer2" type="Control" parent="HBoxContainer2" unique_id=1964620598]
-layout_mode = 2
-size_flags_horizontal = 3
-mouse_filter = 2
-
 [node name="HBoxContainer3" type="HBoxContainer" parent="." unique_id=184841124]
 layout_mode = 2
 

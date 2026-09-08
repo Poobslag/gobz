@@ -20,7 +20,7 @@ var market: Market = Market.new()
 
 var home_base_multiplier: Big = Big.ONE
 var heal_multiplier: Big = Big.ONE
-var kitchen_multiplier: Big = Big.ONE
+var supplies_multiplier: Big = Big.ONE
 
 ## 0 = no beer, 1 = some beer, 2 = lots of beer
 var party_multiplier: int = 0
@@ -80,7 +80,7 @@ func reset() -> void:
 	dungeon_index = 0
 	home_base_multiplier = Big.ONE
 	heal_multiplier = Big.ONE
-	kitchen_multiplier = Big.ONE
+	supplies_multiplier = Big.ONE
 	party_multiplier = 0
 	finished_tutorials.clear()
 	bosses_defeated = 0
@@ -164,7 +164,7 @@ func to_json_dict() -> Dictionary[String, Variant]:
 	result["dungeons"] = dungeons_json
 	result["home_base_multiplier"] = home_base_multiplier.to_float()
 	result["heal_multiplier"] = heal_multiplier.to_float()
-	result["kitchen_multiplier"] = kitchen_multiplier.to_float()
+	result["supplies_multiplier"] = supplies_multiplier.to_float()
 	result["party_multiplier"] = party_multiplier
 	result["finished_tutorials"] = finished_tutorials
 	result["next_gob_id"] = _next_gob_id
@@ -188,7 +188,7 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 		dungeons.append(dungeon)
 	home_base_multiplier = Big.new(json.get("home_base_multiplier", 1.0))
 	heal_multiplier = Big.new(json.get("heal_multiplier", 1.0))
-	kitchen_multiplier = Big.new(json.get("kitchen_multiplier", 1.0))
+	supplies_multiplier = Big.new(json.get("supplies_multiplier", 1.0))
 	party_multiplier = json.get("party_multiplier", 1)
 	finished_tutorials.assign(json.get("finished_tutorials", {}))
 	bosses_defeated = json.get("bosses_defeated", 0)
