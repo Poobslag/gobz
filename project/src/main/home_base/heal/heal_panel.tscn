@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://3g77w3qduy8y" path="res://src/main/home_base/heal/heal_chat_picker.tscn" id="9_vwjcu"]
 [ext_resource type="PackedScene" uid="uid://7dpbtetnc3k4" path="res://src/main/home_base/heal/heal_with_medicine_row.tscn" id="10_tyxgg"]
 [ext_resource type="PackedScene" uid="uid://c5t8ic3dnnljj" path="res://src/main/home_base/heal/heal_with_gold_row.tscn" id="11_qqabu"]
+[ext_resource type="PackedScene" uid="uid://dvdna5v6cbdwc" path="res://src/main/home_base/inventory_header.tscn" id="13_6kdej"]
 
 [node name="HealPanel" unique_id=806142582 instance=ExtResource("1_wxnd2")]
 color = Color(0.49019608, 0.2784314, 0.34901962, 1)
@@ -131,3 +132,9 @@ text = "÷10"
 unique_name_in_owner = true
 layout_mode = 2
 location_index = 1
+
+[node name="InventoryHeader" parent="." index="1" unique_id=826478186 instance=ExtResource("13_6kdej")]
+layout_mode = 1
+offset_bottom = 23.0
+color = Color(0.25490198, 0.17254902, 0.2, 0.5019608)
+inventory_items = Array[int]([0, 1])

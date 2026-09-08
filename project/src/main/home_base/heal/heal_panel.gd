@@ -143,6 +143,7 @@ func _append_chat_shower_hello() -> void:
 			_:
 				%ChatShower.append_great_response("\"%s\"" % [LinePool.get_random_line(HEAL_GOODBYE_CHAT_PATH)])
 	else:
+		%ChatShower.clear()
 		%ChatShower.append_neutral_response("\"%s\"" % [LinePool.get_random_line(HEAL_HELLO_PATH)])
 
 

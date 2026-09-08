@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dbm3uqjrgg63m" path="res://src/main/ui/splash_art.tscn" id="4_2n0uy"]
 [ext_resource type="Texture2D" uid="uid://catn7my5jmy1u" path="res://assets/main/splash/defeat.png" id="6_gr4cf"]
 [ext_resource type="Texture2D" uid="uid://d2u1tkbtjvvic" path="res://assets/main/splash/retreat.png" id="7_acq14"]
+[ext_resource type="PackedScene" uid="uid://dvdna5v6cbdwc" path="res://src/main/home_base/inventory_header.tscn" id="8_n42su"]
 
 [node name="ResultsPanel" unique_id=806142582 instance=ExtResource("1_ofqs2")]
 color = Color(0.27058825, 0.5411765, 0.38039216, 1)
@@ -204,3 +205,9 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "Leave"
+
+[node name="InventoryHeader" parent="." index="1" unique_id=826478186 instance=ExtResource("8_n42su")]
+unique_name_in_owner = true
+layout_mode = 1
+offset_bottom = 23.0
+color = Color(0.16862746, 0.2784314, 0.21176471, 0.5019608)

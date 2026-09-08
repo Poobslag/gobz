@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/ui/screen_panel.tscn" id="1_4pg3q"]
 [ext_resource type="Script" uid="uid://dw7dtdydavwc2" path="res://src/main/battle/battle_watch_panel.gd" id="2_q2wy1"]
+[ext_resource type="PackedScene" uid="uid://dvdna5v6cbdwc" path="res://src/main/home_base/inventory_header.tscn" id="4_4oiwj"]
 [ext_resource type="Texture2D" uid="uid://d1no6y4cfjva8" path="res://assets/main/splash/battle_hit.png" id="4_6nw7c"]
 
 [node name="WatchPanel" unique_id=806142582 instance=ExtResource("1_4pg3q")]
@@ -107,3 +108,8 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 text = "Help"
+
+[node name="InventoryHeader" parent="." index="1" unique_id=826478186 instance=ExtResource("4_4oiwj")]
+layout_mode = 1
+offset_bottom = 23.0
+color = Color(0.15686275, 0.17254902, 0.23529412, 0.5019608)

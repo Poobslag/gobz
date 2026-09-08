@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://dgtblx72civbg" path="res://src/main/home_base/heal/heal_navigator.tscn" id="6_q3anq"]
 [ext_resource type="PackedScene" uid="uid://cf6eisag38iyh" path="res://src/main/home_base/heal/buy_item_row.tscn" id="8_50ujn"]
 [ext_resource type="PackedScene" uid="uid://dy7s1xoxanbki" path="res://src/main/home_base/heal/cook_herb_row.tscn" id="9_w4pnk"]
+[ext_resource type="PackedScene" uid="uid://dvdna5v6cbdwc" path="res://src/main/home_base/inventory_header.tscn" id="11_8s1ak"]
 
 [node name="KitchenPanel" unique_id=806142582 instance=ExtResource("1_isfg8")]
 color = Color(0.49019608, 0.2784314, 0.34901962, 1)
@@ -158,3 +159,9 @@ text = "÷10"
 [node name="HomeNav" parent="MarginContainer/Panel/MarginContainer/HBoxContainer" index="1" unique_id=1142993029 instance=ExtResource("5_50ujn")]
 layout_mode = 2
 location_index = 1
+
+[node name="InventoryHeader" parent="." index="1" unique_id=826478186 instance=ExtResource("11_8s1ak")]
+layout_mode = 1
+offset_bottom = 23.0
+color = Color(0.25490198, 0.17254902, 0.2, 0.5019608)
+inventory_items = Array[int]([0, 1, 2, 3, 4])
