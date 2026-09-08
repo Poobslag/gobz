@@ -1,4 +1,17 @@
 extends Node
+## Stores data on different kinds of parties, their effects, and who likes them.[br]
+## [br]
+## Different goblins like different parties:[/br]
+## 	Fire goblins love murderball, festivals and gambling (they want to socialize and form romantic bonds)[br]
+## 	Fire goblins hate brawls, drinking (drunken love confessions don't count)[br]
+## 	Water goblins love hazing, pranks, brawls (sociopaths, love the power dynamic and beating guys up)[br]
+## 	Water goblins hate sport, festivals (ugh, fair play and friendship! so lame)[br]
+## 	Grass goblins love gambling, drinking and hazing (they are spring break frat bros)[br]
+## 	Grass goblins hate brawls, murderball (that just seems like work, bro)[br]
+## 	Angel goblins love festivals, drinking, pranks (they just want to be merry and have fun)[br]
+## 	Angel goblins hate brawls, hazing (it's too cruel)[br]
+## 	Devil goblins love murderball, brawls, drinking (they want to grow strong, drinking also shows strength)[br]
+## 	Devil goblins hate gambling, pranks (not honorable)[br]
 
 const PARTY_SCRIPTS: Array[Script] = [
 	MurderBall,
