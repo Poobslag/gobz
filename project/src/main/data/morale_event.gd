@@ -7,6 +7,7 @@ enum MoraleEventType {
 	MADE_RIVAL,
 	FRIEND_DIED,
 	RIVAL_DIED,
+	HEAL_VISIT,
 	
 	# party events
 	MURDERBALL_WON,
@@ -49,6 +50,7 @@ const MADE_FRIEND: MoraleEventType = MoraleEventType.MADE_FRIEND
 const MADE_RIVAL: MoraleEventType = MoraleEventType.MADE_RIVAL
 const FRIEND_DIED: MoraleEventType = MoraleEventType.FRIEND_DIED
 const RIVAL_DIED: MoraleEventType = MoraleEventType.RIVAL_DIED
+const HEAL_VISIT: MoraleEventType = MoraleEventType.HEAL_VISIT
 
 ## party events
 const MURDERBALL_WON: MoraleEventType = MoraleEventType.MURDERBALL_WON
@@ -152,6 +154,11 @@ func get_desc(_gob: Gob) -> String:
 				result = "Rival %s died" % [gob_ref.name]
 			else:
 				result = "Rival %s had a glorious death" % [gob_ref.name]
+		HEAL_VISIT:
+			if delta > 0.0:
+				result = "Visited in the infirmary"
+			else:
+				result = "Embarrassing infirmary visit"
 		
 		# party events
 		MURDERBALL_WON:
@@ -322,6 +329,15 @@ func to_json_dict() -> Dictionary[String, Variant]:
 
 func _to_string() -> String:
 	return JSON.stringify(to_json_dict())
+
+
+func apply_morale_whim(flip_chance: float = 0.2) -> void:
+	if randf() < flip_chance:
+		delta *= -1
+	if randf() < 0.2:
+		delta *= 1.5
+		if randf() < 0.2:
+			delta *= 1.5
 
 
 static func new_randomized_event(init_type: MoraleEvent.MoraleEventType, init_delta: float) -> MoraleEvent:

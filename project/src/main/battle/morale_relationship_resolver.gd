@@ -86,13 +86,7 @@ static func _add_relationship(gob: Gob, other_gob: Gob, type: MoraleEvent.Morale
 	
 	var begin_event: MoraleEvent = MoraleEvent.new_randomized_event(type, delta)
 	begin_event.set_gob_ref_param(0, gob_ref)
-	
-	if randf() < flip_chance:
-		begin_event.delta *= -1
-	if randf() < 0.2:
-		begin_event.delta *= 1.5
-		if randf() < 0.2:
-			begin_event.delta *= 1.5
+	begin_event.apply_morale_whim(flip_chance)
 	gob.morale.add_event(begin_event)
 
 
@@ -105,13 +99,5 @@ static func _add_end_event(gob: Gob, begin_event: MoraleEvent) -> void:
 	
 	var gob_ref: MoraleEvent.GobRef = begin_event.get_gob_ref_param(0)
 	end_event.set_gob_ref_param(0, gob_ref)
-	
-	# Sometimes a death has a surprising effect
-	if randf() < DEATH_FLIP_CHANCE_BY_TYPE[gob.type]:
-		end_event.delta *= -1
-	
-	if randf() < 0.2:
-		end_event.delta *= 1.5
-		if randf() < 0.2:
-			end_event.delta *= 1.5
+	end_event.apply_morale_whim(DEATH_FLIP_CHANCE_BY_TYPE[gob.type])
 	gob.morale.add_event(end_event)
