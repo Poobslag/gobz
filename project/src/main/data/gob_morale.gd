@@ -5,36 +5,36 @@ const MAX_CAPACITY: int = 8
 ## Morale happiness: Internally [-25, 125], shown as [0, 100].
 var value: float = 0.0
 
-var _events: Array[MoraleEvent] = []
+var events: Array[MoraleEvent] = []
 
 func add_event(event: MoraleEvent) -> void:
-	_events.append(event)
+	events.append(event)
 	value = clamp(value + event.delta, -25.0, 125.0)
-	while _events.size() > MAX_CAPACITY:
-		value -= _events.pop_front().delta
+	while events.size() > MAX_CAPACITY:
+		events.pop_front()
 
 
 func clear() -> void:
 	randomize_value()
-	_events.clear()
+	events.clear()
 
 
 func size() -> int:
-	return _events.size()
+	return events.size()
 
 
 func get_event(index: int) -> MoraleEvent:
-	return _events[index]
+	return events[index]
 
 
 func get_last_event() -> MoraleEvent:
-	return _events.back() if _events else null
+	return events.back() if events else null
 
 
 func pop_last_event() -> MoraleEvent:
-	if not _events:
+	if not events:
 		return null
-	var event: MoraleEvent = _events.pop_back()
+	var event: MoraleEvent = events.pop_back()
 	value -= event.delta
 	return event
 
@@ -48,12 +48,12 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 	for event_json_dict: Dictionary in json.get("events", []):
 		var event: MoraleEvent = MoraleEvent.new()
 		event.from_json_dict(Utils.typed_json_dict(event_json_dict))
-		_events.append(event)
+		events.append(event)
 
 
 func to_json_dict() -> Dictionary[String, Variant]:
 	var events_json: Array[Dictionary] = []
-	for event: MoraleEvent in _events:
+	for event: MoraleEvent in events:
 		events_json.append(event.to_json_dict())
 	return {
 		"value": value,

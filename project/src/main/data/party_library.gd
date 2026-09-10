@@ -308,7 +308,7 @@ class Drinking extends Party:
 		if randf() < 0.5:
 			result = "The goblins erupt into cacophony of off-key singing and drinking."
 			if randf() < 0.5:
-				result += " Some sing so badly it provokes a few fights, _which inspire new songs."
+				result += " Some sing so badly it provokes a few fights, which inspire new songs."
 			else:
 				result += " As the embarrassment of public singing sets in, they drink even more to forget."
 		else:

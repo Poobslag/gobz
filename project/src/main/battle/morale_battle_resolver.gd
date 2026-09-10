@@ -1,4 +1,4 @@
-class_name MoraleResolver
+class_name MoraleBattleResolver
 
 const BATTLE_MORALE_PCT: float = 0.25
 

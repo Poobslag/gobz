@@ -212,6 +212,8 @@ func _play_next() -> void:
 			gob_battle_status.record_action(enemy_kill.target, GobBattleStatus.HIT)
 			if enemy_kill.wounded_count.is_gt(0):
 				gob_battle_status.record_action(enemy_kill.target, GobBattleStatus.WOUNDED)
+			if enemy_kill.kill_count.is_gt(0):
+				gob_battle_status.record_action(enemy_kill.target, GobBattleStatus.KILLED)
 		for kill: BattleResolver.Kill in player_kills:
 			gob_battle_status.record_action(kill.source, GobBattleStatus.ENEMY_HIT)
 			if kill.wounded_count.is_gt(0):
