@@ -31,3 +31,12 @@ func test_012a() -> void:
 	assert_eq(PlayerData.dungeons[0].army.get_total_attack().to_int(), 4)
 	assert_eq(PlayerData.dungeons[0].recon_army.get_total_goblins().to_int(), 1)
 	assert_eq(PlayerData.dungeons[0].recon_army.get_total_attack().to_int(), 4)
+
+
+func test_012a_morale() -> void:
+	# morale didn't exist prior to 012a; assert that it's assigned sensibly (not all zeroes)
+	var total_morale: float = 0.0
+	for gob: Gob in PlayerData.army.gobs:
+		total_morale += gob.morale.value
+	var average_morale: float = total_morale / PlayerData.army.gobs.size()
+	assert_between(average_morale, 25.0, 75.0)
