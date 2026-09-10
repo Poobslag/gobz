@@ -104,9 +104,10 @@ func gob_needs_strong_medicine(gob: Gob) -> bool:
 	return gob.wound_severity >= 0.5
 
 
-func reroll_wound_severity(wounded: Dictionary[Gob, bool]) -> void:
+func reroll_wound_severity(gob_battle_status: GobBattleStatus) -> void:
 	for gob: Gob in PlayerData.army.gobs:
-		if gob in wounded:
+		if gob_battle_status.has_action(gob, GobBattleStatus.HIT) \
+				or gob_battle_status.has_action(gob, GobBattleStatus.WOUNDED):
 			gob.increase_wound_severity()
 		else:
 			gob.decrease_wound_severity()

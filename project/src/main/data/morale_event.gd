@@ -4,6 +4,8 @@ enum MoraleEventType {
 	NONE,
 	DAY_OFF,
 	MADE_FRIEND,
+	
+	# party events
 	MURDERBALL_WON,
 	MURDERBALL_LOST,
 	MURDERBALL_PLAY,
@@ -27,11 +29,22 @@ enum MoraleEventType {
 	FESTIVAL_DANCE,
 	FESTIVAL_LOVE,
 	FESTIVAL_RELAX,
+	
+	# battle events
+	BATTLE_IDLE,
+	BATTLE_ENEMY_KILLED,
+	BATTLE_ENEMY_WOUNDED,
+	BATTLE_ENEMY_HIT,
+	BATTLE_WOUNDED,
+	BATTLE_HIT,
+	BATTLE_LEVELED_UP,
 }
 
 const NONE: MoraleEventType = MoraleEventType.NONE
 const DAY_OFF: MoraleEventType = MoraleEventType.DAY_OFF
 const MADE_FRIEND: MoraleEventType = MoraleEventType.MADE_FRIEND
+
+## party events
 const MURDERBALL_WON: MoraleEventType = MoraleEventType.MURDERBALL_WON
 const MURDERBALL_LOST: MoraleEventType = MoraleEventType.MURDERBALL_LOST
 const MURDERBALL_PLAY: MoraleEventType = MoraleEventType.MURDERBALL_PLAY
@@ -56,6 +69,15 @@ const FESTIVAL_DANCE: MoraleEventType = MoraleEventType.FESTIVAL_DANCE
 const FESTIVAL_LOVE: MoraleEventType = MoraleEventType.FESTIVAL_LOVE
 const FESTIVAL_RELAX: MoraleEventType = MoraleEventType.FESTIVAL_RELAX
 
+## battle events
+const BATTLE_IDLE: MoraleEventType = MoraleEventType.BATTLE_IDLE
+const BATTLE_ENEMY_KILLED: MoraleEventType = MoraleEventType.BATTLE_ENEMY_KILLED
+const BATTLE_ENEMY_WOUNDED: MoraleEventType = MoraleEventType.BATTLE_ENEMY_WOUNDED
+const BATTLE_ENEMY_HIT: MoraleEventType = MoraleEventType.BATTLE_ENEMY_HIT
+const BATTLE_WOUNDED: MoraleEventType = MoraleEventType.BATTLE_WOUNDED
+const BATTLE_HIT: MoraleEventType = MoraleEventType.BATTLE_HIT
+const BATTLE_LEVELED_UP: MoraleEventType = MoraleEventType.BATTLE_LEVELED_UP
+
 var type: MoraleEventType = MoraleEventType.NONE
 var delta: float = 0.0
 var params: Array[Variant] = []
@@ -74,6 +96,8 @@ func get_desc(_gob: Gob) -> String:
 		MADE_FRIEND:
 			var gob_ref: GobRef = gob_ref_from_param(0)
 			result = "Befriended %s" % [gob_ref.name]
+		
+		# party events
 		MURDERBALL_WON:
 			if delta > 0.0:
 				result = "Won a game of murderball"
@@ -180,8 +204,66 @@ func get_desc(_gob: Gob) -> String:
 				result = "Enjoyed a festival"
 			else:
 				result = "Bored by the festival"
+		
+		# battle events
+		BATTLE_IDLE:
+			if delta > 0.0:
+				result = "Abstained from battle"
+			else:
+				result = "Didn't get to fight"
+		BATTLE_ENEMY_KILLED:
+			if delta > 0.0:
+				result = "Killed some bad guys"
+			else:
+				result = "Murdered a bad guy"
+		BATTLE_ENEMY_WOUNDED:
+			if delta > 0.0:
+				result = "Clobbered some bad guys"
+			else:
+				result = "Disfigured a bad guy"
+		BATTLE_ENEMY_HIT:
+			result = "Fought some bad guys"
+		BATTLE_WOUNDED:
+			var param: int = params[0] if (params and params[0] in BATTLE_WOUNDED_DESCRIPTIONS) else 0
+			result = BATTLE_WOUNDED_DESCRIPTIONS[param]
+		BATTLE_HIT:
+			var param: int = params[0] if (params and params[0] in BATTLE_HIT_DESCRIPTIONS) else 0
+			result = BATTLE_HIT_DESCRIPTIONS[param]
+		BATTLE_LEVELED_UP:
+			if delta > 0.0:
+				result = "Leveled up"
+			else:
+				result = "Anxious about leveling up"
 	return result
 
+const BATTLE_HIT_DESCRIPTIONS: Dictionary[int, String] = {
+	0: "Conked in the head",
+	1: "Bloody nose",
+	2: "Kicked in the face",
+	3: "Black eye",
+	4: "Fingers smashed",
+	5: "Concussion",
+	6: "Knifed in the gut",
+	7: "Stabbed in the chest",
+	8: "Bitten",
+	9: "Broken ribs",
+	10: "Poked with sharp stick",
+}
+
+const BATTLE_WOUNDED_DESCRIPTIONS: Dictionary[int, String] = {
+	0: "Split down the middle",
+	1: "Arms torn clean off",
+	2: "Face split open",
+	3: "Set on fire",
+	4: "Brain chopped off",
+	5: "Guts torn out",
+	6: "Partially eaten",
+	7: "Skin partially dissolved",
+	8: "Legs bent wrong",
+	9: "Smushed into paste",
+	10: "Blown to pencils",
+	11: "Skewered repeatedly",
+}
 
 func gob_ref_from_param(i: int) -> GobRef:
 	var gob_ref: GobRef = GobRef.new()
@@ -203,6 +285,10 @@ func to_json_dict() -> Dictionary[String, Variant]:
 		"params": params,
 		"day": day
 	}
+
+
+func _to_string() -> String:
+	return JSON.stringify(to_json_dict())
 
 
 static func new_randomized_event(init_type: MoraleEvent.MoraleEventType, init_delta: float) -> MoraleEvent:

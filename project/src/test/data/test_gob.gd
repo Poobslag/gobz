@@ -165,6 +165,21 @@ func test_convert_morale_to_json_and_back() -> void:
 	assert_eq(gob.morale.get_event(0).delta, 10.0)
 
 
+func test_convert_morale_to_json_and_back_wounded() -> void:
+	gob = new_gob("🔥 3")
+	var event: MoraleEvent = MoraleEvent.new()
+	event.type = MoraleEvent.BATTLE_WOUNDED
+	event.params = [3]
+	event.delta = 10.0
+	gob.morale.add_event(event)
+	assert_eq(gob.morale.get_event(0).get_desc(gob), "Set on fire")
+	
+	var result: Dictionary[String, Variant] = gob.to_json_dict()
+	gob = new_gob("🔥 3")
+	gob.from_json_dict(result)
+	assert_eq(gob.morale.get_event(0).get_desc(gob), "Set on fire")
+
+
 func test_kill_back_wounded() -> void:
 	gob = new_gob("🔥 3")
 	gob.back_count = Big.new(9)

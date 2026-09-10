@@ -31,7 +31,8 @@ func show_results_panel() -> void:
 	%WatchPanel.hide()
 	%ResultsPanel.show()
 	
-	HomeBaseData.heal_data.reroll_wound_severity(%WatchPanel.player_hit_gobs)
+	HomeBaseData.heal_data.reroll_wound_severity(%WatchPanel.gob_battle_status)
+	MoraleResolver.update_gob_battle_morale(%WatchPanel.gob_battle_status)
 
 
 func _on_pick_panel_finished() -> void:
