@@ -5,7 +5,7 @@ enum HealType {
 	NONE,
 	CHAT,
 	MEDICINE,
-	MONEY,
+	GOLD,
 }
 
 const MAX_MULTIPLIER = 100.0
@@ -137,7 +137,7 @@ func _append_chat_shower_hello() -> void:
 		match _heal_type_by_gob.get(center_group.front()):
 			HealType.MEDICINE:
 				%ChatShower.append_great_response("\"%s\"" % [LinePool.get_random_line(HEAL_GOODBYE_MEDICINE_PATH)])
-			HealType.MONEY:
+			HealType.GOLD:
 				%ChatShower.append_great_response("\"%s\"" % [LinePool.get_random_line(HEAL_GOODBYE_GOLD_PATH)])
 			_:
 				%ChatShower.append_great_response("\"%s\"" % [LinePool.get_random_line(HEAL_GOODBYE_CHAT_PATH)])
@@ -235,7 +235,7 @@ func _on_heal_with_gold_row_pressed() -> void:
 	
 	for gob: Gob in %HealWithGoldRow.gobs:
 		HealData.full_heal(gob)
-		_heal_type_by_gob[gob] = HealType.MONEY
+		_heal_type_by_gob[gob] = HealType.GOLD
 	
 	%ChatShower.append_great_response("\"%s\"" % [LinePool.get_random_line(HEAL_GOODBYE_GOLD_PATH)])
 	if PlayerData.heal_multiplier.is_gt(1):

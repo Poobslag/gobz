@@ -82,7 +82,7 @@ func _on_cook_herb_row_pressed(cook_herb_row: CookHerbRow) -> void:
 
 
 func _on_buy_item_row_pressed(buy_item_row: BuyItemRow) -> void:
-	# verify the player has enough money
+	# verify the player has enough gold
 	if buy_item_row.get_cost().is_gt(PlayerData.gold):
 		return
 	

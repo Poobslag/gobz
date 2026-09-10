@@ -1,7 +1,7 @@
 extends Control
-## Demonstrates the math around healing goblins with money, medicine or herbs.[br]
+## Demonstrates the math around healing goblins with gold, medicine or herbs.[br]
 ## [br]
-## Herbs are the most work, so they should usually be the most efficient. Goblins pocket half the money you spend, so
+## Herbs are the most work, so they should usually be the most efficient. Goblins pocket half the gold you spend, so
 ## healing with gold should require about twice as much gold as healing with medicine. That way the player breaks even
 ## when the goblin dies.[br]
 ## [br]

@@ -171,7 +171,7 @@ func get_desc(_gob: Gob) -> String:
 				result = "Suffered through murderball"
 		GAMBLING_WON:
 			if delta > 0.0:
-				result = "Won money gambling"
+				result = "Won gold gambling"
 			else:
 				result = "Boring night gambling"
 		GAMBLING_WON_BIG:
@@ -183,7 +183,7 @@ func get_desc(_gob: Gob) -> String:
 			if delta > 0.0:
 				result = "Lost a risky swindle"
 			else:
-				result = "Lost money gambling"
+				result = "Lost gold gambling"
 		GAMBLING_LOST_BIG:
 			if delta > 0.0:
 				result = "Almost rolled a grand swindle"
