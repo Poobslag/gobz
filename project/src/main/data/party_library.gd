@@ -221,29 +221,29 @@ class Gambling extends Party:
 		var gambling_gobs: Array[Gob] = finalize_morale()
 		
 		# randomly award goblins gold based on how RNG treated them
-		var get_gob_ref_param_remaining: float = 0.0
+		var gold_remaining: float = 0.0
 		for gob: Gob in gambling_gobs:
 			var last_event_type: MoraleEvent.MoraleEventType = gob.morale.get_last_event().type
 			if not last_event_type in WINNINGS_BY_EVENT:
 				continue
-			var get_gob_ref_param_change_per_gob: int = WINNINGS_BY_EVENT[last_event_type].pick_random()
-			gob.gold += get_gob_ref_param_change_per_gob
-			get_gob_ref_param_remaining -= get_gob_ref_param_change_per_gob * gob.get_count().to_float()
+			var gold_change_per_gob: int = WINNINGS_BY_EVENT[last_event_type].pick_random()
+			gob.gold += gold_change_per_gob
+			gold_remaining -= gold_change_per_gob * gob.get_count().to_float()
 		
 		# give the RNG one pass to even things out, so gold doesn't enter/leave the economy
 		gambling_gobs.shuffle()
 		for gob: Gob in gambling_gobs:
-			if abs(get_gob_ref_param_remaining) < 10.0:
+			if abs(gold_remaining) < 10.0:
 				break
 			var gob_size: float = gob.get_count().to_float()
-			if gob_size * 0.5 >= abs(get_gob_ref_param_remaining):
+			if gob_size * 0.5 >= abs(gold_remaining):
 				continue
-			if get_gob_ref_param_remaining > 0.0:
+			if gold_remaining > 0.0:
 				gob.gold += 1
-				get_gob_ref_param_remaining -= gob.get_count().to_float()
+				gold_remaining -= gob.get_count().to_float()
 			else:
 				gob.gold -= 1
-				get_gob_ref_param_remaining += gob.get_count().to_float()
+				gold_remaining += gob.get_count().to_float()
 		
 		var result: String
 		if randf() < 0.5:
@@ -271,7 +271,7 @@ class Drinking extends Party:
 		super._init("Drinking")
 		match _which:
 			0:
-				prompt = "\"Let's get drunk and go nuts! We got some extra get_gob_ref_param, right?"
+				prompt = "\"Let's get drunk and go nuts! We got some extra beer, right?"
 				prompt += " C'monnn let's live a little!\""
 			1:
 				prompt = "\"If you can find us some alcohol,"

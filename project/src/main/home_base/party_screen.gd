@@ -113,6 +113,8 @@ func _on_party_row_pressed(party_row: PartyRow) -> void:
 	MoraleRelationshipResolver.create_random_relationships(0.08, 0.04)
 	HomeBaseData.party_data.party_result = party_row.party.execute()
 	HomeBaseData.party_data.partied = true
+	HomeBaseData.force_good_morale_message()
+	HomeBaseData.heal_data.mark_groups_dirty()
 	for child: PartyRow in %Parties.get_children():
 		child.refresh()
 	PlayerData.inventory.take_item(party_row.item_type, party_row.item_count)

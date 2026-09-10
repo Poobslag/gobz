@@ -4,8 +4,8 @@ signal finished
 signal tutorial_pressed
 
 const MORALE_MESSAGE_FREQUENCY: float = 0.2
-const MORALE_GOOD_PATH: String = "res://assets/main/battle/morale_good.csv"
-const MORALE_BAD_PATH: String = "res://assets/main/battle/morale_bad.csv"
+const MORALE_GOOD_PATH: String = "res://assets/main/battle/battle_morale_good.csv"
+const MORALE_BAD_PATH: String = "res://assets/main/battle/battle_morale_bad.csv"
 
 var _initial_enemy_orders: Array[Gobs.Type] = []
 var _initial_player_orders: Array[Gobs.Type] = []
