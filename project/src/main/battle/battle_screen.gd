@@ -32,7 +32,14 @@ func show_results_panel() -> void:
 	%ResultsPanel.show()
 	
 	HomeBaseData.heal_data.reroll_wound_severity(%WatchPanel.gob_battle_status)
-	MoraleResolver.update_gob_battle_morale(%WatchPanel.gob_battle_status)
+	MoraleBattleResolver.update_gob_battle_morale(%WatchPanel.gob_battle_status)
+	
+	var dead_gob_ids: Dictionary[int, bool] = {}
+	for gob: Gob in %WatchPanel.gob_battle_status.get_gobs():
+		if %WatchPanel.gob_battle_status.has_action(gob, GobBattleStatus.KILLED):
+			dead_gob_ids[gob.id] = true
+	MoraleRelationshipResolver.apply_death_morale(dead_gob_ids)
+	MoraleRelationshipResolver.create_random_relationships(0.08, 0.04)
 
 
 func _on_pick_panel_finished() -> void:

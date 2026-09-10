@@ -61,8 +61,8 @@ func _refresh_party_cost() -> void:
 			cost_factor += 2.0
 		party_row.item_count = Big.new(max(cost_factor, \
 				PlayerData.army.get_total_goblins().to_float() * 0.01 * cost_factor))
-	%MultiplyButton.disabled = true if PlayerData.party_multiplier >= 2 else false
-	%DivideButton.disabled = true if PlayerData.party_multiplier <= 0 else false
+	%MultiplyButton.disabled = PlayerData.party_multiplier >= 2 or HomeBaseData.party_data.partied
+	%DivideButton.disabled = PlayerData.party_multiplier <= 0 or HomeBaseData.party_data.partied
 
 
 func _refresh_army_label() -> void:
@@ -110,6 +110,7 @@ func _on_party_row_pressed(party_row: PartyRow) -> void:
 	if not PlayerData.inventory.has_item(party_row.item_type, party_row.item_count):
 		return
 	
+	MoraleRelationshipResolver.create_random_relationships(0.08, 0.04)
 	HomeBaseData.party_data.party_result = party_row.party.execute()
 	HomeBaseData.party_data.partied = true
 	for child: PartyRow in %Parties.get_children():

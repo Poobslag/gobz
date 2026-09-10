@@ -4,6 +4,9 @@ enum MoraleEventType {
 	NONE,
 	DAY_OFF,
 	MADE_FRIEND,
+	MADE_RIVAL,
+	FRIEND_DIED,
+	RIVAL_DIED,
 	
 	# party events
 	MURDERBALL_WON,
@@ -43,6 +46,9 @@ enum MoraleEventType {
 const NONE: MoraleEventType = MoraleEventType.NONE
 const DAY_OFF: MoraleEventType = MoraleEventType.DAY_OFF
 const MADE_FRIEND: MoraleEventType = MoraleEventType.MADE_FRIEND
+const MADE_RIVAL: MoraleEventType = MoraleEventType.MADE_RIVAL
+const FRIEND_DIED: MoraleEventType = MoraleEventType.FRIEND_DIED
+const RIVAL_DIED: MoraleEventType = MoraleEventType.RIVAL_DIED
 
 ## party events
 const MURDERBALL_WON: MoraleEventType = MoraleEventType.MURDERBALL_WON
@@ -78,6 +84,35 @@ const BATTLE_WOUNDED: MoraleEventType = MoraleEventType.BATTLE_WOUNDED
 const BATTLE_HIT: MoraleEventType = MoraleEventType.BATTLE_HIT
 const BATTLE_LEVELED_UP: MoraleEventType = MoraleEventType.BATTLE_LEVELED_UP
 
+const BATTLE_HIT_DESCRIPTIONS: Dictionary[int, String] = {
+	0: "Conked in the head",
+	1: "Bloody nose",
+	2: "Kicked in the face",
+	3: "Black eye",
+	4: "Fingers smashed",
+	5: "Concussion",
+	6: "Knifed in the gut",
+	7: "Stabbed in the chest",
+	8: "Bitten",
+	9: "Broken ribs",
+	10: "Poked with sharp stick",
+}
+
+const BATTLE_WOUNDED_DESCRIPTIONS: Dictionary[int, String] = {
+	0: "Split down the middle",
+	1: "Arms torn clean off",
+	2: "Face split open",
+	3: "Set on fire",
+	4: "Brain chopped off",
+	5: "Guts torn out",
+	6: "Partially eaten",
+	7: "Skin partially dissolved",
+	8: "Legs bent wrong",
+	9: "Smushed into paste",
+	10: "Blown to pencils",
+	11: "Skewered repeatedly",
+}
+
 var type: MoraleEventType = MoraleEventType.NONE
 var delta: float = 0.0
 var params: Array[Variant] = []
@@ -94,8 +129,29 @@ func get_desc(_gob: Gob) -> String:
 			else:
 				result = "Boring day off"
 		MADE_FRIEND:
-			var gob_ref: GobRef = gob_ref_from_param(0)
-			result = "Befriended %s" % [gob_ref.name]
+			var gob_ref: GobRef = get_gob_ref_param(0)
+			if delta > 0.0:
+				result = "Made friends with %s" % [gob_ref.name]
+			else:
+				result = "Annoying new friend, %s" % [gob_ref.name]
+		MADE_RIVAL:
+			var gob_ref: GobRef = get_gob_ref_param(0)
+			if delta > 0.0:
+				result = "New rivalry with %s" % [gob_ref.name]
+			else:
+				result = "Annoying new enemy, %s" % [gob_ref.name]
+		FRIEND_DIED:
+			var gob_ref: GobRef = get_gob_ref_param(0)
+			if delta > 0:
+				result = "Friend %s had a glorious death" % [gob_ref.name]
+			else:
+				result = "Friend %s died" % [gob_ref.name]
+		RIVAL_DIED:
+			var gob_ref: GobRef = get_gob_ref_param(0)
+			if delta > 0:
+				result = "Rival %s died" % [gob_ref.name]
+			else:
+				result = "Rival %s had a glorious death" % [gob_ref.name]
 		
 		# party events
 		MURDERBALL_WON:
@@ -236,39 +292,16 @@ func get_desc(_gob: Gob) -> String:
 				result = "Anxious about leveling up"
 	return result
 
-const BATTLE_HIT_DESCRIPTIONS: Dictionary[int, String] = {
-	0: "Conked in the head",
-	1: "Bloody nose",
-	2: "Kicked in the face",
-	3: "Black eye",
-	4: "Fingers smashed",
-	5: "Concussion",
-	6: "Knifed in the gut",
-	7: "Stabbed in the chest",
-	8: "Bitten",
-	9: "Broken ribs",
-	10: "Poked with sharp stick",
-}
-
-const BATTLE_WOUNDED_DESCRIPTIONS: Dictionary[int, String] = {
-	0: "Split down the middle",
-	1: "Arms torn clean off",
-	2: "Face split open",
-	3: "Set on fire",
-	4: "Brain chopped off",
-	5: "Guts torn out",
-	6: "Partially eaten",
-	7: "Skin partially dissolved",
-	8: "Legs bent wrong",
-	9: "Smushed into paste",
-	10: "Blown to pencils",
-	11: "Skewered repeatedly",
-}
-
-func gob_ref_from_param(i: int) -> GobRef:
+func get_gob_ref_param(i: int) -> GobRef:
 	var gob_ref: GobRef = GobRef.new()
 	gob_ref.from_json_dict(Utils.typed_json_dict(params[i]))
 	return gob_ref
+
+
+func set_gob_ref_param(i: int, gob_ref: GobRef) -> void:
+	if params.size() <= i:
+		params.resize(i + 1)
+	params[i] = gob_ref.to_json_dict()
 
 
 func from_json_dict(json: Dictionary[String, Variant]) -> void:
@@ -306,3 +339,7 @@ class GobRef:
 	func from_json_dict(json: Dictionary[String, Variant]) -> void:
 		id = json.get("id", -1)
 		name = json.get("name", "")
+	
+	
+	func to_json_dict() -> Dictionary[String, Variant]:
+		return {"id": id, "name": name}
