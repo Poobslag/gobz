@@ -61,13 +61,5 @@ static func _random_battle_event(gob_battle_status: GobBattleStatus, gob: Gob) -
 		if (gob.type == Gobs.Type.ANGEL and event.delta > 0.0):
 			event.delta *= -1
 	
-	# Sometimes a battle has a surprising effect, and a goblin hates killing a guy for some reason
-	if randf() < MORALE_FLIP_CHANCE_BY_TYPE[gob.type]:
-		event.delta *= -1
-	
-	if randf() < 0.2:
-		event.delta *= 1.5
-		if randf() < 0.2:
-			event.delta *= 1.5
-	
+	event.apply_morale_whim(MORALE_FLIP_CHANCE_BY_TYPE[gob.type])
 	return event

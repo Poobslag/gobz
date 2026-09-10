@@ -15,6 +15,10 @@ const HEAL_GOODBYE_CHAT_PATH: String = "res://assets/main/home_base/heal/heal_go
 const HEAL_GOODBYE_GOLD_PATH: String = "res://assets/main/home_base/heal/heal_goodbye_gold.csv"
 const HEAL_GOODBYE_MEDICINE_PATH: String = "res://assets/main/home_base/heal/heal_goodbye_medicine.csv"
 
+const MORALE_MEDICINE: float = 5.0
+const MORALE_GOLD: float = 10.0
+const MORALE_CHAT: float = 15.0
+
 var _heal_chat_lines: Array[HealChatLines.HealChatLine]
 
 var _ui_state_per_heal_group: Dictionary[HealData.HealGroup, Dictionary] = {}
@@ -151,6 +155,14 @@ func _adjust_multiplier(factor: float) -> void:
 	refresh()
 
 
+func _add_heal_morale_event(delta: float) -> void:
+	var center_group: HealData.HealGroup = HomeBaseData.heal_data.get_center_group()
+	if center_group:
+		var event: MoraleEvent = MoraleEvent.new_randomized_event(MoraleEvent.HEAL_VISIT, delta)
+		event.apply_morale_whim()
+		center_group.front().morale.add_event(event)
+
+
 func _on_chat_picker_option_picked(option_index: int) -> void:
 	%ChatPicker.set_disabled(true)
 	%ChatShower.append_prompt("\"%s\"" % [_heal_chat_lines[option_index].prompt])
@@ -167,6 +179,8 @@ func _on_chat_picker_option_picked(option_index: int) -> void:
 				HealData.full_heal(gob)
 				_heal_type_by_gob[gob] = HealType.CHAT
 			center_group.hurt_count = Big.ZERO
+			_add_heal_morale_event(MORALE_CHAT)
+			
 			%ChatShower.append_great_response("\"%s\"" % [_heal_chat_lines[option_index].response_good])
 			if append_goodbye:
 				%ChatShower.append_great_response("\"%s\"" % [LinePool.get_random_line(HEAL_GOODBYE_CHAT_PATH)])
@@ -236,6 +250,7 @@ func _on_heal_with_gold_row_pressed() -> void:
 	for gob: Gob in %HealWithGoldRow.gobs:
 		HealData.full_heal(gob)
 		_heal_type_by_gob[gob] = HealType.GOLD
+	_add_heal_morale_event(MORALE_GOLD)
 	
 	%ChatShower.append_great_response("\"%s\"" % [LinePool.get_random_line(HEAL_GOODBYE_GOLD_PATH)])
 	if PlayerData.heal_multiplier.is_gt(1):
@@ -254,6 +269,7 @@ func _on_heal_with_medicine_row_pressed() -> void:
 	for gob: Gob in %HealWithMedicineRow.gobs:
 		HealData.full_heal(gob)
 		_heal_type_by_gob[gob] = HealType.MEDICINE
+	_add_heal_morale_event(MORALE_MEDICINE)
 	
 	%ChatShower.append_great_response("\"%s\"" % [LinePool.get_random_line(HEAL_GOODBYE_MEDICINE_PATH)])
 	if PlayerData.heal_multiplier.is_gt(1):
