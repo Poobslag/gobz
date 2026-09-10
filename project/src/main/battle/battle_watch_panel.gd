@@ -7,15 +7,14 @@ const MORALE_MESSAGE_FREQUENCY: float = 0.2
 const MORALE_GOOD_PATH: String = "res://assets/main/battle/morale_good.csv"
 const MORALE_BAD_PATH: String = "res://assets/main/battle/morale_bad.csv"
 
-## Player's goblins which were hit and need their wound severity rerolled.
-var player_hit_gobs: Dictionary[Gob, bool] = {}
-
 var _initial_enemy_orders: Array[Gobs.Type] = []
 var _initial_player_orders: Array[Gobs.Type] = []
 var _player_orders: Array[Gobs.Type] = []
 var _enemy_orders: Array[Gobs.Type] = []
 
 var _flavor_budget: float = randf()
+
+var gob_battle_status: GobBattleStatus = GobBattleStatus.new()
 
 func _ready() -> void:
 	%NextButton.pressed.connect(_on_next_button_pressed)
@@ -206,22 +205,24 @@ func _play_next() -> void:
 		if not enemy_level_ups.is_empty():
 			_append_level_up_announcements(%EnemyAttack, enemy_level_ups)
 		
+		
+		for level_up: BattleResolver.LevelUp in player_level_ups:
+			gob_battle_status.record_action(level_up.gob, GobBattleStatus.LEVELED_UP)
 		for enemy_kill: BattleResolver.Kill in enemy_kills:
-			player_hit_gobs[enemy_kill.target] = true
+			gob_battle_status.record_action(enemy_kill.target, GobBattleStatus.HIT)
+			if enemy_kill.wounded_count.is_gt(0):
+				gob_battle_status.record_action(enemy_kill.target, GobBattleStatus.WOUNDED)
+		for kill: BattleResolver.Kill in player_kills:
+			gob_battle_status.record_action(kill.source, GobBattleStatus.ENEMY_HIT)
+			if kill.wounded_count.is_gt(0):
+				gob_battle_status.record_action(kill.source, GobBattleStatus.ENEMY_WOUNDED)
+			if kill.kill_count.is_gt(0):
+				gob_battle_status.record_action(kill.source, GobBattleStatus.ENEMY_KILLED)
 		
 		# handle random morale messages
 		_flavor_budget += MORALE_MESSAGE_FREQUENCY
 		if %YourAttack.get_line_count() <= 6 and randf() < _flavor_budget:
-			_flavor_budget -= 1.0
-			var random_gob: Gob = player_kills.pick_random().source
-			var random_line: String
-			if randf_range(0.0, 100.0) < random_gob.morale.value:
-				random_line = LinePool.get_random_line(MORALE_GOOD_PATH)
-			else:
-				random_line = LinePool.get_random_line(MORALE_BAD_PATH)
-			var random_kill_name: String = random_gob.name
-			%YourAttack.text += "\n"
-			%YourAttack.text += "[i]%s[/i]\n" % [random_line.format([["name", random_kill_name]])]
+			_show_random_morale_message(player_kills)
 	
 	%YourAttack.text = %YourAttack.text.strip_edges()
 	%EnemyAttack.text = %EnemyAttack.text.strip_edges()
@@ -230,6 +231,22 @@ func _play_next() -> void:
 	_erase_invalid_orders(_enemy_orders, PlayerData.get_dungeon_army())
 	
 	refresh()
+
+
+func _show_random_morale_message(player_kills: Array[BattleResolver.Kill]) -> void:
+	if player_kills.is_empty():
+		return
+	
+	_flavor_budget -= 1.0
+	var random_gob: Gob = player_kills.pick_random().source
+	var random_line: String
+	if randf_range(0.0, 100.0) < random_gob.morale.value:
+		random_line = LinePool.get_random_line(MORALE_GOOD_PATH)
+	else:
+		random_line = LinePool.get_random_line(MORALE_BAD_PATH)
+	var random_kill_name: String = random_gob.name
+	%YourAttack.text += "\n"
+	%YourAttack.text += "[i]%s[/i]\n" % [random_line.format([["name", random_kill_name]])]
 
 
 func _append_level_up_announcements(text_area: RichTextLabel, level_ups: Array[BattleResolver.LevelUp]) -> void:
