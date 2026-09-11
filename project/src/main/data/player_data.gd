@@ -52,8 +52,10 @@ var tips: Array[String] = [
 	"Dungeon information is based on goblins spotted nearby, but it's not perfect.",
 	"Sometimes, enemy dungeons have strong goblins you weren't told about.",
 	"If an enemy dungeon has a surprise you're not prepared for, it's OK to leave!",
-	"A type hint like \"🌳🌳🔥\" means there are a lot of 🌳, and a few 🔥.",
-	"A type hint like \"🔥💧🌳\" means there are several 🔥, some 💧, and a few 🌳.",
+	"A dungeon with \"💧💧💧\" has a ton of 💧, but may still have a surprise.",
+	"A dungeon with \"🌳🌳🔥\" has a lot of 🌳, and a few 🔥.",
+	"A dungeon with \"🔥💧🌳\" has several 🔥, some 💧, and a few 🌳.",
+	"A dungeon with \"💧🌳🔥\" has several 💧, some 🌳, and a few 🔥.",
 	"Recruit your goblins carefully! Some goblins ask for too much gold.",
 	"Recruit your goblins carefully! Some types are more useful than others.",
 ]

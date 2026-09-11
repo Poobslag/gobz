@@ -141,7 +141,7 @@ func get_desc(_gob: Gob) -> String:
 			if delta > 0.0:
 				result = "New rivalry with %s" % [gob_ref.name]
 			else:
-				result = "Annoying new enemy, %s" % [gob_ref.name]
+				result = "Annoying new rival, %s" % [gob_ref.name]
 		FRIEND_DIED:
 			var gob_ref: GobRef = get_gob_ref_param(0)
 			if delta > 0:

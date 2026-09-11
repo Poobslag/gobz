@@ -147,15 +147,6 @@ custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "÷10"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=288008880]
-layout_mode = 2
-
-[node name="FightButton" type="Button" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2" unique_id=682209607]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-text = "Go Fight"
-
 [node name="HomeNav" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer" unique_id=1142993029 instance=ExtResource("8_jg6nf")]
 layout_mode = 2
 
