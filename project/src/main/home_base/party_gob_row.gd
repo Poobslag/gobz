@@ -21,8 +21,8 @@ func _refresh() -> void:
 	var last_event: MoraleEvent = gob.morale.get_last_event()
 	if last_event:
 		%Event.visible = true
-		%Event.text = "\t\t[i](%s, Day %s, [color=%s][b]%s%s[/b][/color])[/i]" % \
-				[last_event.get_desc(gob), last_event.day, \
+		%Event.text = "\t\t[i](%s, [color=%s][b]%s%s[/b][/color])[/i]" % \
+				[last_event.get_desc(gob), \
 				"red" if last_event.delta < 0 else "green", "" if last_event.delta < 0 else "+",
 				roundi(last_event.delta)]
 	else:

@@ -32,7 +32,12 @@ func victory() -> void:
 	color = Color("458a61")
 	%InventoryHeader.color = Color("2b473680")
 	%Message.text = ""
-	%Message.text += "Victory!\n\n"
+	if PlayerData.get_dungeon().boss:
+		%Message.text += "[b]Boss dungeon #%s defeated![/b] Heck yeah!\n\n" \
+				% [StringUtils.comma_sep(PlayerData.bosses_defeated + 1)]
+	else:
+		%Message.text += "Victory!\n\n"
+	
 	%Message.text += "You loot 💰%s from your fallen allies and enemies." % [looted_gold.to_aa()]
 	
 	_end_battle()
@@ -73,7 +78,11 @@ func mutual_defeat() -> void:
 
 	PlayerData.get_dungeon_army().gold = Big.ZERO
 	%Message.text = ""
-	%Message.text += "Mutual defeat...\n\n"
+	if PlayerData.get_dungeon().boss:
+		%Message.text += "[b]Boss dungeon #%s defeated...?[/b] Umm, kind of!\n\n" \
+				% [StringUtils.comma_sep(PlayerData.bosses_defeated + 1)]
+	else:
+		%Message.text += "Mutual defeat...\n\n"
 	
 	var goblin: Gob = PlayerData.army.gobs.back()
 	%Message.text += "%s %s is inspired by the bravery of the fallen goblins!\n" % [

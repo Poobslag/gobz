@@ -25,6 +25,9 @@ static func _random_battle_event(gob_battle_status: GobBattleStatus, gob: Gob) -
 	# calculate which events the goblin is eligible for
 	var eligible: Array[GobBattleStatus.GobAction] = []
 	for action: GobBattleStatus.GobAction in GobBattleStatus.GobAction.values():
+		if action == GobBattleStatus.KILLED:
+			# some goblins in our gob might be killed, but we don't report those events
+			continue
 		if gob_battle_status.has_action(gob, action):
 			eligible.append(action)
 	

@@ -29,3 +29,9 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "🛒 Supplies"
+
+[node name="Fight" type="Button" parent="." unique_id=1539096336 groups=["nav_buttons"]]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 46)
+layout_mode = 2
+text = "⚔ Fight!"
