@@ -1,0 +1,6 @@
+Font: Fluent Emoji
+License: MIT
+License URL: https://github.com/microsoft/fluentui-emoji/blob/main/LICENSE
+
+Downloaded by OmnEmoji addon for Godot.
+See the license URL above for full license terms.

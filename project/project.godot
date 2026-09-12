@@ -39,7 +39,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/gut/plugin.cfg")
+enabled=PackedStringArray("res://addons/gut/plugin.cfg", "res://addons/omnemoji/plugin.cfg")
 
 [file_customization]
 
@@ -52,6 +52,10 @@ folder_colors={
 "res://src/main/": "green",
 "res://src/test/": "orange"
 }
+
+[gui]
+
+theme/custom_font="res://addons/omnemoji/resources/OmnEmojiMerged.tres"
 
 [input]
 
