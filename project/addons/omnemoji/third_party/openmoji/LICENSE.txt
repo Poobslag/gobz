@@ -1,0 +1,6 @@
+Font: OpenMoji
+License: CC BY-SA 4.0
+License URL: https://creativecommons.org/licenses/by-sa/4.0/
+
+Downloaded by OmnEmoji addon for Godot.
+See the license URL above for full license terms.

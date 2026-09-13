@@ -1,0 +1,6 @@
+Font: Twemoji
+License: CC BY 4.0 / MIT
+License URL: https://github.com/mozilla/twemoji-colr
+
+Downloaded by OmnEmoji addon for Godot.
+See the license URL above for full license terms.
