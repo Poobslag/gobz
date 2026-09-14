@@ -118,6 +118,10 @@ tutorial={
 3d_physics/layer_4="Cursor"
 3d_physics/layer_5="Clickable"
 
+[omnemoji]
+
+emoji_provider=6
+
 [rendering]
 
 textures/vram_compression/import_etc2_astc=true
