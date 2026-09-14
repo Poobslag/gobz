@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://ceog6p18ymn75"]
+
+[ext_resource type="PackedScene" uid="uid://rxw5s0an3fgd" path="res://src/main/home_base/new_day_panel.tscn" id="1_7ghdi"]
+[ext_resource type="Script" uid="uid://bnhephi57cwqs" path="res://src/demo/home_base/demo_new_day_panel.gd" id="1_qq8kt"]
+
+[node name="DemoNewDayPanel" type="Control" unique_id=888602499]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qq8kt")
+
+[node name="NewDayPanel" parent="." unique_id=1874804003 instance=ExtResource("1_7ghdi")]
+unique_name_in_owner = true
+layout_mode = 1

@@ -556,7 +556,7 @@ class Festival extends Party:
 		match _which:
 			0:
 				prompt = "\"How about a good ol' goblin festival with like..."
-				prompt = " Food, drinks, music, dancin', all that good stuff!\""
+				prompt += " Food, drinks, music, dancin', all that good stuff!\""
 			1:
 				prompt = "\"Let's get some music here! Y'know, a little dancing, some nice food,"
 				prompt += " a good ol' goblin time.\""

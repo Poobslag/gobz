@@ -28,6 +28,8 @@ func _ready() -> void:
 	if not PlayerData.finished_tutorials.has(PlayerData.HOME_BASE_TUTORIAL):
 		%TutorialPanel.open()
 		PlayerData.finished_tutorials[PlayerData.HOME_BASE_TUTORIAL] = true
+	elif not PlayerData.food_record.shown:
+		%NewDayPanel.play()
 
 
 func _refresh_dungeons() -> void:

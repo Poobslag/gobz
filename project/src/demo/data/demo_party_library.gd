@@ -79,7 +79,7 @@ func execute_party(party: Party) -> void:
 	print_line("%s morale: %s (%.1f->%.1f) affected: %.1f attack: %s (%s->%s)" % [party.name,
 			morale_delta_string, morale_before, morale_after,
 			affected_pct * 100,
-			attack_delta_string, Big.new(attack_before).to_aa(), Big.new(attack_after).to_aa()])
+			attack_delta_string, Big.float_to_aa(attack_before), Big.float_to_aa(attack_after)])
 
 
 func print_line(line: String) -> void:

@@ -72,9 +72,9 @@ func rerandomize() -> void:
 		var group_herb_indicator: String = "*" if best_group_cost == group_herb_cost else ""
 		show_line("%s - Gold cost: %s%s Medicine cost: %s%s Herb cost: %s%s" % [
 				group.front().name,
-				group_gold_indicator, Big.new(group_gold_cost).to_aa(),
-				group_medicine_indicator, Big.new(group_medicine_cost).to_aa(),
-				group_herb_indicator, Big.new(group_herb_cost).to_aa(),
+				group_gold_indicator, Big.float_to_aa(group_gold_cost),
+				group_medicine_indicator, Big.float_to_aa(group_medicine_cost),
+				group_herb_indicator, Big.float_to_aa(group_herb_cost),
 			])
 		total_gold_cost += group_gold_cost
 		total_medicine_cost += group_medicine_cost

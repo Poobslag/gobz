@@ -42,6 +42,14 @@ enum MoraleEventType {
 	BATTLE_WOUNDED,
 	BATTLE_HIT,
 	BATTLE_LEVELED_UP,
+	
+	# food events
+	ATE_BREAD,
+	ATE_CHICKEN,
+	ATE_PIZZA,
+	ATE_RAM,
+	ATE_UNKNOWN,
+	STARVED,
 }
 
 const NONE: MoraleEventType = MoraleEventType.NONE
@@ -85,6 +93,14 @@ const BATTLE_ENEMY_HIT: MoraleEventType = MoraleEventType.BATTLE_ENEMY_HIT
 const BATTLE_WOUNDED: MoraleEventType = MoraleEventType.BATTLE_WOUNDED
 const BATTLE_HIT: MoraleEventType = MoraleEventType.BATTLE_HIT
 const BATTLE_LEVELED_UP: MoraleEventType = MoraleEventType.BATTLE_LEVELED_UP
+
+## food events
+const ATE_BREAD: MoraleEventType = MoraleEventType.ATE_BREAD
+const ATE_CHICKEN: MoraleEventType = MoraleEventType.ATE_CHICKEN
+const ATE_PIZZA: MoraleEventType = MoraleEventType.ATE_PIZZA
+const ATE_RAM: MoraleEventType = MoraleEventType.ATE_RAM
+const ATE_UNKNOWN: MoraleEventType = MoraleEventType.ATE_UNKNOWN
+const STARVED: MoraleEventType = MoraleEventType.STARVED
 
 const BATTLE_HIT_DESCRIPTIONS: Dictionary[int, String] = {
 	0: "Conked in the head",
@@ -297,6 +313,33 @@ func get_desc(_gob: Gob) -> String:
 				result = "Leveled up"
 			else:
 				result = "Anxious about leveling up"
+		ATE_BREAD:
+			if delta > 6.0:
+				result = "Loves croissants"
+			else:
+				result = "Ate croissants"
+		ATE_CHICKEN:
+			if delta > 6.0:
+				result = "Loves chicken"
+			else:
+				result = "Ate chicken"
+		ATE_PIZZA:
+			if delta > 6.0:
+				result = "Loves pizza"
+			else:
+				result = "Ate pizza"
+		ATE_RAM:
+			if delta > 6.0:
+				result = "Loves meat"
+			else:
+				result = "Ate meat"
+		ATE_UNKNOWN:
+			if delta > 6.0:
+				result = "Loves eating... something"
+			else:
+				result = "Ate... something"
+		STARVED:
+			result = "Starved"
 	return result
 
 func get_gob_ref_param(i: int) -> GobRef:

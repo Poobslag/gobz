@@ -220,6 +220,7 @@ func _play_next() -> void:
 				gob_battle_status.record_action(kill.source, GobBattleStatus.ENEMY_WOUNDED)
 			if kill.kill_count.is_gt(0):
 				gob_battle_status.record_action(kill.source, GobBattleStatus.ENEMY_KILLED)
+				gob_battle_status.enemies_killed = Big.add(gob_battle_status.enemies_killed, kill.kill_count)
 		
 		# handle random morale messages
 		_flavor_budget += MORALE_MESSAGE_FREQUENCY

@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://g7b12cf0ow6o" path="res://src/main/home_base/home_nav.tscn" id="8_jg6nf"]
 [ext_resource type="PackedScene" uid="uid://dn3pdlhuw1iap" path="res://src/main/home_base/home_base_tutorial_panel.tscn" id="9_m4idb"]
 [ext_resource type="PackedScene" uid="uid://dvdna5v6cbdwc" path="res://src/main/home_base/inventory_header.tscn" id="9_uanv4"]
+[ext_resource type="PackedScene" uid="uid://rxw5s0an3fgd" path="res://src/main/home_base/new_day_panel.tscn" id="12_fm1bs"]
 
 [node name="HomeBase" type="Control" unique_id=1368189123]
 layout_mode = 3
@@ -167,6 +168,11 @@ color = Color(0.21960784, 0.4117647, 0.29803923, 1)
 unique_name_in_owner = true
 
 [node name="TutorialPanel" parent="." unique_id=1007842494 instance=ExtResource("9_m4idb")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+
+[node name="NewDayPanel" parent="." unique_id=1874804003 instance=ExtResource("12_fm1bs")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1

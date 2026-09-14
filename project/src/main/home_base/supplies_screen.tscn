@@ -66,7 +66,27 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="BuyHerb1Row" parent="SuppliesPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=2050432156 instance=ExtResource("7_3a3uc")]
+[node name="BuyBreadRow" parent="SuppliesPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=2050432156 instance=ExtResource("7_3a3uc")]
+unique_name_in_owner = true
+layout_mode = 2
+type = 5
+
+[node name="BuyChickenRow" parent="SuppliesPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1284396181 instance=ExtResource("7_3a3uc")]
+unique_name_in_owner = true
+layout_mode = 2
+type = 6
+
+[node name="BuyPizzaRow" parent="SuppliesPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=568913802 instance=ExtResource("7_3a3uc")]
+unique_name_in_owner = true
+layout_mode = 2
+type = 7
+
+[node name="BuyRamRow" parent="SuppliesPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1223057654 instance=ExtResource("7_3a3uc")]
+unique_name_in_owner = true
+layout_mode = 2
+type = 8
+
+[node name="BuyHerb1Row" parent="SuppliesPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=443661402 instance=ExtResource("7_3a3uc")]
 unique_name_in_owner = true
 layout_mode = 2
 type = 2

@@ -9,7 +9,7 @@ var events: Array[MoraleEvent] = []
 
 func add_event(event: MoraleEvent) -> void:
 	events.append(event)
-	value = clamp(value + event.delta, -25.0, 125.0)
+	adjust_value(event.delta)
 	while events.size() > MAX_CAPACITY:
 		events.pop_front()
 
@@ -41,6 +41,10 @@ func pop_last_event() -> MoraleEvent:
 
 func randomize_value() -> void:
 	value = randf_range(0, 20) + randf_range(0, 30) + randf_range(0, 50)
+
+
+func adjust_value(delta: float) -> void:
+	value = clamp(value + delta, -25.0, 125.0)
 
 
 func from_json_dict(json: Dictionary[String, Variant]) -> void:

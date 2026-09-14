@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://d0gdclbr1vtul"]
+
+[ext_resource type="Script" uid="uid://cagtwmdixnsc0" path="res://src/main/home_base/new_day_food_row.gd" id="1_kgd8g"]
+
+[node name="FoodRow" type="HBoxContainer" unique_id=244518484 groups=["new_day_food_rows"]]
+alignment = 1
+script = ExtResource("1_kgd8g")
+
+[node name="ItemLabel" type="RichTextLabel" parent="." unique_id=2113133212]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 23)
+layout_mode = 2
+text = "🍖23"
+horizontal_alignment = 2
+
+[node name="Spacer" type="Control" parent="." unique_id=1714166301]
+layout_mode = 2
+
+[node name="DeltaLabel" type="RichTextLabel" parent="." unique_id=138054196]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 23)
+layout_mode = 2
+bbcode_enabled = true
+text = "[color=green](-1.2k)[/color]"
