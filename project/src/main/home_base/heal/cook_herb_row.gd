@@ -27,33 +27,24 @@ func refresh() -> void:
 			has_all_ingredients = false
 			break
 	%Button.disabled = not has_all_ingredients
+	%Button.text = "+%s" % [PlayerData.supplies_multiplier.to_aa()]
 	
-	var button_text: String = ""
-	if recipe.size() == 1:
-		button_text = "-%s" % [Items.emoji_from_type(recipe[0].type)]
-	elif recipe.size() > 1:
-		var input_emojis: String = ""
-		for ingredient: RecipeIngredient in recipe:
-			input_emojis += Items.emoji_from_type(ingredient.type)
-		button_text = "-%s" % [input_emojis]
-	%Button.text = button_text
+	%Emoji.text = Items.emoji_from_type(output_type)
 	
-	%TopLabel.text = "Cook %s×%s" % [Items.emoji_from_type(output_type), PlayerData.supplies_multiplier.to_aa()]
-	
-	var bottom_text: String = ""
+	var cost_text: String = ""
 	for ingredient: RecipeIngredient in recipe:
-		if bottom_text:
-			bottom_text += "   "
+		if cost_text:
+			cost_text += "   "
 		var inventory_count: Big = PlayerData.inventory.get_count(ingredient.type)
 		var recipe_count: Big = Big.mul(ingredient.count, PlayerData.supplies_multiplier)
 		var has_ingredient: bool = inventory_count.is_gte(recipe_count)
-		bottom_text += "%s %s%s%s" % [
+		cost_text += "%s %s%s%s" % [
 			Items.emoji_from_type(ingredient.type),
 			"" if has_ingredient else "[color=b34947]",
 			recipe_count.to_aa(),
 			"" if has_ingredient else "[/color]",
 			]
-	%BottomLabel.text = bottom_text
+	%Cost.text = cost_text
 
 
 class RecipeIngredient extends Resource:
