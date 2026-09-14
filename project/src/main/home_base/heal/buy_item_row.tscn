@@ -3,15 +3,44 @@
 [ext_resource type="Script" uid="uid://c465f2dmp2b2q" path="res://src/main/home_base/heal/buy_item_row.gd" id="1_nu1bu"]
 
 [node name="BuyItemRow" type="HBoxContainer" unique_id=2050432156 groups=["buy_item_rows"]]
+theme_override_constants/separation = 8
 script = ExtResource("1_nu1bu")
+
+[node name="Count" type="Label" parent="." unique_id=971873830]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_override_constants/outline_size = 6
+text = "9,999"
+horizontal_alignment = 1
+
+[node name="Emoji" type="Label" parent="Count" unique_id=1421582556]
+unique_name_in_owner = true
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -29.5
+offset_right = 20.0
+offset_bottom = 20.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 36
+text = "🍰"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Button" type="Button" parent="." unique_id=120247928]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "-💰 1.3k"
+text = "+9,999"
 
-[node name="Label" type="Label" parent="." unique_id=1518697102]
+[node name="Cost" type="Label" parent="." unique_id=677511127]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Buy 🍰×3"
+text = "-💰1.3k"
