@@ -25,6 +25,11 @@ func _calculate_costs() -> void:
 		Items.HERB_3: weak_medicine_base_cost * 0.75,
 		Items.WEAK_MEDICINE: weak_medicine_base_cost,
 		Items.STRONG_MEDICINE: strong_medicine_base_cost,
+		
+		Items.FOOD_BREAD: 0.3,
+		Items.FOOD_CHICKEN: 0.5,
+		Items.FOOD_PIZZA: 0.4,
+		Items.FOOD_RAM: 0.6,
 	}
 	for type: Items.Type in _cost_by_item:
 		var adjusted_cost: float = _cost_by_item[type]

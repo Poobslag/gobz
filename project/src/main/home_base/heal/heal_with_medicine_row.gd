@@ -84,12 +84,12 @@ func _refresh() -> void:
 			for type: Gobs.Type in Gobs.Type.values():
 				if types.has(type):
 					emoji_string += Gobs.emoji_from_type(type)
-			goblin_name = "all %s %s goblins" % [emoji_string, Big.new(total_hurt_count).to_aa()]
+			goblin_name = "all %s %s goblins" % [emoji_string, Big.float_to_aa(total_hurt_count)]
 		else:
 			goblin_name = "%s %s" % [Gobs.emoji_from_type(gobs.front().type), gobs.front().name]
 			if total_hurt_count > 1.0:
-				goblin_name += " + %s others" % [Big.sub(total_hurt_count, 1).to_aa()]
-		%TopLabel.text = "Heal %s, +⚔%s" % [goblin_name, Big.new(total_penalty).to_aa()]
+				goblin_name += " + %s others" % [Big.float_to_aa(total_hurt_count - 1)]
+		%TopLabel.text = "Heal %s, +⚔%s" % [goblin_name, Big.float_to_aa(total_penalty)]
 	else:
 		%TopLabel.text = ""
 	

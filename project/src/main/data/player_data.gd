@@ -17,6 +17,7 @@ var morale_digest: MoraleDigest = MoraleDigest.new()
 var dungeons: Array[Dungeon] = []
 var dungeon_index: int
 var market: Market = Market.new()
+var food_record: FoodRecord = FoodRecord.new()
 
 var home_base_multiplier: Big = Big.ONE
 var heal_multiplier: Big = Big.ONE
@@ -75,6 +76,7 @@ func get_next_tip() -> String:
 func reset() -> void:
 	day = 1
 	army.reset()
+	food_record.reset()
 	gold = Big.ZERO
 	inventory.reset()
 	morale_digest.reset()
@@ -116,6 +118,11 @@ func initialize_starting_inventory() -> void:
 	PlayerData.inventory.add_item(Items.HERB_3, Big.new(9))
 	PlayerData.inventory.add_item(Items.WEAK_MEDICINE, Big.new(4))
 	PlayerData.inventory.add_item(Items.STRONG_MEDICINE, Big.new(3))
+	PlayerData.inventory.add_item(Items.FOOD_BREAD, Big.new(4))
+	PlayerData.inventory.add_item(Items.FOOD_CHICKEN, Big.new(8))
+	PlayerData.inventory.add_item(Items.FOOD_PIZZA, Big.new(5))
+	PlayerData.inventory.add_item(Items.FOOD_RAM, Big.new(9))
+	PlayerData.inventory.add_item(Items.FOOD_UNKNOWN, Big.new(9))
 
 
 func create_gob() -> Gob:
@@ -157,6 +164,7 @@ func to_json_dict() -> Dictionary[String, Variant]:
 	var result: Dictionary[String, Variant] = {}
 	result["day"] = day
 	result["army"] = army.to_glob()
+	result["food_record"] = food_record.to_json_dict()
 	result["gold"] = gold.to_float()
 	result["inventory"] = inventory.to_json_dict()
 	result["morale_digest"] = morale_digest.to_json_dict()
@@ -179,6 +187,8 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 	day = json.get("day", 1)
 	if json.has("army"):
 		army.from_glob(json["army"])
+	if json.has("food_record"):
+		food_record.from_json_dict(Utils.typed_json_dict(json["food_record"]))
 	gold = Big.new(json.get("gold", 0.0))
 	if json.has("inventory"):
 		inventory.from_json_dict(Utils.typed_json_dict(json["inventory"]))

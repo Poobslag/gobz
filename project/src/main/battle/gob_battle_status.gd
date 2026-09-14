@@ -20,6 +20,8 @@ const ENEMY_KILLED: GobAction = GobAction.ENEMY_KILLED
 
 var _player_gob_actions: Dictionary[Gob, int] = {}
 
+var enemies_killed: Big = Big.ZERO
+
 func get_gobs() -> Array[Gob]:
 	return _player_gob_actions.keys()
 

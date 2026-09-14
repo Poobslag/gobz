@@ -25,6 +25,10 @@ func victory() -> void:
 	refresh()
 	_show_splash(%VictoryShower)
 	
+	# collect unknown food
+	var looted_unknown_food: Big = %WatchPanel.gob_battle_status.enemies_killed
+	PlayerData.inventory.add_item(Items.FOOD_UNKNOWN, looted_unknown_food)
+	
 	var looted_gold: Big = Big.add(PlayerData.army.gold, PlayerData.get_dungeon_army().gold)
 	PlayerData.gold = Big.add(PlayerData.gold, looted_gold)
 	PlayerData.army.gold = Big.ZERO
@@ -114,10 +118,13 @@ func retreat() -> void:
 
 
 func _end_battle() -> void:
-	PlayerData.day += 1
 	if PlayerData.get_dungeon_army().is_empty() and PlayerData.get_dungeon().boss:
 		PlayerData.bosses_defeated += 1
 	DungeonDirector.cycle_dungeons()
+	FoodSystem.feed_goblins()
+	
+	PlayerData.day += 1
+	
 	HomeBaseData.heal_data.mark_groups_dirty()
 	HomeBaseData.party_data.cycle_parties()
 	PlayerData.market.mark_costs_dirty()

@@ -16,6 +16,10 @@ func add_item(type: Items.Type, count: Big) -> void:
 	inventory_item_changed.emit(type)
 
 
+func set_count(type: Items.Type, count: Big) -> void:
+	items[type] = count
+
+
 func get_count(type: Items.Type) -> Big:
 	return items.get(type, Big.ZERO)
 

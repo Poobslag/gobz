@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://1c5p5qm8pfi3"]
+
+[ext_resource type="Script" uid="uid://dqfpi00oumsp2" path="res://src/main/home_base/new_day_morale_row.gd" id="1_lnpvh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qdqm0"]
+bg_color = Color(0.7019608, 0.28627452, 0.2784314, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.12941177, 0.13333334, 0.16078432, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6oibg"]
+bg_color = Color(0.35686275, 0.7019608, 0.38431373, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.12941177, 0.13333334, 0.16078432, 0)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="MoraleRow" type="VBoxContainer" unique_id=112526574]
+script = ExtResource("1_lnpvh")
+
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=922468817]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 23)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_qdqm0")
+theme_override_styles/fill = SubResource("StyleBoxFlat_6oibg")
+value = 67.85
+show_percentage = false
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ProgressBar" unique_id=1701087813]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 23)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -1.5
+offset_bottom = -1.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_colors/font_outline_color = Color(0.12941177, 0.13333334, 0.16078432, 1)
+theme_override_constants/outline_size = 6
+text = "😐 Nice (50%)"
+scroll_active = false
+horizontal_alignment = 1

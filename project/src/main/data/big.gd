@@ -42,41 +42,7 @@ func to_int() -> int:
 
 
 func to_aa() -> String:
-	if is_nan(_value):
-		return "nan"
-	if is_inf(_value):
-		return "-inf" if _value < 0.0 else "inf"
-	
-	# calculate abs_value, mantissa
-	var abs_value: float = abs(_value)
-	var exponent: float = floor(log(abs_value) / log(10)) # 3,257 = 3.2 * 10e3; exponent = 3
-	var suffix_key: int = 0 if exponent < 4 else floori(exponent / 3.0)
-	var mantissa: float = abs_value * pow(0.1, suffix_key * 3.0)
-	if suffix_key >= 1 and mantissa >= 1000.0:
-		suffix_key += 1
-		mantissa *= 0.001
-	
-	var result: String = ""
-	if mantissa < 100:
-		var fpart: float = mantissa - floor(mantissa)
-		if fpart != 0.0:
-			result = ".%d" % [floor(fpart * 10)]
-	var ipart: float = floor(mantissa)
-	while ipart >= 1000:
-		result = ",%03d%s" % [fmod(ipart, 1000), result]
-		ipart = floor(ipart / 1000)
-	
-	if not _suffixes_aa.has(suffix_key):
-		var offset: int = (suffix_key - 1) % 21
-		@warning_ignore("integer_division")
-		var base: int = ((suffix_key - 1) / 21)
-		_suffixes_aa[suffix_key] = "%s%s" % [ALPHABET[base], ALPHABET[offset]]
-	var suffix: String = _suffixes_aa[suffix_key]
-	result = "%d%s%s" % [ipart, result, suffix]
-	if _value < 0:
-		result = "%s%s" % ["-", result]
-	
-	return result
+	return float_to_aa(_value)
 
 
 func is_eq(n: Variant) -> bool:
@@ -165,3 +131,41 @@ static func clamp(n: Variant, min: Variant, max: Variant) -> Big:
 
 static func _type_check(n: Variant) -> Big:
 	return n if n is Big else Big.new(n)
+
+
+static func float_to_aa(value: float) -> String:
+	if is_nan(value):
+		return "nan"
+	if is_inf(value):
+		return "-inf" if value < 0.0 else "inf"
+	
+	# calculate abs_value, mantissa
+	var abs_value: float = abs(roundi(value))
+	var exponent: float = floor(log(abs_value) / log(10)) # 3,257 = 3.2 * 10e3; exponent = 3
+	var suffix_key: int = 0 if exponent < 4 else floori(exponent / 3.0)
+	var mantissa: float = abs_value * pow(0.1, suffix_key * 3.0)
+	if suffix_key >= 1 and mantissa >= 1000.0:
+		suffix_key += 1
+		mantissa *= 0.001
+	
+	var result: String = ""
+	if mantissa < 100:
+		var fpart: float = mantissa - floor(mantissa)
+		if fpart != 0.0:
+			result = ".%d" % [floor(fpart * 10)]
+	var ipart: float = floor(mantissa)
+	while ipart >= 1000:
+		result = ",%03d%s" % [fmod(ipart, 1000), result]
+		ipart = floor(ipart / 1000)
+	
+	if not _suffixes_aa.has(suffix_key):
+		var offset: int = (suffix_key - 1) % 21
+		@warning_ignore("integer_division")
+		var base: int = ((suffix_key - 1) / 21)
+		_suffixes_aa[suffix_key] = "%s%s" % [ALPHABET[base], ALPHABET[offset]]
+	var suffix: String = _suffixes_aa[suffix_key]
+	result = "%d%s%s" % [ipart, result, suffix]
+	if value < 0:
+		result = "%s%s" % ["-", result]
+	
+	return result
