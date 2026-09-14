@@ -140,7 +140,7 @@ static func float_to_aa(value: float) -> String:
 		return "-inf" if value < 0.0 else "inf"
 	
 	# calculate abs_value, mantissa
-	var abs_value: float = abs(roundi(value))
+	var abs_value: float = abs(round(value))
 	var exponent: float = floor(log(abs_value) / log(10)) # 3,257 = 3.2 * 10e3; exponent = 3
 	var suffix_key: int = 0 if exponent < 4 else floori(exponent / 3.0)
 	var mantissa: float = abs_value * pow(0.1, suffix_key * 3.0)
