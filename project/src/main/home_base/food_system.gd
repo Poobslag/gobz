@@ -22,6 +22,12 @@ const PREFERENCES_BY_TYPE: Dictionary[Gobs.Type, Array] = {
 	Gobs.Type.DEVIL: [[FOOD_RAM, FOOD_CHICKEN], [FOOD_BREAD, FOOD_PIZZA], [FOOD_UNKNOWN]],
 }
 
+static func get_favorite_foods(type: Gobs.Type) -> Array[Items.Type]:
+	var typed_array: Array[Items.Type] = []
+	typed_array.assign(PREFERENCES_BY_TYPE[type][0])
+	return typed_array
+
+
 static func feed_goblins() -> void:
 	PlayerData.food_record.starved = false
 	PlayerData.food_record.shown = false

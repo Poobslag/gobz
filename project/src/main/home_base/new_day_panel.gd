@@ -36,7 +36,7 @@ const MESSAGES_FOOD: Array[String] = [
 	"The goblins feel satisfied.",
 	"The goblins are comfortable.",
 	"The goblins have a nice setup here.",
-	"The goblins have figured things out.",
+	"The goblins have got things figured out.",
 	"The goblins are doing well for themselves.",
 	"The goblins are having a great time.",
 	"The goblins couldn't be happier.",

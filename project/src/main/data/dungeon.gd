@@ -2,6 +2,7 @@ class_name Dungeon
 
 var name: String
 var army: Army = Army.new()
+var rewards: Array[Reward]
 var recon_army: Army = Army.new()
 var boss: bool = false
 
@@ -30,6 +31,10 @@ func to_json_dict() -> Dictionary[String, Variant]:
 	result["army"] = army.to_glob()
 	result["recon_army"] = recon_army.to_glob()
 	result["boss"] = boss
+	var rewards_json: Array[Dictionary] = []
+	for reward: Reward in rewards:
+		rewards_json.append(reward.to_json_dict())
+	result["rewards"] = rewards_json
 	return result
 
 
@@ -39,4 +44,27 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 		army.from_glob(json["army"])
 	if json.has("recon_army"):
 		recon_army.from_glob(json["recon_army"])
+	if json.has("rewards"):
+		for reward_json: Dictionary in json.get("rewards"):
+			var typed_reward_json: Dictionary[String, Variant] = {}
+			typed_reward_json.assign(reward_json)
+			var reward: Reward = Reward.new()
+			reward.from_json_dict(typed_reward_json)
+			rewards.append(reward)
 	boss = json.get("boss", false)
+
+
+class Reward extends Resource:
+	var type: Items.Type
+	var count: Big
+	
+	func to_json_dict() -> Dictionary[String, Variant]:
+		return {
+			"type": Utils.enum_to_snake_case(Items.Type, type),
+			"count": count.to_float(),
+		}
+	
+	
+	func from_json_dict(json: Dictionary[String, Variant]) -> void:
+		type = Items.Type.get(json.get("type", "none").to_upper())
+		count = Big.new(json.get("count", 0.0))

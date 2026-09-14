@@ -29,6 +29,11 @@ func victory() -> void:
 	var looted_unknown_food: Big = %WatchPanel.gob_battle_status.enemies_killed
 	PlayerData.inventory.add_item(Items.FOOD_UNKNOWN, looted_unknown_food)
 	
+	# collect rewards
+	var dungeon_rewards: Array[Dungeon.Reward] = PlayerData.get_dungeon().rewards
+	for reward: Dungeon.Reward in dungeon_rewards:
+		PlayerData.inventory.add_item(reward.type, reward.count)
+	
 	var looted_gold: Big = Big.add(PlayerData.army.gold, PlayerData.get_dungeon_army().gold)
 	PlayerData.gold = Big.add(PlayerData.gold, looted_gold)
 	PlayerData.army.gold = Big.ZERO
@@ -43,6 +48,18 @@ func victory() -> void:
 		%Message.text += "Victory!\n\n"
 	
 	%Message.text += "You loot 💰%s from your fallen allies and enemies." % [looted_gold.to_aa()]
+	if not dungeon_rewards.is_empty():
+		var reward_loot_string: String = ""
+		for i in dungeon_rewards.size():
+			var reward: Dungeon.Reward = dungeon_rewards[i]
+			if i == 0:
+				pass
+			elif i < dungeon_rewards.size() - 1:
+				reward_loot_string += ", "
+			else:
+				reward_loot_string += " and "
+			reward_loot_string += "%s%s" % [Items.emoji_from_type(reward.type), reward.count.to_aa()]
+		%Message.text += " You also grab %s." % [reward_loot_string]
 	
 	_end_battle()
 

@@ -138,9 +138,47 @@ static func _generate_dungeon_for_archetype(blueprint: DungeonBlueprint) -> Dung
 	return dungeon
 
 
+static func _add_dungeon_rewards(dungeon: Dungeon) -> void:
+	var total_goblins: float = dungeon.army.get_total_goblins().to_float()
+	var reward_dict: Dictionary[Items.Type, float] = {}
+	for _i in 2:
+		var luckiness: float = min(randf(), randf())
+		if randf() < 0.2:
+			# food reward
+			var gob: Gob = dungeon.army.gobs.pick_random()
+			var type: Items.Type = FoodSystem.get_favorite_foods(gob.type).pick_random()
+			if type == Items.FOOD_UNKNOWN:
+				type = Items.FOOD_RAM
+			if not reward_dict.has(type):
+				reward_dict[type] = 0.0
+			reward_dict[type] += total_goblins * lerp(0.4, 1.6, luckiness)
+		if randf() < 0.1:
+			# medicine reward
+			var type: Items.Type = [Items.WEAK_MEDICINE, Items.STRONG_MEDICINE].pick_random()
+			if not reward_dict.has(type):
+				reward_dict[type] = 0.0
+			reward_dict[type] += total_goblins * lerp(0.3, 1.2, luckiness)
+		if randf() < 0.1:
+			# herb reward
+			var type: Items.Type = [Items.HERB_1, Items.HERB_2, Items.HERB_3].pick_random()
+			if not reward_dict.has(type):
+				reward_dict[type] = 0.0
+			reward_dict[type] += total_goblins * lerp(0.6, 2.4, luckiness)
+	
+	if not reward_dict.is_empty():
+		for type: Items.Type in reward_dict:
+			var reward: Dungeon.Reward = Dungeon.Reward.new()
+			reward.type = type
+			reward.count = Big.new(reward_dict[type])
+			dungeon.rewards.append(reward)
+		dungeon.rewards.sort_custom(func(a: Dungeon.Reward, b: Dungeon.Reward) -> bool:
+			return a.count.is_gt(b.count))
+
+
 static func generate_random_dungeon(blueprint: DungeonBlueprint) -> Dungeon:
 	_generate_random_composition(blueprint)
 	var dungeon: Dungeon = _generate_dungeon_for_archetype(blueprint)
+	_add_dungeon_rewards(dungeon)
 	
 	if Global.verbose_stdout_mode:
 		print("----------")

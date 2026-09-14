@@ -22,11 +22,23 @@ func _add_dungeon_row(dungeon: Dungeon) -> void:
 	var dungeon_select_info: Dictionary[String, String] = Dungeons.get_dungeon_select_info(dungeon)
 	
 	var dungeon_row: DungeonSelectRow = DUNGEON_ROW_SCENE.instantiate()
-	dungeon_row.button_text = dungeon_select_info["reward_text"]
 	
-	dungeon_row.desc = "%s %s, %s" % [
+	var button_text: String = dungeon_select_info["reward_text"]
+	if not dungeon.rewards.is_empty():
+		button_text += "  "
+		var reward_emoji: String = ""
+		for i in dungeon.rewards.size():
+			if i >= 3:
+				break
+			var reward: Dungeon.Reward = dungeon.rewards[i]
+			reward_emoji += Items.emoji_from_type(reward.type)
+		button_text += "%s" % [reward_emoji]
+	dungeon_row.button_text = button_text
+	
+	var desc: String = "%s %s, %s" % [
 		dungeon_select_info["emoji_string"], dungeon_select_info["name"], dungeon_select_info["attack_string"]
 	]
+	dungeon_row.desc = desc
 	dungeon_row.pressed.connect(func() -> void:
 		PlayerData.dungeon_index = PlayerData.dungeons.find(dungeon)
 		get_tree().change_scene_to_file("res://src/main/battle/battle_screen.tscn"))
