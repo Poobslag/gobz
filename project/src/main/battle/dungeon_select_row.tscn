@@ -7,7 +7,7 @@ script = ExtResource("1_ymirb")
 
 [node name="Button" type="Button" parent="." unique_id=1365035860]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 0)
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 
 [node name="Desc" type="Label" parent="." unique_id=867946619]
