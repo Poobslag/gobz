@@ -28,7 +28,7 @@ func _ready() -> void:
 
 
 func refresh() -> void:
-	%RecruitButton.disabled = get_cost().is_gt(PlayerData.gold)
+	%RecruitButton.disabled = not PlayerData.can_spend(get_cost())
 
 
 func get_cost() -> Big:

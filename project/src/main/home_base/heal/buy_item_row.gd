@@ -22,6 +22,6 @@ func get_cost() -> Big:
 func refresh() -> void:
 	%Emoji.text = Items.emoji_from_type(type)
 	%Count.text = PlayerData.inventory.get_count(type).to_aa()
-	%Button.disabled = get_cost().is_gt(PlayerData.gold)
+	%Button.disabled = not PlayerData.can_spend(get_cost())
 	%Button.text = "+%s" % [PlayerData.supplies_multiplier.to_aa()]
 	%Cost.text = "💰%s" % [get_cost().to_aa()]

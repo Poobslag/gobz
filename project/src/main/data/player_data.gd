@@ -162,6 +162,10 @@ func scale_army_units(factor: float) -> void:
 	gold = Big.new(gold.to_float() * factor)
 
 
+func can_spend(cost: Big) -> bool:
+	return gold.is_gte(cost)
+
+
 func take_gold(count: Big) -> void:
 	gold = Big.new(max(0, gold.to_float() - count.to_float()))
 

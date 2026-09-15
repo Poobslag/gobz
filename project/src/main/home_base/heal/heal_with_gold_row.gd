@@ -56,4 +56,4 @@ func _refresh() -> void:
 	else:
 		%Label.text = ""
 	
-	%Button.disabled = cost.is_gt(PlayerData.gold) or total_hurt_count == 0.0
+	%Button.disabled = not PlayerData.can_spend(cost) or total_hurt_count == 0.0
