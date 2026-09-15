@@ -39,7 +39,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/gut/plugin.cfg", "res://addons/omnemoji/plugin.cfg")
+enabled=PackedStringArray("res://addons/gut/plugin.cfg")
 
 [file_customization]
 
@@ -55,7 +55,7 @@ folder_colors={
 
 [gui]
 
-theme/custom_font="res://addons/omnemoji/resources/OmnEmojiMerged.tres"
+theme/custom_font="uid://cbkxjwhx6noxd"
 
 [input]
 
@@ -117,10 +117,6 @@ tutorial={
 2d_physics/layer_4="Cursor"
 3d_physics/layer_4="Cursor"
 3d_physics/layer_5="Clickable"
-
-[omnemoji]
-
-emoji_provider=6
 
 [rendering]
 

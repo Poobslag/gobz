@@ -2,9 +2,22 @@ $$$ = MUST be attributed in the game's credits (license requires it)
  $$ = SHOULD be attributed in the game's credits (substantial use, license doesn't require it)
   $ = MAY be attributed in the game's credits (minor use, license doesn't require it)
 
+Fonts:
+ $$ Fluent Emoji by Microsoft (MIT License) - https://github.com/microsoft/fluentui-emoji
+ $$ Noto Sans by The Noto Project Authors (SIL Open Font License, Version 1.1) - https://fonts.google.com/noto/specimen/Noto+Sans
+
 Other:
+!!! Goblin Names by Emily of FantasyNameGenerators.com (cannot be copied, sold or redistributed) - https://www.fantasynamegenerators.com/goblin-names.php
+!!! Dungeon Names by Emily of FantasyNameGenerators.com (cannot be copied, sold or redistributed) - https://www.fantasynamegenerators.com/dungeon-names.php
+ $$ "Gut" by Tom "Butch" Wesley https://github.com/bitwes/Gut
+
+Fonts
 --------------------------------------------------------------------------------
-!!! project/src/main/data/goblin_names.gd https://www.fantasynamegenerators.com/goblin-names.php (cannot be copied, sold or redistributed)
-!!! project/src/main/data/dungeon_names.gd https://www.fantasynamegenerators.com/dungeon-names.php (cannot be copied, sold or redistributed)
- $$ project/addons/gut "Gut" by Tom "Butch" Wesley https://github.com/bitwes/Gut
- $$ project/addons/gut "OmnEmoji" by Gllmar https://codeberg.org/gllm/gd-OmnEmoji
+project/assets/main/ui/noto_sans_regular.ttf Noto Sans Regular by The Noto Project Authors
+project/assets/main/ui/fluent_emoji_color.ttf Fluent Emoji by Microsoft
+
+Other
+--------------------------------------------------------------------------------
+project/src/main/data/goblin_names.gd Goblin Names by Emily of FantasyNameGenerators.com
+project/src/main/data/dungeon_names.gd Dungeon Names by Emily of FantasyNameGenerators.com
+project/addons/gut Gut by Tom "Butch" Wesley
