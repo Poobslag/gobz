@@ -11,6 +11,7 @@ signal pressed
 
 func _ready() -> void:
 	%Button.pressed.connect(pressed.emit)
+	GoldBar.find_instance(self).connect_button_signals(%Button, get_cost)
 	refresh()
 
 

@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://dvdna5v6cbdwc" path="res://src/main/home_base/inventory_header.tscn" id="9_1jy88"]
 [ext_resource type="PackedScene" uid="uid://h73338s4fipn" path="res://src/main/ui/command_palette.tscn" id="10_winkc"]
 [ext_resource type="PackedScene" uid="uid://dn3pdlhuw1iap" path="res://src/main/home_base/home_base_tutorial_panel.tscn" id="11_14txa"]
+[ext_resource type="PackedScene" uid="uid://bxt8deff2ep8r" path="res://src/main/ui/gold_bar.tscn" id="13_5ludj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5ludj"]
 bg_color = Color(0.22352941, 0.20784314, 0.16078432, 1)
@@ -187,6 +188,9 @@ unique_name_in_owner = true
 [node name="TutorialPanel" parent="." unique_id=1007842494 instance=ExtResource("11_14txa")]
 unique_name_in_owner = true
 visible = false
+layout_mode = 1
+
+[node name="GoldBar" parent="." unique_id=875899012 instance=ExtResource("13_5ludj")]
 layout_mode = 1
 
 [editable path="ScreenPanel"]

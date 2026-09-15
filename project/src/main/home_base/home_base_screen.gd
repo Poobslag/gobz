@@ -7,19 +7,7 @@ const DUNGEON_ROW_SCENE: PackedScene = preload("res://src/main/home_base/dungeon
 const MAX_MULTIPLIER: float = 1.0e267
 
 func _ready() -> void:
-	for child: Node in %Recruits.get_children():
-		%Recruits.remove_child(child)
-		child.queue_free()
-	
-	_refresh_recruits()
-	_refresh_summary()
-	_refresh_dungeons()
-	
 	%CommandPalette.command_entered.connect(_on_command_palette_command_entered)
-	
-	if PlayerData.home_base_multiplier.is_eq(1) and PlayerData.gold.is_lt(80):
-		%MultiplyButton.visible = false
-		%DivideButton.visible = false
 	
 	%MultiplyButton.pressed.connect(_adjust_multiplier.bind(10.0))
 	%DivideButton.pressed.connect(_adjust_multiplier.bind(1/10.0))
@@ -30,6 +18,22 @@ func _ready() -> void:
 		PlayerData.finished_tutorials[PlayerData.HOME_BASE_TUTORIAL] = true
 	elif not PlayerData.food_record.shown:
 		%NewDayPanel.play()
+	
+	reset()
+
+
+func reset() -> void:
+	for child: Node in %Recruits.get_children():
+		%Recruits.remove_child(child)
+		child.queue_free()
+	
+	_refresh_recruits()
+	_refresh_summary()
+	_refresh_dungeons()
+	
+	var hide_multiply_buttons: bool = PlayerData.home_base_multiplier.is_eq(1) and PlayerData.gold.is_lt(80)
+	%MultiplyButton.visible = not hide_multiply_buttons
+	%DivideButton.visible = not hide_multiply_buttons
 
 
 func _refresh_dungeons() -> void:

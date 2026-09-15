@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://dvdna5v6cbdwc"]
 
 [ext_resource type="Script" uid="uid://bd78qvsqt6372" path="res://src/main/home_base/inventory_header.gd" id="1_3up8w"]
-[ext_resource type="PackedScene" uid="uid://du8cu2fuyvb07" path="res://src/main/home_base/inventory_gold_label.tscn" id="2_3up8w"]
 
 [node name="InventoryHeader" type="ColorRect" unique_id=826478186]
 custom_minimum_size = Vector2(0, 30)
@@ -22,6 +21,3 @@ offset_right = 204.0
 offset_bottom = 30.0
 focus_mode = 3
 mouse_filter = 0
-
-[node name="GoldLabel" parent="HBoxContainer" unique_id=677130257 instance=ExtResource("2_3up8w")]
-layout_mode = 2

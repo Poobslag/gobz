@@ -22,6 +22,7 @@ func _ready() -> void:
 	
 	%RecruitButton.pressed.connect(recruit_pressed.emit)
 	%SkipButton.pressed.connect(skip_pressed.emit)
+	GoldBar.find_instance(self).connect_button_signals(%RecruitButton, get_cost)
 	
 	refresh()
 

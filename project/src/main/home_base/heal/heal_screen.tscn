@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://c5t8ic3dnnljj" path="res://src/main/home_base/heal/heal_with_gold_row.tscn" id="11_lbxqm"]
 [ext_resource type="PackedScene" uid="uid://g7b12cf0ow6o" path="res://src/main/home_base/home_nav.tscn" id="12_ypm20"]
 [ext_resource type="PackedScene" uid="uid://dvdna5v6cbdwc" path="res://src/main/home_base/inventory_header.tscn" id="13_05gca"]
+[ext_resource type="PackedScene" uid="uid://bxt8deff2ep8r" path="res://src/main/ui/gold_bar.tscn" id="13_d1ipt"]
 
 [node name="HealScreen" type="Control" unique_id=1368189123]
 layout_mode = 3
@@ -172,3 +173,6 @@ layout_mode = 1
 offset_bottom = 23.0
 color = Color(0.25490198, 0.17254902, 0.2, 0.5019608)
 inventory_items = Array[int]([0, 1])
+
+[node name="GoldBar" parent="." unique_id=875899012 instance=ExtResource("13_d1ipt")]
+layout_mode = 1

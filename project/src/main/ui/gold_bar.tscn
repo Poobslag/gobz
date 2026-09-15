@@ -1,0 +1,112 @@
+[gd_scene format=3 uid="uid://bxt8deff2ep8r"]
+
+[ext_resource type="Script" uid="uid://c2qletdnsmxgg" path="res://src/main/ui/gold_bar.gd" id="1_pejxo"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_srvec"]
+bg_color = Color(0.5294118, 0.34117648, 0.34117648, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v4ytu"]
+bg_color = Color(0.99, 0.44088003, 0.3564, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.91, 0.34216, 0.2548, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uua15"]
+bg_color = Color(0.5294118, 0.34117648, 0.34117648, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_am45f"]
+bg_color = Color(0.99215686, 0.8509804, 0.36078432, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.9098039, 0.5176471, 0.2509804, 1)
+
+[node name="GoldBar" type="Control" unique_id=875899012 groups=["gold_bars"]]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 3
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 11.0
+offset_right = 91.0
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_pejxo")
+
+[node name="ProgressBarBack" type="ProgressBar" parent="." unique_id=1234977010]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 550)
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 49.0
+offset_right = 54.0
+offset_bottom = -49.0
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_srvec")
+theme_override_styles/fill = SubResource("StyleBoxFlat_v4ytu")
+value = 80.0
+fill_mode = 3
+show_percentage = false
+
+[node name="ProgressBarFront" type="ProgressBar" parent="." unique_id=1371929029]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 550)
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 49.0
+offset_right = 54.0
+offset_bottom = -49.0
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_uua15")
+theme_override_styles/fill = SubResource("StyleBoxFlat_am45f")
+value = 50.0
+fill_mode = 3
+show_percentage = false
+
+[node name="Emoji" type="Label" parent="." unique_id=986252745]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -77.0
+offset_top = -177.0
+offset_right = 67.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 100
+text = "💰"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GoldLabel" type="Label" parent="Emoji" unique_id=1710564342]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -35.0
+offset_top = 10.5
+offset_right = 45.0
+offset_bottom = 33.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0.5294118, 0.3372549, 0.3372549, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 24
+text = "9,999"
+horizontal_alignment = 1

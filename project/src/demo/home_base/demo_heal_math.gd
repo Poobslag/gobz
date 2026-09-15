@@ -36,6 +36,7 @@ func rerandomize() -> void:
 	hurt_all_gobs()
 	HomeBaseData.heal_data.mark_groups_dirty()
 	PlayerData.market.mark_costs_dirty()
+	PlayerData.peak_gold = PlayerData.gold
 	
 	%RichTextLabel.text = ""
 	var total_gold_cost: float = 0.0
