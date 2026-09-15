@@ -13,4 +13,5 @@ func _input(event: InputEvent) -> void:
 	match Utils.key_press(event):
 		KEY_M:
 			PlayerData.market.mark_costs_dirty()
+			PlayerData.peak_gold = PlayerData.gold
 			%SuppliesScreen.refresh()

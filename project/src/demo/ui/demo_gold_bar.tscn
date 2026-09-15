@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://c00ojpfgjrhbe"]
+
+[ext_resource type="PackedScene" uid="uid://uf82ev0us2ls" path="res://src/main/home_base/supplies_screen.tscn" id="1_uua15"]
+[ext_resource type="Script" uid="uid://bfap4j55po1wt" path="res://src/demo/ui/demo_gold_bar.gd" id="1_v4ytu"]
+[ext_resource type="PackedScene" uid="uid://bxt8deff2ep8r" path="res://src/main/ui/gold_bar.tscn" id="3_v4ytu"]
+
+[node name="DemoGoldBar" type="Control" unique_id=227238822]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_v4ytu")
+
+[node name="SuppliesScreen" parent="." unique_id=1368189123 instance=ExtResource("1_uua15")]
+layout_mode = 1
+
+[node name="GoldBar" parent="." unique_id=875899012 instance=ExtResource("3_v4ytu")]
+unique_name_in_owner = true
+layout_mode = 1

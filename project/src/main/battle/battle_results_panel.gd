@@ -145,6 +145,7 @@ func _end_battle() -> void:
 	HomeBaseData.heal_data.mark_groups_dirty()
 	HomeBaseData.party_data.cycle_parties()
 	PlayerData.market.mark_costs_dirty()
+	PlayerData.peak_gold = PlayerData.gold
 	PlayerData.print_gold_history()
 
 

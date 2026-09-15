@@ -8,9 +8,14 @@ const BATTLE_TUTORIAL: String = "battle_tutorial"
 
 var day: int = 1
 var army: Army = Army.new()
+
+## daily peak gold for ui purposes
+var peak_gold: Big = Big.ZERO
+
 var gold: Big = Big.ZERO:
 	set(value):
 		gold = value
+		peak_gold = Big.max(gold, peak_gold)
 		gold_changed.emit()
 var inventory: Inventory = Inventory.new()
 var morale_digest: MoraleDigest = MoraleDigest.new()
@@ -77,6 +82,7 @@ func reset() -> void:
 	day = 1
 	army.reset()
 	food_record.reset()
+	peak_gold = Big.ZERO
 	gold = Big.ZERO
 	inventory.reset()
 	morale_digest.reset()
@@ -165,6 +171,7 @@ func to_json_dict() -> Dictionary[String, Variant]:
 	result["day"] = day
 	result["army"] = army.to_glob()
 	result["food_record"] = food_record.to_json_dict()
+	result["peak_gold"] = peak_gold.to_float()
 	result["gold"] = gold.to_float()
 	result["inventory"] = inventory.to_json_dict()
 	result["morale_digest"] = morale_digest.to_json_dict()
@@ -189,6 +196,7 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 		army.from_glob(json["army"])
 	if json.has("food_record"):
 		food_record.from_json_dict(Utils.typed_json_dict(json["food_record"]))
+	peak_gold = Big.new(json.get("peak_gold", 0.0))
 	gold = Big.new(json.get("gold", 0.0))
 	if json.has("inventory"):
 		inventory.from_json_dict(Utils.typed_json_dict(json["inventory"]))

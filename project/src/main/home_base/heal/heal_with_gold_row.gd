@@ -18,6 +18,7 @@ var cost: Big = Big.ZERO
 
 func _ready() -> void:
 	%Button.pressed.connect(pressed.emit)
+	GoldBar.find_instance(self).connect_button_signals(%Button, get.bind("cost"))
 	_refresh()
 
 
