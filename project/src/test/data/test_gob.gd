@@ -147,7 +147,7 @@ func test_morale_gob_ref() -> void:
 	event.delta = 10.0
 	event.params = [{"id": 714, "name": "Jekzar"}]
 	gob.morale.add_event(event)
-	assert_eq(event.get_desc(gob), "Befriended Jekzar")
+	assert_eq(event.get_desc(gob), "Made friends with Jekzar")
 
 
 func test_convert_morale_to_json_and_back() -> void:
