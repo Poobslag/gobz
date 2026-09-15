@@ -7,8 +7,6 @@ project/export
 project/.godot/
 project/logs/
 
-project/addons/
-
 # Mono-specific ignores
 project/.mono/
 project/data_*/
