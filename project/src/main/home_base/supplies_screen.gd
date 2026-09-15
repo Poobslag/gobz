@@ -43,7 +43,7 @@ func refresh() -> void:
 	# if you have $1,000, or 1,000 of any item, you can increase the multiplier to 1,000
 	var multiply_button_disabled: bool = true
 	if multiply_button_disabled == true:
-		if PlayerData.gold.is_gte(PlayerData.supplies_multiplier.to_float()):
+		if PlayerData.gold.is_gte(PlayerData.supplies_multiplier):
 			multiply_button_disabled = false
 	if multiply_button_disabled == true:
 		for type: Items.Type in PlayerData.inventory.items:
@@ -83,7 +83,7 @@ func _on_cook_herb_row_pressed(cook_herb_row: CookHerbRow) -> void:
 
 func _on_buy_item_row_pressed(buy_item_row: BuyItemRow) -> void:
 	# verify the player has enough gold
-	if buy_item_row.get_cost().is_gt(PlayerData.gold):
+	if not PlayerData.can_spend(buy_item_row.get_cost()):
 		return
 	
 	PlayerData.take_gold(buy_item_row.get_cost())

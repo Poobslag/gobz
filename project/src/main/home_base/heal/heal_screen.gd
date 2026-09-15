@@ -228,7 +228,7 @@ func _on_chat_shower_all_messages_shown() -> void:
 
 
 func _on_heal_with_gold_row_pressed() -> void:
-	if PlayerData.gold.is_lt(%HealWithGoldRow.cost):
+	if not PlayerData.can_spend(%HealWithGoldRow.cost):
 		return
 	
 	# Goblins are vaguely reimbursed when you heal them. If you pay $10, the goblin will pocket about $5. Stochastic
