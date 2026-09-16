@@ -10,7 +10,7 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	match Utils.key_press(event):
 		KEY_A: PlayerData.gold = Big.new(0)
-		KEY_S: PlayerData.gold = Big.new(100)
+		KEY_S: PlayerData.gold = Big.new(1)
 		KEY_D: PlayerData.gold = Big.new(500)
 		KEY_F: PlayerData.gold = Big.new(1000)
 		
