@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cf6eisag38iyh"]
 
 [ext_resource type="Script" uid="uid://c465f2dmp2b2q" path="res://src/main/home_base/heal/buy_item_row.gd" id="1_nu1bu"]
+[ext_resource type="PackedScene" uid="uid://c6cgf0okpoaq6" path="res://src/main/ui/cost_display.tscn" id="2_g7ujj"]
 
 [node name="BuyItemRow" type="HBoxContainer" unique_id=2050432156 groups=["buy_item_rows"]]
 theme_override_constants/separation = 8
@@ -40,7 +41,9 @@ custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "+9,999"
 
-[node name="Cost" type="Label" parent="." unique_id=677511127]
+[node name="CostDisplay" parent="." unique_id=940055857 instance=ExtResource("2_g7ujj")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 31)
 layout_mode = 2
-text = "-💰1.3k"
+disabled = false
+alignment = 0
