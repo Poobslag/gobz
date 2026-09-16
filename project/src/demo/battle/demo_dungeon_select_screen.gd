@@ -8,6 +8,7 @@ func _ready() -> void:
 		dungeon.perform_recon()
 	%DungeonSelect.refresh()
 
+
 func _input(event: InputEvent) -> void:
 	match Utils.key_press(event):
 		KEY_C:

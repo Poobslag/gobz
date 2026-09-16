@@ -2,6 +2,8 @@
 class_name Utils
 ## Contains global utilities.
 
+const EMOJI_FONT: Font = preload("res://assets/main/ui/fluent_emoji_color.ttf")
+
 static func stochastic_roundi(f: float) -> int:
 	return ceil(f) if randf() < f - floor(f) else floor(f)
 

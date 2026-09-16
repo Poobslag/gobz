@@ -72,8 +72,6 @@ const DISABLED_COLOR: Color = Color("888888")
 		alignment = value
 		queue_redraw()
 
-var font: Font = load("res://assets/main/ui/fluent_emoji_color.ttf")
-
 func _draw() -> void:
 	match amount:
 		COINS_1, COINS_2, COINS_3, COINS_5:
@@ -90,7 +88,7 @@ func _draw_emojis(emoji: String, font_size: int, offsets: Array[Variant]) -> voi
 		HORIZONTAL_ALIGNMENT_RIGHT:
 			center.x = size.x - WIDTH_BY_AMOUNT[amount] / 2
 	for offset: Vector2 in offsets:
-		draw_string(font, center + offset, emoji, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size)
+		draw_string(Utils.EMOJI_FONT, center + offset, emoji, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size)
 
 
 func _refresh_disabled() -> void:

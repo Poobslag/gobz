@@ -9,13 +9,13 @@ const BATTLE_TUTORIAL: String = "battle_tutorial"
 var day: int = 1
 var army: Army = Army.new()
 
-## daily peak gold for ui purposes
-var peak_gold: Big = Big.ZERO
+## daily peak gold, peak net worth for ui purposes
+var peak_gold: Big = Big.ONE
+var peak_net_worth: Big = Big.ONE
 
 var gold: Big = Big.ZERO:
 	set(value):
 		gold = value
-		peak_gold = Big.max(gold, peak_gold)
 		gold_changed.emit()
 var inventory: Inventory = Inventory.new()
 var morale_digest: MoraleDigest = MoraleDigest.new()
@@ -82,7 +82,8 @@ func reset() -> void:
 	day = 1
 	army.reset()
 	food_record.reset()
-	peak_gold = Big.ZERO
+	peak_gold = Big.ONE
+	peak_net_worth = Big.ONE
 	gold = Big.ZERO
 	inventory.reset()
 	morale_digest.reset()
@@ -98,10 +99,18 @@ func reset() -> void:
 	_prev_total_gold = Big.ZERO
 
 
+func recalculate_peak() -> void:
+	peak_gold = Big.max(gold, Big.ONE)
+	var new_peak_net_worth: Big = Big.add(gold, army.get_total_gold())
+	new_peak_net_worth = Big.max(new_peak_net_worth, Big.ONE)
+	peak_net_worth = new_peak_net_worth
+
+
 func start_new_game() -> void:
 	reset()
 	initialize_starting_army()
 	initialize_starting_inventory()
+	PlayerData.recalculate_peak()
 	DungeonDirector.cycle_dungeons()
 	HomeBaseData.party_data.cycle_parties()
 
@@ -179,6 +188,7 @@ func to_json_dict() -> Dictionary[String, Variant]:
 	result["army"] = army.to_glob()
 	result["food_record"] = food_record.to_json_dict()
 	result["peak_gold"] = peak_gold.to_float()
+	result["peak_net_worth"] = peak_net_worth.to_float()
 	result["gold"] = gold.to_float()
 	result["inventory"] = inventory.to_json_dict()
 	result["morale_digest"] = morale_digest.to_json_dict()
@@ -203,7 +213,6 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 		army.from_glob(json["army"])
 	if json.has("food_record"):
 		food_record.from_json_dict(Utils.typed_json_dict(json["food_record"]))
-	peak_gold = Big.new(json.get("peak_gold", 0.0))
 	gold = Big.new(json.get("gold", 0.0))
 	if json.has("inventory"):
 		inventory.from_json_dict(Utils.typed_json_dict(json["inventory"]))
@@ -220,6 +229,12 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 	finished_tutorials.assign(json.get("finished_tutorials", {}))
 	bosses_defeated = json.get("bosses_defeated", 0)
 	_next_gob_id = json.get("next_gob_id", 0)
+	
+	if json.has("peak_gold") and json.has("peak_net_worth"):
+		peak_gold = Big.new(json["peak_gold"])
+		peak_net_worth = Big.new(json["peak_net_worth"])
+	else:
+		recalculate_peak()
 
 
 func print_gold_history() -> void:
