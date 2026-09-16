@@ -1,0 +1,250 @@
+[gd_scene format=3 uid="uid://v35gnhyynum"]
+
+[ext_resource type="Script" uid="uid://cac21admyvo8t" path="res://src/main/ui/cost_display.gd" id="1_cm05r"]
+[ext_resource type="PackedScene" uid="uid://c6cgf0okpoaq6" path="res://src/main/ui/cost_display.tscn" id="2_o38v6"]
+
+[node name="Demo" type="Control" unique_id=374857131]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GridContainer" type="GridContainer" parent="." unique_id=557526836]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -138.0
+offset_right = 50.0
+offset_bottom = 138.0
+grow_horizontal = 2
+grow_vertical = 2
+columns = 3
+
+[node name="CostDisplay" type="Control" parent="GridContainer" unique_id=1181134541]
+custom_minimum_size = Vector2(120, 31)
+layout_mode = 2
+script = ExtResource("1_cm05r")
+alignment = 2
+metadata/_custom_type_script = "uid://cac21admyvo8t"
+
+[node name="Button" type="Button" parent="GridContainer" unique_id=293698925]
+custom_minimum_size = Vector2(100, 31)
+layout_mode = 2
+
+[node name="CostDisplay" parent="GridContainer/Button" unique_id=940055857 instance=ExtResource("2_o38v6")]
+layout_mode = 1
+amount = 0
+disabled = false
+
+[node name="CostDisplay2" type="Control" parent="GridContainer" unique_id=1143250071]
+custom_minimum_size = Vector2(120, 31)
+layout_mode = 2
+script = ExtResource("1_cm05r")
+alignment = 0
+metadata/_custom_type_script = "uid://cac21admyvo8t"
+
+[node name="CostDisplay3" type="Control" parent="GridContainer" unique_id=95055655]
+custom_minimum_size = Vector2(120, 31)
+layout_mode = 2
+script = ExtResource("1_cm05r")
+amount = 1
+alignment = 2
+metadata/_custom_type_script = "uid://cac21admyvo8t"
+
+[node name="Button2" type="Button" parent="GridContainer" unique_id=1048804106]
+custom_minimum_size = Vector2(100, 31)
+layout_mode = 2
+
+[node name="CostDisplay" parent="GridContainer/Button2" unique_id=467875876 instance=ExtResource("2_o38v6")]
+layout_mode = 1
+amount = 1
+disabled = false
+
+[node name="CostDisplay4" type="Control" parent="GridContainer" unique_id=1309758468]
+custom_minimum_size = Vector2(120, 31)
+layout_mode = 2
+script = ExtResource("1_cm05r")
+amount = 1
+alignment = 0
+metadata/_custom_type_script = "uid://cac21admyvo8t"
+
+[node name="CostDisplay5" type="Control" parent="GridContainer" unique_id=1753220186]
+custom_minimum_size = Vector2(120, 31)
+layout_mode = 2
+script = ExtResource("1_cm05r")
+amount = 2
+alignment = 2
+metadata/_custom_type_script = "uid://cac21admyvo8t"
+
+[node name="Button3" type="Button" parent="GridContainer" unique_id=1663871715]
+custom_minimum_size = Vector2(100, 31)
+layout_mode = 2
+
+[node name="CostDisplay" parent="GridContainer/Button3" unique_id=2023561491 instance=ExtResource("2_o38v6")]
+layout_mode = 1
+amount = 2
+disabled = false
+
+[node name="CostDisplay6" type="Control" parent="GridContainer" unique_id=1829256929]
+custom_minimum_size = Vector2(120, 31)
+layout_mode = 2
+script = ExtResource("1_cm05r")
+amount = 2
+alignment = 0
+metadata/_custom_type_script = "uid://cac21admyvo8t"
+
+[node name="CostDisplay7" type="Control" parent="GridContainer" unique_id=676589479]
+custom_minimum_size = Vector2(120, 31)
+layout_mode = 2
+script = ExtResource("1_cm05r")
+amount = 3
+alignment = 2
+metadata/_custom_type_script = "uid://cac21admyvo8t"
+
+[node name="Button4" type="Button" parent="GridContainer" unique_id=1297203458]
+custom_minimum_size = Vector2(100, 31)
+layout_mode = 2
+
+[node name="CostDisplay" parent="GridContainer/Button4" unique_id=977370002 instance=ExtResource("2_o38v6")]
+layout_mode = 1
+amount = 3
+disabled = false
+
+[node name="CostDisplay8" type="Control" parent="GridContainer" unique_id=1350905399]
+custom_minimum_size = Vector2(120, 31)
+layout_mode = 2
+script = ExtResource("1_cm05r")
+amount = 3
+alignment = 0
+metadata/_custom_type_script = "uid://cac21admyvo8t"
+
+[node name="CostDisplay9" type="Control" parent="GridContainer" unique_id=1016124077]
+custom_minimum_size = Vector2(120, 31)
+layout_mode = 2
+script = ExtResource("1_cm05r")
+amount = 4
+alignment = 2
+metadata/_custom_type_script = "uid://cac21admyvo8t"
+
+[node name="Button5" type="Button" parent="GridContainer" unique_id=1743781888]
+custom_minimum_size = Vector2(100, 31)
+layout_mode = 2
+
+[node name="CostDisplay" parent="GridContainer/Button5" unique_id=119192779 instance=ExtResource("2_o38v6")]
+layout_mode = 1
+amount = 4
+disabled = false
+
+[node name="CostDisplay10" type="Control" parent="GridContainer" unique_id=1783501611]
+custom_minimum_size = Vector2(120, 31)
+layout_mode = 2
+script = ExtResource("1_cm05r")
+amount = 4
+alignment = 0
+metadata/_custom_type_script = "uid://cac21admyvo8t"
+
+[node name="CostDisplay11" type="Control" parent="GridContainer" unique_id=1740900212]
+custom_minimum_size = Vector2(120, 31)
+layout_mode = 2
+script = ExtResource("1_cm05r")
+amount = 5
+alignment = 2
+metadata/_custom_type_script = "uid://cac21admyvo8t"
+
+[node name="Button6" type="Button" parent="GridContainer" unique_id=1693219380]
+custom_minimum_size = Vector2(100, 31)
+layout_mode = 2
+
+[node name="CostDisplay" parent="GridContainer/Button6" unique_id=35933546 instance=ExtResource("2_o38v6")]
+layout_mode = 1
+amount = 5
+disabled = false
+
+[node name="CostDisplay12" type="Control" parent="GridContainer" unique_id=518321663]
+custom_minimum_size = Vector2(120, 31)
+layout_mode = 2
+script = ExtResource("1_cm05r")
+amount = 5
+alignment = 0
+metadata/_custom_type_script = "uid://cac21admyvo8t"
+
+[node name="CostDisplay13" type="Control" parent="GridContainer" unique_id=466089115]
+custom_minimum_size = Vector2(120, 31)
+layout_mode = 2
+script = ExtResource("1_cm05r")
+amount = 6
+alignment = 2
+metadata/_custom_type_script = "uid://cac21admyvo8t"
+
+[node name="Button7" type="Button" parent="GridContainer" unique_id=450904128]
+custom_minimum_size = Vector2(100, 31)
+layout_mode = 2
+
+[node name="CostDisplay" parent="GridContainer/Button7" unique_id=1274235441 instance=ExtResource("2_o38v6")]
+layout_mode = 1
+amount = 6
+disabled = false
+
+[node name="CostDisplay14" type="Control" parent="GridContainer" unique_id=1097013752]
+custom_minimum_size = Vector2(120, 31)
+layout_mode = 2
+script = ExtResource("1_cm05r")
+amount = 6
+alignment = 0
+metadata/_custom_type_script = "uid://cac21admyvo8t"
+
+[node name="CostDisplay15" type="Control" parent="GridContainer" unique_id=1121739085]
+custom_minimum_size = Vector2(120, 31)
+layout_mode = 2
+script = ExtResource("1_cm05r")
+amount = 7
+alignment = 2
+metadata/_custom_type_script = "uid://cac21admyvo8t"
+
+[node name="Button8" type="Button" parent="GridContainer" unique_id=326022175]
+custom_minimum_size = Vector2(100, 31)
+layout_mode = 2
+
+[node name="CostDisplay" parent="GridContainer/Button8" unique_id=1230824340 instance=ExtResource("2_o38v6")]
+layout_mode = 1
+disabled = false
+
+[node name="CostDisplay16" type="Control" parent="GridContainer" unique_id=2088031193]
+custom_minimum_size = Vector2(120, 31)
+layout_mode = 2
+script = ExtResource("1_cm05r")
+amount = 7
+alignment = 0
+metadata/_custom_type_script = "uid://cac21admyvo8t"
+
+[node name="CostDisplay17" type="Control" parent="GridContainer" unique_id=876109026]
+custom_minimum_size = Vector2(120, 31)
+layout_mode = 2
+script = ExtResource("1_cm05r")
+amount = 7
+alignment = 2
+metadata/_custom_type_script = "uid://cac21admyvo8t"
+
+[node name="Button9" type="Button" parent="GridContainer" unique_id=1376986580]
+custom_minimum_size = Vector2(100, 31)
+layout_mode = 2
+disabled = true
+
+[node name="CostDisplay" parent="GridContainer/Button9" unique_id=2129598330 instance=ExtResource("2_o38v6")]
+self_modulate = Color(0.53333336, 0.53333336, 0.53333336, 1)
+layout_mode = 1
+disabled = true
+
+[node name="CostDisplay18" type="Control" parent="GridContainer" unique_id=129196052]
+custom_minimum_size = Vector2(120, 31)
+layout_mode = 2
+script = ExtResource("1_cm05r")
+amount = 7
+alignment = 0
+metadata/_custom_type_script = "uid://cac21admyvo8t"

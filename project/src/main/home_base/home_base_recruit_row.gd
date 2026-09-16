@@ -13,7 +13,7 @@ func _ready() -> void:
 		"type_weights": DungeonDirector.get_recruit_type_weights(PlayerData.day),
 		})
 	
-	%RecruitButton.text = "-💰%s" % [get_cost().to_aa()]
+	%CostDisplay.amount = CostDisplay.amount_from_cost(get_cost())
 	var goblin_name: String = gob.name
 	if gob.get_count().is_gt(1):
 		goblin_name += " + %s others" % [Big.sub(gob.get_count(), 1).to_aa()]
@@ -29,6 +29,7 @@ func _ready() -> void:
 
 func refresh() -> void:
 	%RecruitButton.disabled = not PlayerData.can_spend(get_cost())
+	%CostDisplay.disabled = %RecruitButton.disabled
 
 
 func get_cost() -> Big:

@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://c6cgf0okpoaq6"]
+
+[ext_resource type="Script" uid="uid://cac21admyvo8t" path="res://src/main/ui/cost_display.gd" id="1_e2bme"]
+
+[node name="CostDisplay" type="Control" unique_id=940055857]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_e2bme")
+amount = 7
+disabled = null

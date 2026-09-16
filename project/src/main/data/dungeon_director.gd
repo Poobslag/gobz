@@ -12,11 +12,11 @@ static func cycle_dungeons() -> void:
 		if non_boss_dungeon_index != -1:
 			PlayerData.dungeons.remove_at(non_boss_dungeon_index)
 	
-	# append a boss dungeon if none exists
+	# insert a boss dungeon if none exists
 	var boss_dungeon_index: int = _find_boss_dungeon_index()
 	if boss_dungeon_index == -1:
 		var dungeon: Dungeon = generate_boss_dungeon()
-		PlayerData.dungeons.append(dungeon)
+		PlayerData.dungeons.insert(0, dungeon)
 	
 	# fill in non-boss dungeons
 	while PlayerData.dungeons.size() < 6:

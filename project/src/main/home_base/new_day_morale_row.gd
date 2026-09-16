@@ -20,7 +20,7 @@ func play(from_value: float, to_value: float, duration: float) -> void:
 
 func _set_morale_text(value: float) -> void:
 	var threshold_index: int = Gobs.MORALE_THRESHOLDS.size() - 1
-	for i in Gobs.MORALE_THRESHOLDS.size() - 2:
+	for i in Gobs.MORALE_THRESHOLDS.size() - 1:
 		if value <= Gobs.MORALE_THRESHOLDS[i][0]:
 			threshold_index = i
 			break

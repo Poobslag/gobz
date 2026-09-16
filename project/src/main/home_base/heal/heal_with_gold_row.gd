@@ -31,7 +31,7 @@ func _refresh() -> void:
 		total_cost += HomeBaseData.heal_data.get_gob_heal_cost(gob)
 	cost = Big.new(total_cost)
 	
-	%Button.text = "-💰%s" % [cost.to_aa()]
+	%CostDisplay.amount = CostDisplay.amount_from_cost(cost)
 	
 	var heal_stats: Dictionary[String, Variant] = HealData.get_heal_stats(gobs)
 	var total_hurt_count: float = heal_stats["hurt_count"]
@@ -57,3 +57,4 @@ func _refresh() -> void:
 		%Label.text = ""
 	
 	%Button.disabled = not PlayerData.can_spend(cost) or total_hurt_count == 0.0
+	%CostDisplay.disabled = %Button.disabled
