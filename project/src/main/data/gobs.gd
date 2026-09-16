@@ -84,7 +84,7 @@ static func army_bbcode(army: Army) -> String:
 
 static func morale_bbcode(morale: float, bold: bool = false) -> String:
 	var threshold_index: int = MORALE_THRESHOLDS.size() - 1
-	for i in MORALE_THRESHOLDS.size() - 2:
+	for i in MORALE_THRESHOLDS.size() - 1:
 		if morale <= MORALE_THRESHOLDS[i][0]:
 			threshold_index = i
 			break
