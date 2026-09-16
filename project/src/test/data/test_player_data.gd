@@ -41,3 +41,20 @@ func test_convert_to_json_and_back() -> void:
 	assert_eq(PlayerData.inventory.get_count(Items.HERB_1).to_int(), 123)
 	assert_eq(PlayerData.dungeons.size(), 1)
 	assert_eq(PlayerData.food_record.food_today.get(Items.FOOD_BREAD, Big.ZERO).to_int(), 50)
+
+
+func test_can_spend() -> void:
+	PlayerData.peak_gold = Big.new(876)
+	PlayerData.gold = Big.new(123)
+	
+	assert_eq(PlayerData.can_spend(Big.new(100)), true)
+	assert_eq(PlayerData.can_spend(Big.new(123)), true)
+	assert_eq(PlayerData.can_spend(Big.new(124)), true)
+	assert_eq(PlayerData.can_spend(Big.new(500)), false)
+
+
+func test_can_spend_broke() -> void:
+	PlayerData.peak_gold = Big.new(876)
+	PlayerData.gold = Big.ZERO
+	
+	assert_eq(PlayerData.can_spend(Big.new(1)), false)

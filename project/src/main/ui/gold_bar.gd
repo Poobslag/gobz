@@ -38,12 +38,15 @@ func _refresh() -> void:
 	var peak_gold_float: float = PlayerData.peak_gold.to_float()
 	peak_gold_float = max(peak_gold_float, 1)
 	var gold_float: float = PlayerData.gold.to_float()
-	gold_float = max(gold_float, 1)
 	var amount_float: float = _preview_amount.to_float()
 	amount_float = clamp(amount_float, 0, gold_float)
-	%ProgressBarFront.value = lerp(0, 100, (gold_float - amount_float) / peak_gold_float)
-	%ProgressBarBack.value = lerp(0, 100, gold_float / peak_gold_float)
+	%ProgressBarFront.value = _bar_value((gold_float - amount_float) / peak_gold_float)
+	%ProgressBarBack.value = _bar_value(gold_float / peak_gold_float)
 	%GoldLabel.text = PlayerData.gold.to_aa()
+
+
+func _bar_value(ratio: float) -> float:
+	return 0 if ratio <= 0 else max(7, lerp(0, 100, ratio))
 
 
 static func find_instance(node: Node) -> GoldBar:

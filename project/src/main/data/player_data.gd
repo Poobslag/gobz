@@ -163,7 +163,10 @@ func scale_army_units(factor: float) -> void:
 
 
 func can_spend(cost: Big) -> bool:
-	return gold.is_gte(cost)
+	if gold.is_lte(Big.ZERO):
+		return false
+	var deficit: Big = Big.max(Big.ZERO, Big.sub(cost, gold))
+	return deficit.is_lte(Big.div(peak_gold, 10))
 
 
 func take_gold(count: Big) -> void:
