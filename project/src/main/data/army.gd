@@ -80,8 +80,9 @@ func generate_random_recruit(data: Dictionary[String, Variant] = {}) -> Gob:
 		gob.hp_max += [3, 4, 4, 5].pick_random()
 	gob.front_hp = gob.hp_max
 	var type_cost: int = [3, 4, 5, 5, 5, 6, 7].pick_random()
-	if gob.type == Gobs.DEVIL:
-		type_cost += [3, 4, 5, 5, 5, 6, 7].pick_random()
+	match gob.type:
+		Gobs.DEVIL: type_cost = roundi(type_cost * Gobs.DEVIL_COST_FACTOR)
+		Gobs.ANGEL: type_cost = roundi(type_cost * Gobs.ANGEL_COST_FACTOR)
 	gob.gold += type_cost
 	
 	# calculate level
@@ -95,8 +96,11 @@ func generate_random_recruit(data: Dictionary[String, Variant] = {}) -> Gob:
 	
 	gob.xp = randi_range(0, gob.get_exp_threshold() - 1)
 	var fractional_level_cost: int = [3, 4, 5, 5, 5, 6, 7].pick_random()
-	if gob.type == Gobs.DEVIL:
-		fractional_level_cost *= 2
+	match gob.type:
+		Gobs.DEVIL:
+			fractional_level_cost = roundi(fractional_level_cost * 2.0 * 1.35)
+		Gobs.ANGEL:
+			fractional_level_cost = roundi(fractional_level_cost * 0.65)
 	fractional_level_cost = roundi(fractional_level_cost * \
 			gob.xp / float(gob.get_exp_threshold()))
 	gob.gold += fractional_level_cost
