@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://c5ex58fr8cwgp"]
+
+[ext_resource type="Script" uid="uid://br5sp43h2x3ye" path="res://src/main/battle/dungeon_rewards_button.gd" id="1_1nmus"]
+
+[node name="RewardsButton" type="Button" unique_id=1872426758]
+custom_minimum_size = Vector2(150, 31)
+script = ExtResource("1_1nmus")

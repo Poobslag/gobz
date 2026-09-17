@@ -87,7 +87,7 @@ func _refresh_recruits() -> void:
 
 
 func _recruit(recruit_row: HomeBaseRecruitRow) -> void:
-	if PlayerData.gold.is_lt(recruit_row.get_cost()):
+	if not PlayerData.can_spend(recruit_row.get_cost()):
 		return
 	
 	PlayerData.take_gold(recruit_row.get_cost())

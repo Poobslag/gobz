@@ -4,19 +4,18 @@ extends HBoxContainer
 
 signal pressed
 
-@export var desc: String:
-	set(value):
-		desc = value
-		if is_node_ready():
-			_refresh()
+@export var desc: String
 
 @export var button_text: String
 
+@export var reward_icons: String = "":
+	set(value):
+		%Button.reward_icons = value
+
+@export var boss: bool = false:
+	set(value):
+		%Button.boss = value
+
 func _ready() -> void:
-	_refresh()
-	%Button.pressed.connect(pressed.emit)
-
-
-func _refresh() -> void:
-	%Button.text = button_text
 	%Desc.text = desc
+	%Button.pressed.connect(pressed.emit)

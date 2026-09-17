@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://jratby1g2yr6"]
 
 [ext_resource type="Script" uid="uid://c3tmi6b1g8gwo" path="res://src/main/battle/dungeon_select_row.gd" id="1_ymirb"]
+[ext_resource type="PackedScene" uid="uid://c5ex58fr8cwgp" path="res://src/main/battle/dungeon_rewards_button.tscn" id="2_xh5fy"]
 
 [node name="DungeonSelectRow" type="HBoxContainer" unique_id=971645189]
 script = ExtResource("1_ymirb")
 
-[node name="Button" type="Button" parent="." unique_id=1365035860]
+[node name="Button" parent="." unique_id=1872426758 instance=ExtResource("2_xh5fy")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 
 [node name="Desc" type="Label" parent="." unique_id=867946619]
