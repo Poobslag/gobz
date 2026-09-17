@@ -149,8 +149,9 @@ func level_up() -> void:
 		hp_gain += [2, 4, 4, 6].pick_random()
 		attack += [1, 2, 2, 3].pick_random()
 	var level_cost: int = [3, 4, 5, 5, 5, 6, 7].pick_random()
-	if type == Gobs.DEVIL:
-		level_cost *= 2
+	match type:
+		Gobs.DEVIL: level_cost = roundi(level_cost * Gobs.DEVIL_COST_FACTOR)
+		Gobs.ANGEL: level_cost = roundi(level_cost * Gobs.ANGEL_COST_FACTOR)
 	gold += level_cost
 	hp_max += hp_gain
 	front_hp += hp_gain

@@ -11,6 +11,9 @@ enum Type {
 const WOUNDED_ATTACK_FACTOR: float = 0.5
 const WOUNDED_HP_THRESHOLD: float = 0.5
 
+const DEVIL_COST_FACTOR: float = 2.0 * 1.35
+const ANGEL_COST_FACTOR: float = 2.0 * 0.65
+
 const FIRE: Type = Type.FIRE
 const WATER: Type = Type.WATER
 const GRASS: Type = Type.GRASS

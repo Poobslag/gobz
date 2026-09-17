@@ -121,6 +121,10 @@ func retreat() -> void:
 	var looted_gold: Big = PlayerData.army.gold
 	PlayerData.gold = Big.add(PlayerData.gold, looted_gold)
 	PlayerData.army.gold = Big.ZERO
+	
+	# force recon; the player knows the exact unit comp, plus it may have changed during battle
+	PlayerData.get_dungeon().recon_army = PlayerData.get_dungeon().army.duplicate()
+	
 	PlayerData.get_dungeon_army().gold = Big.ZERO
 	color = Color("8d8381")
 	%InventoryHeader.color = Color("48444380")
