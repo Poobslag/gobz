@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://311wl87aukf8"]
+
+[ext_resource type="Script" uid="uid://opqsgvbco2j5" path="res://src/demo/home_base/demo_random_recruit.gd" id="1_3n758"]
+[ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/ui/screen_panel.tscn" id="1_bba40"]
+
+[node name="Demo" type="Control" unique_id=1431051801]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3n758")
+
+[node name="ScreenPanel" parent="." unique_id=806142582 instance=ExtResource("1_bba40")]
+layout_mode = 1
+color = Color(0.7019608, 0.3882353, 0.24313726, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ScreenPanel/MarginContainer/Panel/MarginContainer" parent_id_path=PackedInt32Array(806142582, 1781904422) index="0" unique_id=563274980]
+unique_name_in_owner = true
+layout_mode = 2
+bbcode_enabled = true
+text = "⚔[b]1[/b]=1   ⚔[b]2[/b]=1"
+
+[editable path="ScreenPanel"]

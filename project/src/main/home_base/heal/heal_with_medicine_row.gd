@@ -72,7 +72,6 @@ func _refresh() -> void:
 	
 	var heal_stats: Dictionary[String, Variant] = HealData.get_heal_stats(gobs)
 	var total_hurt_count: float = heal_stats["hurt_count"]
-	var total_penalty: float = heal_stats["penalty"]
 	if gobs:
 		var goblin_name: String
 		if heal_all:
@@ -89,7 +88,7 @@ func _refresh() -> void:
 			goblin_name = "%s %s" % [Gobs.emoji_from_type(gobs.front().type), gobs.front().name]
 			if total_hurt_count > 1.0:
 				goblin_name += " + %s others" % [Big.float_to_aa(total_hurt_count - 1)]
-		%TopLabel.text = "Heal %s, +⚔%s" % [goblin_name, Big.float_to_aa(total_penalty)]
+		%TopLabel.text = "Heal %s" % [goblin_name]
 	else:
 		%TopLabel.text = ""
 	

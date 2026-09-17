@@ -17,8 +17,12 @@ func _ready() -> void:
 	var goblin_name: String = gob.name
 	if gob.get_count().is_gt(1):
 		goblin_name += " + %s others" % [Big.sub(gob.get_count(), 1).to_aa()]
-	%Description.text = "%s %s,  %s⚔" % [
-			Gobs.emoji_from_type(gob.type), goblin_name, gob.get_total_attack().to_aa()]
+	
+	var attack_rating: String = Gobs.attack_rating(gob.attack)
+	if not attack_rating.is_empty():
+		attack_rating = " " + attack_rating
+	%Description.text = "%s%s %s" % [
+			Gobs.emoji_from_type(gob.type), attack_rating, goblin_name]
 	
 	%RecruitButton.pressed.connect(recruit_pressed.emit)
 	%SkipButton.pressed.connect(skip_pressed.emit)

@@ -93,9 +93,9 @@ static func _add_relationship(gob: Gob, other_gob: Gob, type: MoraleEvent.Morale
 static func _add_end_event(gob: Gob, begin_event: MoraleEvent) -> void:
 	var end_event: MoraleEvent
 	if begin_event.type == MoraleEvent.MADE_FRIEND:
-		end_event = MoraleEvent.new_randomized_event(MoraleEvent.FRIEND_DIED, -40)
+		end_event = MoraleEvent.new_randomized_event(MoraleEvent.FRIEND_DIED, -25)
 	else:
-		end_event = MoraleEvent.new_randomized_event(MoraleEvent.RIVAL_DIED, 40)
+		end_event = MoraleEvent.new_randomized_event(MoraleEvent.RIVAL_DIED, 25)
 	
 	var gob_ref: MoraleEvent.GobRef = begin_event.get_gob_ref_param(0)
 	end_event.set_gob_ref_param(0, gob_ref)
