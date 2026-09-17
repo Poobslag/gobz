@@ -65,8 +65,10 @@ func _add_dungeon_row(dungeon: Dungeon) -> void:
 	
 	dungeon_row.boss = dungeon.boss
 	
-	var desc: String = "%s %s, %s" % [
-		dungeon_select_info["emoji_string"], dungeon_select_info["name"], dungeon_select_info["attack_string"]
+	var desc: String = "%s %s - %s" % [
+		dungeon_select_info["emoji_string"],
+		dungeon_select_info["name"],
+		dungeon_select_info["goblins_text"],
 	]
 	dungeon_row.desc = desc
 	dungeon_row.pressed.connect(func() -> void:

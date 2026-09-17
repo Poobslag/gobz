@@ -8,14 +8,16 @@ func refresh() -> void:
 		var summary: Army.ArmySummary = PlayerData.army.get_summary()
 		var goblin_type: Gobs.Type = heal_group.get_type()
 		if summary.goblins_by_type[goblin_type].is_gte(1):
+			var type_attack_rating: String = Gobs.attack_rating(
+					summary.attack_by_type[goblin_type].to_float() / summary.goblins_by_type[goblin_type].to_float())
 			var wounded_string: String = ""
 			if summary.wounded_by_type[goblin_type].is_gte(1):
 				var wounded_percent: float = 100 * summary.wounded_by_type[goblin_type].to_float() \
 						/ summary.goblins_by_type[goblin_type].to_float()
 				wounded_percent = max(wounded_percent, 1)
 				wounded_string = "(%d%% 🩹) " % [wounded_percent]
-			%InventoryLabel.text += "%s: %s goblins, %s⚔️%s\n" % [
+			%InventoryLabel.text += "%s: %s goblins, %s%s\n" % [
 					Gobs.emoji_from_type(goblin_type),
 					summary.goblins_by_type[goblin_type].to_aa(),
 					wounded_string,
-					summary.attack_by_type[goblin_type].to_aa()]
+					type_attack_rating]

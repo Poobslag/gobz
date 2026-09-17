@@ -56,6 +56,23 @@ const MORALE_THRESHOLDS: Array[Array] = [
 	[100, "🤩", "LFG"],
 ]
 
+const ATTACK_THRESHOLDS: Array[Array] = [
+	[3, ""],
+	[6, "⭐"],
+	[12, "⭐⭐"],
+	[24, "⭐⭐⭐"],
+	[48, "⭐⭐⭐⭐"],
+]
+
+static func attack_rating(attack: float) -> String:
+	var attack_threshold_index: int = ATTACK_THRESHOLDS.size() - 1
+	for i in ATTACK_THRESHOLDS.size() - 1:
+		if attack <= ATTACK_THRESHOLDS[i][0]:
+			attack_threshold_index = i
+			break
+	return ATTACK_THRESHOLDS[attack_threshold_index][1]
+
+
 static func emoji_from_type(type: Type) -> String:
 	return EMOJIS_BY_GOBLIN_TYPE[type]
 
@@ -63,21 +80,24 @@ static func emoji_from_type(type: Type) -> String:
 static func army_bbcode(army: Army) -> String:
 	var summary: Army.ArmySummary = army.get_summary()
 	var result: String = ""
-	result += "[b]%s goblins, ⚔️%s[/b]\n" % \
-			[summary.total_goblins.to_aa(), summary.total_attack.to_aa()]
+	var overall_attack_rating: String = attack_rating(
+			summary.total_attack.to_float() / max(1, summary.total_goblins.to_float()))
+	result += "[b]%s goblins %s[/b]\n" % [summary.total_goblins.to_aa(), overall_attack_rating]
 	for goblin_type: Type in Type.values():
 		if summary.goblins_by_type[goblin_type].is_gte(1):
+			var type_attack_rating: String = attack_rating(
+					summary.attack_by_type[goblin_type].to_float() / summary.goblins_by_type[goblin_type].to_float())
 			var wounded_string: String = ""
 			if summary.wounded_by_type[goblin_type].is_gte(1):
 				var wounded_percent: float = 100 * summary.wounded_by_type[goblin_type].to_float() \
 						/ summary.goblins_by_type[goblin_type].to_float()
 				wounded_percent = max(wounded_percent, 1)
 				wounded_string = "(%d%% 🩹) " % [wounded_percent]
-			result += "%s: %s goblins, %s⚔️%s\n" % [
+			result += "%s: %s goblins %s%s\n" % [
 					EMOJIS_BY_GOBLIN_TYPE[goblin_type],
 					summary.goblins_by_type[goblin_type].to_aa(),
 					wounded_string,
-					summary.attack_by_type[goblin_type].to_aa()]
+					type_attack_rating]
 	
 	return result.strip_edges()
 

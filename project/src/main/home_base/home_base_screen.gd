@@ -47,9 +47,10 @@ func _refresh_dungeons() -> void:
 	for dungeon: Dungeon in PlayerData.dungeons:
 		var dungeon_select_info: Dictionary[String, String] = Dungeons.get_dungeon_select_info(dungeon)
 		var dungeon_row: Label = DUNGEON_ROW_SCENE.instantiate()
-		dungeon_row.text = "%s %s, %s" % [
+		dungeon_row.text = "%s %s - %s" % [
 				dungeon_select_info["emoji_string"],
-				dungeon_select_info["name"], dungeon_select_info["attack_string"]
+				dungeon_select_info["name"],
+				dungeon_select_info["goblins_text"],
 		]
 		%Dungeons.add_child(dungeon_row)
 
