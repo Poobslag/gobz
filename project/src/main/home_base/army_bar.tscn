@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://coou2qkc6xv5n"]
+
+[ext_resource type="Script" uid="uid://btddli3fspcro" path="res://src/main/home_base/army_bar.gd" id="1_pu0rp"]
+
+[node name="ArmyBar" type="Control" unique_id=869449878]
+show_behind_parent = true
+custom_minimum_size = Vector2(440, 23)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pu0rp")

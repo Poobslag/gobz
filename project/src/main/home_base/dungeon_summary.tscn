@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cm306p8q5gub0"]
 
 [ext_resource type="Script" uid="uid://dot8ir7qs0s16" path="res://src/main/home_base/dungeon_summary.gd" id="1_2wtjq"]
+[ext_resource type="PackedScene" uid="uid://coou2qkc6xv5n" path="res://src/main/home_base/army_bar.tscn" id="2_rwuml"]
 
 [node name="DungeonSummary" type="Control" unique_id=2086801268]
 custom_minimum_size = Vector2(440, 23)
@@ -21,3 +22,7 @@ offset_right = 388.0
 grow_vertical = 2
 theme_override_constants/outline_size = 6
 text = "Catacombs of the Destroyed Paladin - 9.0t ⭐⭐⭐⭐"
+
+[node name="ArmyBar" parent="." unique_id=869449878 instance=ExtResource("2_rwuml")]
+unique_name_in_owner = true
+layout_mode = 1
