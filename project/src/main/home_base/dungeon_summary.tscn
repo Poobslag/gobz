@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://cm306p8q5gub0"]
+
+[ext_resource type="Script" uid="uid://dot8ir7qs0s16" path="res://src/main/home_base/dungeon_summary.gd" id="1_2wtjq"]
+
+[node name="DungeonSummary" type="Control" unique_id=2086801268]
+custom_minimum_size = Vector2(440, 23)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 440.0
+offset_bottom = 20.0
+mouse_filter = 2
+script = ExtResource("1_2wtjq")
+
+[node name="Label" type="Label" parent="." unique_id=867946619]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_right = 388.0
+grow_vertical = 2
+theme_override_constants/outline_size = 6
+text = "Catacombs of the Destroyed Paladin - 9.0t ⭐⭐⭐⭐"

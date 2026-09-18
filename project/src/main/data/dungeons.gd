@@ -1,42 +1,22 @@
 class_name Dungeons
 
-static func get_dungeon_select_info(dungeon: Dungeon) -> Dictionary[String, String]:
-	var reward_text: String = "+💰%s" % [dungeon.recon_army.get_total_gold().to_aa()]
-	
+static func get_dungeon_select_info(dungeon: Dungeon) -> Dictionary[String, Variant]:
 	var goblins_by_type: Dictionary[Gobs.Type, Big]
-	var attack_by_type: Dictionary[Gobs.Type, Big]
 	for type: Gobs.Type in Gobs.Type.values():
 		goblins_by_type[type] = Big.ZERO
-		attack_by_type[type] = Big.ZERO
 	for gob: Gob in dungeon.recon_army.gobs:
-		goblins_by_type[gob.type] = Big.add(attack_by_type[gob.type], gob.get_count())
-		attack_by_type[gob.type] = Big.add(attack_by_type[gob.type], gob.get_total_attack())
+		goblins_by_type[gob.type] = Big.add(goblins_by_type[gob.type], gob.get_count())
 	var type_summaries: Array[Dictionary] = []
 	for type: Gobs.Type in Gobs.Type.values():
+		if goblins_by_type[type] == Big.ZERO:
+			continue
 		type_summaries.append({
-			"emoji": Gobs.emoji_from_type(type),
-			"attack": attack_by_type[type],
+			"type": type,
 			"goblins": goblins_by_type[type],
 		} as Dictionary[String, Variant])
 	type_summaries.sort_custom(func(a: Dictionary[String, Variant], b: Dictionary[String, Variant]) -> bool:
 		return a["goblins"].is_gt(b["goblins"])
 		)
-	
-	var emoji_string: String = ""
-	if type_summaries.size() == 0:
-		emoji_string = "-"
-	if type_summaries.size() >= 1:
-		emoji_string = type_summaries[0]["emoji"]
-	if type_summaries.size() >= 2:
-		if type_summaries[1]["goblins"].is_gt(Big.mul(type_summaries[0]["goblins"], 0.2)):
-			emoji_string += type_summaries[1]["emoji"]
-		else:
-			emoji_string = type_summaries[0]["emoji"] + emoji_string
-	if type_summaries.size() >= 3:
-		if type_summaries[2]["goblins"].is_gt(Big.mul(type_summaries[0]["goblins"], 0.2)):
-			emoji_string +=  type_summaries[2]["emoji"]
-		else:
-			emoji_string = type_summaries[0]["emoji"] + emoji_string
 	
 	var attack_rating: String = Gobs.attack_rating(
 			dungeon.recon_army.get_total_attack().to_float() / dungeon.recon_army.get_total_goblins().to_float())
@@ -44,9 +24,6 @@ static func get_dungeon_select_info(dungeon: Dungeon) -> Dictionary[String, Stri
 	var goblins_text: String = dungeon.recon_army.get_total_goblins().to_aa() + " " + attack_rating
 	
 	return {
-		"name": dungeon.name,
-		"reward_text": reward_text,
-		"emoji_string": emoji_string,
 		"goblins_text": goblins_text,
-		"attack_rating": attack_rating,
+		"type_summaries": type_summaries,
 	}

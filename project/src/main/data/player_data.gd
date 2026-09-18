@@ -58,10 +58,8 @@ var tips: Array[String] = [
 	"Dungeon information is based on goblins spotted nearby, but it's not perfect.",
 	"Sometimes, enemy dungeons have strong goblins you weren't told about.",
 	"If an enemy dungeon has a surprise you're not prepared for, it's OK to leave!",
-	"A dungeon with \"💧💧💧\" has a ton of 💧, but may still have a surprise.",
-	"A dungeon with \"🌳🌳🔥\" has a lot of 🌳, and a few 🔥.",
-	"A dungeon with \"🔥💧🌳\" has several 🔥, some 💧, and a few 🌳.",
-	"A dungeon with \"💧🌳🔥\" has several 💧, some 🌳, and a few 🔥.",
+	"Wounded goblins deal less damage than healthy goblins.",
+	"Sad goblins fight the same as happy goblins.",
 	"Recruit your goblins carefully! Some goblins ask for too much gold.",
 	"Recruit your goblins carefully! Some types are more useful than others.",
 ]
@@ -117,6 +115,10 @@ func start_new_game() -> void:
 
 func has_current_dungeon() -> bool:
 	return dungeon_index < dungeons.size()
+
+
+func get_boss_dungeon() -> Dungeon:
+	return dungeons[0]
 
 
 func get_dungeon() -> Dungeon:
