@@ -2,7 +2,7 @@ extends Control
 
 const RECRUIT_COUNT: int = 3
 const RECRUIT_ROW_SCENE: PackedScene = preload("res://src/main/home_base/home_base_recruit_row.tscn")
-const DUNGEON_ROW_SCENE: PackedScene = preload("res://src/main/home_base/dungeon_preview_row.tscn")
+const DUNGEON_SUMMARY_SCENE: PackedScene = preload("res://src/main/home_base/dungeon_summary.tscn")
 
 const MAX_MULTIPLIER: float = 1.0e267
 
@@ -45,13 +45,8 @@ func _refresh_dungeons() -> void:
 		dungeon.perform_recon()
 	
 	for dungeon: Dungeon in PlayerData.dungeons:
-		var dungeon_select_info: Dictionary[String, String] = Dungeons.get_dungeon_select_info(dungeon)
-		var dungeon_row: Label = DUNGEON_ROW_SCENE.instantiate()
-		dungeon_row.text = "%s %s - %s" % [
-				dungeon_select_info["emoji_string"],
-				dungeon_select_info["name"],
-				dungeon_select_info["goblins_text"],
-		]
+		var dungeon_row: Control = DUNGEON_SUMMARY_SCENE.instantiate()
+		dungeon_row.dungeon = dungeon
 		%Dungeons.add_child(dungeon_row)
 
 

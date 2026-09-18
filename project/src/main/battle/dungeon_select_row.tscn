@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c3tmi6b1g8gwo" path="res://src/main/battle/dungeon_select_row.gd" id="1_ymirb"]
 [ext_resource type="PackedScene" uid="uid://c5ex58fr8cwgp" path="res://src/main/battle/dungeon_rewards_button.tscn" id="2_xh5fy"]
+[ext_resource type="PackedScene" uid="uid://cm306p8q5gub0" path="res://src/main/home_base/dungeon_summary.tscn" id="3_kqvgp"]
 
 [node name="DungeonSelectRow" type="HBoxContainer" unique_id=971645189]
 script = ExtResource("1_ymirb")
@@ -10,6 +11,7 @@ script = ExtResource("1_ymirb")
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Desc" type="Label" parent="." unique_id=867946619]
+[node name="DungeonSummary" parent="." unique_id=2086801268 instance=ExtResource("3_kqvgp")]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 4

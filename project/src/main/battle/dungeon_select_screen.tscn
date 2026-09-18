@@ -105,20 +105,14 @@ layout_mode = 2
 [node name="DungeonSelectRow1" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Dungeons" unique_id=971645189 instance=ExtResource("2_dx72l")]
 unique_name_in_owner = true
 layout_mode = 2
-desc = "💧💧💧 Labyrinth of the Mourning Marsh, 6⚔"
-button_text = "+💰10"
 
 [node name="DungeonSelectRow2" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Dungeons" unique_id=1930900674 instance=ExtResource("2_dx72l")]
 unique_name_in_owner = true
 layout_mode = 2
-desc = "🔥🔥💧 The Cunning Dungeon, 26⚔"
-button_text = "+💰20"
 
 [node name="DungeonSelectRow3" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Dungeons" unique_id=616925943 instance=ExtResource("2_dx72l")]
 unique_name_in_owner = true
 layout_mode = 2
-desc = "💧🔥🌳 The Fire Point, 36⚔"
-button_text = "+💰50"
 
 [node name="HomeNav" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer" unique_id=1142993029 instance=ExtResource("7_2kr71")]
 layout_mode = 2
