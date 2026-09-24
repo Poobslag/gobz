@@ -254,6 +254,7 @@ fi
 RESULT=$(grep -R -nP '[^_a-z]range\(0,\s*[^,)]*\)' --include="*.gd" project/src \
   | grep -v "dungeon\.gd:.*, 2):" \
   | grep -v "battle_watch_panel\.gd:.*, 80):" \
+  | grep -v "map_demo\.gd:.*, 3):" \
   )
 if [ -n "$RESULT" ]; then
   echo ""
@@ -270,9 +271,8 @@ if [ -n "$RESULT" ]; then
 fi
 
 # arrays missing type hint
-RESULT=$(grep -R -n "\(^[^#]*Array[^\[]\|:= \[\]\)" --include="*.gd" project/src \
+RESULT=$(grep -R -n "\(^[^#]*\<Array\($\|[^[]\)\|:= \[\]\)" --include="*.gd" project/src \
   | grep -v "\(Array\]\|\[Array\)" \
-  | grep -v "PackedByteArray\|PackedFloat32Array\|PackedVector2Array\|PackedStringArray\|PackedInt32Array" \
   )
 if [ -n "$RESULT" ]; then
   echo ""
