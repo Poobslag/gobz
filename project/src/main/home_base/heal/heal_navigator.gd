@@ -42,7 +42,7 @@ func refresh() -> void:
 		%RightButton.text = "Visit %s" % [_get_gob_string(right_group)]
 	
 	var center_group: HealData.HealGroup = HomeBaseData.heal_data.get_center_group()
-	%CenterButton.text = "Visiting %s" % [_get_gob_string(center_group)]
+	%CenterButton.text = _get_gob_string(center_group)
 
 
 func _get_gob_string(heal_group: HealData.HealGroup) -> String:
@@ -50,4 +50,6 @@ func _get_gob_string(heal_group: HealData.HealGroup) -> String:
 	if heal_group != null:
 		var gob: Gob = heal_group.front()
 		gob_string = "%s %s" % [Gobs.emoji_from_type(gob.type), gob.name]
+		if heal_group.hurt_count.to_float() > 1.0:
+			gob_string += " + %s others" % [Big.float_to_aa(heal_group.hurt_count.to_float() - 1)]
 	return gob_string

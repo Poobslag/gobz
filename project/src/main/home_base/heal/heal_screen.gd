@@ -101,6 +101,18 @@ func refresh() -> void:
 	
 	%MultiplyButton.disabled = PlayerData.heal_multiplier.is_gte(100)
 	%DivideButton.disabled = PlayerData.heal_multiplier.is_lte(1)
+	
+	if center_group:
+		var gob_count: float = 0.0
+		var healthy_gob_count: float = 0.0
+		for gob: Gob in center_group.gobs:
+			gob_count += gob.get_count().to_float()
+			healthy_gob_count += gob.get_healthy_count().to_float()
+			if gob.is_front_hurt() and not gob.is_front_wounded:
+				healthy_gob_count -= 0.5
+		%HpBar.value = 100 * (healthy_gob_count / gob_count)
+	else:
+		%HpBar.value = 100
 
 
 func inject_chat_line(line: HealChatLines.HealChatLine) -> void:
