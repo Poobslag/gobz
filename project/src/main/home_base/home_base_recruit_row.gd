@@ -9,7 +9,7 @@ static var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var gob: Gob
 
 func _ready() -> void:
-	if randf() < 0.6 and PlayerData.prev_dungeon != null and PlayerData.prev_dungeon.composition != null:
+	if randf() < 0.6 and PlayerData.prev_dungeon != null and not PlayerData.prev_dungeon.composition.is_empty():
 		# generate a recruit based on the previous dungeon's composition
 		var composition: Dictionary[String, Variant] = PlayerData.prev_dungeon.composition
 		var type: Gobs.Type = composition["types"][_rng.rand_weighted(composition["weights"])]

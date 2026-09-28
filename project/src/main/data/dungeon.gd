@@ -36,6 +36,7 @@ func to_json_dict() -> Dictionary[String, Variant]:
 	for reward: Reward in rewards:
 		rewards_json.append(reward.to_json_dict())
 	result["rewards"] = rewards_json
+	result["composition"] = composition
 	return result
 
 
@@ -53,6 +54,8 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 			reward.from_json_dict(typed_reward_json)
 			rewards.append(reward)
 	boss = json.get("boss", false)
+	if json.has("composition"):
+		composition.assign(json["composition"])
 
 
 class Reward extends Resource:
