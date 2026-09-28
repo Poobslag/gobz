@@ -26,3 +26,14 @@ text = "No"
 unique_name_in_owner = true
 layout_mode = 2
 text = "🔥 Kleex,  2⚔"
+
+[node name="MoraleBonus" type="Label" parent="Description" unique_id=1465643776]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = 31.0
+offset_top = 18.0
+offset_right = 104.0
+offset_bottom = 41.0
+theme_override_font_sizes/font_size = 8
+text = "-20% morale bonus"
