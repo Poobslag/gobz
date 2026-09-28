@@ -4,14 +4,27 @@ extends HBoxContainer
 signal recruit_pressed
 signal skip_pressed
 
+static var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
+
 var gob: Gob
 
 func _ready() -> void:
-	gob = PlayerData.army.generate_random_recruit({
-		"count": PlayerData.home_base_multiplier,
-		"max_level": DungeonDirector.get_recruit_max_level(PlayerData.day),
-		"type_weights": DungeonDirector.get_recruit_type_weights(PlayerData.day),
-		})
+	if randf() < 0.6 and PlayerData.prev_dungeon != null and PlayerData.prev_dungeon.composition != null:
+		# generate a recruit based on the previous dungeon's composition
+		var composition: Dictionary[String, Variant] = PlayerData.prev_dungeon.composition
+		var type: Gobs.Type = composition["types"][_rng.rand_weighted(composition["weights"])]
+		gob = PlayerData.army.generate_random_recruit({
+			"count": PlayerData.home_base_multiplier,
+			"max_level": DungeonDirector.get_recruit_max_level(PlayerData.day),
+			"type": type
+			})
+	else:
+		# generate a recruit based on the player's progression through the game
+		gob = PlayerData.army.generate_random_recruit({
+			"count": PlayerData.home_base_multiplier,
+			"max_level": DungeonDirector.get_recruit_max_level(PlayerData.day),
+			"type_weights": DungeonDirector.get_recruit_type_weights(PlayerData.day),
+			})
 	
 	# adjust back count based on multiplier
 	var same_type_gobs: Array[Gob] = PlayerData.army.gobs.filter(func(other_gob: Gob) -> bool:

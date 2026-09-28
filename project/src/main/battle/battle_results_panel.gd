@@ -141,6 +141,7 @@ func retreat() -> void:
 func _end_battle() -> void:
 	if PlayerData.get_dungeon_army().is_empty() and PlayerData.get_dungeon().boss:
 		PlayerData.bosses_defeated += 1
+	PlayerData.prev_dungeon = PlayerData.get_dungeon()
 	DungeonDirector.cycle_dungeons()
 	FoodSystem.feed_goblins()
 	

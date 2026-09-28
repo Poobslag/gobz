@@ -20,6 +20,7 @@ var gold: Big = Big.ZERO:
 var inventory: Inventory = Inventory.new()
 var morale_digest: MoraleDigest = MoraleDigest.new()
 var dungeons: Array[Dungeon] = []
+var prev_dungeon: Dungeon
 var dungeon_index: int
 var market: Market = Market.new()
 var food_record: FoodRecord = FoodRecord.new()
@@ -198,6 +199,8 @@ func to_json_dict() -> Dictionary[String, Variant]:
 	for dungeon: Dungeon in dungeons:
 		dungeons_json.append(dungeon.to_json_dict())
 	result["dungeons"] = dungeons_json
+	if prev_dungeon != null:
+		result["prev_dungeon"] = prev_dungeon.to_json_dict()
 	result["home_base_multiplier"] = home_base_multiplier.to_float()
 	result["heal_multiplier"] = heal_multiplier.to_float()
 	result["supplies_multiplier"] = supplies_multiplier.to_float()
@@ -224,6 +227,9 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 		var dungeon: Dungeon = Dungeon.new()
 		dungeon.from_json_dict(Utils.typed_json_dict(dungeon_json))
 		dungeons.append(dungeon)
+	if json.has("prev_dungeon"):
+		prev_dungeon = Dungeon.new()
+		prev_dungeon.from_json_dict(Utils.typed_json_dict(json["prev_dungeon"]))
 	home_base_multiplier = Big.new(json.get("home_base_multiplier", 1.0))
 	heal_multiplier = Big.new(json.get("heal_multiplier", 1.0))
 	supplies_multiplier = Big.new(json.get("supplies_multiplier", 1.0))

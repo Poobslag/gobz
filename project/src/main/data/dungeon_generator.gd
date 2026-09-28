@@ -178,6 +178,7 @@ static func _add_dungeon_rewards(dungeon: Dungeon) -> void:
 static func generate_random_dungeon(blueprint: DungeonBlueprint) -> Dungeon:
 	_generate_random_composition(blueprint)
 	var dungeon: Dungeon = _generate_dungeon_for_archetype(blueprint)
+	dungeon.composition = blueprint.composition
 	_add_dungeon_rewards(dungeon)
 	
 	if Global.verbose_stdout_mode:

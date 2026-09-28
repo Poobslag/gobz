@@ -5,6 +5,7 @@ var army: Army = Army.new()
 var rewards: Array[Reward]
 var recon_army: Army = Army.new()
 var boss: bool = false
+var composition: Dictionary[String, Variant]
 
 func perform_recon(force: bool = false) -> void:
 	if not recon_army.is_empty() and not force:
