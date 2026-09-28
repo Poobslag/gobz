@@ -17,7 +17,7 @@ func _refresh() -> void:
 		%Event.visible = false
 		return
 	
-	%Name.text = "%s %s %s" % [Gobs.emoji_from_type(gob.type), gob.name, Gobs.morale_bbcode(gob.morale.value)]
+	%Name.text = "%s %s Lv. %s %s" % [Gobs.emoji_from_type(gob.type), gob.name, gob.level, Gobs.morale_bbcode(gob.morale.value)]
 	var last_event: MoraleEvent = gob.morale.get_last_event()
 	if last_event:
 		%Event.visible = true
