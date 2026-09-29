@@ -105,9 +105,23 @@ func play() -> void:
 		_tween.tween_interval(morale_duration)
 	
 	# finish animating the panel
-	_tween.tween_callback(_refresh_morale_summary)
+	var raid_dungeon_index: int = DungeonDirector.find_raid_dungeon_index()
+	if raid_dungeon_index >= 0:
+		_tween.tween_callback(_refresh_raid_summary)
+	else:
+		_tween.tween_callback(_refresh_morale_summary)
 	_tween.tween_callback(func() -> void:
 		%Button.disabled = false)
+
+
+func _refresh_raid_summary() -> void:
+	var raid_dungeon_index: int = DungeonDirector.find_raid_dungeon_index()
+	var dungeon: Dungeon = PlayerData.dungeons[raid_dungeon_index]
+	var raid_days: int = dungeon.raid_days
+	%MoraleSummary.text = "Goblins from {name} will raid in {days} days." \
+			.format([["name", dungeon.name], ["days", dungeon.raid_days]])
+	%MoraleSummary.text = %MoraleSummary.text.replace(" in 1 days", " tomorrow morning")
+	%MoraleSummary.text = %MoraleSummary.text.replace(" will raid in 0 days.", " are raiding!")
 
 
 func _refresh_morale_summary() -> void:

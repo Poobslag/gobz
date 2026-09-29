@@ -12,7 +12,7 @@ func _ready() -> void:
 	hurt_all_gobs()
 	HomeBaseData.heal_data.mark_groups_dirty()
 	
-	PlayerData.gold = Big.new(5000)
+	PlayerDataTestUtils.set_gold(Big.new(5000))
 	PlayerData.inventory.add_item(Items.HERB_1, Big.new(5000))
 	PlayerData.inventory.add_item(Items.HERB_2, Big.new(5000))
 	PlayerData.inventory.add_item(Items.HERB_3, Big.new(5000))

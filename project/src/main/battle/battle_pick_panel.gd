@@ -47,7 +47,12 @@ func refresh() -> void:
 		if not button.disabled:
 			all_orders_given = false
 	%Undo.disabled = orders.is_empty()
+	
+	%Done.disabled = false
 	%Done.text = "Retreat" if orders.is_empty() else "Fight!"
+	if PlayerData.has_current_dungeon() and PlayerData.get_dungeon().is_raiding() and orders.is_empty():
+		%Done.text = "No escape!"
+		%Done.disabled = true
 	
 	var order_string: String = ""
 	if not orders.is_empty():

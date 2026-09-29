@@ -21,6 +21,11 @@ var army: Army:
 		army = value
 		_recalculate_layout()
 
+var max_army_bar_width: float = 440.0:
+	set(value):
+		max_army_bar_width = value
+		_recalculate_layout()
+
 var _bar_widths: Array[float] = []
 var _bar_types: Array[Gobs.Type] = []
 
@@ -62,7 +67,8 @@ func _recalculate_layout() -> void:
 	
 	var boss_dungeon: Dungeon = PlayerData.get_boss_dungeon()
 	var boss_dungeon_goblins: float = boss_dungeon.recon_army.get_total_goblins().to_float()
-	var bar_width: float = remap(army.get_total_goblins().to_float(), 0, boss_dungeon_goblins, 100, 440)
+	var bar_width: float = remap(army.get_total_goblins().to_float(), 0, boss_dungeon_goblins, 100, max_army_bar_width)
+	bar_width = clamp(bar_width, 100, max_army_bar_width)
 	
 	_bar_types.clear()
 	_bar_widths.clear()

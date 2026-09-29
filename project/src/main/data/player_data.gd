@@ -25,6 +25,9 @@ var dungeon_index: int
 var market: Market = Market.new()
 var food_record: FoodRecord = FoodRecord.new()
 
+## 0.0 = 0% chance, 1.0 = 100% chance
+var raid_chance: float = -0.4
+
 var home_base_multiplier: Big = Big.ONE
 var heal_multiplier: Big = Big.ONE
 var supplies_multiplier: Big = Big.ONE
@@ -98,10 +101,17 @@ func reset() -> void:
 	_prev_total_gold = Big.ZERO
 
 
-func recalculate_peak() -> void:
+func reset_peaks() -> void:
 	peak_gold = Big.max(gold, Big.ONE)
 	var new_peak_net_worth: Big = Big.add(gold, army.get_total_gold())
 	new_peak_net_worth = Big.max(new_peak_net_worth, Big.ONE)
+	peak_net_worth = new_peak_net_worth
+
+
+func raise_peaks() -> void:
+	peak_gold = Big.new(max(gold.to_float(), 1, peak_gold.to_float()))
+	var new_peak_net_worth: Big = Big.add(gold, army.get_total_gold())
+	new_peak_net_worth = Big.new(max(new_peak_net_worth.to_float(), 1, peak_net_worth.to_float()))
 	peak_net_worth = new_peak_net_worth
 
 
@@ -109,7 +119,7 @@ func start_new_game() -> void:
 	reset()
 	initialize_starting_army()
 	initialize_starting_inventory()
-	PlayerData.recalculate_peak()
+	PlayerData.reset_peaks()
 	DungeonDirector.cycle_dungeons()
 	HomeBaseData.party_data.cycle_parties()
 
@@ -190,6 +200,7 @@ func to_json_dict() -> Dictionary[String, Variant]:
 	result["day"] = day
 	result["army"] = army.to_glob()
 	result["food_record"] = food_record.to_json_dict()
+	result["raid_chance"] = raid_chance
 	result["peak_gold"] = peak_gold.to_float()
 	result["peak_net_worth"] = peak_net_worth.to_float()
 	result["gold"] = gold.to_float()
@@ -218,6 +229,7 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 		army.from_glob(json["army"])
 	if json.has("food_record"):
 		food_record.from_json_dict(Utils.typed_json_dict(json["food_record"]))
+	raid_chance = json.get("raid_chance", -0.4)
 	gold = Big.new(json.get("gold", 0.0))
 	if json.has("inventory"):
 		inventory.from_json_dict(Utils.typed_json_dict(json["inventory"]))
@@ -242,7 +254,7 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 		peak_gold = Big.new(json["peak_gold"])
 		peak_net_worth = Big.new(json["peak_net_worth"])
 	else:
-		recalculate_peak()
+		reset_peaks()
 
 
 func print_gold_history() -> void:

@@ -18,7 +18,7 @@ func reset() -> void:
 	for _i in 10:
 		var gob: Gob = PlayerData.army.generate_random_recruit({"count": Big.new(5)})
 		PlayerData.army.add_gob(gob)
-	PlayerData.gold = Big.new(5000)
+	PlayerDataTestUtils.set_gold(Big.new(5000))
 	PlayerData.inventory.add_item(Items.STRONG_MEDICINE, Big.new(5000))
 	
 	%PartyScreen.reset()

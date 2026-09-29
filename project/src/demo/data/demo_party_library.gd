@@ -109,5 +109,5 @@ func reset_player_data() -> void:
 				"type_weights": type_weights
 			})
 		PlayerData.army.add_gob(gob)
-	PlayerData.gold = Big.new(5000)
+	PlayerDataTestUtils.set_gold(Big.new(5000))
 	PlayerData.inventory.add_item(Items.STRONG_MEDICINE, Big.new(5000))

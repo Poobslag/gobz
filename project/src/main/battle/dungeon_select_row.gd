@@ -49,6 +49,7 @@ func _refresh() -> void:
 	%Button.boss = dungeon.boss
 	
 	%DungeonSummary.dungeon = dungeon
+	%DungeonSummary.max_army_bar_width = 734
 
 
 func _get_loot_emojis() -> String:
