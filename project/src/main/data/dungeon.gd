@@ -5,6 +5,7 @@ var army: Army = Army.new()
 var rewards: Array[Reward]
 var recon_army: Army = Army.new()
 var boss: bool = false
+var raid_days: int = -1
 var composition: Dictionary[String, Variant]
 
 func perform_recon(force: bool = false) -> void:
@@ -22,6 +23,10 @@ func perform_recon(force: bool = false) -> void:
 		recon_army.add_gob(recon_gob)
 
 
+func is_raiding() -> bool:
+	return raid_days == 0
+
+
 func is_empty() -> bool:
 	return army.is_empty()
 
@@ -36,6 +41,7 @@ func to_json_dict() -> Dictionary[String, Variant]:
 	for reward: Reward in rewards:
 		rewards_json.append(reward.to_json_dict())
 	result["rewards"] = rewards_json
+	result["raid_days"] = raid_days
 	result["composition"] = composition
 	return result
 
@@ -54,6 +60,7 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 			reward.from_json_dict(typed_reward_json)
 			rewards.append(reward)
 	boss = json.get("boss", false)
+	raid_days = json.get("raid_days", -1)
 	if json.has("composition"):
 		composition.assign(json["composition"])
 

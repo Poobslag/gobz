@@ -26,4 +26,4 @@ func _input(event: InputEvent) -> void:
 
 func reset() -> void:
 	PlayerData.reset()
-	PlayerData.gold = Big.new(1000)
+	PlayerDataTestUtils.set_gold(Big.new(1000))

@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cs5tws828ga8o" path="res://src/main/battle/battle_screen.gd" id="1_1snqp"]
 [ext_resource type="PackedScene" uid="uid://bbyuo5i46dqoy" path="res://src/main/battle/battle_pick_panel.tscn" id="1_p08ga"]
 [ext_resource type="PackedScene" uid="uid://ce8qrjpsew051" path="res://src/main/battle/battle_watch_panel.tscn" id="2_1snqp"]
+[ext_resource type="PackedScene" uid="uid://wq6e0mgxlirg" path="res://src/main/battle/battle_bribe_panel.tscn" id="2_bk2gq"]
 [ext_resource type="PackedScene" uid="uid://brabaa2k31rib" path="res://src/main/battle/battle_results_panel.tscn" id="4_v7pbc"]
 [ext_resource type="PackedScene" uid="uid://bap8l8nqs54bs" path="res://src/main/battle/battle_tutorial_panel.tscn" id="5_gb7cv"]
 
@@ -15,8 +16,13 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_1snqp")
 
-[node name="PickPanel" parent="." unique_id=806142582 instance=ExtResource("1_p08ga")]
+[node name="BribePanel" parent="." unique_id=806142582 instance=ExtResource("2_bk2gq")]
 unique_name_in_owner = true
+layout_mode = 1
+
+[node name="PickPanel" parent="." unique_id=1911649383 instance=ExtResource("1_p08ga")]
+unique_name_in_owner = true
+visible = false
 layout_mode = 1
 
 [node name="WatchPanel" parent="." unique_id=436844562 instance=ExtResource("2_1snqp")]

@@ -39,7 +39,6 @@ func victory() -> void:
 	PlayerData.army.gold = Big.ZERO
 	PlayerData.get_dungeon_army().gold = Big.ZERO
 	color = Color("458a61")
-	%InventoryHeader.color = Color("2b473680")
 	%Message.text = ""
 	if PlayerData.get_dungeon().boss:
 		%Message.text += "[b]Boss dungeon #%s defeated![/b] Heck yeah!\n\n" \
@@ -69,7 +68,6 @@ func defeat() -> void:
 	_show_splash(%DefeatShower)
 	
 	color = Color("8d8381")
-	%InventoryHeader.color = Color("48444380")
 	
 	PlayerData.army.gold = Big.ZERO
 	PlayerData.gold = Big.add(PlayerData.gold, Big.new(PlayerData.get_dungeon_army().gold.to_float() * 0.1))
@@ -86,12 +84,29 @@ func defeat() -> void:
 	_end_battle()
 
 
+## When the player surrenders to raiders, we take away half their stuff (rounding up)
+func surrender() -> void:
+	refresh()
+	_show_splash(%DefeatShower)
+	
+	color = Color("8d8381")
+	PlayerData.gold = Big.div(PlayerData.gold, 2)
+	for item_type: Items.Type in PlayerData.inventory.items:
+		PlayerData.inventory.set_count(item_type, Big.div(PlayerData.inventory.get_count(item_type), 2))
+	
+	# empty all the goblins so that the dungeon cycles
+	PlayerData.get_dungeon().army.reset()
+	
+	%Message.text = ""
+	%Message.text += "Surrender...\n\n"
+	_end_battle()
+
+
 func mutual_defeat() -> void:
 	refresh()
 	_show_splash(%DefeatShower)
 	
 	color = Color("8d8381")
-	%InventoryHeader.color = Color("48444380")
 	var looted_gold: Big = Big.new(
 			Big.add(PlayerData.army.gold, PlayerData.get_dungeon_army().gold).to_float() * 0.5)
 	PlayerData.gold = Big.add(PlayerData.gold, looted_gold)
@@ -127,7 +142,6 @@ func retreat() -> void:
 	
 	PlayerData.get_dungeon_army().gold = Big.ZERO
 	color = Color("8d8381")
-	%InventoryHeader.color = Color("48444380")
 	%Message.text = ""
 	%Message.text += "Retreat!\n\n"
 	if looted_gold.is_gt(0):
@@ -142,15 +156,25 @@ func _end_battle() -> void:
 	if PlayerData.get_dungeon_army().is_empty() and PlayerData.get_dungeon().boss:
 		PlayerData.bosses_defeated += 1
 	PlayerData.prev_dungeon = PlayerData.get_dungeon()
-	DungeonDirector.cycle_dungeons()
-	FoodSystem.feed_goblins()
 	
-	PlayerData.day += 1
+	var raided: bool = PlayerData.get_dungeon().is_raiding()
+	if raided:
+		# being raided doesn't increment the day counter or cycle dungeons, but we replace the raiders
+		DungeonDirector.remove_empty_dungeons()
+		DungeonDirector.fill_missing_dungeons()
+	else:
+		DungeonDirector.cycle_dungeons()
+		FoodSystem.feed_goblins()
+		PlayerData.day += 1
 	
 	HomeBaseData.heal_data.mark_groups_dirty()
 	HomeBaseData.party_data.cycle_parties()
 	PlayerData.market.mark_costs_dirty()
-	PlayerData.recalculate_peak()
+	if raided:
+		# being raided results in the ui reflecting that you're at half your previous gold level
+		PlayerData.raise_peaks()
+	else:
+		PlayerData.reset_peaks()
 	PlayerData.print_gold_history()
 
 

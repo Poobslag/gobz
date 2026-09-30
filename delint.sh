@@ -237,8 +237,8 @@ if [ -n "$RESULT" ]; then
 fi
 
 # print statements that got left in by mistake
-RESULT=$(git diff main -- **/*.gd | grep print\()
-RESULT=${RESULT}"Ê"$(git diff main -- **/*.gd | grep print_debug\()
+RESULT=$(git diff main -- **/*.gd | grep "\<print(")
+RESULT=${RESULT}"Ê"$(git diff main -- **/*.gd | grep "\<print_debug(")
 RESULT=$(echo "${RESULT}" |
   sed 's/ÊÊÊ*/Ê/g' | # remove consecutive newline placeholders
   sed 's/^Ê\(.*\)$/\1/g' | # remove trailing newline placeholders

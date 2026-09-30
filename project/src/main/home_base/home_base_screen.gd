@@ -13,11 +13,7 @@ func _ready() -> void:
 	%DivideButton.pressed.connect(_adjust_multiplier.bind(1/10.0))
 	%TutorialButton.pressed.connect(%TutorialPanel.open)
 	
-	if not PlayerData.finished_tutorials.has(PlayerData.HOME_BASE_TUTORIAL):
-		%TutorialPanel.open()
-		PlayerData.finished_tutorials[PlayerData.HOME_BASE_TUTORIAL] = true
-	elif not PlayerData.food_record.shown:
-		%NewDayPanel.play()
+	%NewDayPanel.ok_pressed.connect(_on_new_day_panel_ok_pressed)
 	
 	reset()
 
@@ -34,6 +30,18 @@ func reset() -> void:
 	var hide_multiply_buttons: bool = PlayerData.home_base_multiplier.is_eq(1) and PlayerData.gold.is_lt(80)
 	%MultiplyButton.visible = not hide_multiply_buttons
 	%DivideButton.visible = not hide_multiply_buttons
+	
+	%TutorialPanel.hide()
+	%NewDayPanel.hide()
+	
+	if not PlayerData.finished_tutorials.has(PlayerData.HOME_BASE_TUTORIAL):
+		%TutorialPanel.open()
+		PlayerData.finished_tutorials[PlayerData.HOME_BASE_TUTORIAL] = true
+	elif not PlayerData.food_record.shown:
+		%NewDayPanel.play()
+	
+	if not %NewDayPanel.visible and _is_being_raided():
+		_start_raid()
 
 
 func _refresh_dungeons() -> void:
@@ -47,6 +55,7 @@ func _refresh_dungeons() -> void:
 	for dungeon: Dungeon in PlayerData.dungeons:
 		var dungeon_row: Control = DUNGEON_SUMMARY_SCENE.instantiate()
 		dungeon_row.dungeon = dungeon
+		dungeon_row.max_army_bar_width = 440
 		%Dungeons.add_child(dungeon_row)
 
 
@@ -110,18 +119,43 @@ func _adjust_multiplier(factor: float) -> void:
 		_refresh_recruits()
 
 
+func _is_being_raided() -> bool:
+	var raid_dungeon_index: int = DungeonDirector.find_raid_dungeon_index()
+	return raid_dungeon_index >= 0 and PlayerData.dungeons[raid_dungeon_index].is_raiding()
+
+
+func _start_raid() -> void:
+	PlayerData.dungeon_index = DungeonDirector.find_raid_dungeon_index()
+	get_tree().change_scene_to_file("res://src/main/battle/battle_screen.tscn")
+
+
+func _on_new_day_panel_ok_pressed() -> void:
+	if _is_being_raided():
+		_start_raid()
+
+
 func _on_command_palette_command_entered(command: String) -> void:
-	match command:
+	var command_words: PackedStringArray = command.split(" ")
+	match command_words[0]:
 		"army":
 			print("----------")
 			print("Army: %s goblins, %s attack" \
 					% [PlayerData.army.get_total_goblins().to_aa(), PlayerData.army.get_total_attack().to_aa()])
 			var army_json: Dictionary[String, Variant] = PlayerData.army.to_json_dict()
 			print(JSON.stringify(army_json, "  "))
-	match command.substr(0, 1):
-		"g":
-			if not command.substr(1).is_valid_int():
-				push_warning("Invalid parameter: %s" % [command.substr(1)])
+		"less":
+			if command_words.size() < 2 or float(command_words[1]) <= 0:
+				push_warning("Invalid command: %s" % [command])
+				return
+			var factor: float = 1.0 / float(command_words[1])
+			PlayerData.scale_army_units(factor)
+			_refresh_recruits()
+			_refresh_summary()
+			for dungeon: Dungeon in PlayerData.dungeons:
+				dungeon.perform_recon()
+		"more":
+			if command_words.size() < 2 or float(command_words[1]) <= 0:
+				push_warning("Invalid command: %s" % [command])
 				return
 			var factor: float = float(command.substr(1))
 			PlayerData.scale_army_units(factor)
@@ -133,13 +167,19 @@ func _on_command_palette_command_entered(command: String) -> void:
 			if PlayerData.gold.is_gte(80):
 				%MultiplyButton.visible = true
 				%DivideButton.visible = true
-		"h":
-			if not command.substr(1).is_valid_int():
-				push_warning("Invalid parameter: %s" % [command.substr(1)])
+		"raid":
+			if command_words.size() < 2 or int(command_words[1]) <= -1:
+				push_warning("Invalid command: %s" % [command])
 				return
-			var factor: float = 1.0 / float(command.substr(1))
-			PlayerData.scale_army_units(factor)
-			_refresh_recruits()
-			_refresh_summary()
-			for dungeon: Dungeon in PlayerData.dungeons:
-				dungeon.perform_recon()
+			var raid_dungeon_index: int = DungeonDirector.find_raid_dungeon_index()
+			if raid_dungeon_index == -1:
+				# if there is no raiding dungeon, add a raiding dungeon
+				PlayerData.raid_chance = 1.0
+				DungeonDirector.cycle_dungeons()
+				PlayerData.food_record.shown = false
+				raid_dungeon_index = DungeonDirector.find_raid_dungeon_index()
+			# set the raiding dungeon's days
+			PlayerData.dungeons[raid_dungeon_index].raid_days = int(command_words[1])
+			# show the notification and reset
+			PlayerData.food_record.shown = false
+			reset()

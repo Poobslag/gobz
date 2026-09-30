@@ -31,3 +31,19 @@ static func prepare_demo() -> void:
 		PlayerData.BATTLE_TUTORIAL: true,
 		PlayerData.HOME_BASE_TUTORIAL: true,
 	}
+	populate_default_food_record()
+
+
+static func set_gold(gold: Big) -> void:
+	PlayerData.gold = gold
+	PlayerData.reset_peaks()
+
+
+static func populate_default_food_record() -> void:
+	PlayerData.food_record.morale_today = randf_range(0, 100)
+	PlayerData.food_record.morale_yesterday = randf_range(0, 100)
+	for type: Items.Type in [
+			Items.FOOD_BREAD, Items.FOOD_CHICKEN,
+			Items.FOOD_PIZZA, Items.FOOD_RAM, Items.FOOD_UNKNOWN]:
+		PlayerData.food_record.food_today[type] = Big.new(randf_range(10, 100))
+		PlayerData.food_record.food_yesterday[type] = Big.new(randf_range(10, 100))

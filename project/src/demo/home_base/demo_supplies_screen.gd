@@ -3,7 +3,7 @@ extends Control
 ## 	[kbd]M[/kbd]: Randomize market costs.
 
 func _ready() -> void:
-	PlayerData.gold = Big.new(50_000)
+	PlayerDataTestUtils.set_gold(Big.new(50_000))
 	for type: Items.Type in Items.Type.values():
 		PlayerData.inventory.add_item(type, Big.new(5000))
 	%SuppliesScreen.refresh()
