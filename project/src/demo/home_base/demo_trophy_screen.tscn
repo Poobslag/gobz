@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://bclop3f07a8sa"]
+
+[ext_resource type="Script" uid="uid://psgaok2xdvdc" path="res://src/demo/home_base/demo_trophy_screen.gd" id="1_l4u0a"]
+[ext_resource type="PackedScene" uid="uid://ini65avsjo6r" path="res://src/main/home_base/trophy_screen.tscn" id="1_u22cq"]
+
+[node name="Demo" type="Control" unique_id=744967193]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_l4u0a")
+
+[node name="TrophyScreen" parent="." unique_id=1368189123 instance=ExtResource("1_u22cq")]
+unique_name_in_owner = true
+layout_mode = 1

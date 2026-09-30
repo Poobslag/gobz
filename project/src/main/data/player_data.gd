@@ -2,9 +2,23 @@ extends Node
 ## Stores the player's army.
 
 signal gold_changed
+signal stat_changed(stat: String)
+
+enum CollectibleStatus {
+	LOCKED,
+	UNLOCKED,
+	REPORTED,
+	VIEWED,
+}
 
 const HOME_BASE_TUTORIAL: String = "home_base_tutorial"
 const BATTLE_TUTORIAL: String = "battle_tutorial"
+
+## stats
+const PARTIES_THROWN: String = "parties_thrown"
+const CHAT_HEAL_SUCCESSES: String = "chat_heal_successes"
+const ENEMY_DEVIL_GOBLINS_KILLED: String = "enemy_devil_goblins_killed"
+const ANGEL_GOBLINS_RECRUITED: String = "angel_goblins_recruited"
 
 var day: int = 1
 var army: Army = Army.new()
@@ -39,6 +53,9 @@ var finished_tutorials: Dictionary[String, bool] = {}
 var bosses_defeated: int = 0
 
 var should_log_gold_history: bool = true
+
+var collectible_status: Dictionary[String, CollectibleStatus] = {}
+var stats: Dictionary[String, Variant] = {}
 
 var _next_gob_id: int = 0
 var _prev_total_gold: Big = Big.ZERO
@@ -97,6 +114,8 @@ func reset() -> void:
 	party_multiplier = 0
 	finished_tutorials.clear()
 	bosses_defeated = 0
+	collectible_status.clear()
+	stats.clear()
 	_next_gob_id = 0
 	_prev_total_gold = Big.ZERO
 
@@ -195,6 +214,27 @@ func take_gold(count: Big) -> void:
 	gold = Big.new(max(0, gold.to_float() - count.to_float()))
 
 
+func increment_stat(stat: String, value: Variant = 1) -> void:
+	var delta: float
+	if value is int or value is float:
+		delta = value
+	elif value is Big:
+		delta = value.to_float()
+	else:
+		push_error("Unrecognized value for stat '%s': %s" % [stat, value])
+		return
+	stats[stat] = stats.get(stat, 0.0) + delta
+	stat_changed.emit(stat)
+
+
+func get_stat(stat: String) -> float:
+	return stats.get(stat, 0.0)
+
+
+func get_collectible_status(id: String) -> CollectibleStatus:
+	return collectible_status.get(id, CollectibleStatus.LOCKED)
+
+
 func to_json_dict() -> Dictionary[String, Variant]:
 	var result: Dictionary[String, Variant] = {}
 	result["day"] = day
@@ -219,6 +259,12 @@ func to_json_dict() -> Dictionary[String, Variant]:
 	result["finished_tutorials"] = finished_tutorials
 	result["next_gob_id"] = _next_gob_id
 	result["bosses_defeated"] = bosses_defeated
+	var collectible_status_json: Dictionary[String, Variant] = {}
+	for collectible_id: String in collectible_status:
+		collectible_status_json[collectible_id] \
+				= Utils.enum_to_snake_case(CollectibleStatus, collectible_status[collectible_id])
+	result["collectible_status"] = collectible_status_json
+	result["stats"] = stats
 	return result
 
 
@@ -248,6 +294,12 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 	party_multiplier = json.get("party_multiplier", 1)
 	finished_tutorials.assign(json.get("finished_tutorials", {}))
 	bosses_defeated = json.get("bosses_defeated", 0)
+	var collectible_status_json: Dictionary[String, Variant] \
+			= Utils.typed_json_dict(json.get("collectible_status", {}))
+	for collectible_id: String in collectible_status_json:
+		collectible_status[collectible_id] \
+				= CollectibleStatus.get(collectible_status_json[collectible_id].to_upper())
+	stats.assign(json.get("stats", {}))
 	_next_gob_id = json.get("next_gob_id", 0)
 	
 	if json.has("peak_gold") and json.has("peak_net_worth"):

@@ -1,0 +1,97 @@
+[gd_scene format=3 uid="uid://26kyn32pjd0g"]
+
+[ext_resource type="Script" uid="uid://cgcmppq1dgsgn" path="res://src/main/collectibles/collectibles.gd" id="1_47sgm"]
+[ext_resource type="Script" uid="uid://di67ai3ddf4x4" path="res://src/main/collectibles/boss_dungeon_collectible.gd" id="1_55w6m"]
+[ext_resource type="Script" uid="uid://bx4d575nsmmx6" path="res://src/main/collectibles/first_turn_raid_collectible.gd" id="2_ms82a"]
+[ext_resource type="Script" uid="uid://cam1rik8g8jqm" path="res://src/main/collectibles/stat_collectible.gd" id="3_j5q1w"]
+[ext_resource type="Script" uid="uid://dwwutgj6fbr7o" path="res://src/main/collectibles/happy_goblins_collectible.gd" id="4_7tu36"]
+[ext_resource type="Script" uid="uid://ckeq1wolnk5tm" path="res://src/main/collectibles/beer_party_collectible.gd" id="4_upmmh"]
+[ext_resource type="Script" uid="uid://bfrsc8j56imld" path="res://src/main/collectibles/goblins_collectible.gd" id="5_s00ah"]
+
+[node name="Collectibles" type="Node" unique_id=873997200]
+script = ExtResource("1_47sgm")
+
+[node name="Boss1" type="Node" parent="." unique_id=135117249]
+script = ExtResource("1_55w6m")
+target_boss_count = 1
+id = "boss_1"
+emoji = "🌽"
+desc = "Minor Cob"
+
+[node name="Boss2" type="Node" parent="." unique_id=917996986]
+script = ExtResource("1_55w6m")
+target_boss_count = 2
+id = "boss_2"
+emoji = "👢"
+desc = "Major Boot"
+
+[node name="Boss3" type="Node" parent="." unique_id=2055451357]
+script = ExtResource("1_55w6m")
+target_boss_count = 3
+id = "boss_3"
+emoji = "🎷"
+desc = "Victory Sax"
+
+[node name="FirstTurnRaid" type="Node" parent="." unique_id=1423279778]
+script = ExtResource("2_ms82a")
+id = "first_turn_raid"
+emoji = "🐣"
+desc = "Early Bird"
+
+[node name="PartiesThrown10" type="Node" parent="." unique_id=709784735]
+script = ExtResource("3_j5q1w")
+tracked_stat = "parties_thrown"
+target_value = 10.0
+instructions_template = "Throw {target} parties."
+id = "parties_thrown_10"
+emoji = "🐨"
+desc = "Rowdy Koala"
+
+[node name="BeerParty100" type="Node" parent="." unique_id=78577087]
+script = ExtResource("4_upmmh")
+target_beer_count = 100.0
+id = "beer_party_100"
+emoji = "🚍"
+desc = "Rowdy Bus"
+
+[node name="ChatHealSuccesses10" type="Node" parent="." unique_id=84670568]
+script = ExtResource("3_j5q1w")
+tracked_stat = "chat_heal_successes"
+target_value = 10.0
+instructions_template = "Heal {target} goblins by talking to them."
+id = "chat_heal_successes_10"
+emoji = "🏓"
+desc = "Chunky Paddle"
+
+[node name="HappyGoblins100" type="Node" parent="." unique_id=710367344]
+script = ExtResource("4_7tu36")
+target_goblin_count = 100.0
+target_morale = 90.0
+id = "happy_goblins_100"
+emoji = "🍚"
+desc = "Rice of Allure"
+
+[node name="Goblins1000" type="Node" parent="." unique_id=500053411]
+script = ExtResource("5_s00ah")
+target_goblin_count = 1000.0
+id = "goblins_1000"
+emoji = "🔮"
+desc = "Ancient Orb"
+
+[node name="EnemyDevilGoblinsKilled300" type="Node" parent="." unique_id=1630429047]
+script = ExtResource("3_j5q1w")
+tracked_stat = "enemy_devil_goblins_killed"
+target_value = 300.0
+instructions_template = "Defeat {target} 😈 goblins."
+id = "enemy_devil_goblins_killed_300"
+emoji = "🍋"
+desc = "Demon Lemon"
+
+[node name="AngelGoblinsRecruited50" type="Node" parent="." unique_id=2143463139]
+script = ExtResource("3_j5q1w")
+tracked_stat = "angel_goblins_recruited"
+target_value = 50.0
+instructions_template = "Recruit {target} 🕊 goblins."
+id = "angel_goblins_recruited_50"
+emoji = "🔑"
+desc = "Key of Spirit"

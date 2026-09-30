@@ -16,7 +16,17 @@ func _ready() -> void:
 	%Heal.pressed.connect(change_scene.bind("res://src/main/home_base/heal/heal_screen.tscn"))
 	%Party.pressed.connect(change_scene.bind("res://src/main/home_base/party_screen.tscn"))
 	%Supplies.pressed.connect(change_scene.bind("res://src/main/home_base/supplies_screen.tscn"))
+	%Trophies.pressed.connect(change_scene.bind("res://src/main/home_base/trophy_screen.tscn"))
 	%Fight.pressed.connect(change_scene.bind("res://src/main/battle/dungeon_select_screen.tscn"))
+	
+	var new_trophies: bool = false
+	for collectible_id: String in PlayerData.collectible_status:
+		if PlayerData.get_collectible_status(collectible_id) in \
+				[PlayerData.CollectibleStatus.UNLOCKED, PlayerData.CollectibleStatus.REPORTED] \
+				and not %Trophies.disabled:
+			new_trophies = true
+			break
+	%NewTrophyLabel.visible = new_trophies
 
 
 func change_scene(path: String) -> void:

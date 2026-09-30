@@ -63,6 +63,7 @@ func refresh() -> void:
 	%NextButton.text = next_button_text
 
 
+## Returns a list of which types were killed, and how effective the attacks were.
 func get_kill_report(source_type: Gobs.Type, kills: Array[BattleResolver.Kill]) -> Array[Dictionary]:
 	var kills_by_type: Dictionary[Gobs.Type, Big] = {}
 	for kill: BattleResolver.Kill in kills:
@@ -152,6 +153,11 @@ func _play_next() -> void:
 					kill_strings.append("%s×%s wounded" %
 							[wounded_count.to_aa(),
 									Gobs.emoji_from_type(kill_report_gob["type"])])
+				
+				match kill_report_gob["type"]:
+					Gobs.DEVIL:
+						PlayerData.increment_stat(
+								PlayerData.ENEMY_DEVIL_GOBLINS_KILLED, kill_report_gob["kill_count"])
 				
 				if not kill_strings.is_empty():
 					printed_a_message = true

@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://dpupmo2kwly4k"]
+
+[ext_resource type="Script" uid="uid://buoajaqqqc56t" path="res://src/main/home_base/trophy_row.gd" id="1_5sta4"]
+
+[node name="TrophyRow" type="HBoxContainer" unique_id=1719860356]
+script = ExtResource("1_5sta4")
+
+[node name="Emoji" type="Label" parent="." unique_id=872173953]
+unique_name_in_owner = true
+self_modulate = Color(0, 0, 0, 0.5019608)
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "🎖"
+horizontal_alignment = 1
+
+[node name="NewLabel" type="Label" parent="Emoji" unique_id=2106509139]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 8
+text = "NEW! "
+horizontal_alignment = 2
+
+[node name="Desc" type="Label" parent="." unique_id=962638895]
+unique_name_in_owner = true
+self_modulate = Color(0, 0, 0, 0.5019608)
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "Cool Party Metal"
+horizontal_alignment = 1
+
+[node name="Instructions" type="Label" parent="." unique_id=97054179]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Throw 10 parties (0/10)"

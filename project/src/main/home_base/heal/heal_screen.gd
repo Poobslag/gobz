@@ -103,14 +103,14 @@ func refresh() -> void:
 	%DivideButton.disabled = PlayerData.heal_multiplier.is_lte(1)
 	
 	if center_group:
-		var gob_count: float = 0.0
-		var healthy_gob_count: float = 0.0
+		var total_hp_max: float = 0.0
+		var total_hp: float = 0.0
 		for gob: Gob in center_group.gobs:
-			gob_count += gob.get_count().to_float()
-			healthy_gob_count += gob.get_healthy_count().to_float()
-			if gob.is_front_hurt() and not gob.is_front_wounded:
-				healthy_gob_count -= 0.5
-		%HpBar.value = 100 * (healthy_gob_count / gob_count)
+			total_hp_max += gob.get_count().to_float() * gob.hp_max
+			total_hp += gob.back_wounded.to_float() * gob.hp_max / 2
+			total_hp += (gob.back_count.to_float() - gob.back_wounded.to_float()) * gob.hp_max
+			total_hp += gob.front_hp
+		%HpBar.value = 100 * (total_hp / total_hp_max)
 	else:
 		%HpBar.value = 100
 
@@ -187,6 +187,7 @@ func _on_chat_picker_option_picked(option_index: int) -> void:
 		var append_goodbye: bool = (center_group.chats_remaining == 1)
 		center_group.decrement_chats_remaining()
 		if center_group.chats_remaining == 0:
+			PlayerData.increment_stat(PlayerData.CHAT_HEAL_SUCCESSES)
 			for gob: Gob in center_group.gobs:
 				HealData.full_heal(gob)
 				_heal_type_by_gob[gob] = HealType.CHAT

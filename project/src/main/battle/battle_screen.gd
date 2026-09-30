@@ -41,8 +41,9 @@ func show_pick_panel() -> void:
 	%PickPanel.refresh()
 
 
-func show_results_panel() -> void:
+func show_results_panel(battle_result: Events.BattleResult) -> void:
 	_show_panel(%ResultsPanel)
+	%ResultsPanel.show_result(battle_result)
 	
 	HomeBaseData.heal_data.reroll_wound_severity(%WatchPanel.gob_battle_status)
 	MoraleBattleResolver.update_gob_battle_morale(%WatchPanel.gob_battle_status)
@@ -74,8 +75,7 @@ func _on_pick_panel_finished() -> void:
 		enemy_orders.shuffle()
 	
 	if player_orders.is_empty():
-		show_results_panel()
-		%ResultsPanel.retreat()
+		show_results_panel(Events.BattleResult.RETREAT)
 	else:
 		_show_panel(%WatchPanel)
 		%WatchPanel.play(player_orders, enemy_orders)
@@ -85,13 +85,14 @@ func _on_watch_panel_finished() -> void:
 	if PlayerData.army.is_empty() \
 			or not PlayerData.has_current_dungeon() \
 			or PlayerData.get_dungeon_army().is_empty():
-		show_results_panel()
+		var battle_result: Events.BattleResult
 		if PlayerData.army.is_empty() and PlayerData.get_dungeon_army().is_empty():
-			%ResultsPanel.mutual_defeat()
+			battle_result = Events.BattleResult.MUTUAL_DEFEAT
 		elif PlayerData.army.is_empty():
-			%ResultsPanel.defeat()
+			battle_result = Events.BattleResult.DEFEAT
 		else:
-			%ResultsPanel.victory()
+			battle_result = Events.BattleResult.VICTORY
+		show_results_panel(battle_result)
 	else:
 		show_pick_panel()
 
@@ -115,8 +116,7 @@ func _on_results_panel_finished() -> void:
 
 
 func _on_bribe_panel_surrender_pressed() -> void:
-	show_results_panel()
-	%ResultsPanel.surrender()
+	show_results_panel(Events.BattleResult.SURRENDER)
 
 
 func _on_bribe_panel_fight_pressed() -> void:

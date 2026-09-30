@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://fjk56phv0hk2"]
 
 [ext_resource type="PackedScene" uid="uid://mptfydptrejo" path="res://src/main/home_base/home_base_screen.tscn" id="1_6nhqj"]
-[ext_resource type="Script" uid="uid://bx31yods1o35y" path="res://src/main/home_base/demo_home_base_screen.gd" id="1_xrq61"]
+[ext_resource type="Script" uid="uid://bx31yods1o35y" path="res://src/demo/home_base/demo_home_base_screen.gd" id="1_xrq61"]
 
 [node name="DemoHomeBaseScreen" type="Control" unique_id=739456922]
 layout_mode = 3

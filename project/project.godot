@@ -19,11 +19,13 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+Events="*uid://dsm7lb2ogtnoj"
 Global="*uid://b665exkm50ujh"
 PlayerData="*uid://e7a2mbx7jndi"
 PlayerSave="*uid://7vpk8bm2ud2r"
 HomeBaseData="*uid://dd4rwu6sshhpj"
 PartyLibrary="*uid://bq7gh7afqxa7d"
+Collectibles="*uid://26kyn32pjd0g"
 
 [debug]
 
