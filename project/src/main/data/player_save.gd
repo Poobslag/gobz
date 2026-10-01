@@ -1,5 +1,8 @@
 extends Node
 
+signal before_save
+signal after_load
+
 ## In LibreOffice Calc: =LOWER(DEC2HEX(INT((NOW()-DATE(2026,8,1))*24),4))
 const PLAYER_DATA_VERSION: String = "0157"
 
@@ -32,9 +35,11 @@ func has_data(loaded_save_slot: int) -> bool:
 func load_data(loaded_save_slot: int) -> void:
 	save_slot = loaded_save_slot
 	_load_player_data_internal(PlayerData, loaded_save_slot)
+	after_load.emit()
 
 
 func save_data(saved_save_slot: int = save_slot) -> void:
+	before_save.emit()
 	_save_player_data_internal(PlayerData, saved_save_slot)
 
 

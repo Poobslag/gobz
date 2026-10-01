@@ -118,5 +118,7 @@ func _on_party_row_pressed(party_row: PartyRow) -> void:
 	for child: PartyRow in %Parties.get_children():
 		child.refresh()
 	PlayerData.inventory.take_item(party_row.item_type, party_row.item_count)
+	PlayerData.increment_stat(PlayerData.PARTIES_THROWN)
+	Events.party_finished.emit(party_row.party, party_row.item_count)
 	%MessageShower.play_message(HomeBaseData.party_data.party_result)
 	refresh()

@@ -98,6 +98,10 @@ func _recruit(recruit_row: HomeBaseRecruitRow) -> void:
 	PlayerData.take_gold(recruit_row.get_cost())
 	PlayerData.army.add_gob(recruit_row.gob)
 	
+	match recruit_row.gob.type:
+		Gobs.ANGEL:
+			PlayerData.increment_stat(PlayerData.ANGEL_GOBLINS_RECRUITED, recruit_row.gob.get_count())
+	
 	%Recruits.remove_child(recruit_row)
 	recruit_row.queue_free()
 	_refresh_recruits()

@@ -110,15 +110,30 @@ func play() -> void:
 		_tween.tween_callback(_refresh_raid_summary)
 	else:
 		_tween.tween_callback(_refresh_morale_summary)
+	
+	var unreported_trophy_count: int = 0
+	for collectible_id: String in PlayerData.collectible_status:
+		if PlayerData.get_collectible_status(collectible_id) == PlayerData.CollectibleStatus.UNLOCKED:
+			PlayerData.collectible_status[collectible_id] = PlayerData.CollectibleStatus.REPORTED
+			unreported_trophy_count += 1
+	if unreported_trophy_count >= 1:
+		_tween.tween_callback(_refresh_trophy_summary.bind(unreported_trophy_count))
+	
 	_tween.tween_callback(func() -> void:
 		%Button.disabled = false)
+
+
+func _refresh_trophy_summary(unreported_trophy_count: int) -> void:
+	var trophy_message: String = "You unlocked %s new trophies!" % [unreported_trophy_count]
+	trophy_message = trophy_message.replace("1 new trophies", "a new trophy")
+	%MoraleSummary.text += "\n\n%s" % [trophy_message]
 
 
 func _refresh_raid_summary() -> void:
 	var raid_dungeon_index: int = DungeonDirector.find_raid_dungeon_index()
 	var dungeon: Dungeon = PlayerData.dungeons[raid_dungeon_index]
 	var raid_days: int = dungeon.raid_days
-	%MoraleSummary.text = "Goblins from {name} will raid in {days} days." \
+	%MoraleSummary.text += "Goblins from {name} will raid in {days} days." \
 			.format([["name", dungeon.name], ["days", dungeon.raid_days]])
 	%MoraleSummary.text = %MoraleSummary.text.replace(" in 1 days", " tomorrow morning")
 	%MoraleSummary.text = %MoraleSummary.text.replace(" will raid in 0 days.", " are raiding!")
@@ -135,4 +150,4 @@ func _refresh_morale_summary() -> void:
 	
 	var index: float = remap(PlayerData.food_record.morale_today, 0.0, 100.0, 0, messages.size() - 1)
 	index += randf_range(-1.5, 1.5)
-	%MoraleSummary.text = messages[clampi(roundi(index), 0, messages.size() - 1)]
+	%MoraleSummary.text += messages[clampi(roundi(index), 0, messages.size() - 1)]

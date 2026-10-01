@@ -116,7 +116,7 @@ layout_mode = 2
 
 [node name="HomeNav" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer" unique_id=1142993029 instance=ExtResource("7_2kr71")]
 layout_mode = 2
-location_index = 4
+location_index = 5
 
 [node name="TipLabel" type="RichTextLabel" parent="ScreenPanel/MarginContainer/Panel" parent_id_path=PackedInt32Array(806142582, 2033304710) index="2" unique_id=59109215]
 unique_name_in_owner = true
