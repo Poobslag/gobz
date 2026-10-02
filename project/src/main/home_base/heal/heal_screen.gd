@@ -24,6 +24,10 @@ var _heal_chat_lines: Array[HealChatLines.HealChatLine]
 var _ui_state_per_heal_group: Dictionary[HealData.HealGroup, Dictionary] = {}
 var _heal_type_by_gob: Dictionary[Gob, HealType] = {}
 
+var _heal_data: HealData:
+	get():
+		return PlayerData.home_base_data.heal_data
+
 @onready var splash_shower: SplashShower = %SplashShower
 
 func _ready() -> void:
@@ -43,7 +47,7 @@ func _ready() -> void:
 
 func initialize() -> void:
 	%ChatShower.clear()
-	if HomeBaseData.heal_data.groups.is_empty():
+	if _heal_data.groups.is_empty():
 		%ChatShower.append_prompt("(There's nobody to heal.)")
 		%ChatShower.hide_face()
 	else:
@@ -63,7 +67,7 @@ func refresh() -> void:
 	%HealWithGoldRow.heal_all = false
 	%ChatPicker.set_disabled(false)
 	
-	var center_group: HealData.HealGroup = HomeBaseData.heal_data.get_center_group()
+	var center_group: HealData.HealGroup = _heal_data.get_center_group()
 	if center_group == null:
 		%ChatPicker.visible = false
 	else:
@@ -83,7 +87,7 @@ func refresh() -> void:
 		%HealWithMedicineRow.heal_all = true
 		%HealWithGoldRow.heal_all = true
 		var hurt_gobs: Array[Gob] = []
-		for heal_group: HealData.HealGroup in HomeBaseData.heal_data.get_groups():
+		for heal_group: HealData.HealGroup in _heal_data.get_groups():
 			if heal_group.is_hurt() and heal_group.get_type() == center_group.get_type():
 				hurt_gobs.append_array(heal_group.gobs)
 		%HealWithMedicineRow.gobs = hurt_gobs
@@ -93,7 +97,7 @@ func refresh() -> void:
 		%HealWithMedicineRow.heal_all = true
 		%HealWithGoldRow.heal_all = true
 		var hurt_gobs: Array[Gob] = []
-		for heal_group: HealData.HealGroup in HomeBaseData.heal_data.get_groups():
+		for heal_group: HealData.HealGroup in _heal_data.get_groups():
 			if heal_group.is_hurt():
 				hurt_gobs.append_array(heal_group.gobs)
 		%HealWithMedicineRow.gobs = hurt_gobs
@@ -122,7 +126,7 @@ func inject_chat_line(line: HealChatLines.HealChatLine) -> void:
 
 
 func _generate_chat_picker_options() -> void:
-	var center_group: HealData.HealGroup = HomeBaseData.heal_data.get_center_group()
+	var center_group: HealData.HealGroup = _heal_data.get_center_group()
 	if center_group == null:
 		return
 	
@@ -131,9 +135,9 @@ func _generate_chat_picker_options() -> void:
 
 
 func _purge_healed_groups() -> void:
-	for i in range(HomeBaseData.heal_data.groups.size() - 1, -1, -1):
-		if not HomeBaseData.heal_data.get_group_at(i).is_hurt():
-			HomeBaseData.heal_data.remove_group_at(i)
+	for i in range(_heal_data.groups.size() - 1, -1, -1):
+		if not _heal_data.get_group_at(i).is_hurt():
+			_heal_data.remove_group_at(i)
 
 
 func _refresh_chat_picker() -> void:
@@ -144,7 +148,7 @@ func _refresh_chat_picker() -> void:
 
 
 func _append_chat_shower_hello() -> void:
-	var center_group: HealData.HealGroup = HomeBaseData.heal_data.get_center_group()
+	var center_group: HealData.HealGroup = _heal_data.get_center_group()
 	if _ui_state_per_heal_group.has(center_group):
 		%ChatShower.set_shown_lines(_ui_state_per_heal_group[center_group]["lines"])
 		%ChatPicker.options = _ui_state_per_heal_group[center_group]["options"]
@@ -168,7 +172,7 @@ func _adjust_multiplier(factor: float) -> void:
 
 
 func _add_heal_morale_event(delta: float) -> void:
-	var center_group: HealData.HealGroup = HomeBaseData.heal_data.get_center_group()
+	var center_group: HealData.HealGroup = _heal_data.get_center_group()
 	if center_group:
 		var event: MoraleEvent = MoraleEvent.new_randomized_event(MoraleEvent.HEAL_VISIT, delta)
 		event.apply_morale_whim()
@@ -178,7 +182,7 @@ func _add_heal_morale_event(delta: float) -> void:
 func _on_chat_picker_option_picked(option_index: int) -> void:
 	%ChatPicker.set_disabled(true)
 	%ChatShower.append_prompt("\"%s\"" % [_heal_chat_lines[option_index].prompt])
-	var center_group: HealData.HealGroup = HomeBaseData.heal_data.get_center_group()
+	var center_group: HealData.HealGroup = _heal_data.get_center_group()
 	var max_value: int = 0
 	for chat_line: HealChatLines.HealChatLine in _heal_chat_lines:
 		max_value = maxi(max_value, chat_line.value)
@@ -209,7 +213,7 @@ func _on_chat_picker_option_picked(option_index: int) -> void:
 
 func _on_heal_navigator_before_move() -> void:
 	%ChatShower.flush_pending_lines()
-	var center_group: HealData.HealGroup = HomeBaseData.heal_data.get_center_group()
+	var center_group: HealData.HealGroup = _heal_data.get_center_group()
 	_ui_state_per_heal_group[center_group] = {
 		"lines": %ChatShower.get_shown_lines(),
 		"options": %ChatPicker.options,
@@ -218,24 +222,24 @@ func _on_heal_navigator_before_move() -> void:
 
 func _on_heal_navigator_move() -> void:
 	# remove any healed goblins...
-	var groups: Array[HealData.HealGroup] = HomeBaseData.heal_data.get_groups()
+	var groups: Array[HealData.HealGroup] = _heal_data.get_groups()
 	for i in range(groups.size() - 1, -1, -1):
 		# ignore groups which are still nearby
-		var dist: int = abs(HomeBaseData.heal_data.group_index - i)
+		var dist: int = abs(_heal_data.group_index - i)
 		dist = mini(dist, groups.size() - dist)
 		if dist >= 2 and groups[i].hurt_count.is_lte(0):
-			HomeBaseData.heal_data.remove_group_at(i)
+			_heal_data.remove_group_at(i)
 	refresh()
 	_append_chat_shower_hello()
 	_generate_chat_picker_options()
 	
-	var center_group: HealData.HealGroup = HomeBaseData.heal_data.get_center_group()
+	var center_group: HealData.HealGroup = _heal_data.get_center_group()
 	if center_group != null and center_group.is_hurt():
 		%ChatPicker.set_disabled(false)
 
 
 func _on_chat_shower_all_messages_shown() -> void:
-	var center_group: HealData.HealGroup = HomeBaseData.heal_data.get_center_group()
+	var center_group: HealData.HealGroup = _heal_data.get_center_group()
 	if center_group != null and center_group.is_hurt():
 		%ChatPicker.set_disabled(false)
 
@@ -268,7 +272,7 @@ func _on_heal_with_gold_row_pressed() -> void:
 	%ChatShower.append_great_response("\"%s\"" % [LinePool.get_random_line(HEAL_GOODBYE_GOLD_PATH)])
 	if PlayerData.heal_multiplier.is_gt(1):
 		_ui_state_per_heal_group.clear()
-	for group: HealData.HealGroup in HomeBaseData.heal_data.groups:
+	for group: HealData.HealGroup in _heal_data.groups:
 		group.refresh()
 	refresh()
 
@@ -287,6 +291,6 @@ func _on_heal_with_medicine_row_pressed() -> void:
 	%ChatShower.append_great_response("\"%s\"" % [LinePool.get_random_line(HEAL_GOODBYE_MEDICINE_PATH)])
 	if PlayerData.heal_multiplier.is_gt(1):
 		_ui_state_per_heal_group.clear()
-	for group: HealData.HealGroup in HomeBaseData.heal_data.groups:
+	for group: HealData.HealGroup in _heal_data.groups:
 		group.refresh()
 	refresh()

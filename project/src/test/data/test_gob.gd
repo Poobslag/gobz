@@ -157,6 +157,7 @@ func test_convert_morale_to_json_and_back() -> void:
 	event.delta = 10.0
 	gob.morale.add_event(event)
 	var result: Dictionary[String, Variant] = gob.to_json_dict()
+	result = TestUtils.json_round_trip(result)
 	gob = new_gob("🔥 3")
 	gob.from_json_dict(result)
 	
@@ -175,6 +176,7 @@ func test_convert_morale_to_json_and_back_wounded() -> void:
 	assert_eq(gob.morale.get_event(0).get_desc(gob), "Set on fire")
 	
 	var result: Dictionary[String, Variant] = gob.to_json_dict()
+	result = TestUtils.json_round_trip(result)
 	gob = new_gob("🔥 3")
 	gob.from_json_dict(result)
 	assert_eq(gob.morale.get_event(0).get_desc(gob), "Set on fire")

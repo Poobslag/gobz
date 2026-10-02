@@ -28,7 +28,7 @@ func _refresh() -> void:
 	for gob: Gob in gobs:
 		if not gob.is_hurt():
 			continue
-		total_cost += HomeBaseData.heal_data.get_gob_heal_cost(gob)
+		total_cost += PlayerData.home_base_data.heal_data.get_gob_heal_cost(gob)
 	cost = Big.new(total_cost)
 	
 	%CostDisplay.amount = CostDisplay.amount_from_cost(cost)

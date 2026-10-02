@@ -180,6 +180,7 @@ static func generate_random_dungeon(blueprint: DungeonBlueprint) -> Dungeon:
 	var dungeon: Dungeon = _generate_dungeon_for_archetype(blueprint)
 	dungeon.composition = blueprint.composition
 	_add_dungeon_rewards(dungeon)
+	dungeon.perform_recon()
 	
 	if Global.verbose_stdout_mode:
 		print("----------")

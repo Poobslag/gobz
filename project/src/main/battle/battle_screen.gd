@@ -45,7 +45,7 @@ func show_results_panel(battle_result: Events.BattleResult) -> void:
 	_show_panel(%ResultsPanel)
 	%ResultsPanel.show_result(battle_result)
 	
-	HomeBaseData.heal_data.reroll_wound_severity(%WatchPanel.gob_battle_status)
+	PlayerData.home_base_data.heal_data.reroll_wound_severity(%WatchPanel.gob_battle_status)
 	MoraleBattleResolver.update_gob_battle_morale(%WatchPanel.gob_battle_status)
 	
 	var dead_gob_ids: Dictionary[int, bool] = {}

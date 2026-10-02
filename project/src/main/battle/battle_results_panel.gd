@@ -172,8 +172,8 @@ func _end_battle() -> void:
 		FoodSystem.feed_goblins()
 		PlayerData.day += 1
 	
-	HomeBaseData.heal_data.mark_groups_dirty()
-	HomeBaseData.party_data.cycle_parties()
+	PlayerData.home_base_data.heal_data.mark_groups_dirty()
+	PlayerData.home_base_data.party_data.cycle_parties()
 	PlayerData.market.mark_costs_dirty()
 	if raided:
 		# being raided results in the ui reflecting that you're at half your previous gold level
