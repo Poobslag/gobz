@@ -102,6 +102,8 @@ func _recruit(recruit_row: HomeBaseRecruitRow) -> void:
 	
 	PlayerData.take_gold(recruit_row.get_cost())
 	PlayerData.army.add_gob(recruit_row.gob)
+	for other_recruit_row: HomeBaseRecruitRow in %Recruits.get_children():
+		other_recruit_row.refresh()
 	
 	match recruit_row.gob.type:
 		Gobs.ANGEL:

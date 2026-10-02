@@ -1,10 +1,13 @@
 class_name DungeonDirector
 
-const DUNGEON_ATTACK_MIN: float = 0.4
+const DUNGEON_ATTACK_MIN: float = 0.6
 const DUNGEON_ATTACK_MAX: float = 1.4
-const RAID_DUNGEON_ATTACK_MIN: float = 1.2
-const RAID_DUNGEON_ATTACK_MAX: float = 1.8
+const RAID_DUNGEON_ATTACK_MIN: float = 1.4
+const RAID_DUNGEON_ATTACK_MAX: float = 2.2
 const RAID_DAYS_START: int = 3
+
+## If we consider an "average goblin" a $20 level 4 goblin with 8 attack, then $100 buys you 40 attack.
+const ATTACK_PER_GOLD: float = 0.4
 
 static func cycle_dungeons() -> void:
 	remove_empty_dungeons()
@@ -58,7 +61,7 @@ static func generate_regular_dungeon() -> Dungeon:
 
 static func regular_dungeon_blueprint() -> DungeonGenerator.DungeonBlueprint:
 	var blueprint: DungeonGenerator.DungeonBlueprint = DungeonGenerator.DungeonBlueprint.new()
-	blueprint.attack = Big.new(PlayerData.army.get_total_attack().to_float() \
+	blueprint.attack = Big.new(_get_expected_player_attack() \
 			* randf_range(DUNGEON_ATTACK_MIN, DUNGEON_ATTACK_MAX))
 	blueprint.gold_factor = DungeonGenerator.RIPOFF_FACTOR
 	var boss_dungeon_index: int = _find_boss_dungeon_index()
@@ -77,7 +80,7 @@ static func regular_dungeon_blueprint() -> DungeonGenerator.DungeonBlueprint:
 
 static func generate_raid_dungeon() -> Dungeon:
 	var blueprint: DungeonGenerator.DungeonBlueprint = regular_dungeon_blueprint()
-	blueprint.attack = Big.new(PlayerData.army.get_total_attack().to_float() \
+	blueprint.attack = Big.new(_get_expected_player_attack() \
 			* randf_range(RAID_DUNGEON_ATTACK_MIN, RAID_DUNGEON_ATTACK_MAX))
 	var dungeon: Dungeon = DungeonGenerator.generate_random_dungeon(blueprint)
 	dungeon.raid_days = RAID_DAYS_START
@@ -124,3 +127,8 @@ static func _find_boss_dungeon_index() -> int:
 static func _find_regular_dungeon_index() -> int:
 	return PlayerData.dungeons.find_custom(func(dungeon: Dungeon) -> bool:
 		return not dungeon.boss and dungeon.raid_days == -1)
+
+
+## When calculating how strong dungeons should be, we convert the player's gold into attack power.
+static func _get_expected_player_attack() -> float:
+	return PlayerData.army.get_total_attack().to_float() + PlayerData.gold.to_float() * ATTACK_PER_GOLD
