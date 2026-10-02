@@ -28,6 +28,7 @@ func _input(event: InputEvent) -> void:
 
 func reset() -> void:
 	PlayerDataTestUtils.prepare_demo()
+	PlayerData.food_record.shown = true
 	for _i in 10:
 		var gob: Gob = PlayerData.army.generate_random_recruit({"count": Big.new(5)})
 		PlayerData.army.add_gob(gob)

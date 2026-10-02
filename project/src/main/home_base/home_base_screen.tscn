@@ -121,16 +121,22 @@ layout_mode = 2
 
 [node name="Recruits" type="VBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1381450448]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 101)
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="RecruitRow" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Recruits" unique_id=616338784 instance=ExtResource("3_45odm")]
 layout_mode = 2
 
-[node name="HBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Recruits" unique_id=616338784 instance=ExtResource("3_45odm")]
+[node name="RecruitRow2" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Recruits" unique_id=961380687 instance=ExtResource("3_45odm")]
+custom_minimum_size = Vector2(888, 35)
 layout_mode = 2
+top_margin = 4.0
 
-[node name="HBoxContainer2" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Recruits" unique_id=961380687 instance=ExtResource("3_45odm")]
+[node name="RecruitRow3" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Recruits" unique_id=1206501521 instance=ExtResource("3_45odm")]
+custom_minimum_size = Vector2(888, 35)
 layout_mode = 2
-
-[node name="HBoxContainer3" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Recruits" unique_id=1206501521 instance=ExtResource("3_45odm")]
-layout_mode = 2
+top_margin = 4.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScreenPanel/MarginContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1327478529]
 custom_minimum_size = Vector2(0, 31)

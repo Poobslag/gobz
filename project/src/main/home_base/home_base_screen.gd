@@ -79,16 +79,21 @@ func _refresh_summary() -> void:
 
 func _refresh_recruits() -> void:
 	while %Recruits.get_child_count() < RECRUIT_COUNT:
-		var recruit_row: HomeBaseRecruitRow = RECRUIT_ROW_SCENE.instantiate()
-		recruit_row.recruit_pressed.connect(_recruit.bind(recruit_row))
-		recruit_row.skip_pressed.connect(_skip.bind(recruit_row))
-		%Recruits.add_child(recruit_row)
-	for recruit_row: HomeBaseRecruitRow in %Recruits.get_children():
-		recruit_row.refresh()
+		_add_recruit_row()
 	
 	%MultiplyButton.disabled = PlayerData.gold.is_lt(Big.mul(PlayerData.home_base_multiplier, 80)) \
 			or PlayerData.home_base_multiplier.is_gt(MAX_MULTIPLIER)
 	%DivideButton.disabled = PlayerData.home_base_multiplier.is_lte(1)
+
+
+func _add_recruit_row() -> HomeBaseRecruitRow:
+	var recruit_row: HomeBaseRecruitRow = RECRUIT_ROW_SCENE.instantiate()
+	recruit_row.recruit_pressed.connect(_recruit.bind(recruit_row))
+	recruit_row.skip_pressed.connect(_skip.bind(recruit_row))
+	recruit_row.top_margin = 0.0 if %Recruits.get_child_count() == 0 else 4.0
+	%Recruits.add_child(recruit_row)
+	recruit_row.refresh()
+	return recruit_row
 
 
 func _recruit(recruit_row: HomeBaseRecruitRow) -> void:
@@ -102,16 +107,25 @@ func _recruit(recruit_row: HomeBaseRecruitRow) -> void:
 		Gobs.ANGEL:
 			PlayerData.increment_stat(PlayerData.ANGEL_GOBLINS_RECRUITED, recruit_row.gob.get_count())
 	
-	%Recruits.remove_child(recruit_row)
-	recruit_row.queue_free()
-	_refresh_recruits()
+	recruit_row.play_recruit_animation()
+	_replace_recruit_row(recruit_row)
 	_refresh_summary()
 
 
 func _skip(recruit_row: HomeBaseRecruitRow) -> void:
-	%Recruits.remove_child(recruit_row)
-	recruit_row.queue_free()
-	_refresh_recruits()
+	recruit_row.play_skip_animation()
+	_replace_recruit_row(recruit_row)
+
+
+## Smoothly animate in a replacement recruit row for a recruit row which is being animated away.[br]
+## [br]
+## To smoothly animate the spacing in the Recruits VBoxContainer, we manually assign margins instead of relying on the
+## separation property.
+func _replace_recruit_row(recruit_row: HomeBaseRecruitRow) -> void:
+	if recruit_row.get_index() == 0:
+		%Recruits.get_child(1).tween_top_margin_to_zero()
+	var replacement_row: HomeBaseRecruitRow = _add_recruit_row()
+	replacement_row.play_appear_animation()
 
 
 func _adjust_multiplier(factor: float) -> void:
