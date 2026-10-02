@@ -3,6 +3,7 @@ extends SaveDataUpgrader
 
 func _init() -> void:
 	current_version = "01a3"
+	add_post_upgrade_method(_post_upgrade_0157, "0157", "01a3")
 	add_upgrade_method(_upgrade_0157, "0157", "01a3")
 	add_upgrade_method(_upgrade_012a, "012A", "0157")
 
@@ -15,6 +16,16 @@ func _upgrade_0157(json_dict: Dictionary[String, Variant], old_key: String) -> v
 			for dungeon_json: Dictionary in json_dict["dungeons"]:
 				dungeon_json["army"] = _replace_army_glob_for_01a3(dungeon_json["army"])
 				dungeon_json["recon_army"] = _replace_army_glob_for_01a3(dungeon_json["recon_army"])
+
+
+func _post_upgrade_0157(json_dict: Dictionary[String, Variant]) -> void:
+	var player_army_glob: String = json_dict["army"]
+	var army_json: Dictionary[String, Variant] = Army.json_dict_from_glob(player_army_glob)
+	var total_goblins: float = 0.0
+	for gob: Dictionary in army_json.get("gobs"):
+		total_goblins += gob.get("back_count", 0.0)
+		total_goblins += 1
+	json_dict["total_goblins"] = total_goblins
 
 
 func _replace_army_glob_for_01a3(army_glob: String) -> String:

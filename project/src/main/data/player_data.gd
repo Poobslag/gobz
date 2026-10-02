@@ -243,6 +243,7 @@ func to_json_dict() -> Dictionary[String, Variant]:
 	var result: Dictionary[String, Variant] = {}
 	result["day"] = day
 	result["army"] = army.to_glob()
+	result["total_goblins"] = army.get_total_goblins().to_float()
 	result["market"] = market.to_json_dict()
 	result["food_record"] = food_record.to_json_dict()
 	result["raid_chance"] = raid_chance

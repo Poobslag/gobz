@@ -16,16 +16,15 @@ var player_data_scene: GDScript = PlayerData.get_script()
 var _upgrader := PlayerSaveUpgrader.new()
 
 func peek_save_summary(other_save_slot: int) -> Dictionary[String, Variant]:
-	var player_data: PlayerData = player_data_scene.new()
-	var error: int = _load_player_data_internal(player_data, other_save_slot)
-	var summary: Dictionary[String, Variant] = {
-		"error": error,
-		"desc": "Day %s: %s goblins, %s⚔" % \
-				[player_data.day, player_data.army.get_total_goblins().to_aa(),
-				player_data.army.get_total_attack().to_aa()]
+	var result: Dictionary[String, Variant] = _load_json_internal(other_save_slot)
+	var desc: String = "Day %s: %s goblins" % [
+			StringUtils.comma_sep(result["json"].get("day", 1)),
+			Big.float_to_aa(result["json"]["total_goblins"]) if result["json"].has("total_goblins") else "??",
+		]
+	return {
+		"error": result.get("error", ""),
+		"desc": desc
 	}
-	player_data.free()
-	return summary
 
 
 func has_data(loaded_save_slot: int) -> bool:
@@ -51,25 +50,35 @@ func _get_save_slot_filename(filename_save_slot: int) -> String:
 	return save_folder.path_join("save%s.json" % [filename_save_slot])
 
 
-func _load_player_data_internal(player_data: PlayerData, loaded_save_slot: int) -> Error:
-	player_data.reset()
+func _load_json_internal(loaded_save_slot: int) -> Dictionary[String, Variant]:
+	var result: Dictionary[String, Variant] = {
+		"error": OK,
+		"json": {} as Dictionary[String, Variant],
+	}
 	var filename: String = _get_save_slot_filename(loaded_save_slot)
 	if not FileAccess.file_exists(filename):
-		return ERR_FILE_NOT_FOUND
-	
+		result["error"] = ERR_FILE_NOT_FOUND
+		return result
 	var s: String = FileAccess.get_file_as_string(filename)
 	var test_json_conv := JSON.new()
-	var result: int = test_json_conv.parse(s)
-	if result != OK:
+	var parse_result: int = test_json_conv.parse(s)
+	if parse_result != OK:
 		push_error("Error in %s: (%s) %s" %
 				[filename, test_json_conv.get_error_line(), test_json_conv.get_error_message()])
-		return ERR_FILE_CORRUPT
-	var save_json: Dictionary[String, Variant] = Utils.typed_json_dict(test_json_conv.data)
-	
-	if _upgrader.needs_upgrade(save_json):
-		_upgrader.upgrade(save_json)
-	
-	player_data.from_json_dict(Utils.typed_json_dict(save_json))
+		result["error"] = ERR_FILE_CORRUPT
+		return result
+	result["json"] = Utils.typed_json_dict(test_json_conv.data)
+	if _upgrader.needs_upgrade(result["json"]):
+		_upgrader.upgrade(result["json"])
+	return result
+
+
+func _load_player_data_internal(player_data: PlayerData, loaded_save_slot: int) -> Error:
+	player_data.reset()
+	var result: Dictionary[String, Variant] = _load_json_internal(loaded_save_slot)
+	if result.get("error") != OK:
+		return result.get("error")
+	player_data.from_json_dict(result["json"])
 	return OK
 
 
