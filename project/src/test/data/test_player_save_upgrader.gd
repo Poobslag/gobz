@@ -21,6 +21,14 @@ func load_player_data(filename: String) -> void:
 	PlayerSave.load_data(0)
 
 
+func peek_save_summary(filename: String) -> Dictionary[String, Variant]:
+	PlayerSave.save_slot = 0
+	DirAccess.copy_absolute(
+			"res://assets/test/data".path_join(filename),
+			TEMP_SAVE_FOLDER.path_join("save0.json"))
+	return PlayerSave.peek_save_summary(0)
+
+
 func test_012a() -> void:
 	load_player_data("save_012a.json")
 	
@@ -34,9 +42,16 @@ func test_012a() -> void:
 
 
 func test_012a_morale() -> void:
+	load_player_data("save_012a.json")
+	
 	# morale didn't exist prior to 012a; assert that it's assigned sensibly (not all zeroes)
 	var total_morale: float = 0.0
 	for gob: Gob in PlayerData.army.gobs:
 		total_morale += gob.morale.value
 	var average_morale: float = total_morale / PlayerData.army.gobs.size()
 	assert_between(average_morale, 25.0, 75.0)
+
+
+func test_012a_peek_save_summary() -> void:
+	var save_summary: Dictionary[String, Variant] = peek_save_summary("save_012a.json")
+	assert_eq(save_summary.get("desc"), "Day 5: 4 goblins")

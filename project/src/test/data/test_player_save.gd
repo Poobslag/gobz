@@ -29,4 +29,4 @@ func test_summarize() -> void:
 	PlayerData.reset()
 	assert_eq(PlayerSave.peek_save_summary(0), {
 		"error": OK,
-		"desc": "Day 67: 2 goblins, 16⚔"})
+		"desc": "Day 67: 2 goblins"})
