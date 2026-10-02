@@ -3,11 +3,15 @@ extends Control
 const PARTY_GOB_ROW_SCENE: PackedScene = preload("res://src/main/home_base/party_gob_row.tscn")
 const PARTY_ROW_SCENE: PackedScene = preload("res://src/main/home_base/party_row.tscn")
 
+var _party_data: PartyData:
+	get():
+		return PlayerData.home_base_data.party_data
+
 func _ready() -> void:
 	%AskAroundButton.pressed.connect(_refresh_party_gob_rows)
 	
-	if HomeBaseData.party_data.partied:
-		%MessageShower.set_message(HomeBaseData.party_data.party_result)
+	if _party_data.partied:
+		%MessageShower.set_message(_party_data.party_result)
 	
 	%MultiplyButton.pressed.connect(_adjust_multiplier.bind(1))
 	%DivideButton.pressed.connect(_adjust_multiplier.bind(-1))
@@ -31,7 +35,7 @@ func _populate_parties() -> void:
 	for child: Node in %Parties.get_children():
 		%Parties.remove_child(child)
 		child.queue_free()
-	for party: Party in HomeBaseData.party_data.get_parties():
+	for party: Party in _party_data.get_parties():
 		var party_row: PartyRow = PARTY_ROW_SCENE.instantiate()
 		party_row.party = party
 		party_row.item_count = Big.ZERO
@@ -61,8 +65,8 @@ func _refresh_party_cost() -> void:
 			cost_factor += 2.0
 		party_row.item_count = Big.new(max(cost_factor, \
 				PlayerData.army.get_total_goblins().to_float() * 0.01 * cost_factor))
-	%MultiplyButton.disabled = PlayerData.party_multiplier >= 2 or HomeBaseData.party_data.partied
-	%DivideButton.disabled = PlayerData.party_multiplier <= 0 or HomeBaseData.party_data.partied
+	%MultiplyButton.disabled = PlayerData.party_multiplier >= 2 or _party_data.partied
+	%DivideButton.disabled = PlayerData.party_multiplier <= 0 or _party_data.partied
 
 
 func _refresh_army_label() -> void:
@@ -101,7 +105,7 @@ func _adjust_multiplier(factor: int) -> void:
 	PlayerData.party_multiplier = clampi(PlayerData.party_multiplier + factor, 0, 2)
 	_refresh_party_cost()
 	
-	if HomeBaseData.party_data.partied:
+	if _party_data.partied:
 		%MultiplyButton.disabled = true
 		%DivideButton.disabled = true
 
@@ -111,14 +115,14 @@ func _on_party_row_pressed(party_row: PartyRow) -> void:
 		return
 	
 	MoraleRelationshipResolver.create_random_relationships(0.08, 0.04)
-	HomeBaseData.party_data.party_result = party_row.party.execute()
-	HomeBaseData.party_data.partied = true
-	HomeBaseData.force_good_morale_message()
-	HomeBaseData.heal_data.mark_groups_dirty()
+	_party_data.party_result = party_row.party.execute()
+	_party_data.partied = true
+	PlayerData.home_base_data.force_good_morale_message()
+	PlayerData.home_base_data.heal_data.mark_groups_dirty()
 	for child: PartyRow in %Parties.get_children():
 		child.refresh()
 	PlayerData.inventory.take_item(party_row.item_type, party_row.item_count)
 	PlayerData.increment_stat(PlayerData.PARTIES_THROWN)
 	Events.party_finished.emit(party_row.party, party_row.item_count)
-	%MessageShower.play_message(HomeBaseData.party_data.party_result)
+	%MessageShower.play_message(_party_data.party_result)
 	refresh()

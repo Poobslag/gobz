@@ -41,7 +41,7 @@ func _process(_delta: float) -> void:
 
 
 func refresh() -> void:
-	if HomeBaseData.party_data.partied:
+	if PlayerData.home_base_data.party_data.partied:
 		%Button.disabled = true
 		%Button.text = "-"
 	else:

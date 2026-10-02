@@ -181,6 +181,13 @@ func get_average_morale_by_type() -> Dictionary[Gobs.Type, float]:
 	return result
 
 
+func get_gobs_by_id() -> Dictionary[int, Gob]:
+	var result: Dictionary[int, Gob] = {}
+	for gob: Gob in gobs:
+		result[gob.id] = gob
+	return result
+
+
 func from_json_dict(json: Dictionary[String, Variant]) -> void:
 	gold = Big.new(json.get("gold", 0))
 	gobs.clear()

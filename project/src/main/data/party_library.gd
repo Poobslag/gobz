@@ -13,21 +13,34 @@ extends Node
 ## 	Devil goblins love murderball, brawls, drinking (they want to grow strong, drinking also shows strength)[br]
 ## 	Devil goblins hate gambling, pranks (not honorable)[br]
 
-const PARTY_SCRIPTS: Array[Script] = [
-	MurderBall,
-	Gambling,
-	Drinking,
-	Hazing,
-	Pranks,
-	Brawl,
-	Festival,
-]
+const MURDERBALL: String = "Murderball"
+const GAMBLING: String = "Gambling"
+const DRINKING: String = "Drinking"
+const HAZING: String = "Hazing"
+const PRANKS: String = "Pranks"
+const BRAWL: String = "Brawl"
+const FESTIVAL: String = "Festival"
+
+const PARTY_SCRIPTS: Dictionary[String, Script] = {
+	MURDERBALL: Murderball,
+	GAMBLING: Gambling,
+	DRINKING: Drinking,
+	HAZING: Hazing,
+	PRANKS: Pranks,
+	BRAWL: Brawl,
+	FESTIVAL: Festival,
+}
 
 var party_queue: Array[Script]
 
 func _ready() -> void:
-	party_queue = PARTY_SCRIPTS.duplicate()
+	party_queue = PARTY_SCRIPTS.values().duplicate()
 	party_queue.shuffle()
+
+
+func initialize_party(type: String) -> Party:
+	var script: Script = PARTY_SCRIPTS[type]
+	return script.new()
 
 
 func get_random_party() -> Party:
@@ -123,15 +136,14 @@ func fix_plural(text: String) -> String:
 	return result
 
 
-class MurderBall extends Party:
+class Murderball extends Party:
 	var _brutality: float = 0.5
 	var _wounded_count: Big = Big.ZERO
 	var _killed_count: Big = Big.ZERO
 	
 	func _init() -> void:
-		super._init("MurderBall")
+		super._init(MURDERBALL)
 		_brutality = randf()
-		name += "-%.1f" % [_brutality]
 		
 		if _brutality < 0.33:
 			prompt = "\"Hey let's all play touch rules Murderball! " \
@@ -181,6 +193,17 @@ class MurderBall extends Party:
 				result += " %s goblins are wounded during the game." % [_wounded_count.to_aa()]
 		result = PartyLibrary.fix_plural(result)
 		return result
+	
+	
+	func to_json_dict() -> Dictionary[String, Variant]:
+		var result: Dictionary[String, Variant] = super.to_json_dict()
+		result["brutality"] = _brutality
+		return result
+
+
+	func from_json_dict(json: Dictionary[String, Variant]) -> void:
+		super.from_json_dict(json)
+		_brutality = json.get("brutality", 0.5)
 
 
 class Gambling extends Party:
@@ -195,7 +218,7 @@ class Gambling extends Party:
 	var _which: int = randi_range(0, 2)
 	
 	func _init() -> void:
-		super._init("Gambling")
+		super._init(GAMBLING)
 		match _which:
 			0:
 				prompt = "\"Anybody wanna play swindler's dice?"
@@ -209,6 +232,7 @@ class Gambling extends Party:
 		
 		likers = [Gobs.FIRE, Gobs.GRASS]
 		dislikers = [Gobs.DEVIL]
+	
 	
 	func execute() -> String:
 		add_headline(MoraleEvent.GAMBLING_WON_BIG).delta(50.0).pct(0.03)
@@ -268,7 +292,7 @@ class Drinking extends Party:
 	var _which: int = randi_range(0, 2)
 	
 	func _init() -> void:
-		super._init("Drinking")
+		super._init(DRINKING)
 		match _which:
 			0:
 				prompt = "\"Let's get drunk and go nuts! We got some extra beer, right?"
@@ -330,7 +354,7 @@ class Hazing extends Party:
 	var _victim_string: String
 	
 	func _init() -> void:
-		super._init("Hazing")
+		super._init(HAZING)
 		
 		# find the victim
 		for i in range(PlayerData.army.gobs.size() - 1, -1, -1):
@@ -437,13 +461,32 @@ class Hazing extends Party:
 			result += " %s goblins are wounded." % [_wounded_count.to_aa()]
 		result = PartyLibrary.fix_plural(result)
 		return result
+	
+	
+	func to_json_dict() -> Dictionary[String, Variant]:
+		var result: Dictionary[String, Variant] = super.to_json_dict()
+		if _victim:
+			result["victim_id"] = _victim.id
+		result["victim_string"] = _victim_string
+		return result
+
+
+	func from_json_dict(json: Dictionary[String, Variant]) -> void:
+		super.from_json_dict(json)
+		if json.has("victim_id"):
+			for gob: Gob in PlayerData.army.gobs:
+				if gob.id == json["victim_id"]:
+					_victim = gob
+					break
+		if json.has("victim_string"):
+			_victim_string = json["victim_string"]
 
 
 class Pranks extends Party:
 	var _which: int = randi_range(0, 2)
 	
 	func _init() -> void:
-		super._init("Pranks")
+		super._init(PRANKS)
 		
 		match _which:
 			0:
@@ -488,7 +531,7 @@ class Brawl extends Party:
 	var _wounded_count: Big = Big.ZERO
 	
 	func _init() -> void:
-		super._init("Brawl")
+		super._init(BRAWL)
 		
 		match _which:
 			0:
@@ -551,7 +594,7 @@ class Festival extends Party:
 	var _which: int = randi_range(0, 2)
 	
 	func _init() -> void:
-		super._init("Festival")
+		super._init(FESTIVAL)
 		
 		match _which:
 			0:

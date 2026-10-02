@@ -37,7 +37,7 @@ func _refresh() -> void:
 	var total_strong_medicine_needed: float = 0.0
 	var total_weak_medicine_needed: float = 0.0
 	for gob: Gob in gobs:
-		if HomeBaseData.heal_data.gob_needs_strong_medicine(gob):
+		if PlayerData.home_base_data.heal_data.gob_needs_strong_medicine(gob):
 			total_strong_medicine_needed += gob.get_hurt_count().to_float()
 		else:
 			total_weak_medicine_needed += gob.get_hurt_count().to_float()

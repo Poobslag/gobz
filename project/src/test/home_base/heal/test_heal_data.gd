@@ -1,9 +1,12 @@
 extends GutTest
 
+var _heal_data: HealData:
+	get():
+		return PlayerData.home_base_data.heal_data
+
 func before_each() -> void:
 	PlayerData.reset()
-	HomeBaseData.reset()
-	HomeBaseData.heal_data.forced_heal_threshold = HealData.HealThreshold.new(2.0, 3, 2, 3)
+	_heal_data.forced_heal_threshold = HealData.HealThreshold.new(2.0, 3, 2, 3)
 
 
 func test_get_heal_threshold_1() -> void:
@@ -47,12 +50,12 @@ func test_remove_group_at_preserves_index() -> void:
 		gob.back_count = Big.new(10)
 		gob.back_wounded = Big.new(5)
 		PlayerData.army.add_gob(gob)
-	HomeBaseData.heal_data.mark_groups_dirty()
+	_heal_data.mark_groups_dirty()
 	
-	assert_eq(HomeBaseData.heal_data.groups.size(), 3)
-	HomeBaseData.heal_data.group_index = 1
-	HomeBaseData.heal_data.remove_group_at(2)
-	assert_eq(HomeBaseData.heal_data.group_index, 1)
+	assert_eq(_heal_data.groups.size(), 3)
+	_heal_data.group_index = 1
+	_heal_data.remove_group_at(2)
+	assert_eq(_heal_data.group_index, 1)
 
 
 func test_remove_group_at_shifts_index() -> void:
@@ -61,12 +64,12 @@ func test_remove_group_at_shifts_index() -> void:
 		gob.back_count = Big.new(10)
 		gob.back_wounded = Big.new(5)
 		PlayerData.army.add_gob(gob)
-	HomeBaseData.heal_data.mark_groups_dirty()
+	_heal_data.mark_groups_dirty()
 	
-	assert_eq(HomeBaseData.heal_data.groups.size(), 3)
-	HomeBaseData.heal_data.group_index = 1
-	HomeBaseData.heal_data.remove_group_at(1)
-	assert_eq(HomeBaseData.heal_data.group_index, 0)
+	assert_eq(_heal_data.groups.size(), 3)
+	_heal_data.group_index = 1
+	_heal_data.remove_group_at(1)
+	assert_eq(_heal_data.group_index, 0)
 
 
 func test_remove_group_at_group_index_0() -> void:
@@ -75,9 +78,9 @@ func test_remove_group_at_group_index_0() -> void:
 		gob.back_count = Big.new(10)
 		gob.back_wounded = Big.new(5)
 		PlayerData.army.add_gob(gob)
-	HomeBaseData.heal_data.mark_groups_dirty()
+	_heal_data.mark_groups_dirty()
 	
-	assert_eq(HomeBaseData.heal_data.groups.size(), 3)
-	HomeBaseData.heal_data.group_index = 0
-	HomeBaseData.heal_data.remove_group_at(0)
-	assert_eq(HomeBaseData.heal_data.group_index, 0)
+	assert_eq(_heal_data.groups.size(), 3)
+	_heal_data.group_index = 0
+	_heal_data.remove_group_at(0)
+	assert_eq(_heal_data.group_index, 0)

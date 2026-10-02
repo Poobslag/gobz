@@ -81,10 +81,10 @@ static func feed_goblins() -> void:
 	# cap excess food
 	for food: Items.Type in [Items.FOOD_BREAD, Items.FOOD_CHICKEN, Items.FOOD_PIZZA, Items.FOOD_RAM]:
 		var food_count: float = PlayerData.inventory.get_count(food).to_float()
-		var max_count: float = 4 * PlayerData.army.get_total_goblins().to_float()
+		var max_count: float = 8 * PlayerData.army.get_total_goblins().to_float()
 		if food_count > max_count:
-			# max stack size is 4x goblin count; lose 25% of the excess
-			food_count = floor(food_count - 0.25 * (food_count - max_count))
+			# max stack size is 8x goblin count; lose 10% of the excess
+			food_count = floor(food_count - 0.10 * (food_count - max_count))
 			PlayerData.inventory.set_count(food, Big.new(food_count))
 	
 	# special cap for unknown food; only angel goblins can carry it

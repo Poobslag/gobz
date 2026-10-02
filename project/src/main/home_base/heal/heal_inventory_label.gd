@@ -3,7 +3,7 @@ extends RichTextLabel
 func refresh() -> void:
 	%InventoryLabel.text = ""
 	
-	var heal_group: HealData.HealGroup = HomeBaseData.heal_data.get_center_group()
+	var heal_group: HealData.HealGroup = PlayerData.home_base_data.heal_data.get_center_group()
 	if heal_group:
 		var summary: Army.ArmySummary = PlayerData.army.get_summary()
 		var goblin_type: Gobs.Type = heal_group.get_type()

@@ -34,7 +34,7 @@ func rerandomize() -> void:
 		var gob: Gob = PlayerData.army.generate_random_recruit({"count": Big.new(100)})
 		PlayerData.army.add_gob(gob)
 	hurt_all_gobs()
-	HomeBaseData.heal_data.mark_groups_dirty()
+	PlayerData.home_base_data.heal_data.mark_groups_dirty()
 	PlayerData.market.mark_costs_dirty()
 	PlayerData.peak_gold = PlayerData.gold
 	
@@ -42,13 +42,13 @@ func rerandomize() -> void:
 	var total_gold_cost: float = 0.0
 	var total_medicine_cost: float = 0.0
 	var total_herb_cost: float = 0.0
-	for group: HealData.HealGroup in HomeBaseData.heal_data.groups:
+	for group: HealData.HealGroup in PlayerData.home_base_data.heal_data.groups:
 		var group_gold_cost: float = 0.0
 		var group_medicine_cost: float = 0.0
 		var group_herb_cost: float = 0.0
 		for gob: Gob in group.gobs:
-			group_gold_cost += HomeBaseData.heal_data.get_gob_heal_cost(gob)
-			if HomeBaseData.heal_data.gob_needs_strong_medicine(gob):
+			group_gold_cost += PlayerData.home_base_data.heal_data.get_gob_heal_cost(gob)
+			if PlayerData.home_base_data.heal_data.gob_needs_strong_medicine(gob):
 				group_medicine_cost += PlayerData.market.get_cost(
 						Items.STRONG_MEDICINE, gob.get_hurt_count()).to_float()
 				group_herb_cost += (

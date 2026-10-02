@@ -57,6 +57,8 @@ var should_log_gold_history: bool = true
 var collectible_status: Dictionary[String, CollectibleStatus] = {}
 var stats: Dictionary[String, Variant] = {}
 
+var home_base_data: HomeBaseData = HomeBaseData.new()
+
 var _next_gob_id: int = 0
 var _prev_total_gold: Big = Big.ZERO
 
@@ -108,6 +110,7 @@ func reset() -> void:
 	morale_digest.reset()
 	dungeons = []
 	dungeon_index = 0
+	market.reset()
 	home_base_multiplier = Big.ONE
 	heal_multiplier = Big.ONE
 	supplies_multiplier = Big.ONE
@@ -116,6 +119,7 @@ func reset() -> void:
 	bosses_defeated = 0
 	collectible_status.clear()
 	stats.clear()
+	home_base_data.reset()
 	_next_gob_id = 0
 	_prev_total_gold = Big.ZERO
 
@@ -140,7 +144,7 @@ func start_new_game() -> void:
 	initialize_starting_inventory()
 	PlayerData.reset_peaks()
 	DungeonDirector.cycle_dungeons()
-	HomeBaseData.party_data.cycle_parties()
+	home_base_data.party_data.cycle_parties()
 
 
 func has_current_dungeon() -> bool:
@@ -239,6 +243,7 @@ func to_json_dict() -> Dictionary[String, Variant]:
 	var result: Dictionary[String, Variant] = {}
 	result["day"] = day
 	result["army"] = army.to_glob()
+	result["market"] = market.to_json_dict()
 	result["food_record"] = food_record.to_json_dict()
 	result["raid_chance"] = raid_chance
 	result["peak_gold"] = peak_gold.to_float()
@@ -265,6 +270,7 @@ func to_json_dict() -> Dictionary[String, Variant]:
 				= Utils.enum_to_snake_case(CollectibleStatus, collectible_status[collectible_id])
 	result["collectible_status"] = collectible_status_json
 	result["stats"] = stats
+	result["home_base_data"] = home_base_data.to_json_dict()
 	return result
 
 
@@ -273,6 +279,8 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 	day = json.get("day", 1)
 	if json.has("army"):
 		army.from_glob(json["army"])
+	if json.has("market"):
+		market.from_json_dict(Utils.typed_json_dict(json["market"]))
 	if json.has("food_record"):
 		food_record.from_json_dict(Utils.typed_json_dict(json["food_record"]))
 	raid_chance = json.get("raid_chance", -0.4)
@@ -300,6 +308,8 @@ func from_json_dict(json: Dictionary[String, Variant]) -> void:
 		collectible_status[collectible_id] \
 				= CollectibleStatus.get(collectible_status_json[collectible_id].to_upper())
 	stats.assign(json.get("stats", {}))
+	if json.has("home_base_data"):
+		home_base_data.from_json_dict(Utils.typed_json_dict(json["home_base_data"]))
 	_next_gob_id = json.get("next_gob_id", 0)
 	
 	if json.has("peak_gold") and json.has("peak_net_worth"):

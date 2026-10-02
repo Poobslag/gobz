@@ -91,7 +91,7 @@ func print_line(line: String) -> void:
 func regenerate_parties() -> void:
 	%RichTextLabel.text = ""
 	
-	for party_script: Script in PartyLibrary.PARTY_SCRIPTS:
+	for party_script: Script in PartyLibrary.PARTY_SCRIPTS.values():
 		for gob: Gob in PlayerData.army.gobs:
 			gob.morale.clear()
 		reset_player_data()
@@ -102,7 +102,6 @@ func regenerate_parties() -> void:
 
 func reset_player_data() -> void:
 	PlayerData.reset()
-	HomeBaseData.reset()
 	for _i in gob_count:
 		var gob: Gob = PlayerData.army.generate_random_recruit({
 				"count": gob_size,

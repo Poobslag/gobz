@@ -36,7 +36,7 @@ var group_index: int
 ## Forces a deterministic heal threshold for unit tests.
 var forced_heal_threshold: HealThreshold = null
 
-var _groups_cache: Array[HealGroup]
+var _groups_cache: Array[HealGroup] = []
 var _groups_dirty: bool = true
 var _greed_factor_by_gob: Dictionary[Gob, float]
 
@@ -120,6 +120,57 @@ func reset() -> void:
 	_greed_factor_by_gob = {}
 
 
+func to_json_dict() -> Dictionary[String, Variant]:
+	var result: Dictionary[String, Variant] = {}
+	result["group_index"] = group_index
+	
+	var groups_json: Array[Dictionary] = []
+	for group: HealGroup in get_groups():
+		var group_json: Dictionary[String, Variant] = {}
+		var gob_ids: Array[int] = []
+		for gob: Gob in group.gobs:
+			gob_ids.append(gob.id)
+		group_json["gob_ids"] = gob_ids
+		group_json["chats"] = group.max_chats_remaining
+		group_json["options"] = group.option_count
+		groups_json.append(group_json)
+	result["groups"] = groups_json
+	
+	var greed_factor_by_gob_json: Dictionary[String, float] = {}
+	for gob: Gob in _greed_factor_by_gob:
+		greed_factor_by_gob_json[str(gob.id)] = _greed_factor_by_gob[gob]
+	result["greed_factor_by_gob"] = greed_factor_by_gob_json
+	return result
+
+
+func from_json_dict(json: Dictionary[String, Variant]) -> void:
+	reset()
+	var player_gobs_by_id: Dictionary[int, Gob] = PlayerData.army.get_gobs_by_id()
+	group_index = json.get("group_index", 0)
+	
+	if json.has("groups"):
+		for group_json: Dictionary in json.get("groups"):
+			var group_gobs: Array[Gob] = []
+			for gob_id: int in group_json.get("gob_ids", []):
+				if player_gobs_by_id.has(gob_id):
+					group_gobs.append(player_gobs_by_id[gob_id])
+			if group_gobs.is_empty():
+				continue
+			var chats: int = group_json.get("chats", 1)
+			var options: int = group_json.get("options", 2)
+			var heal_group: HealGroup = HealGroup.new(group_gobs, chats, options)
+			_groups_cache.append(heal_group)
+		_groups_dirty = false
+	
+	if json.has("greed_factor_by_gob"):
+		var greed_factor_by_gob_json: Dictionary[String, float] = {}
+		greed_factor_by_gob_json.assign(json.get("greed_factor_by_gob"))
+		for gob_id_str: String in greed_factor_by_gob_json:
+			var gob_id: int = int(gob_id_str)
+			if player_gobs_by_id.has(gob_id):
+				_greed_factor_by_gob[player_gobs_by_id[gob_id]] = greed_factor_by_gob_json[gob_id_str]
+
+
 func _calculate_groups() -> Array[HealGroup]:
 	_recalculate_greed_factor()
 	
@@ -159,7 +210,7 @@ func _calculate_groups() -> Array[HealGroup]:
 			var target_group_index: int = i * gob_groups.size() / gobs_of_type.size()
 			gob_groups[target_group_index].append(gobs_of_type[i])
 		for group: Array[Gob] in gob_groups:
-			result.append(HealGroup.new(group, heal_threshold))
+			result.append(HealGroup.new(group, heal_threshold.chats, heal_threshold.options))
 	
 	result.shuffle()
 	return result
@@ -243,15 +294,15 @@ class HealGroup:
 	## A goblin may be hurt without being wounded. A goblin with 7/8 hp is hurt, and can be healed.
 	var hurt_count: Big = Big.ZERO
 	
-	func _init(init_gobs: Array[Gob], heal_threshold: HealThreshold) -> void:
+	func _init(init_gobs: Array[Gob], chats: int, options: int) -> void:
 		gobs = init_gobs
 		
 		refresh()
 		
 		# initialize chats
-		max_chats_remaining = heal_threshold.chats
-		chats_remaining = heal_threshold.chats
-		option_count = heal_threshold.options
+		max_chats_remaining = chats
+		chats_remaining = chats
+		option_count = options
 	
 	func is_hurt() -> bool:
 		return hurt_count.is_gt(0)

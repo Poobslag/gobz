@@ -1,4 +1,4 @@
-extends Node
+class_name HomeBaseData
 
 const MORALE_GOOD_PATH: String = "res://assets/main/home_base/home_base_morale_good.csv"
 const MORALE_BAD_PATH: String = "res://assets/main/home_base/home_base_morale_bad.csv"
@@ -39,3 +39,18 @@ func force_good_morale_message() -> void:
 
 func clear_morale_message() -> void:
 	_morale_message = ""
+
+
+func to_json_dict() -> Dictionary[String, Variant]:
+	var result: Dictionary[String, Variant] = {}
+	result["heal_data"] = heal_data.to_json_dict()
+	result["party_data"] = party_data.to_json_dict()
+	return result
+
+
+func from_json_dict(json: Dictionary[String, Variant]) -> void:
+	reset()
+	if json.has("heal_data"):
+		heal_data.from_json_dict(Utils.typed_json_dict(json["heal_data"]))
+	if json.has("party_data"):
+		party_data.from_json_dict(Utils.typed_json_dict(json["party_data"]))

@@ -74,7 +74,7 @@ func _refresh_summary() -> void:
 	%ArmyLabel.text = "Your army:\n"
 	%ArmyLabel.text += Gobs.army_bbcode(PlayerData.army)
 	%ArmyLabel.text += "\n\n"
-	%ArmyLabel.text += "[i]%s[/i]\n" % [HomeBaseData.get_morale_message()]
+	%ArmyLabel.text += "[i]%s[/i]\n" % [PlayerData.home_base_data.get_morale_message()]
 
 
 func _refresh_recruits() -> void:

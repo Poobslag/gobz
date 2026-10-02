@@ -8,6 +8,7 @@ func test_convert_to_json_and_back() -> void:
 	reward.count = Big.new(123)
 	dungeon.rewards.append(reward)
 	var result: Dictionary[String, Variant] = dungeon.to_json_dict()
+	result = TestUtils.json_round_trip(result)
 	
 	dungeon = Dungeon.new()
 	dungeon.from_json_dict(result)

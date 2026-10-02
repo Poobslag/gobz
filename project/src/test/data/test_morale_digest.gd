@@ -15,6 +15,7 @@ func test_headline_builder() -> void:
 func test_convert_to_json_and_back() -> void:
 	digest.add_headline(MoraleEvent.DAY_OFF).type(Gobs.WATER).pct(0.25)
 	var result: Dictionary[String, Variant] = digest.to_json_dict()
+	result = TestUtils.json_round_trip(result)
 	digest.reset()
 	digest.from_json_dict(result)
 	assert_eq(1, digest.headlines.size())

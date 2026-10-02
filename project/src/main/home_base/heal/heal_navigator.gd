@@ -6,15 +6,19 @@ signal move_left
 signal move_center
 signal move_right
 
+var _heal_data: HealData:
+	get():
+		return PlayerData.home_base_data.heal_data
+
 func _ready() -> void:
 	%LeftButton.pressed.connect(func() -> void:
 		before_move.emit()
-		HomeBaseData.heal_data.move_left()
+		_heal_data.move_left()
 		move_left.emit())
 	
 	%RightButton.pressed.connect(func() -> void:
 		before_move.emit()
-		HomeBaseData.heal_data.move_right()
+		_heal_data.move_right()
 		move_right.emit())
 	
 	%CenterButton.pressed.connect(func() -> void:
@@ -23,7 +27,7 @@ func _ready() -> void:
 
 
 func refresh() -> void:
-	if HomeBaseData.heal_data.get_groups().size() <= 1:
+	if _heal_data.get_groups().size() <= 1:
 		%LeftButton.visible = false
 		%RightButton.visible = false
 		%Spacer3.visible = true
@@ -34,14 +38,14 @@ func refresh() -> void:
 		%Spacer3.visible = false
 		%Spacer4.visible = false
 	
-	if HomeBaseData.heal_data.get_groups().size() >= 2:
-		var left_group: HealData.HealGroup = HomeBaseData.heal_data.get_left_group()
+	if _heal_data.get_groups().size() >= 2:
+		var left_group: HealData.HealGroup = _heal_data.get_left_group()
 		%LeftButton.text = "Visit %s" % [_get_gob_string(left_group)]
 		
-		var right_group: HealData.HealGroup = HomeBaseData.heal_data.get_right_group()
+		var right_group: HealData.HealGroup = _heal_data.get_right_group()
 		%RightButton.text = "Visit %s" % [_get_gob_string(right_group)]
 	
-	var center_group: HealData.HealGroup = HomeBaseData.heal_data.get_center_group()
+	var center_group: HealData.HealGroup = _heal_data.get_center_group()
 	%CenterButton.text = _get_gob_string(center_group)
 
 
