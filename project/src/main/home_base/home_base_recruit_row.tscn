@@ -3,31 +3,46 @@
 [ext_resource type="Script" uid="uid://bm0mtxujpufxu" path="res://src/main/home_base/home_base_recruit_row.gd" id="1_qcwso"]
 [ext_resource type="PackedScene" uid="uid://c6cgf0okpoaq6" path="res://src/main/ui/cost_display.tscn" id="2_xiowh"]
 
-[node name="RecruitRow" type="HBoxContainer" unique_id=616338784]
+[node name="RecruitRow" type="Control" unique_id=969632264]
+custom_minimum_size = Vector2(888, 31)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 888.0
+offset_bottom = 31.0
 script = ExtResource("1_qcwso")
 
-[node name="RecruitButton" type="Button" parent="." unique_id=1082212655]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=616338784]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -31.0
+offset_right = 307.0
+grow_vertical = 0
+
+[node name="RecruitButton" type="Button" parent="HBoxContainer" unique_id=1082212655]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 31)
 layout_mode = 2
 
-[node name="CostDisplay" parent="RecruitButton" unique_id=940055857 instance=ExtResource("2_xiowh")]
+[node name="CostDisplay" parent="HBoxContainer/RecruitButton" unique_id=940055857 instance=ExtResource("2_xiowh")]
 unique_name_in_owner = true
 layout_mode = 1
 disabled = false
 
-[node name="SkipButton" type="Button" parent="." unique_id=778247918]
+[node name="SkipButton" type="Button" parent="HBoxContainer" unique_id=778247918]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "No"
 
-[node name="Description" type="Label" parent="." unique_id=836808848]
+[node name="Description" type="Label" parent="HBoxContainer" unique_id=836808848]
 unique_name_in_owner = true
 layout_mode = 2
 text = "🔥 Kleex,  2⚔"
 
-[node name="MoraleBonus" type="Label" parent="Description" unique_id=1465643776]
+[node name="MoraleBonus" type="Label" parent="HBoxContainer/Description" unique_id=1465643776]
 unique_name_in_owner = true
 visible = false
 layout_mode = 0
