@@ -60,6 +60,10 @@ func _calculate_costs() -> void:
 	for type: Items.Type in _costs:
 		var adjusted_cost: float = _costs[type]
 		adjusted_cost *= randf_range(0.6, 1.4)
+		
+		# grossly inflate prices to unreasonable levels. the player should not rely on the market.
+		adjusted_cost *= 3.0
+		
 		adjusted_cost = Utils.apply_market_whim(adjusted_cost)
 		_costs[type] = adjusted_cost
 
