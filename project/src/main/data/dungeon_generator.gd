@@ -151,19 +151,19 @@ static func _add_dungeon_rewards(dungeon: Dungeon) -> void:
 				type = Items.FOOD_RAM
 			if not reward_dict.has(type):
 				reward_dict[type] = 0.0
-			reward_dict[type] += total_goblins * lerp(0.4, 1.6, luckiness)
+			reward_dict[type] += total_goblins * lerp(0.6, 2.4, luckiness)
 		if randf() < 0.1:
 			# medicine reward
 			var type: Items.Type = [Items.WEAK_MEDICINE, Items.STRONG_MEDICINE].pick_random()
 			if not reward_dict.has(type):
 				reward_dict[type] = 0.0
-			reward_dict[type] += total_goblins * lerp(0.3, 1.2, luckiness)
+			reward_dict[type] += total_goblins * lerp(0.4, 1.6, luckiness)
 		if randf() < 0.1:
 			# herb reward
 			var type: Items.Type = [Items.HERB_1, Items.HERB_2, Items.HERB_3].pick_random()
 			if not reward_dict.has(type):
 				reward_dict[type] = 0.0
-			reward_dict[type] += total_goblins * lerp(0.6, 2.4, luckiness)
+			reward_dict[type] += total_goblins * lerp(0.9, 3.6, luckiness)
 	
 	if not reward_dict.is_empty():
 		for type: Items.Type in reward_dict:
