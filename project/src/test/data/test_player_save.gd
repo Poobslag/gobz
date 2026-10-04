@@ -14,7 +14,7 @@ func after_each() -> void:
 func test_save_and_load_data() -> void:
 	PlayerData.day = 67
 	PlayerSave.save_slot = 0
-	PlayerSave.save_data()
+	PlayerSave.save_data(0, false)
 	PlayerData.reset()
 	PlayerSave.load_data(0)
 	assert_eq(67, PlayerData.day)
@@ -25,7 +25,7 @@ func test_summarize() -> void:
 	PlayerData.army.add_gob(ArmyTestUtils.gob("🔥 3"))
 	PlayerData.army.add_gob(ArmyTestUtils.gob("🔥 3"))
 	PlayerSave.save_slot = 0
-	PlayerSave.save_data()
+	PlayerSave.save_data(0, false)
 	PlayerData.reset()
 	assert_eq(PlayerSave.peek_save_summary(0), {
 		"error": OK,

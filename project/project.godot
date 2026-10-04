@@ -21,10 +21,11 @@ config/icon="res://icon.svg"
 
 Events="*uid://dsm7lb2ogtnoj"
 Global="*uid://b665exkm50ujh"
+Collectibles="*uid://26kyn32pjd0g"
+PartyLibrary="*uid://bq7gh7afqxa7d"
 PlayerData="*uid://e7a2mbx7jndi"
 PlayerSave="*uid://7vpk8bm2ud2r"
-PartyLibrary="*uid://bq7gh7afqxa7d"
-Collectibles="*uid://26kyn32pjd0g"
+SaveIndicator="*uid://db3ys7y5764o7"
 
 [debug]
 

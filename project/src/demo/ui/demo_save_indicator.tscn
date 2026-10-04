@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://cm1nx2rgpeuyw"]
+
+[ext_resource type="Script" uid="uid://dnqi8q73ri4ls" path="res://src/demo/ui/demo_save_indicator.gd" id="1_ysx5k"]
+
+[node name="Demo" type="Control" unique_id=1055475761]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ysx5k")
