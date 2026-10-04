@@ -1,6 +1,7 @@
 extends Node
 
 signal before_save
+signal after_save
 signal after_load
 
 ## In LibreOffice Calc: =LOWER(DEC2HEX(INT((NOW()-DATE(2026,8,1))*24),4))
@@ -14,6 +15,11 @@ var player_data_scene: GDScript = PlayerData.get_script()
 
 ## Provides backwards compatibility with old settings files.
 var _upgrader := PlayerSaveUpgrader.new()
+
+## The currently active thread which is saving the player's data.[br]
+## [br]
+## This thread is assigned when saving begins, and reset to null when saving completes.
+var _save_thread: Thread = null
 
 func peek_save_summary(other_save_slot: int) -> Dictionary[String, Variant]:
 	var result: Dictionary[String, Variant] = _load_json_internal(other_save_slot)
@@ -37,9 +43,24 @@ func load_data(loaded_save_slot: int) -> void:
 	after_load.emit()
 
 
-func save_data(saved_save_slot: int = save_slot) -> void:
-	before_save.emit()
-	_save_player_data_internal(PlayerData, saved_save_slot)
+## Writes the player's in-memory data to a save file.[br]
+## [br]
+## Threading is enabled for performance, but can be disabled with the [param threaded] parameter.
+func save_data(saved_save_slot: int = save_slot, threaded: bool = true) -> void:
+	if _save_thread:
+		# A save thread is already active; don't start another until it's finished.
+		return
+	
+	var use_threaded: bool = threaded and not OS.has_feature("web")
+	if use_threaded:
+		before_save.emit()
+		_save_thread = Thread.new()
+		_save_thread.start(_threaded_write_file.bind(saved_save_slot))
+		# the after_save signal is emitted from within the thread.
+	else:
+		before_save.emit()
+		_save_player_data_internal(PlayerData, saved_save_slot)
+		after_save.emit()
 
 
 func delete_data(saved_save_slot: int = save_slot) -> void:
@@ -90,3 +111,23 @@ func _save_player_data_internal(player_data: PlayerData, saved_save_slot: int) -
 	var data_json: Dictionary[String, Variant] = player_data.to_json_dict()
 	data_json["version"] = PLAYER_DATA_VERSION
 	FileAccess.open(filename, FileAccess.WRITE).store_string(JSON.stringify(data_json, "  "))
+
+
+## Saves the player data.[br]
+## [br]
+## This code is meant to be invoked from within a secondary thread.
+func _threaded_write_file(saved_save_slot: int) -> void:
+	# Warning: A race condition exists where PlayerData could be modified while being converted to JSON. The JSON
+	# conversion takes about 50 ms so threading it avoids dropped frames.
+	_save_player_data_internal(PlayerData, saved_save_slot)
+	_after_threaded_write_file.call_deferred()
+
+
+## Performs cleanup steps after a threaded save operation.[br]
+## [br]
+## This code is meant to be invoked on the main thread, after a threaded save operation completes on a secondary
+## thread.
+func _after_threaded_write_file() -> void:
+	_save_thread.wait_to_finish()
+	_save_thread = null
+	after_save.emit()

@@ -83,6 +83,10 @@ static func recreate_tween(node: Node, tween: Tween) -> Tween:
 	return node.create_tween()
 
 
+static func is_tween_running(tween: Tween) -> bool:
+	return tween != null and tween.is_running()
+
+
 ## Workaround for Godot https://github.com/godotengine/godot-proposals/issues/11598: Add a DirAccess method to remove a
 ## non-empty directory.
 static func remove_dir_recursive(dir: String) -> void:

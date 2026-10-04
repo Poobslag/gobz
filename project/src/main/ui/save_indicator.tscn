@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://db3ys7y5764o7"]
+
+[ext_resource type="Script" uid="uid://bvppunwxpqr1y" path="res://src/main/ui/save_indicator.gd" id="1_qtdpb"]
+
+[node name="SaveIndicator" type="CanvasLayer" unique_id=866442972]
+layer = 10
+script = ExtResource("1_qtdpb")
+
+[node name="Label" type="Label" parent="." unique_id=346625126]
+unique_name_in_owner = true
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -42.0
+offset_top = -45.0
+offset_right = 3.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(23, 27)
+theme_override_font_sizes/font_size = 32
+text = "💾"
+horizontal_alignment = 1
+vertical_alignment = 1
