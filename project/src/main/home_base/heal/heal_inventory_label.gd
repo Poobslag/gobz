@@ -5,7 +5,7 @@ func refresh() -> void:
 	
 	var heal_group: HealData.HealGroup = PlayerData.home_base_data.heal_data.get_center_group()
 	if heal_group:
-		var summary: Army.ArmySummary = PlayerData.army.get_summary()
+		var summary: ArmySummary = PlayerData.army.get_summary()
 		var goblin_type: Gobs.Type = heal_group.get_type()
 		if summary.goblins_by_type[goblin_type].is_gte(1):
 			var type_attack_rating: String = Gobs.attack_rating(

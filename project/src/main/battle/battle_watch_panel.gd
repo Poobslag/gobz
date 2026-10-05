@@ -1,245 +1,199 @@
 extends ColorRect
 
 signal finished
+signal plan_pressed
+signal retreat_pressed
 signal tutorial_pressed
 
 const MORALE_MESSAGE_FREQUENCY: float = 0.2
 const MORALE_GOOD_PATH: String = "res://assets/main/battle/battle_morale_good.csv"
 const MORALE_BAD_PATH: String = "res://assets/main/battle/battle_morale_bad.csv"
 
-var _initial_enemy_orders: Array[Gobs.Type] = []
-var _initial_player_orders: Array[Gobs.Type] = []
-var _player_orders: Array[Gobs.Type] = []
-var _enemy_orders: Array[Gobs.Type] = []
+const EFFECTIVE_MESSAGE_THRESHOLD: float = 2.0
+const INEFFECTIVE_MESSAGE_THRESHOLD: float = 0.66667
 
 var _flavor_budget: float = randf()
+var _battle_state: BattleState
 
+var consecutive_retreat_presses: int = 0
 var gob_battle_status: GobBattleStatus = GobBattleStatus.new()
 
 func _ready() -> void:
+	%Retreat.pressed.connect(_on_retreat_button_pressed)
+	%Plan.pressed.connect(_on_plan_button_pressed)
 	%NextButton.pressed.connect(_on_next_button_pressed)
-	%TutorialButton.pressed.connect(tutorial_pressed.emit)
-	refresh()
+	%TutorialButton.pressed.connect(_on_tutorial_pressed)
 
 
-func play(new_player_orders: Array[Gobs.Type], new_enemy_orders: Array[Gobs.Type]) -> void:
-	if Global.verbose_stdout_mode and PlayerData.has_current_dungeon():
-		print('----------')
-		var datetime: Dictionary = Time.get_datetime_dict_from_system(true)
-		var datetime_str: String = "%04d-%02d-%02d %02d:%02d:%02d" % [
-				datetime["year"], datetime["month"], datetime["day"],
-				datetime["hour"], datetime["minute"], datetime["second"]]
-		print('%s - Start battle, %s vs %s' % [
-				datetime_str,
-				PlayerData.army.get_total_goblins().to_aa(),
-				PlayerData.get_dungeon_army().get_total_goblins().to_aa()])
-	
-	_initial_enemy_orders = new_enemy_orders.duplicate()
-	_initial_player_orders = new_player_orders.duplicate()
-	_player_orders = new_player_orders
-	_enemy_orders = new_enemy_orders
-	
-	_erase_invalid_orders(_player_orders, PlayerData.army)
-	_erase_invalid_orders(_enemy_orders, PlayerData.get_dungeon_army())
-	
+func play(new_battle_state: BattleState) -> void:
+	consecutive_retreat_presses = 0
+	_battle_state = new_battle_state
 	_play_next()
 
 
-func refresh() -> void:
-	%YourGoblins.text = ""
-	%YourGoblins.text += "You:\n"
-	%YourGoblins.text += Gobs.army_bbcode(PlayerData.army)
-	
-	%EnemyGoblins.text = ""
-	if PlayerData.has_current_dungeon():
-		%EnemyGoblins.text += "Bad guys:\n"
-		%EnemyGoblins.text += Gobs.army_bbcode(PlayerData.get_dungeon_army())
-	
-	var next_button_text: String = "Next"
-	if PlayerData.army.is_empty() \
-			or PlayerData.get_dungeon_army().is_empty() \
-			or (_player_orders.is_empty() and _enemy_orders.is_empty()):
-		next_button_text = "Done"
-	%NextButton.text = next_button_text
+func _deployments_label(deployments: Array[BattleState.Deployment]) -> String:
+	return Gobs.count_label(deployments, func(deployment: BattleState.Deployment, tally: Gobs.TypeTally) -> void:
+		tally.add(deployment.gob.type, deployment.count))
 
 
-## Returns a list of which types were killed, and how effective the attacks were.
-func get_kill_report(source_type: Gobs.Type, kills: Array[BattleResolver.Kill]) -> Array[Dictionary]:
-	var kills_by_type: Dictionary[Gobs.Type, Big] = {}
-	for kill: BattleResolver.Kill in kills:
-		if not kills_by_type.has(kill.target.type):
-			kills_by_type[kill.target.type] = Big.ZERO
-		kills_by_type[kill.target.type] = Big.add(kills_by_type[kill.target.type], kill.kill_count)
-	
-	var result: Array[Dictionary] = []
-	for type: Gobs.Type in kills_by_type.keys():
-		result.append({
-			"type": type,
-			"kill_count": kills_by_type[type],
-			"effectiveness": BattleResolver.effectiveness(source_type, type),
-		})
-	result.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
-		return a["kill_count"].is_gt(b["kill_count"]))
-	return result
+func _gobs_label(gobs: Array[Gob]) -> String:
+	return Gobs.count_label(gobs, func(gob: Gob, tally: Gobs.TypeTally) -> void:
+		tally.add(gob.type, gob.get_count()))
 
 
-func _get_wave_count() -> int:
-	return maxi(_player_orders.size(), _enemy_orders.size())
+func _killed_targets_label(kills: Array[BattleResolver.Kill]) -> String:
+	return Gobs.count_label(kills, func(kill: BattleResolver.Kill, tally: Gobs.TypeTally) -> void:
+		if kill.kill_count.is_gt(0):
+			tally.add(kill.target.type, kill.kill_count))
+
+
+func _wounded_targets_label(kills: Array[BattleResolver.Kill]) -> String:
+	return Gobs.count_label(kills, func(kill: BattleResolver.Kill, tally: Gobs.TypeTally) -> void:
+		if kill.wounded_count.is_gt(0):
+			tally.add(kill.target.type, kill.wounded_count))
 
 
 func _play_next() -> void:
 	%SplashArt.flip_h = not %SplashArt.flip_h
 	
-	%YourAttack.text = ""
-	%EnemyAttack.text = ""
+	var player_side_report: SideReport = SideReport.new()
+	player_side_report.player = true
+	var enemy_side_report: SideReport = SideReport.new()
+	enemy_side_report.player = false
 	
-	var player_order_emojis: Array[String] = []
-	for order: Gobs.Type in _player_orders:
-		player_order_emojis.append(Gobs.emoji_from_type(order))
-	if player_order_emojis:
-		%WaveLabel.text = "Orders: %s" % ["→".join(player_order_emojis)]
-	else:
-		%WaveLabel.text = ""
+	var deploy_result: BattleState.DeployResult = _battle_state.deploy_next()
+	player_side_report.deployments = deploy_result.player_deployments
+	enemy_side_report.deployments = deploy_result.enemy_deployments
+	player_side_report.active_gobs_label = _gobs_label(_battle_state.player_side.active_gobs)
+	enemy_side_report.active_gobs_label = _gobs_label(_battle_state.enemy_side.active_gobs)
 	
-	if PlayerData.has_current_dungeon() and Global.verbose_stdout_mode:
-		print('----------')
-		print('player_orders = %s' % [_verbose_order_string(_player_orders)])
-		print('player_army.from_glob(%s)' % [_verbose_army_string(PlayerData.army)])
-		print('enemy_orders = %s' % [_verbose_order_string(_enemy_orders)])
-		print('enemy_army.from_glob(%s)' % [_verbose_army_string(PlayerData.get_dungeon_army())])
+	# show the goblins after new goblins join in, but before any casualties
+	%YourGoblins.text = ""
+	%YourGoblins.text += "Your side:\n"
+	%YourGoblins.text += _battle_side_bbcode(_battle_state.player_side)
 	
-	if PlayerData.has_current_dungeon():
-		var player_army: Army = PlayerData.army
-		var player_army_summary: Army.ArmySummary = player_army.get_summary()
-		var player_type: Gobs.Type
-		var enemy_army: Army = PlayerData.get_dungeon_army()
-		var enemy_army_summary: Army.ArmySummary = enemy_army.get_summary()
-		var enemy_type: Gobs.Type
-		var player_attacks: Array[BattleResolver.Attack] = []
-		var enemy_attacks: Array[BattleResolver.Attack] = []
-		if not _player_orders.is_empty():
-			player_type = _player_orders.pop_front()
-			player_attacks = BattleResolver.plan_attacks(player_army, player_type)
-		if not _enemy_orders.is_empty():
-			enemy_type = _enemy_orders.pop_front()
-			enemy_attacks = BattleResolver.plan_attacks(enemy_army, enemy_type)
-		var player_kills: Array[BattleResolver.Kill] \
-				= BattleResolver.resolve_attacks(player_army, enemy_army, player_attacks, _initial_enemy_orders)
-		var enemy_kills: Array[BattleResolver.Kill] \
-				= BattleResolver.resolve_attacks(enemy_army, player_army, enemy_attacks, _initial_player_orders)
-		var player_level_ups: Array[BattleResolver.LevelUp] = BattleResolver.resolve_level_ups(player_army)
-		var enemy_level_ups: Array[BattleResolver.LevelUp] = BattleResolver.resolve_level_ups(enemy_army)
-		
-		if not player_attacks.is_empty():
-			if player_army_summary.goblins_by_type.get(player_type).is_gt(0):
-				%YourAttack.text += "%s Your %s goblins attack:\n" % \
-						[Gobs.emoji_from_type(player_type),
-							player_army_summary.goblins_by_type.get(player_type).to_aa()]
-			
-			var kill_report: Array[Dictionary] = get_kill_report(player_type, player_kills)
-			var printed_a_message: bool = false
-			for kill_report_gob: Dictionary in kill_report:
-				var kill_strings: Array[String] = []
-				if kill_report_gob["kill_count"].is_gt(0):
-					kill_strings.append("%s×%s killed" %
-							[kill_report_gob["kill_count"].to_aa(),
-									Gobs.emoji_from_type(kill_report_gob["type"])])
-				
-				var new_enemy_army_summary: Army.ArmySummary = enemy_army.get_summary()
-				var wounded_count: Big = Big.sub(
-						new_enemy_army_summary.wounded_by_type.get(kill_report_gob["type"]),
-						enemy_army_summary.wounded_by_type.get(kill_report_gob["type"]))
-				if wounded_count.is_gt(0):
-					kill_strings.append("%s×%s wounded" %
-							[wounded_count.to_aa(),
-									Gobs.emoji_from_type(kill_report_gob["type"])])
-				
-				match kill_report_gob["type"]:
-					Gobs.DEVIL:
-						PlayerData.increment_stat(
-								PlayerData.ENEMY_DEVIL_GOBLINS_KILLED, kill_report_gob["kill_count"])
-				
-				if not kill_strings.is_empty():
-					printed_a_message = true
-					var effectiveness_string: String = ""
-					if kill_report_gob["effectiveness"] > 1.0:
-						effectiveness_string = "Very effective!"
-					elif kill_report_gob["effectiveness"] < 1.0:
-						effectiveness_string = "Not very effective..."
-					%YourAttack.text += "%s. %s\n" % [", ".join(kill_strings), effectiveness_string]
-			if not printed_a_message:
-				%YourAttack.text += "They're trying their best...\n"
-		
-		if not player_level_ups.is_empty():
-			_append_level_up_announcements(%YourAttack, player_level_ups)
-		
-		if not enemy_attacks.is_empty():
-			if enemy_army_summary.goblins_by_type.get(enemy_type).is_gt(0):
-				%EnemyAttack.text += "%s %s enemy goblins attack:\n" \
-						% [Gobs.emoji_from_type(enemy_type),
-							enemy_army_summary.goblins_by_type.get(enemy_type).to_aa()]
-			
-			var kill_report: Array[Dictionary] = get_kill_report(enemy_type, enemy_kills)
-			var printed_a_message: bool = false
-			for kill_report_gob: Dictionary in kill_report:
-				var kill_strings: Array[String] = []
-				if kill_report_gob["kill_count"].is_gt(0):
-					kill_strings.append("%s×%s killed" %
-							[kill_report_gob["kill_count"].to_aa(),
-									Gobs.emoji_from_type(kill_report_gob["type"])])
-				
-				var new_player_army_summary: Army.ArmySummary = player_army.get_summary()
-				var wounded_count: Big = Big.sub(
-						new_player_army_summary.wounded_by_type.get(kill_report_gob["type"]),
-						player_army_summary.wounded_by_type.get(kill_report_gob["type"]))
-				if wounded_count.is_gt(0):
-					kill_strings.append("%s×%s wounded" %
-							[wounded_count.to_aa(),
-									Gobs.emoji_from_type(kill_report_gob["type"])])
-				
-				if not kill_strings.is_empty():
-					printed_a_message = true
-					var effectiveness_string: String = ""
-					if kill_report_gob["effectiveness"] > 1.0:
-						effectiveness_string = "A terrible blow!"
-					elif kill_report_gob["effectiveness"] < 1.0:
-						effectiveness_string = "Not very effective..."
-					%EnemyAttack.text += "%s. %s\n" % [", ".join(kill_strings), effectiveness_string]
-			if not printed_a_message:
-				%EnemyAttack.text += "They're trying their best...\n"
-			
-		if not enemy_level_ups.is_empty():
-			_append_level_up_announcements(%EnemyAttack, enemy_level_ups)
-		
-		
-		for level_up: BattleResolver.LevelUp in player_level_ups:
-			gob_battle_status.record_action(level_up.gob, GobBattleStatus.LEVELED_UP)
-		for enemy_kill: BattleResolver.Kill in enemy_kills:
-			gob_battle_status.record_action(enemy_kill.target, GobBattleStatus.HIT)
-			if enemy_kill.wounded_count.is_gt(0):
-				gob_battle_status.record_action(enemy_kill.target, GobBattleStatus.WOUNDED)
-			if enemy_kill.kill_count.is_gt(0):
-				gob_battle_status.record_action(enemy_kill.target, GobBattleStatus.KILLED)
-		for kill: BattleResolver.Kill in player_kills:
-			gob_battle_status.record_action(kill.source, GobBattleStatus.ENEMY_HIT)
-			if kill.wounded_count.is_gt(0):
-				gob_battle_status.record_action(kill.source, GobBattleStatus.ENEMY_WOUNDED)
-			if kill.kill_count.is_gt(0):
-				gob_battle_status.record_action(kill.source, GobBattleStatus.ENEMY_KILLED)
-				gob_battle_status.enemies_killed = Big.add(gob_battle_status.enemies_killed, kill.kill_count)
-		
-		# handle random morale messages
-		_flavor_budget += MORALE_MESSAGE_FREQUENCY
-		if %YourAttack.get_line_count() <= 6 and randf() < _flavor_budget:
-			_show_random_morale_message(player_kills)
+	%EnemyGoblins.text = ""
+	%EnemyGoblins.text += "Their side:\n"
+	%EnemyGoblins.text += _battle_side_bbcode(_battle_state.enemy_side)
 	
-	%YourAttack.text = %YourAttack.text.strip_edges()
-	%EnemyAttack.text = %EnemyAttack.text.strip_edges()
+	player_side_report.attacks = BattleResolver.plan_player_attacks(_battle_state)
+	enemy_side_report.attacks = BattleResolver.plan_enemy_attacks(_battle_state)
+	player_side_report.kills = BattleResolver.resolve_player_attacks(_battle_state, player_side_report.attacks)
+	enemy_side_report.kills = BattleResolver.resolve_enemy_attacks(_battle_state, enemy_side_report.attacks)
+	player_side_report.level_ups = BattleResolver.resolve_player_level_ups(_battle_state)
+	enemy_side_report.level_ups = BattleResolver.resolve_enemy_level_ups(_battle_state)
+	player_side_report.wiped_out = _battle_state.player_side.is_empty()
+	enemy_side_report.wiped_out = _battle_state.enemy_side.is_empty()
 	
-	_erase_invalid_orders(_player_orders, PlayerData.army)
-	_erase_invalid_orders(_enemy_orders, PlayerData.get_dungeon_army())
+	%YourAttack.text = _format_side_report(player_side_report)
+	%EnemyAttack.text = _format_side_report(enemy_side_report)
 	
-	refresh()
+	# update gob_battle_status
+	for level_up: BattleResolver.LevelUp in player_side_report.level_ups:
+		var level_up_id: int = _battle_state.player_side.get_frag_root_id(level_up.gob)
+		gob_battle_status.record_action(level_up_id, GobBattleStatus.LEVELED_UP)
+	for kill: BattleResolver.Kill in enemy_side_report.kills:
+		var target_id: int = _battle_state.player_side.get_frag_root_id(kill.target)
+		gob_battle_status.record_action(target_id, GobBattleStatus.HIT)
+		if kill.wounded_count.is_gt(0):
+			gob_battle_status.record_action(target_id, GobBattleStatus.WOUNDED)
+		if kill.kill_count.is_gt(0):
+			gob_battle_status.record_action(target_id, GobBattleStatus.KILLED)
+	for kill: BattleResolver.Kill in player_side_report.kills:
+		var source_id: int = _battle_state.player_side.get_frag_root_id(kill.source)
+		gob_battle_status.record_action(source_id, GobBattleStatus.ENEMY_HIT)
+		if kill.wounded_count.is_gt(0):
+			gob_battle_status.record_action(source_id, GobBattleStatus.ENEMY_WOUNDED)
+		if kill.kill_count.is_gt(0):
+			gob_battle_status.record_action(source_id, GobBattleStatus.ENEMY_KILLED)
+			gob_battle_status.enemies_killed = Big.add(gob_battle_status.enemies_killed, kill.kill_count)
+	
+	# update stats
+	for kill: BattleResolver.Kill in player_side_report.kills:
+		if kill.kill_count.is_gt(0):
+			match kill.target.type:
+				Gobs.Type.DEVIL:
+					PlayerData.increment_stat(PlayerData.ENEMY_DEVIL_GOBLINS_KILLED, kill.kill_count)
+	
+	# handle random morale messages
+	_flavor_budget += MORALE_MESSAGE_FREQUENCY
+	if not player_side_report.wiped_out and %YourAttack.get_line_count() <= 6 and randf() < _flavor_budget:
+		_show_random_morale_message(player_side_report.kills)
+	
+	_refresh_buttons()
+
+
+func _format_side_report(side_report: SideReport) -> String:
+	var result: String = ""
+	if not side_report.deployments.is_empty() or not side_report.attacks.is_empty():
+		# Join message: '8×💧 goblins join the fight!'
+		if not side_report.deployments.is_empty():
+			var join_message: String = "%s goblins join the fight!\n" % [_deployments_label(side_report.deployments)]
+			if join_message.begins_with("1×"):
+				join_message = join_message.replace("goblins join", "goblin joins")
+			result += join_message
+		
+		# Attack message: '24×🔥💧 goblins attack:'
+		if not side_report.active_gobs_label.is_empty():
+			var attack_message: String = "%s goblins attack:\n" % [side_report.active_gobs_label]
+			if attack_message.begins_with("1×"):
+				attack_message = attack_message.replace("goblins attack", "goblin attacks")
+			result += attack_message
+		
+		# Kill message: '4×😈 killed, 1x🌳 wounded. Not very effective...'
+		var kill_message: String = ""
+		if not side_report.kills.is_empty():
+			var killed_targets_label: String = _killed_targets_label(side_report.kills)
+			var kill_strings: Array[String] = []
+			if not killed_targets_label.is_empty():
+				kill_strings.append("%s killed" % [killed_targets_label])
+			var wounded_targets_label: String = _wounded_targets_label(side_report.kills)
+			if not wounded_targets_label.is_empty():
+				kill_strings.append("%s wounded" % [wounded_targets_label])
+			if not kill_strings.is_empty():
+				var effectiveness_string: String = ""
+				var average_effectiveness: float = BattleResolver.average_effectiveness(side_report.kills)
+				if average_effectiveness > EFFECTIVE_MESSAGE_THRESHOLD:
+					effectiveness_string = "Very effective!" if side_report.player else "A terrible blow!"
+				if average_effectiveness < INEFFECTIVE_MESSAGE_THRESHOLD:
+					effectiveness_string = "Not very effective..."
+				kill_message = "%s. %s\n" % [", ".join(kill_strings), effectiveness_string]
+		if kill_message.is_empty():
+			kill_message = "They're trying their best...\n"
+		result += kill_message
+		
+		if side_report.wiped_out:
+			result = _append_wiped_out_announcement(result, side_report)
+		
+		# Level up message: '🔥 Kleex grew to level 4!'
+		if not side_report.wiped_out and not side_report.level_ups.is_empty():
+			result = _append_level_up_announcements(result, side_report.level_ups)
+	return result.strip_edges()
+
+
+static func _battle_side_bbcode(battle_side: BattleState.BattleSide) -> String:
+	var active_summary: ArmySummary = battle_side.get_active_summary()
+	var result: String = ""
+	result += "[b]%s of %s goblins fighting[/b]\n" % \
+			[active_summary.total_goblins.to_aa(), battle_side.get_total_goblins().to_aa()]
+	for goblin_type: Gobs.Type in Gobs.Type.values():
+		if active_summary.goblins_by_type[goblin_type].is_gte(1):
+			var type_attack_rating: String = Gobs.attack_rating(
+					active_summary.attack_by_type[goblin_type].to_float() \
+							/ active_summary.goblins_by_type[goblin_type].to_float())
+			var wounded_string: String = ""
+			if active_summary.wounded_by_type[goblin_type].is_gte(1):
+				var wounded_percent: float = 100 * active_summary.wounded_by_type[goblin_type].to_float() \
+						/ active_summary.goblins_by_type[goblin_type].to_float()
+				wounded_percent = max(wounded_percent, 1)
+				wounded_string = "(%d%% 🩹) " % [wounded_percent]
+			result += "%s: %s goblins %s%s\n" % [
+					Gobs.EMOJIS_BY_GOBLIN_TYPE[goblin_type],
+					active_summary.goblins_by_type[goblin_type].to_aa(),
+					wounded_string,
+					type_attack_rating]
+	
+	return result.strip_edges()
 
 
 func _show_random_morale_message(player_kills: Array[BattleResolver.Kill]) -> void:
@@ -258,21 +212,22 @@ func _show_random_morale_message(player_kills: Array[BattleResolver.Kill]) -> vo
 	%YourAttack.text += "[i]%s[/i]\n" % [random_line.format([["name", random_kill_name]])]
 
 
-func _append_level_up_announcements(text_area: RichTextLabel, level_ups: Array[BattleResolver.LevelUp]) -> void:
+func _append_level_up_announcements(str_in: String, level_ups: Array[BattleResolver.LevelUp]) -> String:
+	var str_out: String = str_in
 	var announcement_count: int = 0
 	var other_goblin_count: Big = Big.ZERO
 	for level_up: BattleResolver.LevelUp in level_ups:
 		if announcement_count < 2:
 			if level_up.gob.get_count().is_eq(1):
-				text_area.text += "%s %s grew to level %s!\n" % \
+				str_out += "%s %s grew to level %s!\n" % \
 						[Gobs.emoji_from_type(level_up.gob.type), level_up.gob.name, \
 						level_up.gob.level]
 			elif level_up.gob.get_count().is_eq(2):
-				text_area.text += "%s %s + 1 other grew to level %s!\n" % \
+				str_out += "%s %s + 1 other grew to level %s!\n" % \
 						[Gobs.emoji_from_type(level_up.gob.type), level_up.gob.name, \
 						level_up.gob.level]
 			else:
-				text_area.text += "%s %s + %s others grew to level %s!\n" % \
+				str_out += "%s %s + %s others grew to level %s!\n" % \
 						[Gobs.emoji_from_type(level_up.gob.type), level_up.gob.name, \
 						Big.sub(level_up.gob.get_count(), 1).to_aa(), level_up.gob.level]
 			announcement_count += 1
@@ -280,39 +235,87 @@ func _append_level_up_announcements(text_area: RichTextLabel, level_ups: Array[B
 			other_goblin_count = Big.add(other_goblin_count, level_up.gob.get_count())
 	if other_goblin_count.is_gte(1):
 		if other_goblin_count.is_eq(1):
-			text_area.text += "1 other goblin leveled up!\n"
+			str_out += "1 other goblin leveled up!\n"
 		else:
-			text_area.text += "%s other goblins leveled up!\n" % \
+			str_out += "%s other goblins leveled up!\n" % \
 					[other_goblin_count.to_aa()]
+	return str_out
 
 
-func _erase_invalid_orders(orders: Array[Gobs.Type], army: Army) -> void:
-	var summary: Army.ArmySummary = army.get_summary()
+func _append_wiped_out_announcement(str_in: String, side_report: SideReport) -> String:
+	var str_out: String = str_in
+	if side_report.player:
+		str_out += "[b]Your goblins were wiped out![/b]\n"
+	else:
+		str_out += "[b]The enemy was wiped out![/b]"
+	return str_out
+
+
+func _refresh_buttons() -> void:
+	# refresh query label
+	%QueryLabel.text = "Really retreat?" if consecutive_retreat_presses >= 1 else ""
 	
-	for order_index: int in range(orders.size() - 1, -1, -1):
-		if summary.goblins_by_type[orders[order_index]].is_eq(0):
-			orders.remove_at(order_index)
+	# refresh retreat button
+	%Retreat.text = "Retreat"
+	%Retreat.disabled = false
+	if _battle_state.enemy_side.is_empty():
+		# victory; can't retreat
+		pass
+	elif PlayerData.army.is_empty():
+		%Retreat.text = "Defeat"
+	elif PlayerData.has_current_dungeon() and PlayerData.get_dungeon().is_raiding():
+		%Retreat.text = "No escape!"
+		%Retreat.disabled = true
+	
+	# refresh plan button
+	%Plan.disabled = false
+	if _battle_state.enemy_side.is_empty():
+		# victory; can't plan
+		pass
+	elif _battle_state.player_side.active_gobs.size() == PlayerData.army.gobs.size():
+		%Plan.disabled = true
+	
+	# refresh next button
+	%NextButton.text = "Next"
+	%NextButton.disabled = false
+	if _battle_state.enemy_side.is_empty():
+		%NextButton.text = "Done"
+	elif _battle_state.player_side.is_empty():
+		%NextButton.disabled = true
 
 
 func _on_next_button_pressed() -> void:
-	if PlayerData.army.is_empty() \
-			or PlayerData.get_dungeon_army().is_empty() \
-			or (_player_orders.is_empty() and _enemy_orders.is_empty()):
+	consecutive_retreat_presses = 0
+	if _battle_state.player_side.is_empty() or _battle_state.enemy_side.is_empty():
 		finished.emit()
 	else:
 		_play_next()
 
 
-static func _verbose_army_string(army: Army) -> String:
-	var glob: String = army.to_glob()
-	var glob_split: Array[String] = []
-	for i in range(0, glob.length(), 80):
-		glob_split.append(glob.substr(i, 80))
-	return '"%s"' % ['"\n\t\t+ "'.join(glob_split)]
+func _on_tutorial_pressed() -> void:
+	consecutive_retreat_presses = 0
+	tutorial_pressed.emit()
+	_refresh_buttons()
 
 
-static func _verbose_order_string(orders: Array[Gobs.Type]) -> String:
-	var order_strings: Array[String] = []
-	for order: Gobs.Type in orders:
-		order_strings.append("Gobs.%s" % [Utils.enum_to_snake_case(Gobs.Type, order).to_upper()])
-	return "[%s]" % [", ".join(order_strings)]
+func _on_retreat_button_pressed() -> void:
+	consecutive_retreat_presses += 1
+	if consecutive_retreat_presses >= 2 or PlayerData.army.is_empty():
+		retreat_pressed.emit()
+	_refresh_buttons()
+
+
+func _on_plan_button_pressed() -> void:
+	consecutive_retreat_presses = 0
+	plan_pressed.emit()
+	_refresh_buttons()
+
+
+class SideReport:
+	var player: bool = false
+	var deployments: Array[BattleState.Deployment]
+	var attacks: Array[BattleResolver.Attack]
+	var active_gobs_label: String
+	var kills: Array[BattleResolver.Kill]
+	var level_ups: Array[BattleResolver.LevelUp]
+	var wiped_out: bool = false

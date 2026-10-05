@@ -8,16 +8,18 @@ const DEVIL: Gobs.Type = Gobs.Type.DEVIL
 
 var player_army: Army = Army.new()
 var enemy_army: Army = Army.new()
-var player_orders: Array[Gobs.Type] = [FIRE, WATER, GRASS, ANGEL, DEVIL]
-var enemy_orders: Array[Gobs.Type] = [FIRE, WATER, GRASS, ANGEL, DEVIL]
+var player_orders: Array[Gobs.Type] = []
+var enemy_orders: Array[Gobs.Type] = []
+var attack_type: Gobs.Type = FIRE
 var vulnerable_types: Array[Gobs.Type] = [FIRE, WATER, GRASS, ANGEL, DEVIL]
 var battle_result: Dictionary[String, Variant] = {}
 
 func before_each() -> void:
 	player_army = Army.new()
 	enemy_army = Army.new()
-	player_orders = [FIRE, WATER, GRASS, ANGEL, DEVIL]
-	enemy_orders = [FIRE, WATER, GRASS, ANGEL, DEVIL]
+	player_orders.clear()
+	enemy_orders.clear()
+	attack_type = FIRE
 	vulnerable_types = [FIRE, WATER, GRASS, ANGEL, DEVIL]
 	battle_result.clear()
 
@@ -107,8 +109,7 @@ func test_resolve_level_ups() -> void:
 	player_army.add_gob(gob("🔥 3"))
 	player_army.gobs[0].xp = 11
 	
-	var battle_state: BattleState = BattleState.from_armies(player_army, enemy_army, player_orders, enemy_orders)
-	BattleResolver.resolve_player_level_ups(battle_state)
+	BattleResolverOld.resolve_level_ups(player_army)
 	
 	assert_eq(player_army.gobs[0].level, 4)
 	assert_eq(player_army.gobs[0].xp, 3)
@@ -125,6 +126,7 @@ func test_wound_and_kill() -> void:
 
 
 func test_angels_wound() -> void:
+	attack_type = Gobs.ANGEL
 	player_army.add_gob(gob("🕊 5"))
 	player_army.gobs[0].back_count = Big.new(99)
 	enemy_army.add_gob(gob("🕊 5"))
@@ -136,6 +138,7 @@ func test_angels_wound() -> void:
 
 
 func test_devils_kill() -> void:
+	attack_type = Gobs.DEVIL
 	player_army.add_gob(gob("😈 5"))
 	player_army.gobs[0].back_count = Big.new(99)
 	enemy_army.add_gob(gob("😈 5"))
@@ -261,7 +264,7 @@ func test_softlock() -> void:
 	assert_eq(enemy_army.get_total_goblins().to_float(), 16_818_897.0)
 	
 	plan_and_resolve_attacks()
-	assert_between(enemy_army.get_total_goblins().to_float(), 0.0, 500_000.0)
+	assert_eq(enemy_army.get_total_goblins().to_float(), 11_639_432.0)
 
 
 ## It used to be possible to attack 101 goblins, kill 5 of them and wound 100 of them, leaving the Gob in an
@@ -280,74 +283,18 @@ func test_too_many_wounded() -> void:
 	assert_eq(result["hits_taken"].to_int(), 111)
 
 
-func test_plan_attacks_0() -> void:
-	assert_total_attackers(0.0, 0.01)
-
-
-func test_plan_attacks_1() -> void:
-	player_army.add_gob(gob("🔥 3"))
-	
-	assert_total_attackers(1.0, 0.01)
-
-
-func test_plan_attacks_2() -> void:
-	player_army.add_gob(gob("🔥 3"))
-	player_army.add_gob(gob("🔥 3"))
-	
-	assert_total_attackers(1.0, 0.01)
-
-
-func test_plan_attacks_40() -> void:
-	for _i in 10:
-		player_army.add_gob(gob("🔥 3"))
-		player_army.gobs.back().back_count = Big.new(3)
-	
-	assert_total_attackers(14.0, 0.01)
-
-
-func test_plan_attacks_no_empty_attacks() -> void:
-	for _i in 10:
-		player_army.add_gob(gob("🔥 3"))
-		player_army.gobs.back().back_count = Big.new(_i % 3)
-	var battle_state: BattleState = BattleState.from_armies(player_army, enemy_army, player_orders, enemy_orders)
-	battle_state.deploy_all()
-	var attacks: Array[BattleResolver.Attack] = BattleResolver.plan_player_attacks(battle_state)
-	
-	for next_attack: BattleResolver.Attack in attacks:
-		assert_ne(next_attack.count.to_int(), 0)
-
-
-func test_plan_attacks_huge() -> void:
-	player_army.add_gob(gob("🔥 3"))
-	player_army.gobs.back().back_count = Big.new(9.99e30)
-	player_army.add_gob(gob("🔥 3"))
-	player_army.add_gob(gob("🔥 3"))
-	
-	assert_total_attackers(3.33e30, 0.01e30)
-
-
-func assert_total_attackers(expected: float, error_interval: float) -> void:
-	var battle_state: BattleState = BattleState.from_armies(player_army, enemy_army, player_orders, enemy_orders)
-	battle_state.deploy_all()
-	var attacks: Array[BattleResolver.Attack] = BattleResolver.plan_player_attacks(battle_state)
-	var total_attackers: float = 0.0
-	for next_attack: BattleResolver.Attack in attacks:
-		total_attackers += next_attack.count.to_float()
-	assert_almost_eq(total_attackers, expected, error_interval)
-
-
 func resolve_attack(source_index: int, target_index: int, wounded: bool, murder_mode: bool) \
 		-> Dictionary[String, Variant]:
-	var new_attack: BattleResolver.Attack = attack(player_army, source_index, wounded)
-	return BattleResolver.resolve_attack(new_attack, enemy_army.gobs[target_index], new_attack.count, murder_mode)
+	var new_attack: BattleResolverOld.Attack = attack(player_army, source_index, wounded)
+	return BattleResolverOld.resolve_attack(new_attack, enemy_army.gobs[target_index], new_attack.count, murder_mode)
 
 
 func gob(s: String) -> Gob:
 	return ArmyTestUtils.gob(s)
 
 
-func attack(source: Army, source_index: int, wounded: bool) -> BattleResolver.Attack:
-	var new_attack: BattleResolver.Attack = BattleResolver.Attack.new()
+func attack(source: Army, source_index: int, wounded: bool) -> BattleResolverOld.Attack:
+	var new_attack: BattleResolverOld.Attack = BattleResolverOld.Attack.new()
 	new_attack.source = source.gobs[source_index]
 	new_attack.count = new_attack.source.get_wounded_count() if wounded else new_attack.source.get_healthy_count()
 	new_attack.wounded = wounded
@@ -355,16 +302,14 @@ func attack(source: Army, source_index: int, wounded: bool) -> BattleResolver.At
 
 
 func plan_and_resolve_attacks() -> void:
-	var battle_state: BattleState = BattleState.from_armies(player_army, enemy_army, player_orders, enemy_orders)
-	battle_state.deploy_all()
-	battle_state.attack_scale = 1.0
-	battle_result["attacks"] = BattleResolver.plan_player_attacks(battle_state)
-	battle_result["kills"] = BattleResolver.resolve_player_attacks(battle_state, battle_result["attacks"])
+	battle_result["attacks"] = BattleResolverOld.plan_attacks(player_army, attack_type)
+	battle_result["kills"] = BattleResolverOld.resolve_attacks(
+			player_army, enemy_army, battle_result["attacks"], vulnerable_types)
 
 
 func assert_kills(expected_kill_strings: Array[String]) -> void:
 	var got_kill_strings: Array[String] = []
-	for kill: BattleResolver.Kill in battle_result["kills"]:
+	for kill: BattleResolverOld.Kill in battle_result["kills"]:
 		var source_string: String = "%s %s" % [Gobs.emoji_from_type(kill.source.type), kill.source.level]
 		var target_string: String = "%s %s" % [Gobs.emoji_from_type(kill.target.type), kill.target.level]
 		var kw_string: String = "%s/%s" % [kill.kill_count.to_aa(), kill.target.get_wounded_count().to_aa()]

@@ -72,7 +72,7 @@ func _refresh_party_cost() -> void:
 func _refresh_army_label() -> void:
 	var new_text: String = ""
 	new_text += "Your army:\n"
-	var summary: Army.ArmySummary = PlayerData.army.get_summary()
+	var summary: ArmySummary = PlayerData.army.get_summary()
 	var morale_by_type: Dictionary[Gobs.Type, float] = PlayerData.army.get_average_morale_by_type()
 	if summary.total_goblins.is_eq(0):
 		new_text += "[b]%s goblins[/b]\n" % \

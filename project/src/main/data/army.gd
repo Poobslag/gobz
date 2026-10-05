@@ -129,37 +129,7 @@ func generate_random_recruit(data: Dictionary[String, Variant] = {}) -> Gob:
 
 
 func get_summary() -> ArmySummary:
-	var result: ArmySummary = ArmySummary.new()
-	
-	var total_goblins: float = 0.0
-	var total_attack: float = 0.0
-	var goblins_by_type: Dictionary[Gobs.Type, float] = {}
-	var wounded_by_type: Dictionary[Gobs.Type, float] = {}
-	var attack_by_type: Dictionary[Gobs.Type, float] = {}
-	var total_gold: float = 0.0
-	
-	for goblin_type: Gobs.Type in Gobs.Type.values():
-		goblins_by_type[goblin_type] = 0.0
-		attack_by_type[goblin_type] = 0.0
-		wounded_by_type[goblin_type] = 0.0
-	
-	for gob: Gob in gobs:
-		goblins_by_type[gob.type] += gob.get_count().to_float()
-		total_goblins += gob.get_count().to_float()
-		attack_by_type[gob.type] += gob.get_total_attack().to_float()
-		wounded_by_type[gob.type] += gob.get_wounded_count().to_float()
-		total_attack += gob.get_total_attack().to_float()
-		total_gold += gob.gold * gob.get_count().to_float()
-	
-	result.total_goblins = Big.new(total_goblins)
-	result.total_attack = Big.new(total_attack)
-	for type: Gobs.Type in Gobs.Type.values():
-		result.goblins_by_type[type] = Big.new(goblins_by_type[type])
-		result.wounded_by_type[type] = Big.new(wounded_by_type[type])
-		result.attack_by_type[type] = Big.new(attack_by_type[type])
-	result.total_gold = Big.new(total_gold)
-	
-	return result
+	return ArmySummary.from_gobs(gobs)
 
 
 func get_average_morale() -> float:
@@ -248,6 +218,25 @@ func has_splittable_gobs() -> bool:
 	return result
 
 
+func merge_gob(gob_a: Gob, gob_b: Gob) -> Gob:
+	var absorbed_gob: Gob
+	var survivor_gob: Gob = Gobs.merge_gob(gob_a, gob_b)
+	if survivor_gob == null:
+		# attempting to merge a gob with itself
+		pass
+	else:
+		absorbed_gob = gob_a if survivor_gob == gob_b else gob_b
+		remove_gob(absorbed_gob)
+	return survivor_gob
+
+
+func split_gob(gob: Gob, requested_count: Big) -> Gob:
+	var new_gob: Gob = Gobs.split_gob(gob, requested_count)
+	if new_gob != null:
+		add_gob(new_gob)
+	return new_gob
+
+
 ## Grows the army by splitting oversized gobs into smaller ones.[br]
 ## [br]
 ## The target gob size is the army's total goblin count divided by MIN_GOB_COUNT. Any gob larger than the target size
@@ -325,22 +314,3 @@ static func glob_from_json_dict(json: Dictionary[String, Variant]) -> String:
 	var json_bytes: PackedByteArray = json_str.to_utf8_buffer()
 	var compressed_bytes: PackedByteArray = json_bytes.compress(FileAccess.COMPRESSION_GZIP)
 	return Marshalls.raw_to_base64(compressed_bytes)
-
-
-class ArmySummary:
-	var total_goblins: Big = Big.ZERO
-	var total_attack: Big = Big.ZERO
-	var goblins_by_type: Dictionary[Gobs.Type, Big] = {}
-	var wounded_by_type: Dictionary[Gobs.Type, Big] = {}
-	var attack_by_type: Dictionary[Gobs.Type, Big] = {}
-	var total_gold: Big = Big.ZERO
-	
-	func _to_string() -> String:
-		return str({
-			"total_goblins": total_goblins,
-			"total_attack": total_attack,
-			"goblins_by_type": goblins_by_type,
-			"wounded_by_type": wounded_by_type,
-			"attack_by_type": attack_by_type,
-			"total_gold": total_gold,
-		})
