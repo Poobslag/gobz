@@ -252,9 +252,7 @@ fi
 
 # redundant 'range(0, x)' call
 RESULT=$(grep -R -nP '[^_a-z]range\(0,\s*[^,)]*\)' --include="*.gd" project/src \
-  | grep -v "dungeon\.gd:.*, 2):" \
-  | grep -v "battle_watch_panel\.gd:.*, 80):" \
-  | grep -v "map_demo\.gd:.*, 3):" \
+  | grep -v -P ", \d+\):" \
   )
 if [ -n "$RESULT" ]; then
   echo ""

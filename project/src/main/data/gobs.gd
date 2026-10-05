@@ -121,3 +121,52 @@ static func morale_bbcode(morale: float, bold: bool = false) -> String:
 	else:
 		result = "%s %s (%s)" % [emoji, text, percent]
 	return result
+
+
+static func split_gob(source_gob: Gob, requested_count: Big) -> Gob:
+	if source_gob.get_count().is_lte(1):
+		return null
+	
+	var old_count: float = source_gob.get_count().to_float()
+	var split_count: float = clamp(requested_count.to_float(), 1, source_gob.get_count().to_float() - 1)
+	var back_total: float = source_gob.back_count.to_float()
+	var back_wounded: float = source_gob.back_wounded.to_float()
+	
+	var moved_wounded: float = Utils.stochastic_roundf(split_count * back_wounded / back_total)
+	
+	var new_gob: Gob = source_gob.duplicate()
+	new_gob.id = PlayerData.take_next_gob_id()
+	new_gob.back_count = Big.new(split_count - 1)
+	if moved_wounded >= split_count:
+		new_gob.front_hp = maxi(1, floor(WOUNDED_HP_THRESHOLD * new_gob.hp_max))
+		new_gob.back_wounded = Big.new(moved_wounded - 1)
+	else:
+		new_gob.front_hp = new_gob.hp_max
+		new_gob.back_wounded = Big.new(moved_wounded)
+	
+	source_gob.back_count = Big.new(old_count - 1 - split_count)
+	source_gob.back_wounded = Big.new(back_wounded - moved_wounded)
+	return new_gob
+
+
+static func merge_gob(gob_a: Gob, gob_b: Gob) -> Gob:
+	if gob_a == gob_b:
+		push_error("Can't merge a gob with itself")
+		return null
+	
+	var survivor_gob: Gob = gob_a
+	if gob_a.level != gob_b.level:
+		survivor_gob = gob_a if gob_a.level > gob_b.level else gob_b
+	elif gob_a.attack != gob_b.attack:
+		survivor_gob = gob_a if gob_a.attack > gob_b.attack else gob_b
+	elif gob_a.hp_max != gob_b.hp_max:
+		survivor_gob = gob_a if gob_a.hp_max > gob_b.hp_max else gob_b
+	elif gob_a.xp != gob_b.xp:
+		survivor_gob = gob_a if gob_a.xp > gob_b.xp else gob_b
+	var absorbed_gob: Gob = gob_a if survivor_gob == gob_b else gob_b
+	
+	survivor_gob.back_count = Big.add(survivor_gob.back_count, absorbed_gob.get_count())
+	survivor_gob.back_wounded = Big.add(survivor_gob.back_wounded, absorbed_gob.get_wounded_count())
+	survivor_gob.wound_severity = maxf(survivor_gob.wound_severity, absorbed_gob.wound_severity)
+	
+	return survivor_gob

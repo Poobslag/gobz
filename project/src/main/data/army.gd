@@ -1,5 +1,13 @@
 class_name Army
 
+## When there are too many gobs in an army, we merge the smallest gobs, compressing the army in a lossy way.
+const MAX_GOB_COUNT: int = 500
+const MERGE_FACTOR: float = 0.7
+
+## When there are too few gobs in an army, we split the smallest gobs, growing the army.
+const MIN_GOB_COUNT: int = 50
+const SPLIT_FACTOR: float = 0.3
+
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var gobs: Array[Gob] = []
 
@@ -186,6 +194,78 @@ func get_gobs_by_id() -> Dictionary[int, Gob]:
 	for gob: Gob in gobs:
 		result[gob.id] = gob
 	return result
+
+
+## Shrinks the army by merging the smallest gobs in pairs.[br]
+## [br]
+## Pairs are same-typed gobs of similar level and strength. The weaker gob of each pair is absorbed into the stronger
+## one, so this is lossy. Gobs of different types are never merged.
+func merge_small_gobs() -> void:
+	var result: Array[Gob] = []
+	var sorted_gobs: Array[Gob] = gobs.duplicate()
+	
+	# sort the gobs by size, and spit the largest gobs directly to result
+	sorted_gobs.shuffle()
+	sorted_gobs.sort_custom(func(a: Gob, b: Gob) -> bool:
+		return a.back_count.to_float() < b.back_count.to_float())
+	var paired_gob_count: int = floori(MERGE_FACTOR * sorted_gobs.size() * 0.5) * 2
+	result.append_array(sorted_gobs.slice(paired_gob_count))
+	sorted_gobs.resize(paired_gob_count)
+	
+	# sort the smallest gobs by type, level, attack, hp_max, xp
+	sorted_gobs.shuffle()
+	sorted_gobs.sort_custom(func(a: Gob, b: Gob) -> bool:
+		if a.type != b.type:
+			return a.type < b.type
+		if a.level != b.level:
+			return a.level < b.level
+		if a.attack != b.attack:
+			return a.attack < b.attack
+		if a.hp_max != b.hp_max:
+			return a.hp_max < b.hp_max
+		return a.xp < b.xp)
+	
+	# pair up smallest neighboring gobs, excluding gobs of different types
+	for i in range(0, sorted_gobs.size(), 2):
+		var gob_a: Gob = sorted_gobs[i]
+		var gob_b: Gob = sorted_gobs[i + 1]
+		if gob_a.type != gob_b.type:
+			result.append(gob_a)
+			result.append(gob_b)
+		else:
+			result.append(Gobs.merge_gob(gob_a, gob_b))
+	
+	Global.print_verbose("Merged small gobs: %s->%s" % [gobs.size(), result.size()])
+	gobs = result
+
+
+func has_splittable_gobs() -> bool:
+	var result: bool = false
+	for gob: Gob in gobs:
+		if gob.back_count.is_gt(0):
+			result = true
+			break
+	return result
+
+
+## Grows the army by splitting oversized gobs into smaller ones.[br]
+## [br]
+## The target gob size is the army's total goblin count divided by MIN_GOB_COUNT. Any gob larger than the target size
+## is split into gobs of the target size. Gobs which are not oversized are left alone.
+func split_large_gobs() -> void:
+	var result: Array[Gob] = gobs.duplicate()
+	
+	var target_gob_size: float = ceilf(get_total_goblins().to_float() / MIN_GOB_COUNT)
+	for i in result.size():
+		var gob: Gob = result[i]
+		var split_count: float = ceilf(gob.get_count().to_float() / target_gob_size - 1)
+		for _j in split_count:
+			var new_gob: Gob = Gobs.split_gob(gob, Big.new(target_gob_size))
+			if new_gob != null:
+				result.append(new_gob)
+	
+	Global.print_verbose("Split large gobs: %s->%s" % [gobs.size(), result.size()])
+	gobs = result
 
 
 func from_json_dict(json: Dictionary[String, Variant]) -> void:
