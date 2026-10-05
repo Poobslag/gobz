@@ -1,6 +1,8 @@
 class_name ArmyTestUtils
 
-## Example: "🔥 3" -> Level 3 fire goblin
+## Example: "🔥 3" -> Level 3 fire goblin[br]
+## [br]
+## A level 3 fire goblin has 8 attack, 20 gold, 16/16 hp.
 static func gob(s: String) -> Gob:
 	var s_split: PackedStringArray = s.split(" ")
 	var type: Gobs.Type = Gobs.GOBLIN_TYPES_BY_EMOJI[s_split[0]]

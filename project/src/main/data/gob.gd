@@ -99,6 +99,7 @@ func duplicate() -> Gob:
 	copy.name = name
 	copy.back_count = back_count
 	copy.back_wounded = back_wounded
+	copy.wound_severity = wound_severity
 	copy.gold = gold
 	copy.level = level
 	copy.type = type
@@ -106,6 +107,7 @@ func duplicate() -> Gob:
 	copy.front_hp = front_hp
 	copy.xp = xp
 	copy.attack = attack
+	copy.morale = morale.duplicate()
 	return copy
 
 

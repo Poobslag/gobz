@@ -178,9 +178,14 @@ func initialize_starting_inventory() -> void:
 
 func create_gob() -> Gob:
 	var gob: Gob = Gob.new()
-	gob.id = _next_gob_id
-	_next_gob_id += 1
+	gob.id = take_next_gob_id()
 	return gob
+
+
+func take_next_gob_id() -> int:
+	var result: int = _next_gob_id
+	_next_gob_id += 1
+	return result
 
 
 func initialize_starting_army() -> void:

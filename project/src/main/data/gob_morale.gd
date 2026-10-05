@@ -63,3 +63,10 @@ func to_json_dict() -> Dictionary[String, Variant]:
 		"value": value,
 		"events": events_json,
 	}
+
+
+func duplicate() -> GobMorale:
+	var morale: GobMorale = GobMorale.new()
+	morale.value = value
+	morale.events = events.duplicate()
+	return morale

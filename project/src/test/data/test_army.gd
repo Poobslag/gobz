@@ -91,3 +91,104 @@ func test_to_glob() -> void:
 	assert_eq(PlayerData.army.gobs[0].name, "fire4")
 	assert_eq(PlayerData.army.gobs[1].name, "fire5")
 	assert_eq(PlayerData.army.gobs[2].name, "water6")
+
+
+func test_merge_small_gobs_30() -> void:
+	seed(404)
+	PlayerData.army.rng.set_seed(404)
+	
+	var gob_strings: Array[String] = [
+		"🔥 3", "🔥 4", "🔥 5",
+		"💧 3", "💧 4",
+		"🌳 5",
+	]
+	var gob_counts: Array[int] = [
+		3, 5, 10, 30, 50, 100,
+	]
+	
+	# add 30 goblins
+	for i in range(30):
+		PlayerData.army.add_gob(gob(gob_strings.pick_random()))
+		PlayerData.army.gobs.back().back_count = Big.new(gob_counts.pick_random())
+	
+	var total_goblins_old: int = PlayerData.army.get_total_goblins().to_int()
+	var total_attack_old: int = PlayerData.army.get_total_attack().to_int()
+	
+	PlayerData.army.merge_small_gobs()
+	
+	var gobs_size_new: int = PlayerData.army.gobs.size()
+	var total_goblins_new: int = PlayerData.army.get_total_goblins().to_int()
+	var total_attack_new: int = PlayerData.army.get_total_attack().to_int()
+	
+	assert_almost_eq(gobs_size_new, 20, 3)
+	assert_eq(total_goblins_new, total_goblins_old)
+	assert_almost_eq(total_attack_new, total_attack_old, 30)
+
+
+func test_merge_small_gobs_29() -> void:
+	seed(404)
+	PlayerData.army.rng.set_seed(404)
+	
+	# add 29 goblins
+	for i in range(29):
+		PlayerData.army.add_gob(gob("🔥 3"))
+	
+	var total_goblins_old: int = PlayerData.army.get_total_goblins().to_int()
+	
+	PlayerData.army.merge_small_gobs()
+	
+	var total_goblins_new: int = PlayerData.army.get_total_goblins().to_int()
+	assert_eq(total_goblins_new, total_goblins_old)
+
+
+func test_split_large_gobs_30() -> void:
+	seed(404)
+	PlayerData.army.rng.set_seed(404)
+	
+	var gob_strings: Array[String] = [
+		"🔥 3", "🔥 4", "🔥 5",
+		"💧 3", "💧 4",
+		"🌳 5",
+	]
+	var gob_counts: Array[int] = [
+		3, 5, 10, 30, 50, 100,
+	]
+	
+	# add 30 goblins
+	for i in range(30):
+		PlayerData.army.add_gob(gob(gob_strings.pick_random()))
+		PlayerData.army.gobs.back().back_count = Big.new(gob_counts.pick_random())
+	
+	var total_goblins_old: int = PlayerData.army.get_total_goblins().to_int()
+	var total_attack_old: int = PlayerData.army.get_total_attack().to_int()
+	
+	PlayerData.army.split_large_gobs()
+	
+	var gobs_size_new: int = PlayerData.army.gobs.size()
+	var total_goblins_new: int = PlayerData.army.get_total_goblins().to_int()
+	var total_attack_new: int = PlayerData.army.get_total_attack().to_int()
+	
+	assert_almost_eq(gobs_size_new, 65, 20)
+	assert_eq(total_goblins_new, total_goblins_old)
+	assert_almost_eq(total_attack_new, total_attack_old, 30)
+
+
+func test_split_large_gobs_1() -> void:
+	seed(404)
+	PlayerData.army.rng.set_seed(404)
+	
+	PlayerData.army.add_gob(gob("🔥 3"))
+	PlayerData.army.gobs.back().back_count = Big.new(5000)
+	
+	var total_goblins_old: int = PlayerData.army.get_total_goblins().to_int()
+	var total_attack_old: int = PlayerData.army.get_total_attack().to_int()
+	
+	PlayerData.army.split_large_gobs()
+	
+	var gobs_size_new: int = PlayerData.army.gobs.size()
+	var total_goblins_new: int = PlayerData.army.get_total_goblins().to_int()
+	var total_attack_new: int = PlayerData.army.get_total_attack().to_int()
+	
+	assert_almost_eq(gobs_size_new, 50, 3)
+	assert_eq(total_goblins_new, total_goblins_old)
+	assert_almost_eq(total_attack_new, total_attack_old, 30)

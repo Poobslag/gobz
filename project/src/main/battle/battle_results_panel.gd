@@ -159,6 +159,8 @@ func _end_battle() -> void:
 	if PlayerData.get_dungeon_army().is_empty() and PlayerData.get_dungeon().boss:
 		PlayerData.bosses_defeated += 1
 	PlayerData.prev_dungeon = PlayerData.get_dungeon()
+	if PlayerData.army.gobs.size() < Army.MIN_GOB_COUNT and PlayerData.army.has_splittable_gobs():
+		PlayerData.army.split_large_gobs()
 	
 	Events.battle_finished.emit(PlayerData.get_dungeon(), _battle_result)
 	

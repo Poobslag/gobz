@@ -5,7 +5,11 @@ class_name Utils
 const EMOJI_FONT: Font = preload("res://assets/main/ui/fluent_emoji_color.ttf")
 
 static func stochastic_roundi(f: float) -> int:
-	return ceil(f) if randf() < f - floor(f) else floor(f)
+	return ceili(f) if randf() < f - floor(f) else floori(f)
+
+
+static func stochastic_roundf(f: float) -> float:
+	return ceilf(f) if randf() < f - floor(f) else floorf(f)
 
 
 static func apply_market_whim(f: float) -> float:
