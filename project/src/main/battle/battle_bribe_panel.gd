@@ -27,9 +27,10 @@ func _refresh() -> void:
 		%EnemyGoblins.text += Gobs.army_bbcode(PlayerData.get_dungeon_army())
 	
 	%QueryLabel.text = ""
-	%QueryLabel.text += "We're being raided by goblins from %s!" % [PlayerData.get_dungeon().name]
-	%QueryLabel.text += " The raiders will accept surrender if we give them half our gold and supplies.\n"
-	%QueryLabel.text += "\n"
+	if PlayerData.has_current_dungeon():
+		%QueryLabel.text += "We're being raided by goblins from %s!" % [PlayerData.get_dungeon().name]
+		%QueryLabel.text += " The raiders will accept surrender if we give them half our gold and supplies.\n"
+		%QueryLabel.text += "\n"
 	
 	# build button_item_emojis, a text list of the items we'll surrender for the button
 	var button_item_emojis: String = ""
