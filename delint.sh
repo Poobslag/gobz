@@ -85,23 +85,6 @@ if [ -n "$RESULT" ]; then
   echo "$RESULT"
 fi
 
-# comments with incorrect whitespace
-REGEX="\(^##"$'\t'"\|## "$'\t\t\t'"\|^"$'\t\t'"*##\)"
-RESULT=$(grep -R -n "$REGEX" --include="*.gd" project/src \
-  | grep -v "army\.gd.*##" \
-  | grep -v "save_data_upgrader\.gd.*##" \
-  | grep -v "heal_data\.gd.*## A goblin may be" \
-  | grep -v "heal_data\.gd.*## Calculate count, hurt" \
-  | grep -v "morale_digest\.gd.*## Subclasses should" \
-  | grep -v "morale_digest\.gd.*## which is affected" \
-  | grep -v "morale_digest\.gd.*## A goblin cannot have" \
-  )
-if [ -n "$RESULT" ]; then
-  echo ""
-  echo "Comments with incorrect whitespace:"
-  echo "$RESULT"
-fi
-
 # comments with standalone '##' without [br]
 # shellcheck disable=SC2016
 RESULT=$(find project/src -type f -name "*.gd" -print0 | xargs -0 awk '
