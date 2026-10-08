@@ -13,5 +13,6 @@ func get_instructions() -> String:
 
 
 func _on_events_battle_finished(dungeon: Dungeon, result: Events.BattleResult) -> void:
-	if dungeon.raid_days == 3 and result in [Events.BattleResult.VICTORY, Events.BattleResult.MUTUAL_DEFEAT]:
+	if dungeon.raid_days == DungeonDirector.RAID_DAYS_START \
+			and result in [Events.BattleResult.VICTORY, Events.BattleResult.MUTUAL_DEFEAT]:
 		unlock_collectible()

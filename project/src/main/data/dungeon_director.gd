@@ -41,6 +41,18 @@ static func cycle_dungeons() -> void:
 	fill_missing_dungeons()
 
 
+## Shifts a dungeon to the end of the dungeon queue.
+static func requeue_dungeon(dungeon: Dungeon) -> void:
+	if PlayerData.dungeons.has(dungeon) and dungeon.is_regular():
+		var old_dungeon: Dungeon
+		if PlayerData.has_current_dungeon():
+			old_dungeon = PlayerData.get_dungeon()
+		PlayerData.dungeons.erase(dungeon)
+		PlayerData.dungeons.push_back(dungeon)
+		if old_dungeon != null:
+			PlayerData.dungeon_index = PlayerData.dungeons.find(old_dungeon)
+
+
 static func remove_empty_dungeons() -> void:
 	for i in range(PlayerData.dungeons.size() - 1, -1, -1):
 		if PlayerData.dungeons[i].is_empty():
@@ -116,7 +128,7 @@ static func get_recruit_max_level(day: int) -> int:
 
 static func find_raid_dungeon_index() -> int:
 	return PlayerData.dungeons.find_custom(func(dungeon: Dungeon) -> bool:
-		return dungeon.raid_days >= 0)
+		return dungeon.is_raid_dungeon())
 
 
 static func _find_boss_dungeon_index() -> int:
@@ -126,7 +138,7 @@ static func _find_boss_dungeon_index() -> int:
 
 static func _find_regular_dungeon_index() -> int:
 	return PlayerData.dungeons.find_custom(func(dungeon: Dungeon) -> bool:
-		return not dungeon.boss and dungeon.raid_days == -1)
+		return dungeon.is_regular())
 
 
 ## When calculating how strong dungeons should be, we convert the player's gold into attack power.

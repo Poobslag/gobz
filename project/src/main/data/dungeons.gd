@@ -24,7 +24,7 @@ static func get_type_summaries(army: Army) -> Array[Dictionary]:
 		goblins_by_type[gob.type] = Big.add(goblins_by_type[gob.type], gob.get_count())
 	
 	for type: Gobs.Type in Gobs.Type.values():
-		if goblins_by_type[type] == Big.ZERO:
+		if goblins_by_type[type].is_eq(0):
 			continue
 		result.append({
 			"type": type,

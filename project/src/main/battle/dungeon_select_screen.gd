@@ -22,6 +22,7 @@ func _add_dungeon_row(dungeon: Dungeon) -> void:
 	var dungeon_row: DungeonSelectRow = DUNGEON_ROW_SCENE.instantiate()
 	dungeon_row.dungeon = dungeon
 	dungeon_row.pressed.connect(func() -> void:
+		PlayerSave.save_data()
 		PlayerData.dungeon_index = PlayerData.dungeons.find(dungeon)
 		get_tree().change_scene_to_file("res://src/main/battle/battle_screen.tscn"))
 	%Dungeons.add_child(dungeon_row)

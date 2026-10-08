@@ -81,11 +81,13 @@ static func emoji_from_type(type: Type) -> String:
 
 
 static func army_bbcode(army: Army) -> String:
-	var summary: Army.ArmySummary = army.get_summary()
+	var summary: ArmySummary = army.get_summary()
 	var result: String = ""
 	var overall_attack_rating: String = attack_rating(
 			summary.total_attack.to_float() / max(1, summary.total_goblins.to_float()))
-	result += "[b]%s goblins %s[/b]\n" % [summary.total_goblins.to_aa(), overall_attack_rating]
+	var total_str: String = "[b]%s goblins %s[/b]\n" % [summary.total_goblins.to_aa(), overall_attack_rating]
+	total_str = total_str.replace("[b]1 goblins", "[b]1 goblin")
+	result += total_str
 	for goblin_type: Type in Type.values():
 		if summary.goblins_by_type[goblin_type].is_gte(1):
 			var type_attack_rating: String = attack_rating(
@@ -96,11 +98,13 @@ static func army_bbcode(army: Army) -> String:
 						/ summary.goblins_by_type[goblin_type].to_float()
 				wounded_percent = max(wounded_percent, 1)
 				wounded_string = "(%d%% 🩹) " % [wounded_percent]
-			result += "%s: %s goblins %s%s\n" % [
+			var type_str: String = "%s: %s goblins %s%s\n" % [
 					EMOJIS_BY_GOBLIN_TYPE[goblin_type],
 					summary.goblins_by_type[goblin_type].to_aa(),
 					wounded_string,
 					type_attack_rating]
+			type_str = type_str.replace(" 1 goblins", " 1 goblin")
+			result += type_str
 	
 	return result.strip_edges()
 
@@ -136,6 +140,7 @@ static func split_gob(source_gob: Gob, requested_count: Big) -> Gob:
 	
 	var new_gob: Gob = source_gob.duplicate()
 	new_gob.id = PlayerData.take_next_gob_id()
+	new_gob.name = GoblinNames.random_name()
 	new_gob.back_count = Big.new(split_count - 1)
 	if moved_wounded >= split_count:
 		new_gob.front_hp = maxi(1, floor(WOUNDED_HP_THRESHOLD * new_gob.hp_max))
