@@ -20,9 +20,7 @@ func _refresh() -> void:
 	
 	var goblins_text: String = Dungeons.get_goblins_text(dungeon.recon_army)
 	var shown_name: String = dungeon.name
-	if dungeon.raid_days == 0:
-		shown_name = "‼ %s" % [shown_name]
-	elif dungeon.raid_days >= 0:
+	if dungeon.is_raid_dungeon():
 		shown_name = "❗ %s" % [shown_name]
 	if dungeon.boss:
 		shown_name = "👑 %s" % [shown_name]

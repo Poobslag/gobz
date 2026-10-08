@@ -150,7 +150,7 @@ func _apply_morale_bonus(morale_value: float) -> void:
 			# show the morale bonus and multiply the surcharge among the goblins
 			%MoraleBonus.visible = true
 			%MoraleBonus.modulate = Color("b34947")
-			%MoraleBonus.text = "%d%% morale bonus" % [factor * 100 - 100]
+			%MoraleBonus.text = "%d%% morale penalty" % [factor * 100 - 100]
 			gob.gold = maxi(1, ceil(gob.gold / factor))
 		
 		var new_count: Big = Big.new(gob.get_count().to_float() * factor)

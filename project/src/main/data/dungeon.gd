@@ -27,6 +27,14 @@ func is_raiding() -> bool:
 	return raid_days == 0
 
 
+func is_raid_dungeon() -> bool:
+	return raid_days != -1
+
+
+func is_regular() -> bool:
+	return not boss and not is_raid_dungeon()
+
+
 func is_empty() -> bool:
 	return army.is_empty()
 

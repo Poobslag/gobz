@@ -68,9 +68,9 @@ func _show_victory_result() -> void:
 	for reward: Dungeon.Reward in dungeon_rewards:
 		PlayerData.inventory.add_item(reward.type, reward.count)
 	var looted_gold: Big = Big.add(PlayerData.army.gold, PlayerData.get_dungeon_army().gold)
+	PlayerData.get_dungeon_army().gold = Big.ZERO
 	PlayerData.gold = Big.add(PlayerData.gold, looted_gold)
 	PlayerData.army.gold = Big.ZERO
-	PlayerData.get_dungeon_army().gold = Big.ZERO
 	
 	%Message.text = ""
 	if PlayerData.get_dungeon().boss:
@@ -97,6 +97,7 @@ func _show_defeat_result() -> void:
 	PlayerData.army.gold = Big.ZERO
 	PlayerData.gold = Big.add(PlayerData.gold, Big.new(PlayerData.get_dungeon_army().gold.to_float() * 0.1))
 	PlayerData.initialize_starting_army()
+	DungeonDirector.requeue_dungeon(PlayerData.get_dungeon())
 	
 	%Message.text = ""
 	%Message.text += "Defeat...\n\n"
@@ -120,11 +121,11 @@ func _show_surrender_result() -> void:
 
 
 func _show_mutual_defeat_result() -> void:
-	var looted_gold: Big = Big.new(
-			Big.add(PlayerData.army.gold, PlayerData.get_dungeon_army().gold).to_float() * 0.5)
+	var total_gold: Big = Big.add(PlayerData.army.gold, PlayerData.get_dungeon_army().gold)
+	var looted_gold: Big = Big.new(total_gold.to_float() * 0.5)
+	PlayerData.get_dungeon_army().gold = Big.sub(total_gold, looted_gold)
 	PlayerData.gold = Big.add(PlayerData.gold, looted_gold)
 	PlayerData.initialize_starting_army()
-	PlayerData.get_dungeon_army().gold = Big.ZERO
 	
 	%Message.text = ""
 	if PlayerData.get_dungeon().boss:
@@ -136,7 +137,9 @@ func _show_mutual_defeat_result() -> void:
 	%Message.text += "%s %s is inspired by the bravery of the fallen goblins!\n" % [
 		Gobs.emoji_from_type(goblin.type), goblin.name
 	]
-	%Message.text += "They loot 💰%s from the battlefield and prepare for battle."
+	%Message.text += "They loot 💰%s from the battlefield and prepare for battle." % [
+		looted_gold.to_aa()
+	]
 
 
 func _show_retreat_result() -> void:
@@ -145,7 +148,7 @@ func _show_retreat_result() -> void:
 	PlayerData.army.gold = Big.ZERO
 	# force recon; the player knows the exact unit comp, plus it may have changed during battle
 	PlayerData.get_dungeon().recon_army = PlayerData.get_dungeon().army.duplicate()
-	PlayerData.get_dungeon_army().gold = Big.ZERO
+	DungeonDirector.requeue_dungeon(PlayerData.get_dungeon())
 	
 	%Message.text = ""
 	%Message.text += "Retreat!\n\n"
@@ -166,7 +169,9 @@ func _end_battle() -> void:
 	
 	var raided: bool = PlayerData.get_dungeon().is_raiding()
 	if raided:
-		# being raided doesn't increment the day counter or cycle dungeons, but we replace the raiders
+		# being raided doesn't increment the day counter or cycle dungeons, but we replace the raiders if they were
+		# raiding, and unset the 'raid flag' if they just raided us
+		PlayerData.get_dungeon().raid_days = -1
 		DungeonDirector.remove_empty_dungeons()
 		DungeonDirector.fill_missing_dungeons()
 	else:
