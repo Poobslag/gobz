@@ -18,19 +18,21 @@ const ENEMY_HIT: GobAction = GobAction.ENEMY_HIT
 const ENEMY_WOUNDED: GobAction = GobAction.ENEMY_WOUNDED
 const ENEMY_KILLED: GobAction = GobAction.ENEMY_KILLED
 
-var _player_gob_actions: Dictionary[Gob, int] = {}
+## key: (int) Gob id[br]
+## value: (int) GobAction bitmask
+var _player_gob_actions: Dictionary[int, int] = {}
 
 var enemies_killed: Big = Big.ZERO
 
-func get_gobs() -> Array[Gob]:
+func get_gob_ids() -> Array[int]:
 	return _player_gob_actions.keys()
 
 
-func has_action(gob: Gob, action: GobAction) -> bool:
-	return _player_gob_actions.get(gob, 0) & action > 0
+func has_action(gob_id: int, action: GobAction) -> bool:
+	return _player_gob_actions.get(gob_id, 0) & action > 0
 
 
-func record_action(gob: Gob, action: GobBattleStatus.GobAction) -> void:
-	if not _player_gob_actions.has(gob):
-		_player_gob_actions[gob] = 0
-	_player_gob_actions[gob] |= action
+func record_action(gob_id: int, action: GobBattleStatus.GobAction) -> void:
+	if not _player_gob_actions.has(gob_id):
+		_player_gob_actions[gob_id] = 0
+	_player_gob_actions[gob_id] |= action

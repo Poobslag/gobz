@@ -28,7 +28,7 @@ static func _random_battle_event(gob_battle_status: GobBattleStatus, gob: Gob) -
 		if action == GobBattleStatus.KILLED:
 			# some goblins in our gob might be killed, but we don't report those events
 			continue
-		if gob_battle_status.has_action(gob, action):
+		if gob_battle_status.has_action(gob.id, action):
 			eligible.append(action)
 	
 	if eligible.is_empty():

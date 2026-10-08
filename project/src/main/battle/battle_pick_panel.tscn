@@ -99,25 +99,27 @@ text = "😈"
 [node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/Panel/MarginContainer/VBoxContainer" index="3" unique_id=503109273]
 layout_mode = 2
 
-[node name="Undo" type="Button" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="0" unique_id=767552492]
+[node name="Retreat" type="Button" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="0" unique_id=767552492]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Retreat"
+
+[node name="Undo" type="Button" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="1" unique_id=190578109]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "Undo"
 
-[node name="Spacer1" type="Control" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="1" unique_id=1949349974]
+[node name="Spacer1" type="Control" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="2" unique_id=1949349974]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 
-[node name="Spacer2" type="Control" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="2" unique_id=1962595106]
+[node name="Spacer2" type="Control" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="3" unique_id=1962595106]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 
-[node name="Spacer3" type="Control" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="3" unique_id=1535210729]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-
-[node name="Done" type="Button" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="4" unique_id=1004920508]
+[node name="Fight" type="Button" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="4" unique_id=1004920508]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2

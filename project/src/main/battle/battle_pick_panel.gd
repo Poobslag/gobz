@@ -1,10 +1,13 @@
 extends ColorRect
 
 signal tutorial_pressed
-signal finished
+signal retreat_pressed
+signal fight_pressed
 
 var orders: Array[Gobs.Type] = []
 var consecutive_retreat_presses: int = 0
+
+var _battle_state: BattleState
 
 @onready var button_by_type: Dictionary[Gobs.Type, Button] = {
 		Gobs.FIRE: %Fire,
@@ -18,10 +21,16 @@ func _ready() -> void:
 	for type: Gobs.Type in Gobs.Type.values():
 		var button: Button = button_by_type[type]
 		button.pressed.connect(_append_order.bind(type))
-	%Undo.pressed.connect(_undo_pressed)
-	%Done.pressed.connect(_done_pressed)
-	%TutorialButton.pressed.connect(tutorial_pressed.emit)
-	
+	%Fight.pressed.connect(_on_fight_pressed)
+	%Retreat.pressed.connect(_on_retreat_pressed)
+	%TutorialButton.pressed.connect(_on_tutorial_pressed)
+	%Undo.pressed.connect(_on_undo_pressed)
+
+
+func show_plan(new_battle_state: BattleState) -> void:
+	consecutive_retreat_presses = 0
+	_battle_state = new_battle_state
+	orders.assign(_battle_state.player_side.get_reserve_types())
 	refresh()
 
 
@@ -32,27 +41,36 @@ func clear_orders() -> void:
 func refresh() -> void:
 	%YourGoblins.text = ""
 	%YourGoblins.text += "You:\n"
-	%YourGoblins.text += Gobs.army_bbcode(PlayerData.army)
+	%YourGoblins.text += _roster_bbcode(_battle_state.player_side)
 	
 	%EnemyGoblins.text = ""
-	if PlayerData.has_current_dungeon():
-		%EnemyGoblins.text += "Bad guys:\n"
-		%EnemyGoblins.text += Gobs.army_bbcode(PlayerData.get_dungeon().army)
+	%EnemyGoblins.text += "Bad guys:\n"
+	%EnemyGoblins.text += _roster_bbcode(_battle_state.enemy_side)
 	
 	var all_orders_given: bool = true
-	var player_army_summary: Army.ArmySummary = PlayerData.army.get_summary()
+	
+	# enable/disable type buttons
+	var available_gob_types: Array[Gobs.Type] = _battle_state.player_side.get_available_types()
 	for type: Gobs.Type in Gobs.Type.values():
 		var button: Button = button_by_type[type]
-		button.disabled = player_army_summary.goblins_by_type[type].is_eq(0) or orders.has(type)
+		button.disabled = not available_gob_types.has(type) or orders.has(type)
 		if not button.disabled:
 			all_orders_given = false
+	
+	# update retreat button
+	%Retreat.text = "Retreat"
+	%Retreat.disabled = false
+	if PlayerData.army.is_empty():
+		%Retreat.text = "Defeat"
+	elif PlayerData.has_current_dungeon() and PlayerData.get_dungeon().is_raiding():
+		%Retreat.text = "No escape!"
+		%Retreat.disabled = true
+	
+	# enable/disable undo button
 	%Undo.disabled = orders.is_empty()
 	
-	%Done.disabled = false
-	%Done.text = "Retreat" if orders.is_empty() else "Fight!"
-	if PlayerData.has_current_dungeon() and PlayerData.get_dungeon().is_raiding() and orders.is_empty():
-		%Done.text = "No escape!"
-		%Done.disabled = true
+	# enable/disable fight button
+	%Fight.disabled = orders.is_empty() and _battle_state.player_side.active_gobs.is_empty()
 	
 	var order_string: String = ""
 	if not orders.is_empty():
@@ -76,6 +94,19 @@ func refresh() -> void:
 	%SplashArt.flip_h = player_disadvantage
 
 
+func _roster_bbcode(battle_side: BattleState.BattleSide) -> String:
+	var result: String = Gobs.army_bbcode(battle_side.army)
+	if not battle_side.active_gobs.is_empty():
+		result += "\n"
+		result += "Already fighting: %s" % [_active_gobs_label(battle_side)]
+	return result
+
+
+func _active_gobs_label(battle_side: BattleState.BattleSide) -> String:
+	return Gobs.count_label(battle_side.active_gobs, func(gob: Gob, tally: Gobs.TypeTally) -> void:
+			tally.add(gob.type, gob.get_count()))
+
+
 func _append_order(type: Gobs.Type) -> void:
 	consecutive_retreat_presses = 0
 	if not orders.has(type):
@@ -83,20 +114,26 @@ func _append_order(type: Gobs.Type) -> void:
 	refresh()
 
 
-func _undo_pressed() -> void:
+func _on_fight_pressed() -> void:
 	consecutive_retreat_presses = 0
-	if not orders.is_empty():
-		orders.pop_back()
+	fight_pressed.emit()
+
+
+func _on_retreat_pressed() -> void:
+	consecutive_retreat_presses += 1
+	if consecutive_retreat_presses >= 2 or PlayerData.army.is_empty():
+		retreat_pressed.emit()
 	refresh()
 
 
-func _done_pressed() -> void:
-	if orders.is_empty():
-		consecutive_retreat_presses += 1
-	else:
-		consecutive_retreat_presses = 0
-	
-	if consecutive_retreat_presses == 1:
-		refresh()
-	else:
-		finished.emit()
+func _on_tutorial_pressed() -> void:
+	consecutive_retreat_presses = 0
+	tutorial_pressed.emit()
+
+
+func _on_undo_pressed() -> void:
+	consecutive_retreat_presses = 0
+	if not orders.is_empty():
+		var popped_order: Gobs.Type = orders.pop_back()
+		_battle_state.player_side.remove_reserve_type(popped_order)
+	refresh()

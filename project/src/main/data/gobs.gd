@@ -109,6 +109,24 @@ static func army_bbcode(army: Army) -> String:
 	return result.strip_edges()
 
 
+## Returns a label like '17×🔥💧' summarizing a group of goblins.[br]
+## [br]
+## [param tally_func] should add items to the TypeTally parameter. It needs the following signature:[br]
+## 	[code]func(item, tally: Gobs.TypeTally) -> void[/code]
+static func count_label(items: Array[Variant], tally_func: Callable) -> String:
+	var tally: TypeTally = TypeTally.new()
+	for item: Variant in items:
+		tally_func.call(item, tally)
+	if tally.total_count == 0.0:
+		return ""
+	
+	var emojis: String = ""
+	for type: Gobs.Type in Gobs.Type.values():
+		if tally.total_types.has(type):
+			emojis += Gobs.emoji_from_type(type)
+	return "%s×%s" % [Big.float_to_aa(tally.total_count), emojis]
+
+
 static func morale_bbcode(morale: float, bold: bool = false) -> String:
 	var threshold_index: int = MORALE_THRESHOLDS.size() - 1
 	for i in MORALE_THRESHOLDS.size() - 1:
@@ -175,3 +193,12 @@ static func merge_gob(gob_a: Gob, gob_b: Gob) -> Gob:
 	survivor_gob.wound_severity = maxf(survivor_gob.wound_severity, absorbed_gob.wound_severity)
 	
 	return survivor_gob
+
+
+class TypeTally:
+	var total_types: Dictionary[Gobs.Type, bool] = {}
+	var total_count: float = 0.0
+	
+	func add(type: Gobs.Type, count: Big) -> void:
+		total_types[type] = true
+		total_count += count.to_float()

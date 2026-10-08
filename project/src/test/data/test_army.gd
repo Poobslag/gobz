@@ -29,7 +29,7 @@ func test_get_summary_overflow() -> void:
 	PlayerData.army.add_gob(gob("🔥 5"))
 	PlayerData.army.gobs[0].back_count = Big.new(999_999_999_999_999_999)
 	PlayerData.army.gobs[1].back_count = Big.new(999_999_999_999_999_999)
-	var summary: Army.ArmySummary = PlayerData.army.get_summary()
+	var summary: ArmySummary = PlayerData.army.get_summary()
 	assert_almost_eq(summary.attack_by_type[Gobs.FIRE].to_float(), 2.2e19, 1.0e17)
 	assert_almost_eq(summary.goblins_by_type[Gobs.FIRE].to_float(), 2.0e18, 1.0e16)
 	assert_almost_eq(summary.total_attack.to_float(), 2.2e19, 1.0e17)

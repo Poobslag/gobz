@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://clf1h0wgla0k1"]
+[gd_scene format=3 uid="uid://ce8qrjpsew051"]
 
 [ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/ui/screen_panel.tscn" id="1_4pg3q"]
-[ext_resource type="Script" uid="uid://cdlii1yvgf45i" path="res://src/main/battle/battle_watch_panel.gd" id="2_q2wy1"]
+[ext_resource type="Script" uid="uid://dw7dtdydavwc2" path="res://src/main/battle/battle_watch_panel_old.gd" id="2_q2wy1"]
 [ext_resource type="Texture2D" uid="uid://d1no6y4cfjva8" path="res://assets/main/splash/battle_hit.png" id="4_6nw7c"]
 
 [node name="WatchPanel" unique_id=806142582 instance=ExtResource("1_4pg3q")]
@@ -43,22 +43,27 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 bbcode_enabled = true
-text = "Your side:
-[b]3/3 goblins battling[/b]
-🔥: 1 goblins
-🌳: 2 goblins"
+text = "You:
+[b]3 goblins, 🗡️15[/b]
+🔥: 1 goblins, 🗡️5
+🌳: 2 goblins, 🗡️10"
 
 [node name="EnemyGoblins" type="RichTextLabel" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer" index="1" unique_id=626274456]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 bbcode_enabled = true
-text = "Their side:
-[b]3/3 goblins battling[/b]
-🔥: 1 goblins
-🌳: 2 goblins"
+text = "Bad guys:
+[b]3 goblins, 🗡️15[/b]
+🔥: 1 goblins, 🗡️5
+🌳: 2 goblins, 🗡️10"
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/Panel/MarginContainer/VBoxContainer" index="1" unique_id=1595574149]
+[node name="WaveLabel" type="Label" parent="MarginContainer/Panel/MarginContainer/VBoxContainer" index="1" unique_id=1687645004]
+unique_name_in_owner = true
+layout_mode = 2
+text = "💧→🔥→🌳"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/Panel/MarginContainer/VBoxContainer" index="2" unique_id=1595574149]
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -86,34 +91,10 @@ text = "😈 9 enemy goblins attack:
 2×🕊 killed. Very effective!"
 autowrap_mode = 2
 
-[node name="QueryLabel" type="Label" parent="MarginContainer/Panel/MarginContainer/VBoxContainer" index="2" unique_id=1740816800]
-unique_name_in_owner = true
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/Panel/MarginContainer/VBoxContainer" index="3" unique_id=1285139860]
 layout_mode = 2
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/Panel/MarginContainer/VBoxContainer" index="3" unique_id=1531007845]
-layout_mode = 2
-
-[node name="Retreat" type="Button" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer4" index="0" unique_id=1809869169]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-text = "Retreat"
-
-[node name="Plan" type="Button" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer4" index="1" unique_id=938313722]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-text = "Plan"
-
-[node name="Spacer2" type="Control" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer4" index="2" unique_id=1496074811]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-
-[node name="Spacer3" type="Control" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer4" index="3" unique_id=104611661]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-
-[node name="NextButton" type="Button" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer4" index="4" unique_id=179559712]
+[node name="NextButton" type="Button" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer2" index="0" unique_id=489817519]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
