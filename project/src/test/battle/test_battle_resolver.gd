@@ -107,7 +107,7 @@ func test_resolve_level_ups() -> void:
 	player_army.add_gob(gob("🔥 3"))
 	player_army.gobs[0].xp = 11
 	
-	var battle_state: BattleState = BattleState.from_armies(player_army, enemy_army, player_orders, enemy_orders)
+	var battle_state: BattleState = new_battle_state()
 	BattleResolver.resolve_player_level_ups(battle_state)
 	
 	assert_eq(player_army.gobs[0].level, 4)
@@ -309,7 +309,8 @@ func test_plan_attacks_no_empty_attacks() -> void:
 	for _i in 10:
 		player_army.add_gob(gob("🔥 3"))
 		player_army.gobs.back().back_count = Big.new(_i % 3)
-	var battle_state: BattleState = BattleState.from_armies(player_army, enemy_army, player_orders, enemy_orders)
+	
+	var battle_state: BattleState = new_battle_state()
 	battle_state.deploy_all()
 	var attacks: Array[BattleResolver.Attack] = BattleResolver.plan_player_attacks(battle_state)
 	
@@ -327,7 +328,7 @@ func test_plan_attacks_huge() -> void:
 
 
 func assert_total_attackers(expected: float, error_interval: float) -> void:
-	var battle_state: BattleState = BattleState.from_armies(player_army, enemy_army, player_orders, enemy_orders)
+	var battle_state: BattleState = new_battle_state()
 	battle_state.deploy_all()
 	var attacks: Array[BattleResolver.Attack] = BattleResolver.plan_player_attacks(battle_state)
 	var total_attackers: float = 0.0
@@ -355,7 +356,7 @@ func attack(source: Army, source_index: int, wounded: bool) -> BattleResolver.At
 
 
 func plan_and_resolve_attacks() -> void:
-	var battle_state: BattleState = BattleState.from_armies(player_army, enemy_army, player_orders, enemy_orders)
+	var battle_state: BattleState = new_battle_state()
 	battle_state.deploy_all()
 	battle_state.attack_scale = 1.0
 	battle_result["attacks"] = BattleResolver.plan_player_attacks(battle_state)
@@ -370,3 +371,10 @@ func assert_kills(expected_kill_strings: Array[String]) -> void:
 		var kw_string: String = "%s/%s" % [kill.kill_count.to_aa(), kill.target.get_wounded_count().to_aa()]
 		got_kill_strings.append("%s -> %s, %s" % [source_string, target_string, kw_string])
 	assert_eq(got_kill_strings, expected_kill_strings)
+
+
+func new_battle_state() -> BattleState:
+	var battle_state: BattleState = BattleState.new(player_army, enemy_army)
+	battle_state.update_player_orders(player_orders)
+	battle_state.update_enemy_orders(enemy_orders)
+	return battle_state

@@ -83,10 +83,11 @@ stretch_mode = 4
 [node name="TextureRect3" type="TextureRect" parent="Panel/MarginContainer/Control" unique_id=1642839147]
 custom_maximum_size = Vector2(300, 150)
 layout_mode = 0
-offset_left = 94.0
-offset_top = 323.0
-offset_right = 394.0
-offset_bottom = 473.0
+offset_left = 72.0
+offset_top = 306.0
+offset_right = 372.0
+offset_bottom = 456.0
+scale = Vector2(1.1599183, 1.1599183)
 texture = ExtResource("4_nba51")
 stretch_mode = 4
 
@@ -107,7 +108,7 @@ offset_top = 168.0
 offset_right = 430.0
 offset_bottom = 295.0
 theme_override_colors/font_color = Color(0.36862746, 0.36862746, 0.3529412, 1)
-text = "Groups attack in order until they all get a turn"
+text = "Groups enter the fight in order, and keep fighting"
 horizontal_alignment = 1
 
 [node name="Label3" type="Label" parent="Panel/MarginContainer/Control" unique_id=375666417]
@@ -117,7 +118,7 @@ offset_top = 319.0
 offset_right = 438.0
 offset_bottom = 446.0
 theme_override_colors/font_color = Color(0.36862746, 0.36862746, 0.3529412, 1)
-text = "Attacking groups can be hit at any time"
+text = "Everyone in the fight can hit everyone in the fight"
 horizontal_alignment = 1
 
 [node name="Button" type="Button" parent="Panel/MarginContainer" unique_id=582360246]
