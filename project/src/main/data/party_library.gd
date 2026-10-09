@@ -515,7 +515,7 @@ class Pranks extends Party:
 			else:
 				result += " hot coals, rotten fish,"
 			result += " all sorts of gross and painful ways to torture each other."
-			result = " They laugh and bond over the resulting mischief."
+			result += " They laugh and bond over the resulting mischief."
 		else:
 			result = "Several sleeping goblins are rudely awakened by disgusting and painful plots, mostly involving"
 			if randf() < 0.5:
