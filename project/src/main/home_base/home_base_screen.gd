@@ -37,7 +37,7 @@ func reset() -> void:
 	if not PlayerData.finished_tutorials.has(PlayerData.HOME_BASE_TUTORIAL):
 		%TutorialPanel.open()
 		PlayerData.finished_tutorials[PlayerData.HOME_BASE_TUTORIAL] = true
-	elif not PlayerData.food_record.shown:
+	elif PlayerData.day > 1 and not PlayerData.food_record.shown:
 		%NewDayPanel.play()
 	
 	if not %NewDayPanel.visible and _is_being_raided():

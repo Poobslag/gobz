@@ -5,7 +5,7 @@ signal after_save
 signal after_load
 
 ## In LibreOffice Calc: =LOWER(DEC2HEX(INT((NOW()-DATE(2026,8,1))*24),4))
-const PLAYER_DATA_VERSION: String = "0157"
+const PLAYER_DATA_VERSION: String = "01a3"
 
 var save_folder: String = "user://"
 
