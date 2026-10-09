@@ -45,7 +45,7 @@ static func feed_goblins() -> void:
 		
 		# Event delta is small, but this is just for starving for one day. Thematically a meal here or there doesn't
 		# matter unless the goblin starves for an entire week, then it adds up.
-		var event_delta: float = -8
+		var event_delta: float = -16
 		var event_type: MoraleEvent.MoraleEventType = MoraleEvent.STARVED
 		if available_foods.is_empty():
 			for food: Items.Type in PREFERENCES_BY_TYPE[gob.type][0]:
@@ -61,7 +61,7 @@ static func feed_goblins() -> void:
 			for food: Items.Type in PREFERENCES_BY_TYPE[gob.type][2]:
 				if PlayerData.inventory.has_item(food, Big.ONE):
 					available_foods.append(food)
-					event_delta = -4
+					event_delta = -8
 		
 		if not available_foods.is_empty():
 			var food: Items.Type = available_foods.pick_random()
