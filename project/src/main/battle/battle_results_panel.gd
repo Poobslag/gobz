@@ -61,7 +61,7 @@ func show_result(new_battle_result: Events.BattleResult) -> void:
 
 func _show_victory_result() -> void:
 	# collect unknown food
-	var looted_unknown_food: Big = %WatchPanel.gob_battle_status.enemies_killed
+	var looted_unknown_food: Big = %FightPanel.gob_battle_status.enemies_killed
 	PlayerData.inventory.add_item(Items.FOOD_UNKNOWN, looted_unknown_food)
 	# collect rewards
 	var dungeon_rewards: Array[Dungeon.Reward] = PlayerData.get_dungeon().rewards

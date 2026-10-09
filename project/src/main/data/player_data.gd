@@ -85,6 +85,19 @@ var tips: Array[String] = [
 	"Sad goblins fight the same as happy goblins.",
 	"Recruit your goblins carefully! Some goblins ask for too much gold.",
 	"Recruit your goblins carefully! Some types are more useful than others.",
+	
+	"Supplies are expensive! Look for dungeons with free supplies.",
+	"Food is expensive! Look for dungeons with free food.",
+	"If you want to recruit 💧, fight dungeons which have 💧.",
+	"If you fight a dungeon which has 🔥, you can recruit more 🔥.",
+	"😈 are strong! Find them by fighting dungeons which have 😈.",
+	"If you can't defeat raiders, you can bribe them instead.",
+	"Raiders will ask for half your money! But if you have no money, that's okay.",
+	"🔥 love to eat 🍗 and 🍖! ...Maybe those foods are fun to burn?",
+	"😈 love to eat 🍗 and 🍖! ...Maybe they just like their food to suffer?",
+	"💧 love to eat 🍖 and 🍕! ...Are they ninja turtles?",
+	"🌳 love to eat 🥐 and 🍖! ...Because you can find those in the forest?",
+	"🕊 love to eat 🍖! ...I wonder if they love to eat anything else?",
 ]
 
 var _tip_index: int = 0
