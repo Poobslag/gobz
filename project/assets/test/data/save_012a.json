@@ -28,6 +28,10 @@
       "recon_army": "H4sIAAAAAAAACqtWSs/PSVGyMtAz0FHKyC9KSS1WsoqOrQUAMQQw1xgAAAA="
     }
   ],
+  "finished_tutorials": {
+    "battle_tutorial": true,
+    "home_base_tutorial": true
+  },
   "gold": 46.0,
   "home_base_multiplier": 1.0,
   "version": "012A"

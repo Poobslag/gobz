@@ -16,6 +16,10 @@ func _upgrade_0157(json_dict: Dictionary[String, Variant], old_key: String) -> v
 			for dungeon_json: Dictionary in json_dict["dungeons"]:
 				dungeon_json["army"] = _replace_army_glob_for_01a3(dungeon_json["army"])
 				dungeon_json["recon_army"] = _replace_army_glob_for_01a3(dungeon_json["recon_army"])
+		"finished_tutorials":
+			var finished_tutorials: Dictionary = json_dict["finished_tutorials"]
+			finished_tutorials.erase("battle_tutorial")
+			json_dict["finished_tutorials"] = finished_tutorials
 
 
 func _post_upgrade_0157(json_dict: Dictionary[String, Variant]) -> void:

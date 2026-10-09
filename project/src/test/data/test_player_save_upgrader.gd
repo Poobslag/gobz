@@ -39,6 +39,10 @@ func test_012a() -> void:
 	assert_eq(PlayerData.dungeons[0].army.get_total_attack().to_int(), 4)
 	assert_eq(PlayerData.dungeons[0].recon_army.get_total_goblins().to_int(), 1)
 	assert_eq(PlayerData.dungeons[0].recon_army.get_total_attack().to_int(), 4)
+	
+	print(PlayerData.finished_tutorials)
+	# battle tutorial should be omitted; it changed in 01a3
+	assert_eq(PlayerData.finished_tutorials, { "home_base_tutorial": true })
 
 
 func test_012a_morale() -> void:
