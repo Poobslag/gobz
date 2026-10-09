@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://clf1h0wgla0k1"]
 
-[ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/ui/screen_panel.tscn" id="1_4pg3q"]
-[ext_resource type="Script" uid="uid://cdlii1yvgf45i" path="res://src/main/battle/battle_watch_panel.gd" id="2_q2wy1"]
-[ext_resource type="Texture2D" uid="uid://d1no6y4cfjva8" path="res://assets/main/splash/battle_hit.png" id="4_6nw7c"]
+[ext_resource type="PackedScene" uid="uid://cp1tg2bjx1kmh" path="res://src/main/ui/screen_panel.tscn" id="1_ne0op"]
+[ext_resource type="Script" uid="uid://cdlii1yvgf45i" path="res://src/main/battle/battle_fight_panel.gd" id="2_2ixmv"]
+[ext_resource type="Texture2D" uid="uid://d1no6y4cfjva8" path="res://assets/main/splash/battle_hit.png" id="3_f3tfv"]
 
-[node name="WatchPanel" unique_id=806142582 instance=ExtResource("1_4pg3q")]
+[node name="FightPanel" unique_id=806142582 instance=ExtResource("1_ne0op")]
 color = Color(0.23921569, 0.28235295, 0.4392157, 1)
-script = ExtResource("2_q2wy1")
+script = ExtResource("2_2ixmv")
 
 [node name="SplashHolder" type="Control" parent="MarginContainer/Panel" parent_id_path=PackedInt32Array(2033304710) index="0" unique_id=175410795]
 layout_mode = 1
@@ -23,7 +23,7 @@ mouse_filter = 2
 unique_name_in_owner = true
 modulate = Color(0.23921569, 0.28235295, 0.4392157, 0.5019608)
 position = Vector2(-7, -25)
-texture = ExtResource("4_6nw7c")
+texture = ExtResource("3_f3tfv")
 
 [node name="MarginContainer" parent="MarginContainer/Panel" parent_id_path=PackedInt32Array(2033304710) index="1" unique_id=1781904422]
 theme_override_constants/margin_left = 30

@@ -2,8 +2,8 @@ extends Control
 
 @onready var _panels: Array[Control] = [
 	%BribePanel,
-	%PickPanel,
-	%WatchPanel,
+	%PlanPanel,
+	%FightPanel,
 	%ResultsPanel,
 ]
 
@@ -12,14 +12,14 @@ var _battle_state: BattleState
 func _ready() -> void:
 	%BribePanel.surrender_pressed.connect(show_results_panel.bind(Events.BattleResult.SURRENDER))
 	%BribePanel.fight_pressed.connect(show_pick_panel)
-	%PickPanel.fight_pressed.connect(_on_pick_panel_fight_pressed)
-	%PickPanel.retreat_pressed.connect(_show_retreat)
-	%WatchPanel.finished.connect(_on_watch_panel_finished)
-	%WatchPanel.plan_pressed.connect(show_pick_panel)
-	%WatchPanel.retreat_pressed.connect(_show_retreat)
+	%PlanPanel.fight_pressed.connect(_on_pick_panel_fight_pressed)
+	%PlanPanel.retreat_pressed.connect(_show_retreat)
+	%FightPanel.finished.connect(_on_watch_panel_finished)
+	%FightPanel.plan_pressed.connect(show_pick_panel)
+	%FightPanel.retreat_pressed.connect(_show_retreat)
 	%ResultsPanel.finished.connect(_on_results_panel_finished)
-	%PickPanel.tutorial_pressed.connect(%TutorialPanel.open)
-	%WatchPanel.tutorial_pressed.connect(%TutorialPanel.open)
+	%PlanPanel.tutorial_pressed.connect(%TutorialPanel.open)
+	%FightPanel.tutorial_pressed.connect(%TutorialPanel.open)
 	%BribePanel.tutorial_pressed.connect(%TutorialPanel.open)
 	
 	if PlayerData.has_current_dungeon():
@@ -42,7 +42,7 @@ func show_bribe_panel() -> void:
 
 
 func show_pick_panel() -> void:
-	_show_panel(%PickPanel)
+	_show_panel(%PlanPanel)
 		
 	if Global.verbose_stdout_mode and PlayerData.has_current_dungeon():
 		print('----------')
@@ -67,22 +67,22 @@ func show_pick_panel() -> void:
 		enemy_orders.shuffle()
 		_battle_state.update_enemy_orders(enemy_orders)
 	
-	%PickPanel.show_plan(_battle_state)
+	%PlanPanel.show_plan(_battle_state)
 
 
 func show_results_panel(battle_result: Events.BattleResult) -> void:
 	if _battle_state:
 		# unfrag before applying morale
 		_battle_state.unfrag()
-	PlayerData.home_base_data.heal_data.reroll_wound_severity(%WatchPanel.gob_battle_status)
-	MoraleBattleResolver.update_gob_battle_morale(%WatchPanel.gob_battle_status)
+	PlayerData.home_base_data.heal_data.reroll_wound_severity(%FightPanel.gob_battle_status)
+	MoraleBattleResolver.update_gob_battle_morale(%FightPanel.gob_battle_status)
 	
 	_show_panel(%ResultsPanel)
 	%ResultsPanel.show_result(battle_result)
 	
 	var dead_gob_ids: Dictionary[int, bool] = {}
-	for gob_id: int in %WatchPanel.gob_battle_status.get_gob_ids():
-		if %WatchPanel.gob_battle_status.has_action(gob_id, GobBattleStatus.KILLED):
+	for gob_id: int in %FightPanel.gob_battle_status.get_gob_ids():
+		if %FightPanel.gob_battle_status.has_action(gob_id, GobBattleStatus.KILLED):
 			dead_gob_ids[gob_id] = true
 	MoraleRelationshipResolver.apply_death_morale(dead_gob_ids)
 	MoraleRelationshipResolver.create_random_relationships(0.08, 0.04)
@@ -99,9 +99,9 @@ func _show_retreat() -> void:
 
 
 func _on_pick_panel_fight_pressed() -> void:
-	_show_panel(%WatchPanel)
-	_battle_state.update_player_orders(%PickPanel.orders)
-	%WatchPanel.play(_battle_state)
+	_show_panel(%FightPanel)
+	_battle_state.update_player_orders(%PlanPanel.orders)
+	%FightPanel.play(_battle_state)
 
 
 func _on_watch_panel_finished() -> void:
